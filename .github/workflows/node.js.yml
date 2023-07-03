@@ -14,8 +14,8 @@ jobs:
 
     runs-on: ubuntu-latest
     defaults:
-          run:
-            working-directory: SPringBoard
+      run:
+        working-directory: SPringBoard
     strategy:
       matrix:
         node-version: [14.x, 16.x, 18.x]
