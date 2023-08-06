@@ -1,12 +1,8 @@
 # SPringBoard
 
 Naming of branch: <br />
-
-Major update = ascend/ * name of big update *
-
-Fix = fix/ * name of fix *
-
-Init = init/ * name of initialize * (e.g init/dependencies) 
+* LASTNAME/frontend
+* LASTNAME/backend
 <br />
 <br />
 
