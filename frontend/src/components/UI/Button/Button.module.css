@@ -9,12 +9,12 @@
     border-radius: 10px;
   }
   
-  .button:hover,
+  /* .button:hover,
   .button:active {
     background: #fa7c694c;
     border-color: #fc725d;
   }
-  
+   */
   .button:focus {
     outline: none;
   }
