@@ -13,15 +13,13 @@ const Sidebar = () => {
         <img src={Logo} alt="Logo" className={styles.img}/>
 
         <ol style={{ listStyleType: "none", padding: 0 }}>
-            {/* 2 class names. In ani pag call if jsx */}
             <li className={`${global.center} ${styles.customLi}`} >
                 <img src={SmallIcon} alt="SmallIcon" /> &nbsp;
                 Class
             </li>          
         </ol>
 
-        <ol style={{ listStyleType: "none", padding: 0, marginTop: "350px" }}>
-            {/* 2 class names. In ani pag call if jsx */}
+        <ol style={{ listStyleType: "none", padding: 0, marginTop: "100%" }}>
             <li className={`${global.center} ${styles.customLi}`} >
                 <img src={Support} alt="Support" /> &nbsp;
                 Support
