@@ -5,3 +5,10 @@
     gap: 100px;
     width: 60vw;
 }
+
+.classroom{
+    padding: 0;
+    text-align: center;
+    min-width: 10rem;
+    max-width: 10rem;
+}
