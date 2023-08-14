@@ -2,10 +2,10 @@ import React from 'react'
 import Sidebar from '../../Sidebar/Sidebar';
 import Search from '../../Search/Search';
 import Profile from '../../ProfileSegment/Profile';
-import Classroom from '../../Classroom/Classroom';
 import styles from './SDashboard.module.css';
 
-const MDashboard = () => {
+const SDashboard = () => {
+
   return (
     <div className={ styles.container }>
       <Sidebar />
@@ -15,7 +15,6 @@ const MDashboard = () => {
           <Search />
           <Profile identification={1} />
         </div>
-        <Classroom />
 
       </div>  
 
@@ -23,4 +22,4 @@ const MDashboard = () => {
   )
 }
 
-export default MDashboard;
+export default SDashboard;
