@@ -9,7 +9,6 @@ import classroomImg from '@assets/Classroom.png';
 import Card from '../../UI/Card/Card';
 import Button from '../../UI/Button/Button';
 
-
 const MDashboard = () => {
 
   const rooms = [
@@ -66,7 +65,7 @@ const MDashboard = () => {
                 return (
                   <div key={classroom.objectID} style={{ display: "inline-block", margin: "20px 30px" }}>
 
-                    <Card className={ styles.classroom }>
+                    <Card className={ styles.classroom } style={{padding: 0}}>
 
                       <div style={{padding: "1rem"}}>
                         <img src={ classroomImg }/>
