@@ -6,18 +6,20 @@ import SmallIcon from '@assets/small-icon.png';
 import Settings from '@assets/settings.png';
 import Logout from '@assets/logout.png';
 import Support from '@assets/support.png';
+import SideBarSegment from './../SidebarSegment/SidebarSegment';
 
 const Sidebar = () => {
   return (
     <div className={styles.sidebar}>
         <img src={Logo} alt="Logo" className={styles.img}/>
 
-        <ol style={{ listStyleType: "none", padding: 0 }}>
+        {/* <ol style={{ listStyleType: "none", padding: 0 }}>
             <li className={`${global.center} ${styles.customLi}`} >
                 <img src={SmallIcon} alt="SmallIcon" /> &nbsp;
                 Class
             </li>          
-        </ol>
+        </ol>*/}
+        <SideBarSegment/>
 
         <ol style={{ listStyleType: "none", padding: 0, marginTop: "100%" }}>
             <li className={`${global.center} ${styles.customLi}`} >
