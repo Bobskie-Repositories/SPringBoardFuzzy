@@ -1,9 +1,18 @@
 .container {
     /* padding: 20px 150px 20px 30px; */
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: repeat(auto-fit, minmax(100px, auto));
     gap: 100px;
-    width: 60vw;
+    /* gap: 100px; */
+    /* width: 60vw; */
+}
+.header {
+    /* padding: 20px 150px 20px 30px; */
+    display: grid;
+    grid-template-columns:  1fr auto;
+    gap: 100px;
+    /* gap: 100px; */
+    /* width: 60vw; */
 }
 
 .classroom{
