@@ -52,7 +52,7 @@ const MDashboard = () => {
       <Sidebar />
 
       <div>
-        <div className={ styles.container }style={{padding: 0, gap: '200px'}}>
+        <div className={ styles.header }>
           <Search />
           <Profile identification={1} />
         </div>
