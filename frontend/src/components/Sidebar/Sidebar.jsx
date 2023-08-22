@@ -21,7 +21,7 @@ const Sidebar = () => {
         </ol>*/}
         <SideBarSegment/>
 
-        <ol style={{ listStyleType: "none", padding: 0, marginTop: "100%" }}>
+        <ol style={{ listStyleType: "none", padding: 0, marginTop: "50%" }}>
             <li className={`${global.center} ${styles.customLi}`} >
                 <img src={Support} alt="Support" /> &nbsp;
                 Support
