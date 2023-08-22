@@ -1,14 +1,18 @@
 .container {
     /* padding: 20px 150px 20px 30px; */
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns:  1fr auto;
     gap: 100px;
     width: 60vw;
 }
 
-.classroom{
-    /* padding: 0; */
-    text-align: center;
-    min-width: 10rem;
-    max-width: 10rem;
+.button {
+    font: inherit;
+    padding: 0.45rem 2.5rem;
+    margin: 0px;
+    cursor: pointer;
+    font-size: 0.6rem;
+    font-weight: 600;
+    border-radius: 0 0 10px 10px; 
+    
 }
