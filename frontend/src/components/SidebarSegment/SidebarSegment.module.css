@@ -1,4 +1,4 @@
-.body {
+.subbody {
     padding-left: 2rem;
 }
 
@@ -40,5 +40,24 @@
 .groupicon {
     width: 70px;
     position:absolute;
-    left: 5rem;
+    left: 3rem;
+}
+
+.customLi {
+    padding: 8px 40px;
+    color: #9c7b16;
+    font-size: smaller;
+    font-weight: 600;
+    /* background-color: rgba(156, 123, 22, 0.15); */
+}
+
+.customLi:hover {
+    background-color: rgba(156, 123, 22, 0.15);
+    border-color: rgba(156, 123, 22, 0.15);
+    cursor: pointer;
+  }
+
+  .boardpic{
+    padding-right: 10px;
+    padding-left: 15px;
 }
