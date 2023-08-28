@@ -6,6 +6,7 @@ import BoardIcon from '@assets/boardicon.png';
 import DropDownIcon from '@assets/dropdownicon.png';
 
 function SidebarSegment() {
+  const Menus = ["Project Name 1", "Project Name 2"];
   return (
     <div className={styles.body}>
 
@@ -25,12 +26,17 @@ function SidebarSegment() {
       </div>
 
       <ol style={{ listStyleType: "none", padding: 0, marginTop: "5%" }}>
-            <li className={`${global.center} ${styles.customLi}`} >
-                <img src={DropDownIcon} alt="DropDownIcon" /> &nbsp;
-                <img src={BoardIcon} alt="BoardIcon" className={styles.boardpic}/> &nbsp;
-                Board
-            </li>         
-        </ol>
+          <li className={`${global.center} ${styles.customLi}`} >
+            <img src={DropDownIcon} alt="DropDownIcon" /> &nbsp;
+            <img src={BoardIcon} alt="BoardIcon" className={styles.boardpic}/> &nbsp;
+            Board
+          </li>         
+      </ol>
+      <ul style={{  marginTop: "-7%", paddingLeft: "30%"}} >
+        {Menus.map((menu) => (
+          <li className={styles.projectName} key={menu} >{menu}</li>
+        ))}
+      </ul>
     </div>
   )
 }
