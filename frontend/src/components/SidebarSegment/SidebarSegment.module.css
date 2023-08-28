@@ -43,12 +43,15 @@
     left: 3rem;
 }
 
-.customLi {
-    padding: 8px 40px;
+.customLi, .projectName{
     color: #9c7b16;
     font-size: smaller;
     font-weight: 600;
     /* background-color: rgba(156, 123, 22, 0.15); */
+}
+
+.customLi {
+    padding: 8px 40px;
 }
 
 .customLi:hover {
@@ -57,7 +60,16 @@
     cursor: pointer;
   }
 
-  .boardpic{
+.projectName {
+    padding-top: 8%;
+}
+
+.projectName:hover {
+    cursor: pointer;
+    color: rgb(181, 178, 178);
+}
+
+.boardpic{
     padding-right: 10px;
     padding-left: 15px;
 }
