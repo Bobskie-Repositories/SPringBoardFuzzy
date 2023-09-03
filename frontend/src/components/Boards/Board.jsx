@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './Board.module.css';
 import Card from '../UI/Card/Card';
+import IdeaIcon from '@assets/idea.png';
 
 function Board() {
   return (
@@ -9,10 +10,19 @@ function Board() {
 
         <Card className={ styles.card }>
 
-          
+          <div className={styles.container}>
+            <h3>Board: Ideation Venture</h3>
+            <div className={styles.subcontainer}>
+            <img 
+                className={styles.ideaicon} 
+                src={IdeaIcon} 
+                alt="IdeaIcon" 
+            />         
+            </div>
+          </div>
 
             
-      </Card>
+        </Card>
     </div>
   )
 }
