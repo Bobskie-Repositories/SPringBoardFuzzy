@@ -1,6 +1,7 @@
 import React from 'react'
 import Sidebar from '../../Sidebar/Sidebar';
 import Search from '../../Search/Search';
+import Boards from '../../Boards/Board';
 import Profile from '../../ProfileSegment/Profile';
 import styles from './SDashboard.module.css';
 
@@ -15,7 +16,7 @@ const SDashboard = () => {
           <Search />
           <Profile identification={1} />
         </div>
-
+        <Boards />
       </div>  
 
     </div>
