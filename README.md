@@ -19,5 +19,8 @@ pip install django
 pip install django djangorestframework
 pip install mysqlclient
 
+to run django. Make sure you run xampp
+python .\manage.py runserver
+
 Link for revised layout: https://www.figma.com/file/CjKZ119IbmW0UAhu6fWAtp/SPringBoard_Revised?type=design&node-id=0%3A1&mode=design&t=DohbNnib74MLbM58-1
 
