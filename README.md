@@ -18,6 +18,8 @@ In terminal,
 pip install django
 pip install django djangorestframework
 pip install mysqlclient
+pip install django-cors-headers
+
 
 to run django. Make sure you run xampp
 python .\manage.py runserver
