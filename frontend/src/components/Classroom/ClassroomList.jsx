@@ -7,7 +7,7 @@ import { NavLink } from 'react-router-dom';
 import rightImg from '@assets/chevron-right.png';
 import classroomImg from '@assets/Classroom.png';
 import { useState, useEffect } from 'react';
-
+import { useParams } from 'react-router-dom'
 
 const ClassroomList = () => {
     // const rooms = [
@@ -45,10 +45,11 @@ const ClassroomList = () => {
     //     },
     //   ];
 
+    const { id } = useParams();
     const [rooms, setRooms] = useState([]);
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/classroom/')
+        fetch('http://127.0.0.1:8000/api/classroom/' + id)
             .then((response) => response.json())
             .then((rooms) => setRooms(rooms));
     }, []);
@@ -60,7 +61,7 @@ const ClassroomList = () => {
         {
             rooms.map ( classroom => {
             return (
-                <div key={classroom.objectID} style={{ display: "inline-block", margin: "20px 30px" }}>
+                <div key={classroom.id} style={{ display: "inline-block", margin: "20px 30px" }}>
 
                 <Card className={ styles.classroom } style={{padding: 0}}>
 

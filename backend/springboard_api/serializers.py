@@ -19,13 +19,13 @@ class GroupSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ('id', 'name', 'created_at')
+        fields = ('id', 'name', 'created_at', 'group_fk_id')
 
 
 class ProjectBoardSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectBoard
-        fields = ('id', 'boardtype', 'content',
+        fields = ('id', 'title', 'content',
                   'novelty', 'capability', 'technical_feasibility', 'project_fk', 'created_at', 'deleted_at')
 
 
