@@ -6,7 +6,7 @@ class ClassroomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Classroom
         fields = ('id', 'class_code', 'class_name',
-                  'teacher_fk', 'created_at', 'deleted_at')
+                  'teacher_fk_id', 'created_at', 'deleted_at')
 
 
 class GroupSerializer(serializers.ModelSerializer):
