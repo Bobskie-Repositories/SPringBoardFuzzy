@@ -8,8 +8,12 @@ function App() {
   return (
     <Routes>
       <Route path="/" exact element={<Home />} />  
+      <Route path="/group/:id" exact element={<Home />} />
+      {/* should be nested */}
       <Route path="/teacher/:id" exact element={<Home />} />  
       <Route path="classroom/:id" element={<MDashboard classroom={true} />} />
+      {/* --- */}
+
       <Route path="createboard" element={<CreateBoard/>} />
     </Routes>
   )

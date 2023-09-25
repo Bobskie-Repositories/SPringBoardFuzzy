@@ -1,13 +1,25 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useParams } from 'react-router';
 import styles from './SidebarSegment.module.css';
 import global from '../../assets/global.module.css';
 import GroupIcon from '@assets/groupicon.png';
 import BoardIcon from '@assets/boardicon.png';
 import DropDownIcon from '@assets/dropdownicon.png';
 
-function SidebarSegment() {
-  const Menus = ["Project Name 1", "Project Name 2"];
+function SidebarSegment({ setSelectedProject }) {
+  const [projects, setProject] = useState([])
   const [open, setOpen] = useState(false);
+  const { id } = useParams();
+
+  useEffect(() => {
+      fetch('http://127.0.0.1:8000/api/group/' + id + '/projects')
+          .then((response) => response.json())
+          .then((projects) => {
+            setProject(projects);
+            setSelectedProject(projects[0].id);
+          });          
+  }, []);
+
   return (
     <div className={styles.body}>
 
@@ -36,8 +48,12 @@ function SidebarSegment() {
 
       { open && (
           <ul style={{  marginTop: "-7%", paddingLeft: "30%"}} >
-        {Menus.map((menu) => (
-          <li className={styles.projectName} key={menu} >{menu}</li>
+        {projects.map((project) => (
+          <li className={styles.projectName} 
+            key={project.id} 
+            onClick={() => setSelectedProject(project.id)}> 
+            {project.name} 
+          </li>
         ))}
       </ul>
       )}
