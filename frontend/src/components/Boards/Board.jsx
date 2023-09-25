@@ -9,16 +9,16 @@ function Board( {selectedProject} ) {
   const [boards, setBoards] = useState([])
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/project/' + selectedProject + '/projectboards')
+    if (selectedProject !== null && selectedProject !== undefined) {
+      fetch('http://127.0.0.1:8000/api/project/' + selectedProject + '/projectboards')
         .then((response) => response.json())
         .then((boards) => setBoards(boards));
-}, []);
+    }
+  }, [selectedProject]);
 
 
   return (
     <div>
-        <h2 style={{fontSize: "30px", color: '#9c7b16'}}>Boards</h2>
-
         {
           boards.map (board => {
             return (

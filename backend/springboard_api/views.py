@@ -60,6 +60,23 @@ class GetProjectByGroupId(generics.ListAPIView):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class GetProject(generics.ListAPIView):
+    serializer_class = ProjectSerializer
+    queryset = Project.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        project_id = self.kwargs.get('project_id')
+
+        try:
+            projects = Project.objects.get(id=project_id)
+            serializer = ProjectSerializer(projects)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Project.DoesNotExist:
+            return Response({"error": "Projects not found"}, status=status.HTTP_404_NOT_FOUND)
+        except ValueError as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
 class GetProjectBoards(generics.ListAPIView):
     serializer_class = ProjectBoardSerializer
     queryset = ProjectBoard.objects.all()

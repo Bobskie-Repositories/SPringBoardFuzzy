@@ -6,7 +6,7 @@ import GroupIcon from '@assets/groupicon.png';
 import BoardIcon from '@assets/boardicon.png';
 import DropDownIcon from '@assets/dropdownicon.png';
 
-function SidebarSegment({ setSelectedProject }) {
+const SidebarSegment = ({ setSelectedProject }) => {
   const [projects, setProject] = useState([])
   const [open, setOpen] = useState(false);
   const { id } = useParams();
