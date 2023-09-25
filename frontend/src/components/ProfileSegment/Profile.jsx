@@ -1,6 +1,6 @@
 import React from 'react'
 import prof from "../../assets/iconprof.png";
-import styles from "../../assets/global.module.css"
+import styles from "./Profile.module.css"
 
 const Profile = ( {name, img, identification} ) => {
   return (
