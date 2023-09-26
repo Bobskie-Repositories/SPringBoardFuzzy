@@ -1,0 +1,18 @@
+.container {
+    /* padding: 20px 150px 20px 30px; */
+    display: grid;
+    grid-template-columns:  1fr auto;
+    gap: 100px;
+    width: 60vw;
+}
+
+.button {
+    font: inherit;
+    padding: 0.45rem 2.5rem;
+    margin: 0px;
+    cursor: pointer;
+    font-size: 0.6rem;
+    font-weight: 600;
+    border-radius: 0 0 10px 10px; 
+    
+}

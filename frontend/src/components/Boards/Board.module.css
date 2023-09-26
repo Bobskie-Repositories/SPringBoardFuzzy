@@ -1,0 +1,23 @@
+.card {
+    padding: 0 0 20px 0;
+    height: 150px;
+}
+
+.container{
+    margin: 30px;
+    margin-top: 3rem;
+    padding: 10px 30px 20px 100px;
+    text-align: left;
+}
+
+.container h3 {
+    font-weight: 500;
+}
+
+
+
+.ideaicon{
+    width: 130px;
+    margin-left: -8rem;
+    margin-top: -4rem;
+}
