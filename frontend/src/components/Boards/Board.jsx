@@ -3,12 +3,13 @@ import styles from './Board.module.css';
 import Card from '../UI/Card/Card';
 import IdeaIcon from '@assets/idea.png';
 import { useEffect, useState } from 'react';
-
+import CircularProgressWithLabel from '../UI/ProgressBar/CircularProgressWithLabel';
 
 function Board( {selectedProject} ) {
   const [boards, setBoards] = useState([])
   const [project, setProject] = useState()
-
+  const progressValue = 50;
+  
   useEffect(() => {
     if (selectedProject !== null && selectedProject !== undefined) {
       fetch('http://127.0.0.1:8000/api/project/' + selectedProject + '/projectboards')
@@ -41,13 +42,19 @@ function Board( {selectedProject} ) {
               <div key={board.id}>
                 <Card className={ styles.card }>
                   <div className={styles.container}>
+                    
                     <h3>Board: {board.title}</h3>
+
+                    <Card className={ styles.smallCard }>
+                      <CircularProgressWithLabel value={progressValue}/>
+                    </Card>
+
                     <div className={styles.subcontainer}>
                     <img 
                         className={styles.ideaicon} 
                         src={IdeaIcon} 
                         alt="IdeaIcon" 
-                    />         
+                    />
                     </div>
                   </div>            
                 </Card>
@@ -56,9 +63,6 @@ function Board( {selectedProject} ) {
           })
 
         }
-
-
-
         
     </div>
   )
