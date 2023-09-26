@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './Board.module.css';
 import Card from '../UI/Card/Card';
 import IdeaIcon from '@assets/idea.png';
+import Button from '../UI/Button/Button';
 import { useEffect, useState } from 'react';
 import CircularProgressWithLabel from '../UI/ProgressBar/CircularProgressWithLabel';
 
@@ -55,32 +56,31 @@ function Board( {selectedProject} ) {
                       <div className={styles.cards}>
                         
                         <Card className={ styles.smallCard }>
-                        <h5 className={styles.ratings}>Novelty</h5>
-                          <div className={styles.cardContent}>
-                            
-                          <CircularProgressWithLabel value={progressValue} />
+                          <h5 className={styles.ratings}>Novelty</h5>
+                          <div className={styles.cardContent}>  
+                            <CircularProgressWithLabel value={progressValue} />
                           </div>
                         </Card>
                         
                      
                         <Card className={ styles.smallCard }>
-                        <h5 className={styles.ratings}>Capability</h5>
+                          <h5 className={styles.ratings}>Capability</h5>
                           <div className={styles.cardContent}>
-                          
-                          <CircularProgressWithLabel value={progressValue} />
+                            <CircularProgressWithLabel value={progressValue} />
                           </div>
                         </Card>
                        
                       
                         <Card className={ styles.smallCard }>
-                        <h5 className={styles.ratingstech}>Technical Feasibility</h5>
+                          <h5 className={styles.ratingstech}>Technical Feasibility</h5>
                           <div className={styles.cardContent}>
-                          
-                          <CircularProgressWithLabel value={progressValue} />
+                            <CircularProgressWithLabel value={progressValue} />
                           </div>
                         </Card>
                     
-                        
+                        <Button className={ styles.viewbutton }>
+                          View Board
+                        </Button>
                         
                       </div>
                       
