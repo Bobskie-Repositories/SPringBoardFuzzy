@@ -19,6 +19,7 @@
     align-items: center;
     text-align: center;
     background-color: rgba(246, 199, 25, 0.2);
+    max-width: 40rem;
 }
 
 .container_board{
