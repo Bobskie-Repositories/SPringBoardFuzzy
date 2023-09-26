@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './Board.module.css';
 import Card from '../UI/Card/Card';
 import IdeaIcon from '@assets/idea.png';
+import Button from '../UI/Button/Button';
 import { useEffect, useState } from 'react';
 import CircularProgressWithLabel from '../UI/ProgressBar/CircularProgressWithLabel';
 
@@ -36,10 +37,11 @@ function Board( {selectedProject} ) {
       // Render a loading message or handle the case when project is not available
       <p>Loading...</p>
     )}
+      <div className={styles.scrollable}>
         {
           boards.map (board => {
             return (
-              <div key={board.id}>
+              <div key={board.id} >
                 <Card className={ styles.card }>
                   <div className={styles.container}>
                     <div className={styles.subcontainer}>
@@ -50,11 +52,37 @@ function Board( {selectedProject} ) {
                       />
                     </div>
 
-                    <div>
+                    <div > 
                       <h3>Board: {board.title}</h3>
-                      <Card className={ styles.smallCard }>
-                        <CircularProgressWithLabel value={progressValue}/>
-                      </Card>
+                      <>
+                      <div className={styles.cards}>
+                        <Card className={ styles.smallCard }>
+                          <h5 className={styles.ratings}>Novelty</h5>
+                          <div className={styles.cardContent}>  
+                            <CircularProgressWithLabel value={progressValue} />
+                          </div>
+                        </Card>
+                        
+                     
+                        <Card className={ styles.smallCard }>
+                          <h5 className={styles.ratings}>Capability</h5>
+                          <div className={styles.cardContent}>
+                            <CircularProgressWithLabel value={progressValue} />
+                          </div>
+                        </Card>
+                       
+                        <Card className={ styles.smallCard }>
+                          <h5 className={styles.ratingstech}>Technical Feasibility</h5>
+                          <div className={styles.cardContent}>
+                            <CircularProgressWithLabel value={progressValue} />
+                          </div>
+                        </Card>               
+                        
+                      </div>
+                        <Button className={ styles.viewbutton }>
+                          View Board
+                        </Button>
+                      </>
                     </div>
      
                   </div>            
@@ -64,7 +92,7 @@ function Board( {selectedProject} ) {
           })
 
         }
-        
+       </div> 
     </div>
   )
 }
