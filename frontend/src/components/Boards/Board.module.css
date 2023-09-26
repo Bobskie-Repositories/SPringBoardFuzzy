@@ -1,6 +1,6 @@
 .card {
     padding: 0 0 20px 0;
-    height: 170px;
+    height: 200px;
     max-width: 730px;
     border-radius: 30px;
 }
@@ -30,10 +30,16 @@
 }
 
 .viewbutton {
-    background-color: #9C7B16;
-    height: 40px;
-    margin-top: 40px;
-    font-size: 12px;
+    margin-left: 12rem;
+    height: 35px;
+    border: #ffffff;
+    font-size: 70%;
+    background-color:  #9C7B16;
+    color: #ffffff;
+    padding: 10px 25px;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-top: 0.8rem;
 }
 
 .container{
