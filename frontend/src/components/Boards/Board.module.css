@@ -1,11 +1,31 @@
 .card {
     padding: 0 0 20px 0;
-    height: 150px;
+    height: 170px;
+    max-width: 730px;
 }
 
 .smallCard{
-    padding: 10px 10px 20px 10px;
+    padding: 10px 20px 20px 20px;
     height: 50px;
+    max-width: 48%;
+    border-radius: 25px;
+    display: flex;
+    gap: 15px;
+}
+
+.cardContent {
+    display: flex;
+    justify-content: flex-end; /* This aligns the CircularProgressWithLabel to the right */
+  
+}
+
+.ratings, .ratingstech {
+    font-size: small;
+    font-weight: 500;
+    color: rgb(131, 131, 131);
+}
+.ratingstech {
+    margin-top: .8rem;
 }
 
 .container{
@@ -16,13 +36,19 @@
     display: flex;
 }
 
+.cards{
+    display: flex;
+    gap: 20px;
+}
+
 .container h3 {
     font-weight: 500;
 }
 
 
-
 .ideaicon{
     width: 130px;
     margin-left: -8rem;
+    margin-top: 1rem;
 }
+
