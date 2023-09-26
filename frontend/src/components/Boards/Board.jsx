@@ -7,18 +7,34 @@ import { useEffect, useState } from 'react';
 
 function Board( {selectedProject} ) {
   const [boards, setBoards] = useState([])
+  const [project, setProject] = useState()
 
   useEffect(() => {
     if (selectedProject !== null && selectedProject !== undefined) {
       fetch('http://127.0.0.1:8000/api/project/' + selectedProject + '/projectboards')
         .then((response) => response.json())
         .then((boards) => setBoards(boards));
+
+      fetch('http://127.0.0.1:8000/api/project/' + selectedProject )
+        .then((response) => response.json())
+        .then((project) => {
+          setProject(project);
+        });
     }
   }, [selectedProject]);
 
 
   return (
     <div>
+      {project ? ( // Check if project is not null or undefined
+      <>
+        <h2 style={{ fontSize: "30px", color: '#9c7b16' }}>{project.name} Boards</h2>
+        {/* Render other project information here */}
+      </>
+    ) : (
+      // Render a loading message or handle the case when project is not available
+      <p>Loading...</p>
+    )}
         {
           boards.map (board => {
             return (
