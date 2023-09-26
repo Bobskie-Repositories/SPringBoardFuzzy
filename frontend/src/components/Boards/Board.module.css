@@ -1,6 +1,6 @@
 .scrollable{
     margin-top: -0.5rem;
-    max-height: 550px; 
+    max-height: 530px; 
     overflow-y: auto;
 
     scrollbar-width: none;
