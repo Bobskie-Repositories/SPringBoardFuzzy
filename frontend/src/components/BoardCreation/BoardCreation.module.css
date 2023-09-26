@@ -1,7 +1,34 @@
 .container {
-    /* padding: 20px 150px 20px 30px; */
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 100px;
-    width: 60vw;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px
+}
+
+.textMargin {
+    margin: 5px;
+}
+
+.container_card{
+    margin-top: 40px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: rgba(246, 199, 25, 0.2);
+    max-width: 40rem;
+}
+
+.container_board{
+    display: flex;
+    text-align: left;
+    width: 80%;
+    background-color: rgba(246, 199, 25);
+}
+
+.ideaicon{
+    width: 130px;
 }

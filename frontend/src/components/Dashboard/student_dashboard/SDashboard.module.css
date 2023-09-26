@@ -3,7 +3,7 @@
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 100px;
-    width: 60vw;
+    width: 65vw;
 }
 
 .classroom{

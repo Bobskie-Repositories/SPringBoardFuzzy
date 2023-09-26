@@ -6,6 +6,9 @@
     background-color: #9c7b16;
 }
 
+.brownText {
+    color: #9c7b16;
+}
 
 .center{
     display: flex;
