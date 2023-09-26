@@ -50,11 +50,40 @@ function Board( {selectedProject} ) {
                       />
                     </div>
 
-                    <div>
+                    <div > 
                       <h3>Board: {board.title}</h3>
-                      <Card className={ styles.smallCard }>
-                        <CircularProgressWithLabel value={progressValue}/>
-                      </Card>
+                      <div className={styles.cards}>
+                        
+                        <Card className={ styles.smallCard }>
+                        <h5 className={styles.ratings}>Novelty</h5>
+                          <div className={styles.cardContent}>
+                            
+                          <CircularProgressWithLabel value={progressValue} />
+                          </div>
+                        </Card>
+                        
+                     
+                        <Card className={ styles.smallCard }>
+                        <h5 className={styles.ratings}>Capability</h5>
+                          <div className={styles.cardContent}>
+                          
+                          <CircularProgressWithLabel value={progressValue} />
+                          </div>
+                        </Card>
+                       
+                      
+                        <Card className={ styles.smallCard }>
+                        <h5 className={styles.ratingstech}>Technical Feasibility</h5>
+                          <div className={styles.cardContent}>
+                          
+                          <CircularProgressWithLabel value={progressValue} />
+                          </div>
+                        </Card>
+                    
+                        
+                        
+                      </div>
+                      
                     </div>
      
                   </div>            
