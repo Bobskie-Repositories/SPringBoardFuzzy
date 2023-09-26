@@ -37,10 +37,11 @@ function Board( {selectedProject} ) {
       // Render a loading message or handle the case when project is not available
       <p>Loading...</p>
     )}
+      <div className={styles.scrollable}>
         {
           boards.map (board => {
             return (
-              <div key={board.id}>
+              <div key={board.id} >
                 <Card className={ styles.card }>
                   <div className={styles.container}>
                     <div className={styles.subcontainer}>
@@ -70,14 +71,12 @@ function Board( {selectedProject} ) {
                           </div>
                         </Card>
                        
-                      
                         <Card className={ styles.smallCard }>
                           <h5 className={styles.ratingstech}>Technical Feasibility</h5>
                           <div className={styles.cardContent}>
                             <CircularProgressWithLabel value={progressValue} />
                           </div>
-                        </Card>
-                    
+                        </Card>               
                         
                       </div>
                         <Button className={ styles.viewbutton }>
@@ -93,7 +92,7 @@ function Board( {selectedProject} ) {
           })
 
         }
-        
+       </div> 
     </div>
   )
 }
