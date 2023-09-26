@@ -42,20 +42,21 @@ function Board( {selectedProject} ) {
               <div key={board.id}>
                 <Card className={ styles.card }>
                   <div className={styles.container}>
-                    
-                    <h3>Board: {board.title}</h3>
-
-                    <Card className={ styles.smallCard }>
-                      <CircularProgressWithLabel value={progressValue}/>
-                    </Card>
-
                     <div className={styles.subcontainer}>
-                    <img 
-                        className={styles.ideaicon} 
-                        src={IdeaIcon} 
-                        alt="IdeaIcon" 
-                    />
+                      <img 
+                          className={styles.ideaicon} 
+                          src={IdeaIcon} 
+                          alt="IdeaIcon" 
+                      />
                     </div>
+
+                    <div>
+                      <h3>Board: {board.title}</h3>
+                      <Card className={ styles.smallCard }>
+                        <CircularProgressWithLabel value={progressValue}/>
+                      </Card>
+                    </div>
+     
                   </div>            
                 </Card>
               </div>
