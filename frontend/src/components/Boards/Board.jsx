@@ -53,8 +53,8 @@ function Board( {selectedProject} ) {
 
                     <div > 
                       <h3>Board: {board.title}</h3>
+                      <>
                       <div className={styles.cards}>
-                        
                         <Card className={ styles.smallCard }>
                           <h5 className={styles.ratings}>Novelty</h5>
                           <div className={styles.cardContent}>  
@@ -78,12 +78,12 @@ function Board( {selectedProject} ) {
                           </div>
                         </Card>
                     
+                        
+                      </div>
                         <Button className={ styles.viewbutton }>
                           View Board
                         </Button>
-                        
-                      </div>
-                      
+                      </>
                     </div>
      
                   </div>            
