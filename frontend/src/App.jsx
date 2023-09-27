@@ -13,11 +13,30 @@ function App() {
       <Route path="/group/:id" exact element={<Home />} />
       <Route path="/group/:id/project/:id/add-board" exact element={<AddBoard />} />
       {/* should be nested */}
+      <Route path="/group/:id" >
+        <Route
+          index={true}
+          element={
+            <Home />
+          }
+        />
+        <Route path="createboard">
+          <Route
+            index={true}
+            element={
+              <CreateBoard/>
+            }
+          />
+        </Route>
+        
+    </Route>
+
+
       <Route path="/teacher/:id" exact element={<Home />} />  
       <Route path="classroom/:id" element={<MDashboard classroom={true} />} />
       {/* --- */}
 
-      <Route path="createboard" element={<CreateBoard/>} />
+      {/* <Route path="createboard" element={<CreateBoard/>} /> */}
     </Routes>
   )
 }
