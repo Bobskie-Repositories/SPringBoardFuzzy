@@ -12,7 +12,7 @@ import styles from './SDashboard.module.css';
 const SDashboard = () => {
   const navigate = useNavigate();
   const [selectedProject, setSelectedProject] = useState();
-  // const [createAction, setCreateAction] = useState(false);
+  const [createAction, setCreateAction] = useState(false);
 
   // const handleCreateBoardClick = () => {
   //   setCreateAction(!createAction);
@@ -40,7 +40,7 @@ const SDashboard = () => {
               marginTop: '40px',
               fontSize: '12px',
             }}
-            // onClick={handleCreateBoardClick } 
+            // onClick={handleCreateBoardClick} 
             onClick={() => navigate("createboard") } 
             > 
               Create Board
