@@ -73,3 +73,8 @@
     padding-right: 10px;
     padding-left: 15px;
 }
+
+.clickedProject {
+    color: rgb(139, 139, 139); /* Add your desired text color */
+    /* Add any other styles you want to apply to the clicked project */
+  }
