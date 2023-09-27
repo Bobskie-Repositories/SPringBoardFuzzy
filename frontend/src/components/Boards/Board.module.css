@@ -1,7 +1,7 @@
 .scrollable{
-    padding: 0px 5px 15px 5px;
-    margin-top: -0.5rem;
-    max-height: 530px; 
+    padding: 0px 0px 15px 0px;
+    /* margin-top: -0.5rem; */
+    max-height: 510px; 
     overflow-y: auto;
 
     scrollbar-width: none;
@@ -24,7 +24,7 @@
 .card {
     padding: 0 0 20px 0;
     height: 200px;
-    max-width: 730px;
+    max-width: 720px;
     border-radius: 30px;
     margin-left: 0.5rem;
 }
