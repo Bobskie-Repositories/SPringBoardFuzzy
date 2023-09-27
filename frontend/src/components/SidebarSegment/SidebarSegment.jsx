@@ -42,7 +42,7 @@ const SidebarSegment = ({ selectedProject, setSelectedProject }) => {
           <li className={`${global.center} ${styles.customLi}`} onClick={() => setOpen(!open)}>
             <img src={DropDownIcon} alt="DropDownIcon" /> &nbsp;
             <img src={BoardIcon} alt="BoardIcon" className={styles.boardpic}/> &nbsp;
-            Board
+            Projects
           </li>         
       </ol>
 
