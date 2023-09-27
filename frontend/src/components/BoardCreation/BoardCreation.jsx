@@ -17,7 +17,7 @@ const BoardCreation = () => {
     <Sidebar setSelectedProject={setSelectedProject}/>
 
     <div>
-      <div className={ styles.container } style={{gap: "150px"}}>
+      <div className={ styles.container } style={{gap: "150px", marginTop: '30px'}}>
         <Search />
         <Profile identification={1} />
       </div>
