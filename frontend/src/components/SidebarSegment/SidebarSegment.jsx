@@ -10,6 +10,7 @@ const SidebarSegment = ({ selectedProject, setSelectedProject }) => {
   const [projects, setProject] = useState([])
   const [open, setOpen] = useState(false);
   const { id } = useParams();
+  const [clickedProjectId, setClickedProjectId] = useState(null);
 
   useEffect(() => {
       fetch('http://127.0.0.1:8000/api/group/' + id + '/projects')
@@ -19,6 +20,15 @@ const SidebarSegment = ({ selectedProject, setSelectedProject }) => {
             setSelectedProject(projects[0].id);
           });          
   }, []);
+
+  const handleButtonClick = (projectId) => {
+    if (clickedProjectId === projectId) {
+      setClickedProjectId(null);
+    } else {
+      setClickedProjectId(projectId);
+    }
+    setSelectedProject(projectId);
+  };
 
   return (
     <div className={styles.body}>
@@ -42,17 +52,20 @@ const SidebarSegment = ({ selectedProject, setSelectedProject }) => {
           <li className={`${global.center} ${styles.customLi}`} onClick={() => setOpen(!open)}>
             <img src={DropDownIcon} alt="DropDownIcon" /> &nbsp;
             <img src={BoardIcon} alt="BoardIcon" className={styles.boardpic}/> &nbsp;
-            Board
+            Projects
           </li>         
       </ol>
 
       { open && (
           <ul style={{  marginTop: "-7%", paddingLeft: "30%"}} >
         {projects.map((project) => (
-          <li className={styles.projectName} 
-            key={project.id} 
-            onClick={() => setSelectedProject(project.id)}> 
-            {project.name} 
+          <li
+            className={`${styles.projectName} ${
+            clickedProjectId === project.id ? styles.clickedProject : ""
+            }`}
+            key={project.id}
+            onClick={() => handleButtonClick(project.id)} >
+          {project.name}
           </li>
         ))}
       </ul>

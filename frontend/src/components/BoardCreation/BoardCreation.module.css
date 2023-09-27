@@ -1,4 +1,18 @@
 .container {
+    /* padding: 20px 150px 20px 30px; */
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 100px;
+    width: 65vw;
+}
+
+.classroom{
+    /* padding: 0; */
+    text-align: center;
+    min-width: 10rem;
+    max-width: 10rem;
+}
+.containersub {
     margin-top: 20px;
     display: flex;
     flex-direction: column;
@@ -12,6 +26,7 @@
 }
 
 .container_card{
+    padding: 10px 10px 40px 10px;
     margin-top: 40px;
     width: 100%;
     display: flex;
@@ -23,6 +38,7 @@
 }
 
 .container_board{
+    padding: 5px 5px 15px 5px;
     display: flex;
     text-align: left;
     width: 80%;
@@ -30,5 +46,9 @@
 }
 
 .ideaicon{
-    width: 130px;
+   width: 120px;
+}
+
+.words p{
+    font-size: smaller;
 }

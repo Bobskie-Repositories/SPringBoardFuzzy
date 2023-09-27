@@ -7,14 +7,34 @@ import CreateBoard from "./components/BoardCreation/BoardCreation";
 function App() {
   return (
     <Routes>
-      <Route path="/" exact element={<Home />} />  
-      <Route path="/group/:id" exact element={<Home />} />
+      <Route path="/" exact element={<Home />} /> 
+
+      {/* <Route path="/group/:id" exact element={<Home />} /> */}
       {/* should be nested */}
+      <Route path="/group/:id" >
+        <Route
+          index={true}
+          element={
+            <Home />
+          }
+        />
+        <Route path="createboard">
+          <Route
+            index={true}
+            element={
+              <CreateBoard/>
+            }
+          />
+        </Route>
+        
+    </Route>
+
+
       <Route path="/teacher/:id" exact element={<Home />} />  
       <Route path="classroom/:id" element={<MDashboard classroom={true} />} />
       {/* --- */}
 
-      <Route path="createboard" element={<CreateBoard/>} />
+      {/* <Route path="createboard" element={<CreateBoard/>} /> */}
     </Routes>
   )
 }
