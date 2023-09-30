@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ProjectView, ClassroomView, GetClassroom, GetProjectByGroupId, GetProjectBoards, GetProject
+from .views import ProjectView, ClassroomView, GetClassroom, GetProjectByGroupId, GetProjectBoards, GetProject, GetTemplate
 
 urlpatterns = [
     path('', ProjectView.as_view()),
@@ -7,4 +7,5 @@ urlpatterns = [
     path('api/group/<int:group_id>/projects', GetProjectByGroupId.as_view()),
     path('api/project/<int:project_id>/projectboards', GetProjectBoards.as_view()),
     path('api/project/<int:project_id>', GetProject.as_view()),
+    path('api/template/<int:template_id>', GetTemplate.as_view()),
 ]
