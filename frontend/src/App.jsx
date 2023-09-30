@@ -11,7 +11,9 @@ function App() {
     <Routes>
       <Route path="/" exact element={<Home />} />  
       <Route path="/group/:id" exact element={<Home />} />
-      <Route path="/group/:id/project/:id/add-board" exact element={<AddBoard />} />
+      
+      {/*group/groupId/project/projectId/add-board/templateID  */}
+      <Route path="/group/:groupid/project/:projectid/add-board/:templateid" exact element={<AddBoard />} />
       {/* should be nested */}
       <Route path="/group/:id" >
         <Route
