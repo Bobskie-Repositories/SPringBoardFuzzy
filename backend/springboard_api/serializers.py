@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Classroom, Group, Project, ProjectBoard, Teacher, Student
+from .models import Classroom, Group, Project, ProjectBoard, Teacher, Student, Template
 
 
 class ClassroomSerializer(serializers.ModelSerializer):
@@ -41,3 +41,10 @@ class StudentSerializer(serializers.ModelSerializer):
         model = Student
         fields = ('id', 'firstname', 'lastname',
                   'group_fk', 'created_at', 'deleted_at')
+
+
+class TemplateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Template
+        fields = ('id', 'title', 'content', 'rules', 'description',
+                  'teacher_fk', 'created_at', 'deleted_at')
