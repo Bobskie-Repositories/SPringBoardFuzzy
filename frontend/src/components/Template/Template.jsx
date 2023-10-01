@@ -1,44 +1,72 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router';
+import { useRef } from 'react';
+import axios from 'axios';
+
 import Header from '../Header/Header';
 import Card from '../UI/Card/Card';
 import Button from '../UI/Button/Button';
-import { useRef } from "react";
-import styles from './Template.module.css';
-import { useParams } from 'react-router';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import EditorToolbar, { modules, formats } from '../UI/RichTextEditor/EditorToolBar';
-
+import styles from './Template.module.css';
 
 const Template = () => {
   const { id, projectid, templateid } = useParams();
   const [template, setTemplate] = useState(null);
 
   const editor = useRef(null);
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState(''); // Initialize content state
+
+  // Handle changes in the React Quill editor
+  const handleEditorChange = (newContent) => {
+    setContent(newContent);
+  };
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/template/' + templateid)
-      .then((response) => response.json())
-      .then((template) => setTemplate(template));
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/template/${templateid}`);
+        setTemplate(response.data);
+        setContent(response.data.content || '');
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
   }, [templateid]);
 
-  useEffect(() => {
-    // Set the content state with template.content only once when template is fetched
-    if (template) {
-      setContent(template.content);
-    }
-  }, [template]);
+  const createProjectBoard = async () => {
+    try {
+      const getCurrentTimestamp = () => {
+        const now = new Date();
+        const isoTimestamp = now.toISOString();
+        return isoTimestamp;
+      };
 
+      const response = await axios.post(`http://127.0.0.1:8000/api/project/${templateid}/addprojectboards`, {
+        title: template.title,
+        content: content, // Use the content from the React Quill editor
+        novelty: 5,
+        capability: 4,
+        technical_feasibility: 3,
+        project_fk: projectid,
+        created_at: getCurrentTimestamp(),
+        deleted_at: getCurrentTimestamp()
+      });
+
+      console.log('ProjectBoard created successfully:', response.data);
+
+      // Optionally, you can redirect or perform other actions after successful creation
+    } catch (error) {
+      console.error('Error creating ProjectBoard:', error);
+    }
+  };
 
   if (!template) {
     return <p>Loading...</p>;
   }
-
-  // Define a CSS style object for the container div
-  const containerStyle = {
-    minHeight: '300px', // Adjust the minimum height as needed
-  };
 
   return (
     <div className={styles.body}>
@@ -50,24 +78,23 @@ const Template = () => {
         <Card className={styles.cardContainer}>
           <div className={styles.box} />
 
-            <div style={containerStyle}>
-
-            {/* <ReactQuill theme="snow" value={content} onChange={(newContent) => setContent(newContent)} />;   */}
+          <div className={styles.containerStyle}>
             <EditorToolbar />
             <ReactQuill
               theme="snow"
-              value={template.content}
-              // onChange={(newContent) => setContent(newContent)}
-              placeholder={"Write something awesome..."}
+              value={content}
+              onChange={handleEditorChange} // Update content state
+              placeholder="Write something"
               modules={modules}
               formats={formats}
             />
-            
           </div>
           {content}
         </Card>
 
-        <Button className={styles.button}>Submit</Button>
+        <Button className={styles.button} onClick={createProjectBoard}>
+          Submit
+        </Button>
       </div>
     </div>
   );
