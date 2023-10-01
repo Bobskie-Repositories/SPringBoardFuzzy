@@ -8,9 +8,30 @@ import Sidebar from '../Sidebar/Sidebar';
 import Search from '../Search/Search';
 import Profile from '../ProfileSegment/Profile';
 import Button from '../UI/Button/Button';
+import axios from 'axios';
+
 
 const BoardCreation = () => {
   const [selectedProject, setSelectedProject] = useState();
+  const [allTemplate, setAllTemplate] = useState();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/template/`);
+        setAllTemplate(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (!allTemplate) {
+    return <p>Loading...</p>;
+  }
+
 
   return (
     <div className={ styles.container } style={{padding: '20px 150px 20px 30px'}}>
@@ -23,16 +44,16 @@ const BoardCreation = () => {
       </div>
 
       <div className={ styles.container }>
-
-       
+   
             <div className={styles.containersub}>
               <h2 className={`${global.brownText} ${styles.textMargin}`}>Create Board</h2>
               <h5 className={styles.textMargin}>Great! Let's get started on creating your new board.</h5>
-        
+           
               <Card className={styles.container_card}>
                 <h5>Choose a template from the following predefined selection that best fits your idea:</h5>
                  
-                <Card className={styles.container_board}>
+                {allTemplate.map((template, index) => (
+                  <Card className={styles.container_board}>
                       <div>
                         <img 
                             className={styles.ideaicon} 
@@ -42,13 +63,14 @@ const BoardCreation = () => {
                       </div>
 
                     <div className={styles.words}>
-                      <h4>Board 1: Idea Venture</h4>
-                      <p>Create and refine innovative ideas that can be turned into successful products, services, or businesses</p>
+                      <h4>{template.title}</h4>
+                      <p>{template.description}</p>
                     </div> 
-                </Card>
+                  </Card>
+                  
+                ))}
               
               </Card>
-        
             </div>
       
         <Button 

@@ -38,6 +38,7 @@
 }
 
 .container_board{
+    margin: 10px 0;
     padding: 5px 5px 15px 5px;
     display: flex;
     text-align: left;
