@@ -54,3 +54,13 @@ class Student(models.Model):
         Group, on_delete=models.SET_NULL, null=True, default=None)
     created_at = models.DateTimeField(default=timezone.now)
     deleted_at = models.DateTimeField(default='0000-00-00 00:00:00')
+
+
+class Template(models.Model):
+    title = models.CharField(max_length=50)
+    content = models.TextField()
+    rules = models.TextField()
+    description = models.TextField()
+    teacher_fk = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(default=timezone.now)
+    deleted_at = models.DateTimeField(default='0000-00-00 00:00:00')
