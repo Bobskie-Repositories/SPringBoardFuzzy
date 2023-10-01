@@ -27,8 +27,8 @@
     max-width: 70rem;
 }
 
-.contents{
-    /* padding: 50px; */
+.containerStyle{
+    min-height: 300px;
 }
 
 .box{
