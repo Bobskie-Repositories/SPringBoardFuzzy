@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import AddBoard from "./pages/AddBoard";
 import MDashboard from "./components/Dashboard/mentor_dashboard/MDashboard";
 import CreateBoard from "./components/BoardCreation/BoardCreation";
+import ViewBoard from "./components/ViewBoard/ViewBoard";
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
         
     </Route>
 
+      <Route path="/board/:id" exact element={<ViewBoard />} /> 
 
       <Route path="/teacher/:id" exact element={<Home />} />  
       <Route path="classroom/:id" element={<MDashboard classroom={true} />} />
