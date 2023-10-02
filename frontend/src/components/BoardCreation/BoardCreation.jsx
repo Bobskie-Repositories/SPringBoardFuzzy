@@ -9,6 +9,8 @@ import Search from '../Search/Search';
 import Profile from '../ProfileSegment/Profile';
 import Button from '../UI/Button/Button';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 
 const BoardCreation = () => {
@@ -28,6 +30,10 @@ const BoardCreation = () => {
     fetchData();
   }, []);
 
+  const goBack = () => {
+    window.history.back(); // Navigate back in the browser's history
+  };
+
   if (!allTemplate) {
     return <p>Loading...</p>;
   }
@@ -44,33 +50,44 @@ const BoardCreation = () => {
       </div>
 
       <div className={ styles.container }>
-   
-            <div className={styles.containersub}>
-              <h2 className={`${global.brownText} ${styles.textMargin}`}>Create Board</h2>
-              <h5 className={styles.textMargin}>Great! Let's get started on creating your new board.</h5>
-           
-              <Card className={styles.container_card}>
-                <h5>Choose a template from the following predefined selection that best fits your idea:</h5>
-                 
-                {allTemplate.map((template, index) => (
-                  <Card className={styles.container_board}>
-                      <div>
-                        <img 
-                            className={styles.ideaicon} 
-                            src={IdeaIcon} 
-                            alt="IdeaIcon" 
-                        />
-                      </div>
+            <div className={styles.leftContainer}>
+              <FontAwesomeIcon icon={faArrowLeft} onClick={goBack} className={styles.back}/>
 
-                    <div className={styles.words}>
-                      <h4>{template.title}</h4>
-                      <p>{template.description}</p>
-                    </div> 
-                  </Card>
+              <div className={styles.containersub}>
+                <h2 className={`${global.brownText} ${styles.textMargin}`}>Create Board</h2>
+                <h5 className={styles.textMargin}>Great! Let's get started on creating your new board.</h5>
+            
+                <Card className={styles.container_card}>
+                  <h5>Choose a template from the following predefined selection that best fits your idea:</h5>
                   
-                ))}
-              
-              </Card>
+                  <div className={styles.scrollable}>
+                    {allTemplate.map((template, index) => (
+                      <Card key={index} className={styles.container_board}>
+                          <div>
+                            <img 
+                                className={styles.ideaicon} 
+                                src={IdeaIcon} 
+                                alt="IdeaIcon" 
+                            />
+                          </div>
+
+                        <div className={styles.words}>
+                          <h4>{template.title}</h4>
+                          <p>
+                            {
+                              template.description.length > 100 ?
+                              (template.description.substr(0, 100).split(' ').slice(0, -1).join(' ') + "..." ) :
+                              template.description
+                            }
+                          </p>
+                        </div> 
+                      </Card>
+                      
+                    ))}
+                  </div>
+                
+                </Card>
+              </div>
             </div>
       
         <Button 
