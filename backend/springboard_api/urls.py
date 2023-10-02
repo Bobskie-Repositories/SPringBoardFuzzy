@@ -2,7 +2,7 @@ from django.urls import path
 from .views import ClassroomView, GetClassroom
 from .controllers.ProjectController import ProjectCreateView, ProjectView, GetProjectsByGroupId, GetProjectById
 from .controllers.ProjectBoardController import GetProjectBoards, CreateProjectBoard
-from .controllers.TemplateController import GetTemplate
+from .controllers.TemplateController import GetTemplate, GetAllTemplate
 
 urlpatterns = [
     path('', ProjectView.as_view()),
@@ -13,5 +13,5 @@ urlpatterns = [
          CreateProjectBoard.as_view()),
     path('api/project/<int:project_id>', GetProjectById.as_view()),
     path('api/template/<int:template_id>', GetTemplate.as_view()),
-
+    path('api/template/', GetAllTemplate.as_view()),
 ]
