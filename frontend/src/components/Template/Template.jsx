@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
 import { useRef } from 'react';
 import axios from 'axios';
 
@@ -14,6 +14,7 @@ import styles from './Template.module.css';
 const Template = () => {
   const { id, projectid, templateid } = useParams();
   const [template, setTemplate] = useState(null);
+  const navigate = useNavigate();
 
   const editor = useRef(null);
   const [content, setContent] = useState('');
@@ -55,7 +56,11 @@ const Template = () => {
         created_at: getCurrentTimestamp(),
         deleted_at: getCurrentTimestamp()
       });
-      console.log('ProjectBoard created successfully:', response.data);
+
+      navigate(`/project/2/board/${response.data.id}/result`)
+      
+
+      console.log('ProjectBoard created successfully:', response.data.id);
     } catch (error) {
       console.error('Error creating ProjectBoard:', error);
     }

@@ -4,7 +4,7 @@ import Home from './pages/Home';
 import AddBoard from "./pages/AddBoard";
 import MDashboard from "./components/Dashboard/mentor_dashboard/MDashboard";
 import CreateBoard from "./components/BoardCreation/BoardCreation";
-
+import ResultBoard from "./components/ResultBoard/ResultBoard";
 
 function App() {
   return (
@@ -32,8 +32,8 @@ function App() {
         </Route>
         
     </Route>
-
-
+      <Route path='/project/:id/board/:boardid/result' element={<ResultBoard/>}/>
+      
       <Route path="/teacher/:id" exact element={<Home />} />  
       <Route path="classroom/:id" element={<MDashboard classroom={true} />} />
       {/* --- */}
