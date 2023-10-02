@@ -1,6 +1,69 @@
+.scrollable{
+    padding: 0px 0px 15px 0px;
+    /* margin-top: -0.5rem; */
+    max-height: 510px; 
+    overflow-y: auto;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none; 
+}
+
+.scrollable::-webkit-scrollbar {
+    width: 0.1rem; 
+    background-color: transparent; 
+  }
+  
+  .scrollable::-webkit-scrollbar-thumb {
+    background-color: transparent; 
+  }
+  
+  .scrollable::-webkit-scrollbar-track {
+    background-color: transparent; 
+  }
+
 .card {
     padding: 0 0 20px 0;
-    height: 150px;
+    height: 200px;
+    max-width: 720px;
+    border-radius: 30px;
+    margin-left: 0.5rem;
+}
+
+.smallCard{
+    padding: 10px 20px 20px 20px;
+    height: 50px;
+    border-radius: 25px;
+    display: flex;
+    gap: 15px;
+    background-color: #FEFAF1;
+}
+
+.cardContent {
+    display: flex;
+    justify-content: flex-end; 
+  
+}
+
+.ratings, .ratingstech {
+    font-size: small;
+    font-weight: 500;
+    color: rgb(131, 131, 131);
+}
+.ratingstech {
+    margin-top: .8rem;
+}
+
+.viewbutton {
+    margin-left: 12rem;
+    height: 35px;
+    border: #ffffff;
+    font-size: 70%;
+    background-color:  #9C7B16;
+    color: #ffffff;
+    padding: 10px 25px;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-top: 0.8rem;
 }
 
 .container{
@@ -8,6 +71,12 @@
     margin-top: 3rem;
     padding: 10px 30px 20px 100px;
     text-align: left;
+    display: flex;
+}
+
+.cards{
+    display: flex;
+    gap: 20px;
 }
 
 .container h3 {
@@ -15,9 +84,9 @@
 }
 
 
-
 .ideaicon{
     width: 130px;
     margin-left: -8rem;
-    margin-top: -4rem;
+    margin-top: 1rem;
 }
+

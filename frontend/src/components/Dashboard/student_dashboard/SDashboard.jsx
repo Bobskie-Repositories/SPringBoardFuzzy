@@ -1,36 +1,52 @@
 import React from 'react'
+import { useState, useEffect } from 'react';
+import { NavLink, useNavigate } from "react-router-dom";
 import Sidebar from '../../Sidebar/Sidebar';
 import Search from '../../Search/Search';
 import Boards from '../../Boards/Board';
 import Profile from '../../ProfileSegment/Profile';
+import BoardCreation from '../../BoardCreation/BoardCreation';
+import Button from '../../UI/Button/Button';
 import styles from './SDashboard.module.css';
-import { useState, useEffect } from 'react';
 
 const SDashboard = () => {
+  const navigate = useNavigate();
   const [selectedProject, setSelectedProject] = useState();
-  const [project, setProject] = useState(null)
+  const [createAction, setCreateAction] = useState(false);
 
-  useEffect(() => {
-    if (selectedProject !== null && selectedProject !== undefined) {
-      fetch('http://127.0.0.1:8000/api/project/' + selectedProject )
-          .then((response) => response.json())
-          .then((project) => {
-            setProject(project);
-          });
-    }          
-  }, [selectedProject]);
+  // const handleCreateBoardClick = () => {
+  //   setCreateAction(!createAction);
+  // };
 
   return (
     <div className={ styles.container } style={{padding: '20px 150px 20px 30px'}}>
       <Sidebar setSelectedProject={setSelectedProject}/>
 
       <div>
-        <div className={ styles.container }>
+        <div className={ styles.container } style={{gap: "150px", marginTop: '30px'}}>
           <Search />
           <Profile identification={1} />
         </div>
-        <h2 style={{fontSize: "30px", color: '#9c7b16'}}>{project.name} Boards</h2>
-        <Boards selectedProject={selectedProject}/>
+
+        <div className={ styles.container }>
+
+          {/* {createAction ? <BoardCreation /> : <Boards selectedProject={selectedProject}/>} */}
+          <Boards selectedProject={selectedProject}/>
+        
+          <Button 
+            style={{
+              backgroundColor: '#9C7B16',
+              height: '40px',
+              marginTop: '40px',
+              fontSize: '12px',
+            }}
+            // onClick={handleCreateBoardClick} 
+            onClick={() => navigate("createboard") } 
+            > 
+              Create Board
+          </Button>
+        </div>
+        
       </div>  
 
     </div>
