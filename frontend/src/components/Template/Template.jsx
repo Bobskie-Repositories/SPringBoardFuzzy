@@ -16,7 +16,7 @@ const Template = () => {
   const [template, setTemplate] = useState(null);
 
   const editor = useRef(null);
-  const [content, setContent] = useState(''); // Initialize content state
+  const [content, setContent] = useState('');
 
   // Handle changes in the React Quill editor
   const handleEditorChange = (newContent) => {
@@ -55,10 +55,7 @@ const Template = () => {
         created_at: getCurrentTimestamp(),
         deleted_at: getCurrentTimestamp()
       });
-
       console.log('ProjectBoard created successfully:', response.data);
-
-      // Optionally, you can redirect or perform other actions after successful creation
     } catch (error) {
       console.error('Error creating ProjectBoard:', error);
     }
