@@ -1,45 +1,51 @@
 import React from "react";
-import { Router, Routes, Route } from 'react-router-dom';
+import { Router, Routes, Route, NavLink } from 'react-router-dom';
 import Home from './pages/Home';
 import AddBoard from "./pages/AddBoard";
 import MDashboard from "./components/Dashboard/mentor_dashboard/MDashboard";
 import CreateBoard from "./components/BoardCreation/BoardCreation";
-
+import Login from './pages/Login'; // Import the Login component
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" exact element={<Home />} />  
-      <Route path="/group/:id" exact element={<Home />} />
+    <div>
+      {/* Navigation */}
+      <nav>
+        <ul>
+          <li><NavLink to="/">Home</NavLink></li>
+          <li><NavLink to="/login">Login</NavLink></li> {/* New link to the login page */}
+        </ul>
+      </nav>
       
-      {/*group/groupId/project/projectId/add-board/templateID  */}
-      <Route path="/group/:groupid/project/:projectid/add-board/:templateid" exact element={<AddBoard />} />
-      {/* should be nested */}
-      <Route path="/group/:id" >
-        <Route
-          index={true}
-          element={
-            <Home />
-          }
-        />
-        <Route path="createboard">
+      <Routes>
+        <Route path="/" exact element={<Home />} />
+        <Route path="/group/:id" exact element={<Home />} />
+        <Route path="/group/:id/project/:id/add-board" exact element={<AddBoard />} />
+
+        {/* New Login Route */}
+        <Route path="/login" element={<Login />} />
+
+        <Route path="/group/:id">
           <Route
             index={true}
             element={
-              <CreateBoard/>
+              <Home />
             }
           />
+          <Route path="createboard">
+            <Route
+              index={true}
+              element={
+                <CreateBoard />
+              }
+            />
+          </Route>
         </Route>
-        
-    </Route>
 
-
-      <Route path="/teacher/:id" exact element={<Home />} />  
-      <Route path="classroom/:id" element={<MDashboard classroom={true} />} />
-      {/* --- */}
-
-      {/* <Route path="createboard" element={<CreateBoard/>} /> */}
-    </Routes>
+        <Route path="/teacher/:id" exact element={<Home />} />
+        <Route path="classroom/:id" element={<MDashboard classroom={true} />} />
+      </Routes>
+    </div>
   )
 }
 
