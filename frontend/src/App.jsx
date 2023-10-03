@@ -2,6 +2,8 @@ import React from "react";
 import { Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import AddBoard from "./pages/AddBoard";
+import Rules from "./pages/Rules";
+import Result from "./pages/Result";
 import MDashboard from "./components/Dashboard/mentor_dashboard/MDashboard";
 import CreateBoard from "./components/BoardCreation/BoardCreation";
 import ViewBoard from "./components/ViewBoard/ViewBoard";
@@ -14,8 +16,32 @@ function App() {
       <Route path="/group/:id" exact element={<Home />} />
       
       {/*group/groupId/project/projectId/add-board/templateID  */}
-      <Route path="/group/:groupid/project/:projectid/add-board/:templateid" exact element={<AddBoard />} />
-      {/* should be nested */}
+      {/* <Route path="/group/:groupid/project/:projectid/add-board/:templateid" exact element={<AddBoard />} /> */}
+      
+      <Route path="/project/:id/create-board/:templateid">
+        <Route
+          path="rules"
+          index={true}
+          element={
+            <Rules />
+          }
+        />
+        <Route
+          path="template"
+          index={true}
+          element={
+            <AddBoard />
+          }
+        />
+        <Route
+          path="result"
+          index={true}
+          element={
+            <Result />
+          }
+        />
+      </Route>
+
       <Route path="/group/:id" >
         <Route
           index={true}
@@ -31,6 +57,7 @@ function App() {
             }
           />
         </Route>
+        
         
     </Route>
       <Route path='/project/:id/board/:boardid/result' element={<ResultBoard/>}/>
