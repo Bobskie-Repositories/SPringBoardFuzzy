@@ -14,13 +14,8 @@ const SDashboard = () => {
   const [selectedProject, setSelectedProject] = useState();
   const [createAction, setCreateAction] = useState(false);
 
-  // const handleCreateBoardClick = () => {
-  //   setCreateAction(!createAction);
-  // };
-
   const handleCreateBoardClick = () => {
-    navigate('/group/:id/createboard');
-    window.history.replaceState(null, '', `/group/${selectedProject}`);
+    setCreateAction(true); 
   };
 
   return (
@@ -35,13 +30,14 @@ const SDashboard = () => {
 
         <div className={ styles.container }>
 
-          {/* {createAction ? <BoardCreation /> : <Boards selectedProject={selectedProject}/>} */}
-          <Boards selectedProject={selectedProject}/>
+          {/* {createAction ? import BoardCreation from '../../BoardCreation/BoardCreation'; : <Boards selectedProject={selectedProject}/>} */}
+          {createAction ? <BoardCreation /> : <Boards selectedProject={selectedProject} />}
+          {/* <Boards selectedProject={selectedProject}/> */}
         
-          <Button className={styles.butName}
-            // onClick={handleCreateBoardClick} 
-            onClick={handleCreateBoardClick}
-            > 
+          <Button 
+          className={styles.butName}
+          onClick={handleCreateBoardClick}
+          > 
               Create Board
           </Button>
         </div>
