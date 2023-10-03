@@ -18,6 +18,11 @@ const SDashboard = () => {
   //   setCreateAction(!createAction);
   // };
 
+  const handleCreateBoardClick = () => {
+    navigate('/group/:id/createboard');
+    window.history.replaceState(null, '', `/group/${selectedProject}`);
+  };
+
   return (
     <div className={ styles.container } style={{padding: '20px 150px 20px 30px'}}>
       <Sidebar setSelectedProject={setSelectedProject}/>
@@ -33,15 +38,9 @@ const SDashboard = () => {
           {/* {createAction ? <BoardCreation /> : <Boards selectedProject={selectedProject}/>} */}
           <Boards selectedProject={selectedProject}/>
         
-          <Button 
-            style={{
-              backgroundColor: '#9C7B16',
-              height: '40px',
-              marginTop: '40px',
-              fontSize: '12px',
-            }}
+          <Button className={styles.butName}
             // onClick={handleCreateBoardClick} 
-            onClick={() => navigate("createboard") } 
+            onClick={handleCreateBoardClick}
             > 
               Create Board
           </Button>
