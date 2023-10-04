@@ -6,7 +6,9 @@ import Rules from "./pages/Rules";
 import Result from "./pages/Result";
 import MDashboard from "./components/Dashboard/mentor_dashboard/MDashboard";
 import CreateBoard from "./components/BoardCreation/BoardCreation";
-import ViewBoard from "./components/ViewBoard/ViewBoard";
+import ViewBoard from "./pages/ViewBoard";
+import EditBoard from "./pages/EditBoard";
+import Edit_Result from "./pages/Edit_Result";
 
 function App() {
   return (
@@ -38,8 +40,33 @@ function App() {
           }
         />
       </Route>
-      
+
       <Route path="/board/:id" exact element={<ViewBoard />} /> 
+
+      <Route path="/board/:id">
+        <Route
+          index={true}
+          element={
+            <ViewBoard />
+          }
+        />
+        <Route
+          path="edit"
+          index={true}
+          element={
+            <EditBoard />
+          }
+        />
+        <Route
+          path="edit/result"
+          index={true}
+          element={
+            <Edit_Result />
+          }
+        />
+      </Route>
+
+
       
       <Route path="/teacher/:id" exact element={<Home />} />  
       <Route path="classroom/:id" element={<MDashboard classroom={true} />} />
