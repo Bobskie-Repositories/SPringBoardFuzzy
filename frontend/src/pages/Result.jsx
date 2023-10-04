@@ -9,14 +9,14 @@ import axios from 'axios'
 
 const Result = () => {
     const { id, boardid } = useParams();
-    const [projectId, setProjectID] = useState(null)
+    const [groupId, setGroupId] = useState(null)
     const navigate = useNavigate()
 
     useEffect(() => {
         const fetchData = async () => {
           try {
             const project = await axios.get(`http://127.0.0.1:8000/api/project/${id}`);
-            setProjectID(project.data.group_fk_id);
+            setGroupId(project.data.group_fk_id);
           } catch (error) {
             console.error('Error fetching data:', error);
           }
@@ -25,13 +25,13 @@ const Result = () => {
     }, [id]);
 
     const onClickDashboard = () => {
-        navigate(`/group/${projectId}`)
+        navigate(`/group/${groupId}`)
     }
 
     return (
         <div className={global.body}>
             <Header />
-            <ResultBoard id={id} boardid={boardid}/>
+            <ResultBoard boardid={boardid}/>
             <Button className={styles.button} onClick={onClickDashboard}>
                 Go to Dashboard
             </Button>
