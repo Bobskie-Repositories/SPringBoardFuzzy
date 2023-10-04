@@ -12,6 +12,7 @@ const ResultBoard = () => {
 
     const { id, boardid } = useParams();
     const [board, setBoard] = useState(null);
+    const [projectId, setProjectId] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -19,6 +20,10 @@ const ResultBoard = () => {
           try {
             const response = await axios.get(`http://127.0.0.1:8000/api/projectboards/${boardid}`);
             setBoard(response.data);
+
+            const project = await axios.get(`http://127.0.0.1:8000/api/project/${id}`);
+            setProjectId(project.data.group_fk_id);
+
           } catch (error) {
             console.error('Error fetching data:', error);
           }
@@ -28,7 +33,7 @@ const ResultBoard = () => {
     }, [boardid]);
 
     const onClickDashboard = () => {
-        navigate(`/group/${id}`)
+        navigate(`/group/${projectId}`)
     }
 
     if (!board) {
@@ -36,9 +41,6 @@ const ResultBoard = () => {
     }
 
   return (
-    <div className={styles.body}>
-      <Header />
-
       <div className={styles.container}>
         <span className={styles.title}>Results</span>
 
@@ -102,7 +104,6 @@ const ResultBoard = () => {
           Go to Dashboard
         </Button>
       </div>
-    </div>
   )
 }
 

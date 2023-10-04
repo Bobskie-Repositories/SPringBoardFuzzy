@@ -12,12 +12,16 @@ import EditorToolbar, { modules, formats } from '../UI/RichTextEditor/EditorTool
 import styles from './Template.module.css';
 
 const Template = () => {
-  const { id, projectid, templateid } = useParams();
+  const { id, templateid } = useParams();
   const [template, setTemplate] = useState(null);
   const navigate = useNavigate();
 
   const editor = useRef(null);
   const [content, setContent] = useState('');
+
+  const feedback = "here are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text."
+  const recommendation = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+  const references = "<ul><li>http://www.ecommerce-store-example.com</li><li>http://www.personal-blog-example.com</li><li>http://www.ecommerce-store-example.com</li></ul>"
 
   // Handle changes in the React Quill editor
   const handleEditorChange = (newContent) => {
@@ -52,12 +56,15 @@ const Template = () => {
         novelty: 5,
         capability: 4,
         technical_feasibility: 3,
-        project_fk: projectid,
+        feedback: feedback,
+        recommendation: recommendation,
+        references: references,
+        project_fk: id,
         created_at: getCurrentTimestamp(),
         deleted_at: getCurrentTimestamp()
       });
 
-      navigate(`/project/2/board/${response.data.id}/result`)
+      navigate(`/project/${id}/create-board/${response.data.id}/result`)
       
 
       console.log('ProjectBoard created successfully:', response.data.id);
