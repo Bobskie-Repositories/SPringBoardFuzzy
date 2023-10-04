@@ -27,7 +27,7 @@ const SDashboard = () => {
         </div>
 
         <div className={ styles.container }>
-          {createAction ? <BoardCreation setCreateAction={setCreateAction}/> : <Boards selectedProject={selectedProject} />}
+          {createAction ? <BoardCreation selectedProject={selectedProject} setCreateAction={setCreateAction}/> : <Boards selectedProject={selectedProject} />}
         
           <Button 
           className={styles.butName}
