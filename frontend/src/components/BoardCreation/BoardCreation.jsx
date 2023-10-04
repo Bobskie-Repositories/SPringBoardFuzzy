@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import Card from '../UI/Card/Card';
 import IdeaIcon from '@assets/idea.png';
 import styles from './BoardCreation.module.css';
@@ -9,9 +10,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 
-const BoardCreation = () => {
-  const [selectedProject, setSelectedProject] = useState();
+const BoardCreation = ({selectedProject}) => {
+  // const [selectedProject, setSelectedProject] = useState();
   const [allTemplate, setAllTemplate] = useState();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,6 +30,10 @@ const BoardCreation = () => {
 
   const goBack = () => {
     window.history.back(); // Navigate back in the browser's history
+  };
+
+  const handleClick = (templateid) => {
+    navigate(`/project/${selectedProject}/create-board/${templateid}/rules`);
   };
 
   if (!allTemplate) {
@@ -53,7 +59,7 @@ const BoardCreation = () => {
                   
                   <div className={styles.scrollable}>
                     {allTemplate.map((template, index) => (
-                      <Card key={index} className={styles.container_board}>
+                      <Card key={index} className={styles.container_board} onClick={() => handleClick(template.id)}>
                           <div>
                             <img 
                                 className={styles.ideaicon} 
