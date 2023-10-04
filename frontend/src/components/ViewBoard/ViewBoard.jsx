@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
 import styles from './ViewBoard.module.css';
+import global from '@assets/global.module.css'
 import Header from '../Header/Header';
 import ResultBoard from '../ResultBoard/ResultBoard';
 import Button from '../UI/Button/Button';
 import parse from 'html-react-parser';
 import axios from 'axios';
-import global from '@assets/global.module.css'
+
 
 const ViewBoard = () => {
   const [activeTab, setActiveTab] = useState('results');
   const [contents, setContents] = useState(null)
   const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,7 +26,7 @@ const ViewBoard = () => {
     };
 
     fetchData();
-}, [id]);
+  }, [id]);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -79,7 +81,7 @@ const ViewBoard = () => {
         </div>
 
         <div className={styles.btmButton}>
-          <Button className={styles.button}>
+          <Button className={styles.button} onClick={() => navigate('edit')}>
             Improve Result
           </Button>
           <Button className={styles.button} style={{backgroundColor: '#8A252C'}}>
