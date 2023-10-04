@@ -10,6 +10,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import EditorToolbar, { modules, formats } from '../UI/RichTextEditor/EditorToolBar';
 import styles from './Template.module.css';
+import global from '@assets/global.module.css'
 
 const Template = () => {
   const { id, templateid } = useParams();
@@ -96,9 +97,9 @@ const Template = () => {
               placeholder="Write something"
               modules={modules}
               formats={formats}
+              className={global.quill}
             />
           </div>
-          {content}
         </Card>
 
         <Button className={styles.button} onClick={createProjectBoard}>
