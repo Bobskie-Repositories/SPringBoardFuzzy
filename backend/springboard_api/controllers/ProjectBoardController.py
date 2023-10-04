@@ -44,3 +44,18 @@ class GetProjectBoardById(generics.ListAPIView):
             return Response({"error": "ProjectBoards not found"}, status=status.HTTP_404_NOT_FOUND)
         except ValueError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UpdateBoard(generics.UpdateAPIView):
+    serializer_class = ProjectBoardSerializer
+    queryset = ProjectBoard.objects.all()
+    # Specify your custom lookup URL keyword argument here
+    lookup_url_kwarg = 'projectboard_id'
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
