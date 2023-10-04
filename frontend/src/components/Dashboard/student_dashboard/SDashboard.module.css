@@ -12,3 +12,10 @@
     min-width: 10rem;
     max-width: 10rem;
 }
+
+.butName{
+    background-color: #9C7B16;
+    height: 40px;
+    margin-top: 40px;
+    font-size: 12px;
+}

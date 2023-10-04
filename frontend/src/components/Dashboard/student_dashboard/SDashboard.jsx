@@ -14,9 +14,9 @@ const SDashboard = () => {
   const [selectedProject, setSelectedProject] = useState();
   const [createAction, setCreateAction] = useState(false);
 
-  // const handleCreateBoardClick = () => {
-  //   setCreateAction(!createAction);
-  // };
+  const handleCreateBoardClick = () => {
+    setCreateAction(true); 
+  };
 
   return (
     <div className={ styles.container } style={{padding: '20px 150px 20px 30px'}}>
@@ -30,19 +30,14 @@ const SDashboard = () => {
 
         <div className={ styles.container }>
 
-          {/* {createAction ? <BoardCreation /> : <Boards selectedProject={selectedProject}/>} */}
-          <Boards selectedProject={selectedProject}/>
+          {/* {createAction ? import BoardCreation from '../../BoardCreation/BoardCreation'; : <Boards selectedProject={selectedProject}/>} */}
+          {createAction ? <BoardCreation /> : <Boards selectedProject={selectedProject} />}
+          {/* <Boards selectedProject={selectedProject}/> */}
         
           <Button 
-            style={{
-              backgroundColor: '#9C7B16',
-              height: '40px',
-              marginTop: '40px',
-              fontSize: '12px',
-            }}
-            // onClick={handleCreateBoardClick} 
-            onClick={() => navigate("createboard") } 
-            > 
+          className={styles.butName}
+          onClick={handleCreateBoardClick}
+          > 
               Create Board
           </Button>
         </div>

@@ -3,7 +3,7 @@
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 100px;
-    width: 65vw;
+    width: 110%;
 }
 
 .classroom{
@@ -13,7 +13,7 @@
     max-width: 10rem;
 }
 .leftContainer{
-    margin-top: 40px;
+    /* margin-top: 40px; */
 }
 
 .containersub {
