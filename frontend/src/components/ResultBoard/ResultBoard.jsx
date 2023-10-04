@@ -10,25 +10,30 @@ import CircularProgressWithLabel from '../UI/ProgressBar/CircularProgressWithLab
 
 const ResultBoard = () => {
 
-    const { id, boardid } = useParams();
+    const { id, templateid } = useParams();
     const [board, setBoard] = useState(null);
+    const [projectId, setProjectId] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await axios.get(`http://127.0.0.1:8000/api/projectboards/${boardid}`);
+            const response = await axios.get(`http://127.0.0.1:8000/api/projectboards/${templateid}`);
             setBoard(response.data);
+
+            const project = await axios.get(`http://127.0.0.1:8000/api/project/${id}`);
+            setProjectId(project.data.group_fk_id);
+
           } catch (error) {
             console.error('Error fetching data:', error);
           }
         };
     
         fetchData();
-    }, [boardid]);
+    }, [templateid]);
 
     const onClickDashboard = () => {
-        navigate(`/group/${id}`)
+        navigate(`/group/${projectId}`)
     }
 
     if (!board) {
@@ -36,9 +41,6 @@ const ResultBoard = () => {
     }
 
   return (
-    <div className={styles.body}>
-      <Header />
-
       <div className={styles.container}>
         <span className={styles.title}>Results</span>
 
@@ -102,7 +104,6 @@ const ResultBoard = () => {
           Go to Dashboard
         </Button>
       </div>
-    </div>
   )
 }
 

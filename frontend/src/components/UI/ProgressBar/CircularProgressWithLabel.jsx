@@ -18,7 +18,7 @@ function CircularProgressWithLabel(props) {
         />
         <CircularProgress
             variant="determinate"
-            disableShrink
+            // disableShrink
             sx={{
                 color: '#80F748',
                 position: 'absolute',

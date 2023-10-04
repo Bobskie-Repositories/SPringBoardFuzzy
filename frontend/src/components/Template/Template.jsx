@@ -12,7 +12,7 @@ import EditorToolbar, { modules, formats } from '../UI/RichTextEditor/EditorTool
 import styles from './Template.module.css';
 
 const Template = () => {
-  const { id, projectid, templateid } = useParams();
+  const { id, templateid } = useParams();
   const [template, setTemplate] = useState(null);
   const navigate = useNavigate();
 
@@ -52,7 +52,7 @@ const Template = () => {
         novelty: 5,
         capability: 4,
         technical_feasibility: 3,
-        project_fk: projectid,
+        project_fk: id,
         created_at: getCurrentTimestamp(),
         deleted_at: getCurrentTimestamp()
       });
