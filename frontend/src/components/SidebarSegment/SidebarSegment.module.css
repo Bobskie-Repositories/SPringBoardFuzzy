@@ -85,8 +85,12 @@
 }
 
 .plus:hover {
-    color: rgb(139, 139, 139); /* Change color on hover */
+    color: rgb(181, 178, 178); /* Change color on hover */
   }
+
+.nameIcon:hover {
+    color: rgb(181, 178, 178);
+}
 
 .orList {
     list-style-type: none;
@@ -94,3 +98,5 @@
     margin-top: 4%;
 }
 
+
+  
