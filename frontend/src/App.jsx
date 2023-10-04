@@ -38,25 +38,7 @@ function App() {
           }
         />
       </Route>
-
-      <Route path="/group/:id" >
-        <Route
-          index={true}
-          element={
-            <Home />
-          }
-        />
-        <Route path="createboard">
-          <Route
-            index={true}
-            element={
-              <CreateBoard/>
-            }
-          />
-        </Route>
-        
-        
-    </Route>
+      
       <Route path="/board/:id" exact element={<ViewBoard />} /> 
       
       <Route path="/teacher/:id" exact element={<Home />} />  

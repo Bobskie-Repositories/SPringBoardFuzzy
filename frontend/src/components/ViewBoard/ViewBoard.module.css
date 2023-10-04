@@ -1,6 +1,6 @@
 
-.container {
-    padding: 30px 150px 100px 150px;
+  .container {
+    padding: 30px 250px 100px 150px;
   }
 
   .container h2{
@@ -8,7 +8,7 @@
   }
   
   .tabsContainer {
-    margin-top: 3rem;
+    margin-top: 1rem;
     display: flex; 
     width: 300px;
   }
@@ -44,7 +44,6 @@
     /* padding: 50px; */
     padding: 40px 60px 50px 60px;
     box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.1);
-    height: 600px;
   }
 
   .tabHeader{
@@ -57,4 +56,19 @@
     font-size: 17px;
     font-weight: 500;
   }
+
+  .btmButton{
+    display: flex;
+    gap: 10px;
+    align-self: flex-end;
+  }
+
+  .button{
+    margin-top: 20px;
+    height: 40px;
+    background-color: #9C7B16;
+    font-size: 14px;
+    width: 12rem;
+    transition: background-color 0.3s;
+}
   
