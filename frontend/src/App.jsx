@@ -15,23 +15,23 @@ function App() {
 
       <Route path="/group/:id" exact element={<Home />} />
 
-      <Route path="/project/:id/create-board/:templateid">
+      <Route path="/project/:id/create-board">
         <Route
-          path="rules"
+          path=":templateid/rules"
           index={true}
           element={
             <Rules />
           }
         />
         <Route
-          path="template"
+          path=":templateid/template"
           index={true}
           element={
             <AddBoard />
           }
         />
         <Route
-          path="result"
+          path=":boardid/result"
           index={true}
           element={
             <Result />
