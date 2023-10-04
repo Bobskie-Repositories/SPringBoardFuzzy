@@ -1,6 +1,5 @@
 import React from 'react'
-import { useState, useEffect } from 'react';
-import { NavLink, useNavigate } from "react-router-dom";
+import { useState} from 'react';
 import Sidebar from '../../Sidebar/Sidebar';
 import Search from '../../Search/Search';
 import Boards from '../../Boards/Board';
@@ -10,7 +9,6 @@ import Button from '../../UI/Button/Button';
 import styles from './SDashboard.module.css';
 
 const SDashboard = () => {
-  const navigate = useNavigate();
   const [selectedProject, setSelectedProject] = useState();
   const [createAction, setCreateAction] = useState(false);
 
@@ -29,10 +27,7 @@ const SDashboard = () => {
         </div>
 
         <div className={ styles.container }>
-
-          {/* {createAction ? import BoardCreation from '../../BoardCreation/BoardCreation'; : <Boards selectedProject={selectedProject}/>} */}
-          {createAction ? <BoardCreation /> : <Boards selectedProject={selectedProject} />}
-          {/* <Boards selectedProject={selectedProject}/> */}
+          {createAction ? <BoardCreation setCreateAction={setCreateAction}/> : <Boards selectedProject={selectedProject} />}
         
           <Button 
           className={styles.butName}
