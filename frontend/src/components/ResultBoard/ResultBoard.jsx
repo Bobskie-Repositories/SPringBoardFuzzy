@@ -2,17 +2,12 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import axios from 'axios';
-import Header from '../Header/Header';
 import Card from '../UI/Card/Card';
-import Button from '../UI/Button/Button';
 import styles from './ResultBoard.module.css';
 import CircularProgressWithLabel from '../UI/ProgressBar/CircularProgressWithLabel';
 
-const ResultBoard = () => {
-
-    const { id, boardid } = useParams();
+const ResultBoard = ({boardid}) => {
     const [board, setBoard] = useState(null);
-    const [projectId, setProjectId] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -20,10 +15,6 @@ const ResultBoard = () => {
           try {
             const response = await axios.get(`http://127.0.0.1:8000/api/projectboards/${boardid}`);
             setBoard(response.data);
-
-            const project = await axios.get(`http://127.0.0.1:8000/api/project/${id}`);
-            setProjectId(project.data.group_fk_id);
-
           } catch (error) {
             console.error('Error fetching data:', error);
           }
@@ -32,9 +23,7 @@ const ResultBoard = () => {
         fetchData();
     }, [boardid]);
 
-    const onClickDashboard = () => {
-        navigate(`/group/${projectId}`)
-    }
+   
 
     if (!board) {
         return <p>Loading...</p>;
@@ -99,10 +88,6 @@ const ResultBoard = () => {
             </div>
 
         </div>
-
-        <Button className={styles.button} onClick={onClickDashboard}>
-          Go to Dashboard
-        </Button>
       </div>
   )
 }
