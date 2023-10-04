@@ -30,9 +30,8 @@ const SDashboard = () => {
 
         <div className={ styles.container }>
 
-          {/* {createAction ? import BoardCreation from '../../BoardCreation/BoardCreation'; : <Boards selectedProject={selectedProject}/>} */}
-          {createAction ? <BoardCreation /> : <Boards selectedProject={selectedProject} />}
-          {/* <Boards selectedProject={selectedProject}/> */}
+         
+        {createAction ? <BoardCreation selectedProject={selectedProject}/> : <Boards selectedProject={selectedProject} />}
         
           <Button 
           className={styles.butName}
