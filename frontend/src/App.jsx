@@ -7,17 +7,14 @@ import Result from "./pages/Result";
 import MDashboard from "./components/Dashboard/mentor_dashboard/MDashboard";
 import CreateBoard from "./components/BoardCreation/BoardCreation";
 import ViewBoard from "./components/ViewBoard/ViewBoard";
-import ResultBoard from "./components/ResultBoard/ResultBoard";
 
 function App() {
   return (
     <Routes>
       <Route path="/" exact element={<Home />} />  
+
       <Route path="/group/:id" exact element={<Home />} />
-      
-      {/*group/groupId/project/projectId/add-board/templateID  */}
-      {/* <Route path="/group/:groupid/project/:projectid/add-board/:templateid" exact element={<AddBoard />} /> */}
-      
+
       <Route path="/project/:id/create-board/:templateid">
         <Route
           path="rules"
@@ -60,7 +57,6 @@ function App() {
         
         
     </Route>
-      <Route path='/project/:id/board/:boardid/result' element={<ResultBoard/>}/>
       <Route path="/board/:id" exact element={<ViewBoard />} /> 
       
       <Route path="/teacher/:id" exact element={<Home />} />  
