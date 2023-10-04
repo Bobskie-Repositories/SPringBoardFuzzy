@@ -48,7 +48,12 @@
     width: 80%;
     max-height: 10rem;
     background-color: rgba(246, 199, 25);
+    cursor: pointer;
 }
+
+.container_board:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
 
 .ideaicon{
    width: 120px;
