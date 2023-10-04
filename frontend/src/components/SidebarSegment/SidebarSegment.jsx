@@ -5,6 +5,9 @@ import global from '../../assets/global.module.css';
 import GroupIcon from '@assets/groupicon.png';
 import BoardIcon from '@assets/boardicon.png';
 import DropDownIcon from '@assets/dropdownicon.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faSquareCaretDown } from '@fortawesome/free-solid-svg-icons';
 
 const SidebarSegment = ({ selectedProject, setSelectedProject }) => {
   const [projects, setProject] = useState([])
@@ -48,12 +51,15 @@ const SidebarSegment = ({ selectedProject, setSelectedProject }) => {
       </button>
       </div>
 
-      <ol style={{ listStyleType: "none", padding: 0, marginTop: "5%" }}>
-          <li className={`${global.center} ${styles.customLi}`} onClick={() => setOpen(!open)}>
-            <img src={DropDownIcon} alt="DropDownIcon" /> &nbsp;
-            <img src={BoardIcon} alt="BoardIcon" className={styles.boardpic}/> &nbsp;
-            Projects
-          </li>         
+      <ol className={styles.orList}>
+          <li className={`${global.center} ${styles.customLi}`} >
+            <div onClick={() => setOpen(!open)}>
+              <FontAwesomeIcon icon={faSquareCaretDown} className={styles.dropdown} size="xl"/> &nbsp;
+              Projects
+            </div>
+            
+            <FontAwesomeIcon icon={faPlus} className={styles.plus} size="lg"/>
+          </li>
       </ol>
 
       { open && (
