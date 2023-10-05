@@ -1,7 +1,7 @@
 .header{
     display: grid;
     grid-template-columns: 1fr 1fr;
-    width: 100vw;
+    width: calc(100vw - 17px);
     height: 4rem;
     align-items: center; /* Center vertically */
 }

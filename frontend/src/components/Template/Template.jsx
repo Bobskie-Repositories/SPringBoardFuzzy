@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
 import { useRef } from 'react';
 import axios from 'axios';
 
@@ -10,13 +10,19 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import EditorToolbar, { modules, formats } from '../UI/RichTextEditor/EditorToolBar';
 import styles from './Template.module.css';
+import global from '@assets/global.module.css'
 
 const Template = () => {
-  const { id, projectid, templateid } = useParams();
+  const { id, templateid } = useParams();
   const [template, setTemplate] = useState(null);
+  const navigate = useNavigate();
 
   const editor = useRef(null);
-  const [content, setContent] = useState(''); // Initialize content state
+  const [content, setContent] = useState('');
+
+  const feedback = "here are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text."
+  const recommendation = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+  const references = "<ul><li>http://www.ecommerce-store-example.com</li><li>http://www.personal-blog-example.com</li><li>http://www.ecommerce-store-example.com</li></ul>"
 
   // Handle changes in the React Quill editor
   const handleEditorChange = (newContent) => {
@@ -51,14 +57,18 @@ const Template = () => {
         novelty: 5,
         capability: 4,
         technical_feasibility: 3,
-        project_fk: projectid,
+        feedback: feedback,
+        recommendation: recommendation,
+        references: references,
+        project_fk: id,
         created_at: getCurrentTimestamp(),
         deleted_at: getCurrentTimestamp()
       });
 
-      console.log('ProjectBoard created successfully:', response.data);
+      navigate(`/project/${id}/create-board/${response.data.id}/result`)
+      
 
-      // Optionally, you can redirect or perform other actions after successful creation
+      console.log('ProjectBoard created successfully:', response.data.id);
     } catch (error) {
       console.error('Error creating ProjectBoard:', error);
     }
@@ -87,9 +97,9 @@ const Template = () => {
               placeholder="Write something"
               modules={modules}
               formats={formats}
+              className={global.quill}
             />
           </div>
-          {content}
         </Card>
 
         <Button className={styles.button} onClick={createProjectBoard}>

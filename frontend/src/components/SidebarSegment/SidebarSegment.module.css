@@ -51,7 +51,7 @@
 }
 
 .customLi {
-    padding: 8px 40px;
+    padding: 13px 40px;
 }
 
 .customLi:hover {
@@ -61,7 +61,7 @@
   }
 
 .projectName {
-    padding-top: 8%;
+    padding-top: 7%;
 }
 
 .projectName:hover {
@@ -69,12 +69,34 @@
     color: rgb(181, 178, 178);
 }
 
-.boardpic{
-    padding-right: 10px;
-    padding-left: 15px;
+.dropdown{
+    margin-right: 7px;
 }
 
 .clickedProject {
     color: rgb(139, 139, 139); /* Add your desired text color */
     /* Add any other styles you want to apply to the clicked project */
   }
+
+.plus{
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transition: color 0.3s; /* Smooth color transition */
+    margin-left: 7rem;
+}
+
+.plus:hover {
+    color: rgb(181, 178, 178); /* Change color on hover */
+  }
+
+.nameIcon:hover {
+    color: rgb(181, 178, 178);
+}
+
+.orList {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 4%;
+}
+
+
+  
