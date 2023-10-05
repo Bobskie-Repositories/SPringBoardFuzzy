@@ -13,7 +13,6 @@ import Login from './pages/Login'; // Import the Login component
 
 function App() {
   return (
-      <Router>
       <Routes>
         <Route path="/" exact element={<Home />} /> 
         <Route path="/login" element={<Login />} />
@@ -38,7 +37,6 @@ function App() {
         <Route path="/teacher/:id" exact element={<Home />} />
         <Route path="classroom/:id" element={<MDashboard classroom={true} />} />
       </Routes>
-      </Router>
   )
 }
 
