@@ -11,7 +11,7 @@
 }
 
 .customLi {
-    padding: 10px 80px;
+    padding: 10px 100px;
     color: rgb(139, 139, 139);
     /* background-color: rgba(156, 123, 22, 0.15); */
 }
@@ -24,4 +24,12 @@
 
 .icon {
     padding-right: 10px;
+}
+
+.list {
+    list-style-type: none;
+    padding: 0%;
+    margin: 0;
+    position: fixed;
+    top: 70%;
 }

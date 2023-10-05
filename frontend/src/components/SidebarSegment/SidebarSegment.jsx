@@ -4,7 +4,7 @@ import styles from './SidebarSegment.module.css';
 import global from '../../assets/global.module.css';
 import GroupIcon from '@assets/groupicon.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faSquareCaretDown } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faSquareCaretDown, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 
@@ -29,6 +29,11 @@ const SidebarSegment = ({ selectedProject, setSelectedProject }) => {
   const handleButtonClick = (projectId) => {
     setSelectedProject(projectId);
     setClickedProjectId(projectId);
+  };
+
+  const handleNameIconClick = (e) => {
+    e.preventDefault(); // Prevent navigation
+    setOpen(!open);
   };
 
   const addProject = async (newProject) => {
@@ -87,6 +92,29 @@ const SidebarSegment = ({ selectedProject, setSelectedProject }) => {
       }
     });
   };
+
+  const showDeleteProjectModal = () => {
+    Swal.fire({
+      icon: 'warning',
+      title: '<span style="font-size: 20px">Are you sure you want to delete?</span>',
+      html: '<span style="font-size: 15px">This will delete this project permanently. You cannot undo this action.</span>',
+      showCancelButton: true,
+      confirmButtonText: 'Delete',
+      confirmButtonColor: '#8A252C',
+      cancelButtonText: 'Cancel',
+      cancelButtonColor: 'rgb(181, 178, 178)',
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: '<span style="font-size: 20px">Project Sucessfully Deleted</span>',
+            icon: 'success',
+            confirmButtonColor: '#9c7b16',
+            confirmButtonText: 'OK',
+          })
+        }
+      });
+  };
   
   
 
@@ -109,7 +137,7 @@ const SidebarSegment = ({ selectedProject, setSelectedProject }) => {
 
       <ol className={styles.orList}>
         <li className={`${global.center} ${styles.customLi}`}>
-          <div onClick={() => setOpen(!open)} className={styles.nameIcon}>
+          <div onClick={handleNameIconClick} className={styles.nameIcon}>
             <FontAwesomeIcon icon={faSquareCaretDown} className={styles.dropdown} size="xl" /> &nbsp;
             Projects
           </div>
@@ -129,6 +157,9 @@ const SidebarSegment = ({ selectedProject, setSelectedProject }) => {
                 onClick={() => handleButtonClick(project.id)}
               >
                 {project.name}
+                {clickedProjectId === project.id && (
+                  <FontAwesomeIcon icon={faTrash} className={styles.deleteIcon} onClick={showDeleteProjectModal}/>
+                )}
               </li>
             ))}
           </ul>
