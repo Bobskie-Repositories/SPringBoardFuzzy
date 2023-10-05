@@ -6,6 +6,7 @@ import Header from '../Header/Header';
 import ResultBoard from '../ResultBoard/ResultBoard';
 import Button from '../UI/Button/Button';
 import parse from 'html-react-parser';
+import Swal from 'sweetalert2';
 import axios from 'axios';
 
 
@@ -30,6 +31,27 @@ const ViewBoard = () => {
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
+  };
+
+  const showCreateProjectModal = () => {
+    Swal.fire({
+      icon: 'warning',
+      title: '<span style="font-size: 20px">Are you sure you want to delete?</span>',
+      html: '<span style="font-size: 15px">This will delete this board permanently. You cannot undo this action.</span>',
+      showCancelButton: true,
+      confirmButtonText: 'Delete',
+      confirmButtonColor: '#8A252C',
+      cancelButtonText: 'Cancel',
+      cancelButtonColor: 'rgb(181, 178, 178)',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: '<span style="font-size: 20px">Board Sucessfully Deleted</span>',
+          icon: 'success',
+          confirmButtonColor: '#9c7b16',
+        });
+      }
+    });
   };
 
   return (
@@ -84,7 +106,7 @@ const ViewBoard = () => {
           <Button className={styles.button} onClick={() => navigate('edit')}>
             Improve Result
           </Button>
-          <Button className={styles.button} style={{backgroundColor: '#8A252C'}}>
+          <Button className={styles.button} style={{backgroundColor: '#8A252C'}} onClick={showCreateProjectModal}>
             Delete
           </Button>
         </div>
