@@ -74,7 +74,6 @@ const SidebarSegment = ({ selectedProject, setSelectedProject }) => {
       },
       inputAttributes: {
         style: 'height: 35px; font-size: 16px',
-        onfocus: '#9c7b16;',
       },
     }).then((result) => {
       if (result.isConfirmed) {
