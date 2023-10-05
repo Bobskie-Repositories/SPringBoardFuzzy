@@ -62,6 +62,24 @@ const SidebarSegment = ({ selectedProject, setSelectedProject }) => {
     }
   }
 
+  const deleteProject = async () => {
+    try {
+      const response = await axios.delete(`http://127.0.0.1:8000/api/project/${clickedProjectId}/delete`);
+      const updatedProjects = projects.filter(project => project.id !== clickedProjectId);
+      setProjects(updatedProjects);
+      setSelectedProject(projects[0].id);
+      setClickedProjectId(projects[0].id);
+      if (response.status === 204) {
+        console.log('Project deleted successfully');
+      } else {
+        console.error('Failed to delete Project:', response.status, response.data);
+      }
+    } catch (error) {
+      console.error('Error deleting Project:', error);
+    }
+  }
+  
+
   const showCreateProjectModal = () => {
     Swal.fire({
       html: '<span style="font-size: 20px">Create a New Project</span>',
@@ -106,6 +124,7 @@ const SidebarSegment = ({ selectedProject, setSelectedProject }) => {
     })
       .then((result) => {
         if (result.isConfirmed) {
+          deleteProject();
           Swal.fire({
             title: '<span style="font-size: 20px">Project Sucessfully Deleted</span>',
             icon: 'success',
