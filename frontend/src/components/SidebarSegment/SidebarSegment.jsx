@@ -92,6 +92,29 @@ const SidebarSegment = ({ selectedProject, setSelectedProject }) => {
       }
     });
   };
+
+  const showDeleteProjectModal = () => {
+    Swal.fire({
+      icon: 'warning',
+      title: '<span style="font-size: 20px">Are you sure you want to delete?</span>',
+      html: '<span style="font-size: 15px">This will delete this project permanently. You cannot undo this action.</span>',
+      showCancelButton: true,
+      confirmButtonText: 'Delete',
+      confirmButtonColor: '#8A252C',
+      cancelButtonText: 'Cancel',
+      cancelButtonColor: 'rgb(181, 178, 178)',
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: '<span style="font-size: 20px">Project Sucessfully Deleted</span>',
+            icon: 'success',
+            confirmButtonColor: '#9c7b16',
+            confirmButtonText: 'OK',
+          })
+        }
+      });
+  };
   
   
 
@@ -135,7 +158,7 @@ const SidebarSegment = ({ selectedProject, setSelectedProject }) => {
               >
                 {project.name}
                 {clickedProjectId === project.id && (
-                  <FontAwesomeIcon icon={faTrash} className={styles.deleteIcon}/>
+                  <FontAwesomeIcon icon={faTrash} className={styles.deleteIcon} onClick={showDeleteProjectModal}/>
                 )}
               </li>
             ))}
