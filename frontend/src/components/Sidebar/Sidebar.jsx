@@ -21,7 +21,7 @@ const Sidebar = ({ setSelectedProject }) => {
             </ol>*/}
             <SideBarSegment setSelectedProject={setSelectedProject}/>
 
-            <ol style={{ listStyleType: "none", padding: 0, marginTop: "50%" }}>
+            <ol className={styles.list}>
                 <li className={`${global.center} ${styles.customLi}`} >
                     <FontAwesomeIcon icon={faCircleInfo} size="lg" className={styles.icon}/> &nbsp;
                     Support

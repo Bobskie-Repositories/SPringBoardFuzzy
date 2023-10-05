@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, NavLink } from 'react-router-dom';
+import { Routes, Route, BrowserRouter as Router,  NavLink } from 'react-router-dom';
 import Home from './pages/Home';
 import AddBoard from "./pages/AddBoard";
 import Rules from "./pages/Rules";
@@ -13,18 +13,13 @@ import Login from './pages/Login'; // Import the Login component
 
 function App() {
   return (
-    <div>
       <Routes>
-        <Route path="/" exact element={<Home />} />
-        <Route path="/group/:id" element={<Home />} />
-        <Route path="/group/:id/project/:id/add-board" element={<AddBoard />} />
+        <Route path="/" exact element={<Home />} /> 
         <Route path="/login" element={<Login />} />
 
         <Route path="/group/:id">
           <Route index={true} element={<Home />} />
-          <Route path="createboard">
-            <Route index={true} element={<CreateBoard />} />
-          </Route>
+          <Route path="/group/:id/project/:id/add-board" element={<AddBoard />} />
         </Route>
 
         <Route path="/project/:id/create-board">
@@ -33,7 +28,6 @@ function App() {
           <Route path=":boardid/result" index={true} element={<Result />} />
         </Route>
 
-        <Route path="/board/:id" element={<ViewBoard />} /> 
         <Route path="/board/:id">
           <Route index={true} element={<ViewBoard />} />
           <Route path="edit" index={true} element={<EditBoard />} />
@@ -43,8 +37,8 @@ function App() {
         <Route path="/teacher/:id" exact element={<Home />} />
         <Route path="classroom/:id" element={<MDashboard classroom={true} />} />
       </Routes>
-    </div>
   )
 }
+
 
 export default App;
