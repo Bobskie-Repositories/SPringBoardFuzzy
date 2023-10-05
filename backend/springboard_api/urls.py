@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import ClassroomView, GetClassroom
-from .controllers.ProjectController import ProjectCreateView, ProjectView, GetProjectsByGroupId, GetProjectById
+from .controllers.ProjectController import ProjectCreateView, ProjectView, GetProjectsByGroupId, GetProjectById, ProjectCreateView
 from .controllers.ProjectBoardController import GetProjectBoards, CreateProjectBoard, GetProjectBoardById, UpdateBoard
 from .controllers.TemplateController import GetTemplate, GetAllTemplate
 
@@ -8,6 +8,7 @@ urlpatterns = [
     path('', ProjectView.as_view()),
     path('api/group/<int:group_id>/projects', GetProjectsByGroupId.as_view()),
     path('api/project/<int:project_id>', GetProjectById.as_view()),
+    path('api/project/create', ProjectCreateView.as_view()),
 
     path('api/classroom/<int:teacher_fk_id>', GetClassroom.as_view()),
 

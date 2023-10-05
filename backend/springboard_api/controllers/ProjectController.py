@@ -11,9 +11,19 @@ from springboard_api.models import Project
 
 
 class ProjectCreateView(generics.CreateAPIView):
-    # return all projects and create
+    # Return all projects and create
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+
+    def perform_create(self, serializer):
+        serializer.save()  # Save the new project object
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            self.perform_create(serializer)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Get all Projects
 

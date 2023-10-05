@@ -6,7 +6,7 @@ class ClassroomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Classroom
         fields = ('id', 'class_code', 'class_name',
-                  'teacher_fk_id', 'created_at', 'deleted_at')
+                  'teacher_fk', 'created_at', 'deleted_at')
 
 
 class GroupSerializer(serializers.ModelSerializer):
@@ -19,7 +19,7 @@ class GroupSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ('id', 'name', 'created_at', 'group_fk_id')
+        fields = ('id', 'name', 'group_fk', 'created_at')
 
 
 class ProjectBoardSerializer(serializers.ModelSerializer):

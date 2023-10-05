@@ -6,6 +6,7 @@ import GroupIcon from '@assets/groupicon.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faSquareCaretDown } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
+import axios from 'axios';
 
 const SidebarSegment = ({ selectedProject, setSelectedProject }) => {
   const [projects, setProjects] = useState([]);
@@ -14,26 +15,51 @@ const SidebarSegment = ({ selectedProject, setSelectedProject }) => {
   const { id } = useParams();
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/group/' + id + '/projects')
-      .then((response) => response.json())
-      .then((projects) => {
-        setProjects(projects);
-        setSelectedProject(projects[0].id);
+    axios.get(`http://127.0.0.1:8000/api/group/${id}/projects`)
+      .then((response) => {
+        setProjects(response.data);
+        setSelectedProject(response.data[0].id);
+        setClickedProjectId(response.data[0].id);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
       });
   }, []);
 
   const handleButtonClick = (projectId) => {
-    if (clickedProjectId === projectId) {
-      setClickedProjectId(null);
-    } else {
-      setClickedProjectId(projectId);
-    }
     setSelectedProject(projectId);
+    setClickedProjectId(projectId);
   };
+
+  const addProject = async (newProject) => {
+    try {
+      const getCurrentTimestamp = () => {
+        const now = new Date();
+        const isoTimestamp = now.toISOString();
+        return isoTimestamp;
+      };
+
+      const response = await axios.post(`http://127.0.0.1:8000/api/project/create`, {
+        name: newProject,
+        group_fk: id,
+        created_at: getCurrentTimestamp(),
+      });
+
+      const newProjectId = response.data.id;
+      const newProjectResponse = await axios.get(`http://127.0.0.1:8000/api/project/${newProjectId}`);
+      const newProjectData = newProjectResponse.data;
+
+      setProjects([...projects, newProjectData]);
+
+      console.log('ProjectB created successfully:', response.data.id);
+    } catch (error) {
+      console.error('Error creating Project:', error);
+    }
+  }
 
   const showCreateProjectModal = () => {
     Swal.fire({
-      title: '<span style="font-size: 20px">Create a New Project</span>',
+      html: '<span style="font-size: 20px">Create a New Project</span>',
       input: 'text',
       inputPlaceholder: 'Enter new project name',
       showCancelButton: true,
@@ -53,16 +79,16 @@ const SidebarSegment = ({ selectedProject, setSelectedProject }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         const newProjectName = result.value;
-        const newProject = { id: Date.now(), name: newProjectName };
-        setProjects([...projects, newProject]);
+        addProject(newProjectName);
         Swal.fire({
-        title: 'Project Created',
-        icon: 'success',
-        confirmButtonColor: '#9c7b16',
-      });
+          title: 'Project Created',
+          icon: 'success',
+          confirmButtonColor: '#9c7b16',
+        });
       }
     });
   };
+  
   
 
   return (
