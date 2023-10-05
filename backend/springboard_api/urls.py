@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import ClassroomView, GetClassroom
 from .controllers.ProjectController import ProjectCreateView, ProjectView, GetProjectsByGroupId, GetProjectById, ProjectCreateView
-from .controllers.ProjectBoardController import GetProjectBoards, CreateProjectBoard, GetProjectBoardById, UpdateBoard
+from .controllers.ProjectBoardController import GetProjectBoards, CreateProjectBoard, GetProjectBoardById, UpdateBoard, DeleteProjectBoard
 from .controllers.TemplateController import GetTemplate, GetAllTemplate
 
 urlpatterns = [
@@ -18,6 +18,8 @@ urlpatterns = [
     path('api/project/<int:project_id>/addprojectboards',
          CreateProjectBoard.as_view()),
     path('api/projectboards/<int:projectboard_id>/update', UpdateBoard.as_view()),
+    path('api/projectboards/<int:id>/delete',
+         DeleteProjectBoard.as_view()),
 
     path('api/template/<int:template_id>', GetTemplate.as_view()),
     path('api/template/', GetAllTemplate.as_view()),
