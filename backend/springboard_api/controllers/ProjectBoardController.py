@@ -10,6 +10,16 @@ from springboard_api.models import ProjectBoard
 class CreateProjectBoard(generics.CreateAPIView):
     serializer_class = ProjectBoardSerializer
 
+    def perform_create(self, serializer):
+        serializer.save()
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            self.perform_create(serializer)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class GetProjectBoards(generics.ListAPIView):
     serializer_class = ProjectBoardSerializer
@@ -49,7 +59,6 @@ class GetProjectBoardById(generics.ListAPIView):
 class UpdateBoard(generics.UpdateAPIView):
     serializer_class = ProjectBoardSerializer
     queryset = ProjectBoard.objects.all()
-    # Specify your custom lookup URL keyword argument here
     lookup_url_kwarg = 'projectboard_id'
 
     def update(self, request, *args, **kwargs):
@@ -59,3 +68,19 @@ class UpdateBoard(generics.UpdateAPIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteProjectBoard(generics.DestroyAPIView):
+    queryset = ProjectBoard.objects.all()
+    serializer_class = ProjectBoardSerializer
+    lookup_field = 'id'
+
+    def destroy(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            instance.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except ProjectBoard.DoesNotExist:
+            return Response({"error": "ProjectBoard not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
