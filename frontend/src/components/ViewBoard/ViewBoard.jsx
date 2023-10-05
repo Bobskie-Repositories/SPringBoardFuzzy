@@ -60,7 +60,7 @@ const ViewBoard = () => {
      navigate(`/group/${groupIdRef.current}`)
   }
 
-  const showCreateProjectModal = () => {
+  const showDeleteBoardModal = () => {
     Swal.fire({
       icon: 'warning',
       title: '<span style="font-size: 20px">Are you sure you want to delete?</span>',
@@ -143,7 +143,7 @@ const ViewBoard = () => {
           <Button className={styles.button} onClick={() => navigate('edit')}>
             Improve Result
           </Button>
-          <Button className={styles.button} style={{backgroundColor: '#8A252C'}} onClick={showCreateProjectModal}>
+          <Button className={styles.button} style={{backgroundColor: '#8A252C'}} onClick={showDeleteBoardModal}>
             Delete
           </Button>
         </div>
