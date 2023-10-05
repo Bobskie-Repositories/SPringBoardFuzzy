@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './SLogin.module.css';
+import NavigationBar from '../Navigation Bar/NavBar';
 
 const SLoginComponent = () => {
   // State to manage user inputs
@@ -26,6 +27,7 @@ const SLoginComponent = () => {
 
   return (
     <div className={styles.body}>
+      <NavigationBar/>
       <div className={styles.rectangle}>
         {/* Page Title */}
         <h2 className={styles.title}>Login</h2>
