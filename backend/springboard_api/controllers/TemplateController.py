@@ -7,6 +7,11 @@ from springboard_api.serializers import TemplateSerializer
 from springboard_api.models import Template
 
 
+class GetAllTemplate(generics.ListAPIView):
+    serializer_class = TemplateSerializer
+    queryset = Template.objects.all()
+
+
 # Get Template by id
 class GetTemplate(generics.ListAPIView):
     serializer_class = TemplateSerializer

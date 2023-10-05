@@ -41,6 +41,9 @@ class ProjectBoard(models.Model):
     novelty = models.IntegerField()
     capability = models.IntegerField()
     technical_feasibility = models.IntegerField()
+    feedback = models.TextField(default='')
+    recommendation = models.TextField(default='')
+    references = models.TextField(default='')
     project_fk = models.ForeignKey(
         Project, on_delete=models.CASCADE, default=None)
     created_at = models.DateTimeField(default=timezone.now)

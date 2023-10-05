@@ -4,9 +4,13 @@ import Card from '../UI/Card/Card';
 import IdeaIcon from '@assets/idea.png';
 import Button from '../UI/Button/Button';
 import { useEffect, useState } from 'react';
+import { NavLink, useNavigate } from "react-router-dom";
+
+
 import CircularProgressWithLabel from '../UI/ProgressBar/CircularProgressWithLabel';
 
 function Board( {selectedProject} ) {
+  const navigate = useNavigate();
   const [boards, setBoards] = useState([])
   const [project, setProject] = useState()
   const progressValue = 50;
@@ -24,6 +28,10 @@ function Board( {selectedProject} ) {
         });
     }
   }, [selectedProject]);
+
+  const onClickView = (id) => {
+    navigate(`/board/${id}`)
+  }
 
 
   return (
@@ -79,7 +87,7 @@ function Board( {selectedProject} ) {
                         </Card>               
                         
                       </div>
-                        <Button className={ styles.viewbutton }>
+                        <Button className={ styles.viewbutton } onClick={() => onClickView(board.id)}>
                           View Board
                         </Button>
                       </>
