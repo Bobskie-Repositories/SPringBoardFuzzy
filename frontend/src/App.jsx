@@ -7,7 +7,6 @@ import Result from "./pages/Result";
 import MDashboard from "./components/Dashboard/mentor_dashboard/MDashboard";
 import CreateBoard from "./components/BoardCreation/BoardCreation";
 import ViewBoard from "./pages/ViewBoard";
-import RootLayout from "./pages/Root";
 import EditBoard from "./pages/EditBoard";
 import Edit_Result from "./pages/Edit_Result";
 import Login from './pages/Login'; // Import the Login component
