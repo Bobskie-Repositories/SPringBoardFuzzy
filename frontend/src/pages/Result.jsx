@@ -16,7 +16,7 @@ const Result = () => {
         const fetchData = async () => {
           try {
             const project = await axios.get(`http://127.0.0.1:8000/api/project/${id}`);
-            setGroupId(project.data.group_fk_id);
+            setGroupId(project.data.group_fk);
           } catch (error) {
             console.error('Error fetching data:', error);
           }
