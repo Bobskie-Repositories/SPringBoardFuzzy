@@ -66,7 +66,7 @@ function Board( {selectedProject} ) {
                         <Card className={ styles.smallCard }>
                           <h5 className={styles.ratings}>Novelty</h5>
                           <div className={styles.cardContent}>  
-                            <CircularProgressWithLabel value={board.novelty} />
+                            <CircularProgressWithLabel value={board.novelty * 10} />
                           </div>
                         </Card>
                         
@@ -74,14 +74,14 @@ function Board( {selectedProject} ) {
                         <Card className={ styles.smallCard }>
                           <h5 className={styles.ratings}>Capability</h5>
                           <div className={styles.cardContent}>
-                            <CircularProgressWithLabel value={board.capability} />
+                            <CircularProgressWithLabel value={board.capability * 10} />
                           </div>
                         </Card>
                        
                         <Card className={ styles.smallCard }>
                           <h5 className={styles.ratingstech}>Technical Feasibility</h5>
                           <div className={styles.cardContent}>
-                            <CircularProgressWithLabel value={board.technical_feasibility} />
+                            <CircularProgressWithLabel value={board.technical_feasibility * 10} />
                           </div>
                         </Card>               
                         

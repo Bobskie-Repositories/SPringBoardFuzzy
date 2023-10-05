@@ -14,14 +14,6 @@ import Login from './pages/Login'; // Import the Login component
 function App() {
   return (
     <div>
-      {/* Navigation */}
-      <nav>
-        <ul>
-          <li><NavLink to="/">Home</NavLink></li>
-          <li><NavLink to="/login">Login</NavLink></li> {/* New link to the login page */}
-        </ul>
-      </nav>
-      
       <Routes>
         <Route path="/" exact element={<Home />} />
         <Route path="/group/:id" element={<Home />} />
