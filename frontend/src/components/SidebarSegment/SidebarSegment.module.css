@@ -99,8 +99,8 @@
 }
 
 .deleteIcon {
-    position: fixed;
-    left: 17.8%;
+    position: absolute;
+    right: 3rem;
 }
 
 
