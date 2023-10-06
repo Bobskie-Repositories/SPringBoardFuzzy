@@ -12,7 +12,8 @@
 }
 
 .customLi {
-    padding: 10px 90px;
+    padding: 10px 100px;
+    width: 100px;
     color: rgb(139, 139, 139);
     /* background-color: rgba(156, 123, 22, 0.15); */
 }
@@ -22,10 +23,6 @@
     border-color: rgba(156, 123, 22, 0.15);
     cursor: pointer;
   }
-
-.icon {
-    margin-right: 10px;
-}
 
 .list {
     list-style-type: none;
