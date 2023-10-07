@@ -41,6 +41,9 @@ class ProjectBoard(models.Model):
     novelty = models.IntegerField()
     capability = models.IntegerField()
     technical_feasibility = models.IntegerField()
+    feedback = models.TextField(default='')
+    recommendation = models.TextField(default='')
+    references = models.TextField(default='')
     project_fk = models.ForeignKey(
         Project, on_delete=models.CASCADE, default=None)
     created_at = models.DateTimeField(default=timezone.now)
@@ -52,5 +55,15 @@ class Student(models.Model):
     lastname = models.CharField(max_length=50)
     group_fk = models.ForeignKey(
         Group, on_delete=models.SET_NULL, null=True, default=None)
+    created_at = models.DateTimeField(default=timezone.now)
+    deleted_at = models.DateTimeField(default='0000-00-00 00:00:00')
+
+
+class Template(models.Model):
+    title = models.CharField(max_length=50)
+    content = models.TextField()
+    rules = models.TextField()
+    description = models.TextField()
+    teacher_fk = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=timezone.now)
     deleted_at = models.DateTimeField(default='0000-00-00 00:00:00')

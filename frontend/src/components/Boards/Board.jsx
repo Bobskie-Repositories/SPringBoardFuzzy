@@ -4,12 +4,15 @@ import Card from '../UI/Card/Card';
 import IdeaIcon from '@assets/idea.png';
 import Button from '../UI/Button/Button';
 import { useEffect, useState } from 'react';
+import { NavLink, useNavigate } from "react-router-dom";
+
+
 import CircularProgressWithLabel from '../UI/ProgressBar/CircularProgressWithLabel';
 
 function Board( {selectedProject} ) {
+  const navigate = useNavigate();
   const [boards, setBoards] = useState([])
   const [project, setProject] = useState()
-  const progressValue = 50;
   
   useEffect(() => {
     if (selectedProject !== null && selectedProject !== undefined) {
@@ -24,6 +27,10 @@ function Board( {selectedProject} ) {
         });
     }
   }, [selectedProject]);
+
+  const onClickView = (id) => {
+    navigate(`/board/${id}`)
+  }
 
 
   return (
@@ -59,7 +66,7 @@ function Board( {selectedProject} ) {
                         <Card className={ styles.smallCard }>
                           <h5 className={styles.ratings}>Novelty</h5>
                           <div className={styles.cardContent}>  
-                            <CircularProgressWithLabel value={progressValue} />
+                            <CircularProgressWithLabel value={board.novelty * 10} />
                           </div>
                         </Card>
                         
@@ -67,19 +74,19 @@ function Board( {selectedProject} ) {
                         <Card className={ styles.smallCard }>
                           <h5 className={styles.ratings}>Capability</h5>
                           <div className={styles.cardContent}>
-                            <CircularProgressWithLabel value={progressValue} />
+                            <CircularProgressWithLabel value={board.capability * 10} />
                           </div>
                         </Card>
                        
                         <Card className={ styles.smallCard }>
                           <h5 className={styles.ratingstech}>Technical Feasibility</h5>
                           <div className={styles.cardContent}>
-                            <CircularProgressWithLabel value={progressValue} />
+                            <CircularProgressWithLabel value={board.technical_feasibility * 10} />
                           </div>
                         </Card>               
                         
                       </div>
-                        <Button className={ styles.viewbutton }>
+                        <Button className={ styles.viewbutton } onClick={() => onClickView(board.id)}>
                           View Board
                         </Button>
                       </>

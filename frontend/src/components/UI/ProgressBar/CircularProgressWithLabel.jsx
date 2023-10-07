@@ -12,13 +12,13 @@ function CircularProgressWithLabel(props) {
             sx={{
                 color: 'rgba(255, 213, 113, .38)',
             }}
-            size={60}
+            size={props.size || 60}
             thickness={6}
             value={100}
         />
         <CircularProgress
             variant="determinate"
-            disableShrink
+            // disableShrink
             sx={{
                 color: '#80F748',
                 position: 'absolute',
