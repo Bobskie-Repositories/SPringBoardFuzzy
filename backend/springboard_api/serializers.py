@@ -34,15 +34,24 @@ class ProjectBoardSerializer(serializers.ModelSerializer):
 class TeacherSerializer(serializers.ModelSerializer):
     class Meta:
         model = Teacher
-        fields = ('id', 'firstname', 'lastname',
+        fields = ('id', 'firstname', 'lastname', "password", "is_staff",
                   'created_at', 'deleted_at')
 
 
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
-        fields = ('id', 'firstname', 'lastname',
+        fields = ('id', 'firstname', 'lastname', "password", "is_staff", 'email',
                   'group_fk', 'created_at', 'deleted_at')
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        password = validated_data.pop('password', None)
+        instance = self.Meta.model(**validated_data)
+        if password is not None:
+            instance.set_password(password)
+        instance.save()
+        return instance
 
 
 class TemplateSerializer(serializers.ModelSerializer):
