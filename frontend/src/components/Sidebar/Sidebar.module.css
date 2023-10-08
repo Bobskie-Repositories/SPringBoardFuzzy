@@ -4,6 +4,7 @@
     height: 680px;
     width: fit-content;
     max-height: 680px;   
+    position: relative;
     cursor: pointer;
 }
 
@@ -13,6 +14,7 @@
 
 .customLi {
     padding: 10px 100px;
+    width: 100px;
     color: rgb(139, 139, 139);
     /* background-color: rgba(156, 123, 22, 0.15); */
 }
@@ -23,14 +25,9 @@
     cursor: pointer;
   }
 
-.icon {
-    padding-right: 10px;
-}
-
 .list {
     list-style-type: none;
-    padding: 0%;
-    margin: 0;
-    position: fixed;
-    top: 70%;
+    padding: 0;
+    position: absolute;
+    bottom: 20px;
 }
