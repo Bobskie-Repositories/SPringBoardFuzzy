@@ -15,10 +15,15 @@ Note: I used the "npm create vite@latest" for creating the project. You still ha
 
 Note: For backend, download and install python. Install xampp
 In terminal,
-pip install django
-pip install django djangorestframework
-pip install mysqlclient
-pip install django-cors-headers
+<ul>
+  <li>pip install django</li>
+  <li>pip install django djangorestframework</li>
+  <li>pip install mysqlclient</li>
+  <li>pip install django-cors-headers</li>
+  <li>pip install PyJWT</li>
+</ul>
+
+
 
 
 to run django. Make sure you run xampp
