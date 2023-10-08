@@ -4,11 +4,22 @@ import global from '@assets/global.module.css';
 import Logo from '@assets/LogoWhite.png';
 import Notif from '@assets/notification.png';
 import Profile from '../ProfileSegment/Profile';
+import { useNavigate } from 'react-router';
+import { useAuth } from '../../context/AuthContext';
 
 const Header = () => {
+  const navigate = useNavigate()
+  const { getUser } = useAuth();
+  
+  const goHome = async () => {
+    const user = await getUser();
+    const groupId = user.group_fk;
+    navigate(`/group/${groupId}`);
+  }
+
   return (
     <div className={`${global.brown} ${styles.header}`}>
-        <div className={styles.left}>
+        <div className={styles.left} onClick={goHome}>
             <img src={Logo} alt="Logo" className={styles.img}/>
             <h4 style={{color:'white'}}>SPringBoard</h4>
         </div>
