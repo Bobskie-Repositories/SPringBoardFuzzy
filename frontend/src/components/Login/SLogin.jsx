@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import styles from './SLogin.module.css';
 
@@ -10,18 +11,29 @@ const SLoginComponent = () => {
   // Get the navigate function from react-router-dom
   const navigate = useNavigate();
 
+  // login function from AuthContext
+  const { login, getUser } = useAuth();
+
   // Function to handle form submission
   const handleLogin = async (e) => {
     e.preventDefault();
-
-    // TODO: Implement your authentication logic here (e.g., send a request to a backend API)
-
-    // For demonstration purposes, we'll just log the entered values
-    console.log('Username:', username);
-    console.log('Password:', password);
-
-    // After successful login, navigate to the "Home" page
-    navigate('/');
+    try {
+      const loginResult = await login(username, password);
+      
+      if (loginResult.success) {
+        try{
+          const user = await getUser();
+          // console.log(user);
+          const groupId = user.group_fk;
+          // console.log(groupId);
+          navigate(`/group/${groupId}`);
+        }catch(error){
+          console.error('Login failed. Please check your credentials.' + error);
+        }
+      } 
+    } catch (error) {
+      console.error('Login failed. Please check your credentials.' + error);
+    }
   };
 
   return (
