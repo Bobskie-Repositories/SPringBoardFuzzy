@@ -4,6 +4,7 @@
     width: calc(100vw - 17px);
     height: 4rem;
     align-items: center; /* Center vertically */
+    cursor: pointer;
 }
 
 .left{

@@ -4,6 +4,7 @@
     height: 680px;
     width: fit-content;
     max-height: 680px;   
+    cursor: pointer;
 }
 
 .img {

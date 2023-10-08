@@ -5,9 +5,18 @@ import Logo from '@assets/Logo.png';
 import SideBarSegment from './../SidebarSegment/SidebarSegment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo, faGear, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router';
+import { useAuth } from '../../context/AuthContext';
 
 const Sidebar = ({ setSelectedProject }) => {
+    const navigate = useNavigate()
+    const { getUser } = useAuth();
     
+    const goHome = async () => {
+        const user = await getUser();
+        const groupId = user.group_fk;
+        navigate(`/group/${groupId}`);
+    }
     
     return (
         <div className={styles.sidebar}>
