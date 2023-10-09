@@ -15,19 +15,32 @@ const SLoginComponent = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    // TODO: Implement your authentication logic here (e.g., send a request to a backend API)
+    try {
+      // Make a POST request to your backend API to authenticate the user
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
-    // For demonstration purposes, we'll just log the entered values
-    console.log('Username:', username);
-    console.log('Password:', password);
-
-    // After successful login, navigate to the "Home" page
-    navigate('/');
+      if (response.ok) {
+        // Successful login, you can now navigate to the "Home" page
+        navigate('/');
+      } else {
+        // Handle authentication failure, display an error message, etc.
+        console.error('Login failed');
+      }
+    } catch (error) {
+      // Handle network or other errors
+      console.error('Error:', error);
+    }
   };
 
   return (
     <div className={styles.body}>
-      <NavigationBar/>
+      <NavigationBar />
       <div className={styles.rectangle}>
         {/* Page Title */}
         <h2 className={styles.title}>Login</h2>
@@ -80,7 +93,7 @@ const SLoginComponent = () => {
             </div>
           </form>
         </div>
-        
+
         {/* Sign Up Link */}
         <p className={styles.signup}>
           Don’t have an account? <a href="/signup">Sign Up</a>
