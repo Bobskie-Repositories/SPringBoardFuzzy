@@ -38,12 +38,6 @@
     background-color: #FEFAF1;
 }
 
-.cardContent {
-    display: flex;
-    justify-content: flex-end; 
-  
-}
-
 .ratings, .ratingstech {
     font-size: small;
     font-weight: 500;

@@ -13,7 +13,6 @@ function Board( {selectedProject} ) {
   const navigate = useNavigate();
   const [boards, setBoards] = useState([])
   const [project, setProject] = useState()
-  const progressValue = 50;
   
   useEffect(() => {
     if (selectedProject !== null && selectedProject !== undefined) {
@@ -67,7 +66,7 @@ function Board( {selectedProject} ) {
                         <Card className={ styles.smallCard }>
                           <h5 className={styles.ratings}>Novelty</h5>
                           <div className={styles.cardContent}>  
-                            <CircularProgressWithLabel value={progressValue} />
+                            <CircularProgressWithLabel value={board.novelty * 10} />
                           </div>
                         </Card>
                         
@@ -75,14 +74,14 @@ function Board( {selectedProject} ) {
                         <Card className={ styles.smallCard }>
                           <h5 className={styles.ratings}>Capability</h5>
                           <div className={styles.cardContent}>
-                            <CircularProgressWithLabel value={progressValue} />
+                            <CircularProgressWithLabel value={board.capability * 10} />
                           </div>
                         </Card>
                        
                         <Card className={ styles.smallCard }>
                           <h5 className={styles.ratingstech}>Technical Feasibility</h5>
                           <div className={styles.cardContent}>
-                            <CircularProgressWithLabel value={progressValue} />
+                            <CircularProgressWithLabel value={board.technical_feasibility * 10} />
                           </div>
                         </Card>               
                         

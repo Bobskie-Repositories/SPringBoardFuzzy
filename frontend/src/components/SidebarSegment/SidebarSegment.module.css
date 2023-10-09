@@ -98,5 +98,10 @@
     margin-top: 4%;
 }
 
+.deleteIcon {
+    position: absolute;
+    right: 3rem;
+}
+
 
   

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import styles from './SLogin.module.css';
 import NavigationBar from '../Navigation Bar/NavBar';
@@ -11,30 +12,29 @@ const SLoginComponent = () => {
   // Get the navigate function from react-router-dom
   const navigate = useNavigate();
 
+  // login function from AuthContext
+  const { login, getUser } = useAuth();
+
   // Function to handle form submission
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      // Make a POST request to your backend API to authenticate the user
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
-
-      if (response.ok) {
-        // Successful login, you can now navigate to the "Home" page
-        navigate('/');
+      const loginResult = await login(username, password);
+      
+      if (loginResult.success) {
+        try {
+          const user = await getUser();
+          const groupId = user.group_fk;
+          navigate(`/group/${groupId}`);
+        } catch (error) {
+          console.error('Login failed. Please check your credentials.' + error);
+        }
       } else {
-        // Handle authentication failure, display an error message, etc.
-        console.error('Login failed');
+        console.error('Login failed. Please check your credentials.');
       }
     } catch (error) {
-      // Handle network or other errors
-      console.error('Error:', error);
+      console.error('Login failed. Please check your credentials.' + error);
     }
   };
 
