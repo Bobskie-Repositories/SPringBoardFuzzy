@@ -8,27 +8,26 @@ import { faCircleInfo, faGear, faArrowRightFromBracket } from '@fortawesome/free
 import { useNavigate } from 'react-router';
 import { useAuth } from '../../context/AuthContext';
 
-const Sidebar = ({ setSelectedProject }) => {
+const Sidebar = ({ setSelected }) => {
     const navigate = useNavigate()
-    const { getUser } = useAuth();
+    const { getUser, logout } = useAuth();
     
     const goHome = async () => {
         const user = await getUser();
         const groupId = user.group_fk;
         navigate(`/group/${groupId}`);
     }
+
+    const goLogout = async () =>{
+        await logout();
+        navigate(`/login`);
+    }
     
     return (
         <div className={styles.sidebar}>
-            <img src={Logo} alt="Logo" className={styles.img}/>
-
-            {/* <ol style={{ listStyleType: "none", padding: 0 }}>
-                <li className={`${global.center} ${styles.customLi}`} >
-                    <img src={SmallIcon} alt="SmallIcon" /> &nbsp;
-                    Class
-                </li>          
-            </ol>*/}
-            <SideBarSegment setSelectedProject={setSelectedProject}/>
+            <img src={Logo} alt="Logo" className={styles.img} onClick={goHome}/>
+            
+            <SideBarSegment setSelected={setSelected}/>
 
             <ol className={styles.list}>
                 <li className={`${global.center} ${styles.customLi}`} >
@@ -39,7 +38,7 @@ const Sidebar = ({ setSelectedProject }) => {
                     <FontAwesomeIcon icon={faGear} size="lg" className={styles.icon}/> &nbsp;
                     Settings
                 </li>
-                <li className={`${global.center} ${styles.customLi}`} >
+                <li className={`${global.center} ${styles.customLi}`} onClick={goLogout}>
                     <FontAwesomeIcon icon={faArrowRightFromBracket} size="lg" className={styles.icon}/> &nbsp;
                     Log out
                 </li>          

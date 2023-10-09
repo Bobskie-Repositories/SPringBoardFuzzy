@@ -1,5 +1,6 @@
+// AuthContext.js
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
 
 const AuthContext = createContext();
 
@@ -13,12 +14,12 @@ export const AuthProvider = ({ children }) => {
   
   useEffect(() => {
     // Check the token & id in local storage 
-    const storedToken = localStorage.getItem('token');
+    const storedToken = localStorage.getItem('jwt');
     const storedId = localStorage.getItem('id');
-    
 
     if (storedToken) {
       setToken(storedToken);
+      setIsAuthenticated(true);
     }
     if (storedId) {
       setId(storedId);
@@ -31,7 +32,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await fetch('http://127.0.0.1:8000/api/active-student', {
         method: 'GET',
-        credentials: 'include', // Include cookies
+        credentials: 'include',
       });
   
       if (!response.ok) {
@@ -45,7 +46,6 @@ export const AuthProvider = ({ children }) => {
       throw error;
     }
   };
-  
 
   const login = async (email, password) => {
     try {
@@ -54,36 +54,57 @@ export const AuthProvider = ({ children }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include',
+        credentials: 'include', 
         body: JSON.stringify({
           email,
           password,
         }),
       });
-      setIsAuthenticated(true);
-      return { success: true };
 
+      if (response.status === 200) {
+        const data = await response.json();
+        const token = data.jwt;
+        localStorage.setItem('jwt', token);
+        setIsAuthenticated(true); 
+        return { success: true };
+      } else {
+        console.error('Login failed. Please check your credentials.');
+        return response;
+      }
     } catch (error) {
       console.error('An error occurred while logging in:', error.message);
       return response;
     }
   };
 
-  const logout = () => {
-    setToken(null);
-    setId(null);
-
-    localStorage.removeItem('token');
-    localStorage.removeItem('id');
-    setIsAuthenticated(false);
+  const logout = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/logout-student', {
+        method: 'POST',
+        credentials: 'include',
+      });
+  
+      if (response.ok) {
+        setToken(null);
+        setId(null);
+        setIsAuthenticated(false);
+        localStorage.removeItem('jwt');
+        localStorage.removeItem('id');
+      } else {
+        console.error('Server-side logout failed');
+      }
+    } catch (error) {
+      console.error('An error occurred during logout:', error.message);
+    }
   };
+  
 
   const authValue = {
     token,
     id,
     login,
     logout,
-    getUser, // Include getUser in the authValue object
+    getUser,
     isAuthenticated,
   };
 

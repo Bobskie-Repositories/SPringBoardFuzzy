@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import Header_landing from '../Header/Header_landing';
 import styles from './SLogin.module.css';
 
 const SLoginComponent = () => {
@@ -38,18 +39,18 @@ const SLoginComponent = () => {
 
   return (
     <div className={styles.body}>
+      <Header_landing />
       <div className={styles.rectangle}>
-        {/* Page Title */}
+
         <h2 className={styles.title}>Login</h2>
 
-        {/* Header Text */}
         <h3 className={styles.header}>
           Welcome back! Please login to your account.
         </h3>
 
         <div className={styles['center-container']}>
           <form onSubmit={handleLogin}>
-            <div>
+            <div className={styles.input}>
               {/* Username Input */}
               <label htmlFor="username" className={styles.label}>
                 Email
@@ -63,7 +64,7 @@ const SLoginComponent = () => {
                 required
               />
             </div>
-            <div>
+            <div className={styles.input}>
               {/* Password Input */}
               <label htmlFor="password" className={styles.label}>
                 Password

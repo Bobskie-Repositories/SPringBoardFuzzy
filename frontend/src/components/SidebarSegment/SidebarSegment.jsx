@@ -8,7 +8,7 @@ import { faPlus, faSquareCaretDown, faTrash } from '@fortawesome/free-solid-svg-
 import Swal from 'sweetalert2';
 import axios from 'axios';
 
-const SidebarSegment = ({ selectedProject, setSelectedProject }) => {
+const SidebarSegment = ({ selected, setSelected }) => {
   const [projects, setProjects] = useState([]);
   const [open, setOpen] = useState(false);
   const [clickedProjectId, setClickedProjectId] = useState(null);
@@ -18,7 +18,7 @@ const SidebarSegment = ({ selectedProject, setSelectedProject }) => {
     axios.get(`http://127.0.0.1:8000/api/group/${id}/projects`)
       .then((response) => {
         setProjects(response.data);
-        setSelectedProject(response.data[0].id);
+        setSelected(response.data[0].id);
         setClickedProjectId(response.data[0].id);
       })
       .catch((error) => {
@@ -27,7 +27,7 @@ const SidebarSegment = ({ selectedProject, setSelectedProject }) => {
   }, []);
 
   const handleButtonClick = (projectId) => {
-    setSelectedProject(projectId);
+    setSelected(projectId);
     setClickedProjectId(projectId);
   };
 
@@ -67,7 +67,7 @@ const SidebarSegment = ({ selectedProject, setSelectedProject }) => {
       const response = await axios.delete(`http://127.0.0.1:8000/api/project/${clickedProjectId}/delete`);
       const updatedProjects = projects.filter(project => project.id !== clickedProjectId);
       setProjects(updatedProjects);
-      setSelectedProject(projects[0].id);
+      setSelected(projects[0].id);
       setClickedProjectId(projects[0].id);
       if (response.status === 204) {
         console.log('Project deleted successfully');
