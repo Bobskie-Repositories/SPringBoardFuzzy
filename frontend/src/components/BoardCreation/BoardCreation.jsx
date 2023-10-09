@@ -11,7 +11,7 @@ import axios from 'axios';
 
 
 
-const BoardCreation = ({selectedProject, setCreateAction}) => {
+const BoardCreation = ({selected, setCreateAction}) => {
   const [allTemplate, setAllTemplate] = useState();
   const navigate = useNavigate();
 
@@ -33,7 +33,7 @@ const BoardCreation = ({selectedProject, setCreateAction}) => {
   };
 
   const handleClick = (templateid) => {
-    navigate(`/project/${selectedProject}/create-board/${templateid}/rules`);
+    navigate(`/project/${selected}/create-board/${templateid}/rules`);
   };
 
   if (!allTemplate) {
