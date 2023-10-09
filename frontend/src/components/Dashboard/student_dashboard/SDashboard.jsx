@@ -9,7 +9,7 @@ import Button from '../../UI/Button/Button';
 import styles from './SDashboard.module.css';
 
 const SDashboard = () => {
-  const [selectedProject, setSelectedProject] = useState();
+  const [selected, setSelected] = useState();
   const [createAction, setCreateAction] = useState(false);
 
   const handleCreateBoardClick = () => {
@@ -18,7 +18,7 @@ const SDashboard = () => {
 
   return (
     <div className={ styles.container } style={{padding: '20px 150px 20px 30px'}}>
-      <Sidebar setSelectedProject={setSelectedProject}/>
+      <Sidebar setSelected={setSelected}/>
 
       <div>
         <div className={ styles.container } style={{gap: "150px", marginTop: '30px'}}>
@@ -27,7 +27,7 @@ const SDashboard = () => {
         </div>
 
         <div className={ styles.container }>
-          {createAction ? <BoardCreation selectedProject={selectedProject} setCreateAction={setCreateAction}/> : <Boards selectedProject={selectedProject} />}
+          {createAction ? <BoardCreation selected={selected} setCreateAction={setCreateAction}/> : <Boards selected={selected} />}
         
           <Button 
           className={styles.butName}

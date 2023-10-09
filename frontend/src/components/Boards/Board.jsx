@@ -9,24 +9,24 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 import CircularProgressWithLabel from '../UI/ProgressBar/CircularProgressWithLabel';
 
-function Board( {selectedProject} ) {
+function Board( {selected} ) {
   const navigate = useNavigate();
   const [boards, setBoards] = useState([])
   const [project, setProject] = useState()
   
   useEffect(() => {
-    if (selectedProject !== null && selectedProject !== undefined) {
-      fetch('http://127.0.0.1:8000/api/project/' + selectedProject + '/projectboards')
+    if (selected !== null && selected !== undefined) {
+      fetch('http://127.0.0.1:8000/api/project/' + selected + '/projectboards')
         .then((response) => response.json())
         .then((boards) => setBoards(boards));
 
-      fetch('http://127.0.0.1:8000/api/project/' + selectedProject )
+      fetch('http://127.0.0.1:8000/api/project/' + selected )
         .then((response) => response.json())
         .then((project) => {
           setProject(project);
         });
     }
-  }, [selectedProject]);
+  }, [selected]);
 
   const onClickView = (id) => {
     navigate(`/board/${id}`)
