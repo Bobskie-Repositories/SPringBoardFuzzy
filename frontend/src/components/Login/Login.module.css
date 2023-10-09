@@ -1,0 +1,73 @@
+.body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 50px;
+    width: 100vw;
+  }
+  
+  .card {
+    margin-top: 5rem;
+    background: #fff;
+    padding: 30px 30px 50px 30px;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .title {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .users {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+  }
+
+  .student, .teacher {
+    padding: 30px 30px 10px 30px;
+    border-radius: 10px;
+    text-align: center;
+    background-color: #9C7B16;
+    cursor: pointer;
+    color: #fff;
+  }
+
+  .student:hover, .teacher:hover{
+    background-color: rgb(181, 178, 178);
+  }
+
+  .viewbutton:hover{
+    border-color: rgb(181, 178, 178);
+  }
+
+.studentIcon, .teacherIcon {
+    color: #fff;
+    align-items: center;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: center; 
+}
+
+.viewbutton {
+    height: 40px;
+    border: #ffffff;
+    font-size: 80%;
+    background-color:  #fff;
+    border: 3px solid #9C7B16;
+    color: #9C7B16;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 4rem;
+}
+
+
+  
+
