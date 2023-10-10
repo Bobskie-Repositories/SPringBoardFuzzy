@@ -4,16 +4,16 @@ from django.http import HttpResponse, JsonResponse
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
-from springboard_api.serializers import StudentSerializer
-from springboard_api.models import Student
+from springboard_api.serializers import TeacherSerializer
+from springboard_api.models import Teacher
 from rest_framework.exceptions import AuthenticationFailed
 import jwt
 import datetime
 
 
-class RegisterStudent(generics.CreateAPIView):
-    queryset = Student.objects.all()
-    serializer_class = StudentSerializer
+class RegisterTeacher(generics.CreateAPIView):
+    queryset = Teacher.objects.all()
+    serializer_class = TeacherSerializer
 
     def perform_create(self, serializer):
         serializer.save()  # Save the new project object
@@ -26,12 +26,12 @@ class RegisterStudent(generics.CreateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class LoginStudent(APIView):
+class LoginTeacher(APIView):
     def post(self, request):
         email = request.data['email']
         password = request.data['password']
 
-        user = Student.objects.filter(email=email).first()
+        user = Teacher.objects.filter(email=email).first()
 
         if user is None:
             raise AuthenticationFailed('User not found!')
@@ -41,7 +41,7 @@ class LoginStudent(APIView):
 
         payload = {
             'id': user.id,
-            'role': 'student',
+            'role': 'teacher',
             'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
             'iat': datetime.datetime.utcnow()
         }
@@ -58,7 +58,7 @@ class LoginStudent(APIView):
         return response
 
 
-class StudentView(APIView):
+class TeacherView(APIView):
     def get(self, request):
         token = request.COOKIES.get('jwt')
 
@@ -74,14 +74,14 @@ class StudentView(APIView):
         except jwt.DecodeError:
             raise AuthenticationFailed('Token is invalid')  # Invalid token
 
-        user = Student.objects.filter(id=payload['id']).first()
+        user = Teacher.objects.filter(id=payload['id']).first()
         if not user:
             raise AuthenticationFailed('User not found')  # User not found
-        serializer = StudentSerializer(user)
+        serializer = TeacherSerializer(user)
         return Response(serializer.data)
 
 
-class LogoutStudent(APIView):
+class LogoutTeacher(APIView):
     def post(self, request):
         try:
             response = JsonResponse({'message': 'Logout successful'})
