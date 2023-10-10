@@ -14,8 +14,8 @@ const T_Sidebar = ({ setSelected }) => {
     
     const goHome = async () => {
         const user = await getUser();
-        const groupId = user.group_fk;
-        navigate(`/group/${groupId}`);
+        const userId = user.id;
+        navigate(`/teacher/${userId}`);
     }
 
     const goLogout = async () =>{
