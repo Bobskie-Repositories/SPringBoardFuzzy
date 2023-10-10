@@ -57,6 +57,7 @@
   border-radius: 5px;
   font-size: 15px;
   background-color: white;
+  color: black;
 }
 .signup{
   text-align: center;
@@ -67,7 +68,7 @@
 .forgot {
   text-align: right;
   font-size: 15px;
-  margin-bottom: 10px;
+  margin-bottom: 50px;
   color: rgb(94, 94, 94); /* Updated to use gray color */
 }
 
