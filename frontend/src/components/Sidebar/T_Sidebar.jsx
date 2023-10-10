@@ -2,13 +2,13 @@ import React from 'react'
 import styles from './Sidebar.module.css';
 import global from '../../assets/global.module.css';
 import Logo from '@assets/Logo.png';
-import SideBarSegment from './../SidebarSegment/SidebarSegment';
+import T_SidebarSegment from '../SidebarSegment/T_SidebarSegment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo, faGear, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router';
 import { useAuth } from '../../context/AuthContext';
 
-const Sidebar = ({ setSelected }) => {
+const T_Sidebar = ({ setSelected }) => {
     const navigate = useNavigate()
     const { getUser, logout } = useAuth();
     
@@ -27,7 +27,7 @@ const Sidebar = ({ setSelected }) => {
         <div className={styles.sidebar}>
             <img src={Logo} alt="Logo" className={styles.img} onClick={goHome}/>
             
-            <SideBarSegment setSelected={setSelected}/>
+            <T_SidebarSegment setSelected={setSelected}/>
 
             <ol className={styles.list}>
                 <li className={`${global.center} ${styles.customLi}`} >
@@ -48,4 +48,4 @@ const Sidebar = ({ setSelected }) => {
     )
 }
 
-export default Sidebar;
+export default T_Sidebar;

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState} from 'react';
-import Sidebar from '../../Sidebar/Sidebar';
+import S_Sidebar from '../../Sidebar/S_Sidebar';
 import Search from '../../Search/Search';
 import Boards from '../../Boards/Board';
 import Profile from '../../ProfileSegment/Profile';
@@ -18,7 +18,7 @@ const SDashboard = () => {
 
   return (
     <div className={ styles.container } style={{padding: '20px 150px 20px 30px'}}>
-      <Sidebar setSelected={setSelected}/>
+      <S_Sidebar setSelected={setSelected}/>
 
       <div>
         <div className={ styles.container } style={{gap: "150px", marginTop: '30px'}}>

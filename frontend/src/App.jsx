@@ -1,10 +1,10 @@
 import React from "react";
 import { Routes, Route} from 'react-router-dom';
-import Home from './pages/Home';
 import AddBoard from "./pages/AddBoard";
 import Rules from "./pages/Rules";
 import Result from "./pages/Result";
-import MDashboard from "./components/Dashboard/mentor_dashboard/MDashboard";
+import M_Dashboard from "./pages/M_Dashboard";
+import S_Dashboard from "./pages/S_Dashboard";
 import ViewBoard from "./pages/ViewBoard";
 import EditBoard from "./pages/EditBoard";
 import Edit_Result from "./pages/Edit_Result";
@@ -22,7 +22,7 @@ function App() {
             index={true} 
             element={
               <RequireAuth>
-                <Home />
+                <S_Dashboard />
               </RequireAuth>
             } 
           />
@@ -91,17 +91,20 @@ function App() {
 
         <Route 
           path="/teacher/:id" 
+          index={true} 
           exact 
           element={
             <RequireAuth>
-              <Home />
+              <M_Dashboard classroom={false}/>
             </RequireAuth>} 
         />
         <Route 
-          path="classroom/:id" 
+          path="/classroom/:id" 
+          index={true}
+          exact  
           element={
             <RequireAuth>
-              <MDashboard classroom={true} />
+              <M_Dashboard classroom={true}/>
             </RequireAuth>} 
         />
       </Routes>

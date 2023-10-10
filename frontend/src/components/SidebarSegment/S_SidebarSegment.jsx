@@ -8,7 +8,7 @@ import { faPlus, faSquareCaretDown, faTrash } from '@fortawesome/free-solid-svg-
 import Swal from 'sweetalert2';
 import axios from 'axios';
 
-const SidebarSegment = ({ selected, setSelected }) => {
+const S_SidebarSegment = ({ selected, setSelected }) => {
   const [projects, setProjects] = useState([]);
   const [open, setOpen] = useState(false);
   const [clickedProjectId, setClickedProjectId] = useState(null);
@@ -188,4 +188,4 @@ const SidebarSegment = ({ selected, setSelected }) => {
   );
 };
 
-export default SidebarSegment;
+export default S_SidebarSegment;
