@@ -23,12 +23,12 @@
         <T_Sidebar setSelected={setSelected}/>
 
         <div>
-          <div className={ styles.container }>
+          <div className={ styles.container } style={{gap: "150px", marginTop: '30px'}}>
             <Search />
             <Profile identification={1} />
           </div>
           
-
+      
           { classroom ? <Classroom selected={selected}/> : <ClassroomList />}
 
 

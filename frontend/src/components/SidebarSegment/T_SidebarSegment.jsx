@@ -55,6 +55,7 @@ const T_SidebarSegment = ({ selected, setSelected }) => {
           <ul>
             {classrooms.map((classroom) => (
                 <li
+                  key={classroom.id}
                   className={`${styles.projectName} ${
                     clickedClassId === classroom.id ? styles.clickedProject : ''
                   }`}

@@ -2,38 +2,38 @@ import React, { useState, useEffect } from 'react'
 import Card from '../UI/Card/Card';
 import styles from './Classroom.module.css';
 import global from '@assets/global.module.css';
-import { useParams } from 'react-router-dom'
 import axios from 'axios';
+
 
 const Classroom = ({selected}) => {
   const [classroom, setClassroom] = useState(null)
   const [groups, setGroups] = useState(null)
-  const { id } = useParams();
 
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/classroom/${selected}`)
-      .then((response) => {
-        setClassroom(response.data.class_name);
-        // console.log(response.data.class_name)
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      });
-    
-    axios.get(`http://127.0.0.1:8000/api/classroom/${selected}/group`)
-      .then((response) => {
-        setGroups(response.data);
-        console.log(response.data)
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      });
-    
+    if (selected !== null && selected !== undefined){
+      axios.get(`http://127.0.0.1:8000/api/classroom/${selected}`)
+        .then((response) => {
+          setClassroom(response.data.class_name);
+          // console.log(response.data.class_name)
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+        });
+      
+      axios.get(`http://127.0.0.1:8000/api/classroom/${selected}/group`)
+        .then((response) => {
+          setGroups(response.data);
+          // console.log(response.data)
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+        });
+    }
   }, [selected]);
 
-  if(!groups){
-    return <p>Loading...</p>;
-  }
+  // if(!groups){
+  //   return <p>Loading...</p>;
+  // }
 
 
   return (
@@ -52,15 +52,17 @@ const Classroom = ({selected}) => {
             <span className={styles.centerText}>Top Group</span>
           </div>
 
-          {
+          {groups ? (
             groups.map((group) => (
               <div className={styles.container} style={{ gridTemplateRows: '3rem' }} key={group.id}>
                 <span className={styles.centerText}>{group.name}</span>
-                {/* <span className={styles.centerText}>{ group.id }</span> */}
                 <span className={styles.centerText}>{group.rank}</span>
               </div>
             ))
-          }
+          ) : (
+            <p>Loading...</p>
+          )}
+
 
       </Card>
     </div>
