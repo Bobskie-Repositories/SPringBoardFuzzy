@@ -10,46 +10,11 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom'
 
 const ClassroomList = () => {
-    // const rooms = [
-    //     {
-    //       title: "Classroom 1",
-    //       objectID: 0,
-    //     },
-    //     {
-    //       title: "Classroom 2",
-    //       objectID: 1,
-    //     },
-    //     {
-    //       title: "Classroom 3",
-    //       objectID: 2,
-    //     }, 
-    //     {
-    //       title: "Classroom 4",
-    //       objectID: 3,
-    //     },
-    //     {
-    //       title: "Classroom 5",
-    //       objectID: 4,
-    //     },
-    //     {
-    //       title: "Classroom 6",
-    //       objectID: 5,
-    //     },
-    //     {
-    //       title: "Classroom 7",
-    //       objectID: 6,
-    //     },
-    //     {
-    //       title: "Classroom 8",
-    //       objectID: 7,
-    //     },
-    //   ];
-
     const { id } = useParams();
     const [rooms, setRooms] = useState([]);
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/classroom/' + id)
+        fetch(`http://127.0.0.1:8000/api/classroom/${id}/all`)
             .then((response) => response.json())
             .then((rooms) => setRooms(rooms));
     }, []);

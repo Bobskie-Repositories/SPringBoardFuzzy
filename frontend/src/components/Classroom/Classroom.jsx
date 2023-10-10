@@ -1,59 +1,44 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Card from '../UI/Card/Card';
 import styles from './Classroom.module.css';
 import global from '@assets/global.module.css';
 import { useParams } from 'react-router-dom'
+import axios from 'axios';
 
-const Classroom = () => {
+const Classroom = ({selected}) => {
+  const [classroom, setClassroom] = useState(null)
+  const [groups, setGroups] = useState(null)
   const { id } = useParams();
 
-  const groups = [
-    {
-      title: "Group 1",
-      objectID: 0,
-      rank: 1,
-    },
-    {
-      title: "Group 2",
-      objectID: 1,
-      rank: 2,
-    },
-    {
-      title: "Group 3",
-      objectID: 2,
-      rank: 3,
-    }, 
-    {
-      title: "Group 4",
-      objectID: 3,
-      rank: 4,
-    },
-    {
-      title: "Group 5",
-      objectID: 4,
-      rank: 5,
-    },
-    {
-      title: "Group 6",
-      objectID: 5,
-      rank: 6,
-    },
-    {
-      title: "Group 7",
-      objectID: 6,
-      rank: 7,
-    },
-    {
-      title: "Group 8",
-      objectID: 7,
-      rank: 8,
-    },
-  ];
+  useEffect(() => {
+    axios.get(`http://127.0.0.1:8000/api/classroom/${selected}`)
+      .then((response) => {
+        setClassroom(response.data.class_name);
+        // console.log(response.data.class_name)
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+    
+    axios.get(`http://127.0.0.1:8000/api/classroom/${selected}/group`)
+      .then((response) => {
+        setGroups(response.data);
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+    
+  }, [selected]);
+
+  if(!groups){
+    return <p>Loading...</p>;
+  }
 
 
   return (
     <div>
-      <h2 style={{fontSize: "30px", color: '#9c7b16'}}>Classrooms {id}</h2>
+      <h2 style={{fontSize: "30px", color: '#9c7b16'}}>{classroom}</h2>
 
       <Card className={ styles.card }>
 
@@ -63,21 +48,20 @@ const Classroom = () => {
 
           <div className={styles.container} style={{borderBottom: "1px solid #9c7b16", color: "#BCBEC0"}}>
             <span className={styles.centerText}>Group Name</span>
-            <span className={styles.centerText}>Group Id</span>
+            {/* <span className={styles.centerText}>Group Id</span> */}
             <span className={styles.centerText}>Top Group</span>
           </div>
 
           {
-            groups.map ( group => {
-            return (
-                <div className={styles.container} style={{gridTemplateRows: '3rem'}}>
-                  <span className={styles.centerText}>{ group.title }</span>
-                  <span className={styles.centerText}>{ group.objectID }</span>
-                  <span className={styles.centerText}>{ group.rank }</span>
-                </div>       
-            );
-            })
-          }    
+            groups.map((group) => (
+              <div className={styles.container} style={{ gridTemplateRows: '3rem' }} key={group.id}>
+                <span className={styles.centerText}>{group.name}</span>
+                {/* <span className={styles.centerText}>{ group.id }</span> */}
+                <span className={styles.centerText}>{group.rank}</span>
+              </div>
+            ))
+          }
+
       </Card>
     </div>
   )
