@@ -16,6 +16,7 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
   const [editedProjectName, setEditedProjectName] = useState('');
   const [userGroupId, setUserGroupId] = useState('');
   const [staff, setStaff] = useState(false)
+  const [isLoading, setIsLoading] = useState(true);
   const { groupid } = useParams();
   const { getUser } = useAuth();
 
@@ -24,25 +25,20 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
       const user = await getUser();
       setStaff(user.is_staff);
       setUserGroupId(user.group_fk);
-      axios.get(`http://127.0.0.1:8000/api/group/${user.group_fk}/projects`)
-        .then((response) => {
-          setProjects(response.data);
-          setSelected(response.data[0].id);
-          setClickedProjectId(response.data[0].id);
-        })
-        .catch((error) => {
-          console.error('Error fetching data:', error);
-        });
-
+      setIsLoading(false);
+      axios.get(`http://127.0.0.1:8000/api/group/${groupid}/projects`)
+      .then((response) => {
+        setProjects(response.data);
+        setSelected(response.data[0].id);
+        setClickedProjectId(response.data[0].id);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
     };
 
     fetchData();
   }, [setSelected, getUser]);
-
-  if (!staff) {
-    // Display a loading indicator or message
-    return <p></p>;
-  }
 
   const handleButtonClick = (projectId) => {
     setSelected(projectId);
@@ -177,6 +173,9 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
 
   return (
     <div className={styles.body}>
+      {isLoading ? (
+        <div> </div>
+      ) : (
       <ol className={styles.orList}>
         <li className={`${global.center} ${styles.customLi}`}>
           <div onClick={handleNameIconClick} className={styles.nameIcon}>
@@ -189,6 +188,7 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
           
         </li>
       </ol>
+      )}
 
       {open && (
         <div style={{ marginTop: '-7%', paddingLeft: '20%' }}>
