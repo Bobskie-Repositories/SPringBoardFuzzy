@@ -3,7 +3,6 @@ import { useParams } from 'react-router';
 import { useAuth } from '../../context/AuthContext';
 import styles from './SidebarSegment.module.css';
 import global from '../../assets/global.module.css';
-import GroupIcon from '@assets/groupicon.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faSquareCaretDown, faTrash, faSquareCaretRight } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
@@ -45,6 +44,7 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
     e.preventDefault(); // Prevent navigation
     setOpen(!open);
   };
+
 
   const addProject = async (newProject) => {
     try {
