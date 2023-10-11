@@ -5,6 +5,7 @@ from .controllers.ProjectBoardController import GetProjectBoards, CreateProjectB
 from .controllers.TemplateController import GetTemplate, GetAllTemplate
 from .controllers.StudentController import RegisterStudent, LoginStudent, LogoutStudent, StudentView
 from .controllers.TeacherController import RegisterTeacher, LoginTeacher, LogoutTeacher, TeacherView
+from .controllers.GroupController import GetGroupById
 
 urlpatterns = [
     path('api/register-student', RegisterStudent.as_view()),
@@ -38,4 +39,6 @@ urlpatterns = [
 
     path('api/template/<int:template_id>', GetTemplate.as_view()),
     path('api/template/', GetAllTemplate.as_view()),
+
+    path('api/group/<int:group_id>', GetGroupById.as_view()),
 ]
