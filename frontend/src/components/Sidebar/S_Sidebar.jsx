@@ -2,11 +2,13 @@ import React from 'react'
 import styles from './Sidebar.module.css';
 import global from '../../assets/global.module.css';
 import Logo from '@assets/Logo.png';
+import GroupIcon from '@assets/groupicon.png';
 import S_SidebarSegment from '../SidebarSegment/S_SidebarSegment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo, faGear, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router';
 import { useAuth } from '../../context/AuthContext';
+
 
 const S_Sidebar = ({ setSelected }) => {
     const navigate = useNavigate()
@@ -26,6 +28,20 @@ const S_Sidebar = ({ setSelected }) => {
     return (
         <div className={styles.sidebar}>
             <img src={Logo} alt="Logo" className={styles.img} onClick={goHome}/>
+            <div className={styles.subbody}>
+                <h4 className={styles.grouptext}>Your Group</h4>
+                <button className={styles.groupbutton}>
+                <div>
+                    <img
+                    className={styles.groupicon}
+                    src={GroupIcon}
+                    alt="GroupIcon"
+                    />
+                    <h3>Technobobskie</h3>
+                    <h4>ABC-QWE-123</h4>
+                </div>
+                </button>
+            </div>
             
             <S_SidebarSegment setSelected={setSelected}/>
 

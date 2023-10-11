@@ -1,35 +1,41 @@
   import React from 'react'
+  import { useState, useEffect } from 'react';
+  import { useParams } from 'react-router';
   import T_Sidebar from '../../Sidebar/T_Sidebar';
   import Search from '../../Search/Search';
   import Profile from '../../ProfileSegment/Profile';
   import ClassroomList from '../../Classroom/ClassroomList';
-  import Classroom from '../../Classroom/Classroom';
-  import { useState, useEffect } from 'react';
+  import ViewClassroom from '../../Classroom/ViewClassroom';
+  import ViewProject from '../../ViewProject/ViewProject';
   import styles from './MDashboard.module.css';
-  import global from '@assets/global.module.css';
-  import { useNavigate, useParams } from 'react-router';
 
-  const MDashboard = ({ classroom }) => {
+
+  const MDashboard = ({ choose }) => {
     const [selected, setSelected] = useState();
-    const { id } = useParams();
-    const navigate = useNavigate();
+    const [selectedProj, setSelectedProj] = useState();
+    const { id, groupid } = useParams();
+
     useEffect(() => {
-      // Update the selected state when the URL changes
       setSelected(id);
     }, [selected, id]);
 
     return (
       <div className={ styles.container } style={{padding: '20px 150px 20px 30px'}}>
-        <T_Sidebar setSelected={setSelected}/>
-
+        <T_Sidebar setSelected={setSelected} choose={choose} setSelectedProj={setSelectedProj}/>
+        
         <div>
           <div className={ styles.container } style={{gap: "150px", marginTop: '30px'}}>
             <Search />
             <Profile identification={1} />
           </div>
           
-      
-          { classroom ? <Classroom selected={selected}/> : <ClassroomList />}
+          { choose === 0 ? (
+            <ClassroomList />
+          ) : choose === 1 ? (
+            <ViewClassroom selected={selected}/>
+          ) : (
+            <ViewProject selected={selectedProj}/>
+          )}
 
 
         </div>  
