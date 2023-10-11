@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
+import { useAuth } from '../../context/AuthContext';
 import styles from './SidebarSegment.module.css';
 import global from '../../assets/global.module.css';
 import GroupIcon from '@assets/groupicon.png';
@@ -12,10 +13,13 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
   const [projects, setProjects] = useState([]);
   const [open, setOpen] = useState(false);
   const [clickedProjectId, setClickedProjectId] = useState(null);
-  const { id } = useParams();
+  const { groupid } = useParams();
+  const { getUser } = useAuth()
 
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/group/${id}/projects`)
+    const fetchData = async () => {
+      const user = await getUser();
+      axios.get(`http://127.0.0.1:8000/api/group/${groupid}/projects`)
       .then((response) => {
         setProjects(response.data);
         setSelected(response.data[0].id);
@@ -24,6 +28,10 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
+    };
+  
+    fetchData();
+    
   }, []);
 
   const handleButtonClick = (projectId) => {
@@ -139,20 +147,6 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
 
   return (
     <div className={styles.body}>
-      <div className={styles.subbody}>
-        <h4 className={styles.grouptext}>Your Group</h4>
-        <button className={styles.groupbutton}>
-          <div>
-            <img
-              className={styles.groupicon}
-              src={GroupIcon}
-              alt="GroupIcon"
-            />
-            <h3>Technobobskie</h3>
-            <h4>ABC-QWE-123</h4>
-          </div>
-        </button>
-      </div>
 
       <ol className={styles.orList}>
         <li className={`${global.center} ${styles.customLi}`}>

@@ -35,15 +35,14 @@ function Board( {selected} ) {
 
   return (
     <div>
-      {project ? ( // Check if project is not null or undefined
-      <>
-        <h2 style={{ fontSize: "30px", color: '#9c7b16' }}>{project.name} Boards</h2>
-        {/* Render other project information here */}
-      </>
-    ) : (
-      // Render a loading message or handle the case when project is not available
-      <p>Loading...</p>
-    )}
+      {project ? ( 
+        <>
+          <h2 style={{ fontSize: "30px", color: '#9c7b16' }}>{project.name} Boards</h2>
+        </>
+      ) : (
+        <p>Loading...</p>
+      )}
+      
       <div className={styles.scrollable}>
         {
           boards.map (board => {

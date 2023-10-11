@@ -1,10 +1,10 @@
 import React from 'react'
 import MDashboard from '../components/Dashboard/mentor_dashboard/MDashboard'
 
-const M_Dashboard = ({classroom}) => {
+const M_Dashboard = ({choose}) => {
     return (
         <div>
-            <MDashboard classroom={classroom}/>
+            <MDashboard choose={choose}/>
         </div>
     )
 }
