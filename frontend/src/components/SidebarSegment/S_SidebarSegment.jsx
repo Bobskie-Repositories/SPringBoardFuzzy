@@ -13,13 +13,15 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
   const [projects, setProjects] = useState([]);
   const [open, setOpen] = useState(false);
   const [clickedProjectId, setClickedProjectId] = useState(null);
+  const [userGroupId, setUserGroupId] = useState('');
   const { groupid } = useParams();
   const { getUser } = useAuth()
 
   useEffect(() => {
     const fetchData = async () => {
       const user = await getUser();
-      axios.get(`http://127.0.0.1:8000/api/group/${groupid}/projects`)
+      setUserGroupId(user.group_fk);
+      axios.get(`http://127.0.0.1:8000/api/group/${user.group_fk}/projects`)
       .then((response) => {
         setProjects(response.data);
         setSelected(response.data[0].id);
@@ -54,7 +56,7 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
 
       const response = await axios.post(`http://127.0.0.1:8000/api/project/create`, {
         name: newProject,
-        group_fk: id,
+        group_fk: userGroupId,
         created_at: getCurrentTimestamp(),
       });
 
