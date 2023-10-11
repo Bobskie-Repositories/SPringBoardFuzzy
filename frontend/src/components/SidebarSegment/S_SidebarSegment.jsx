@@ -223,7 +223,6 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
                     {project.name}
                   </div>
                 )}
-                {project.name}
                 {!staff && clickedProjectId === project.id && (
                   <FontAwesomeIcon icon={faTrash} className={styles.deleteIcon} onClick={showDeleteProjectModal}/>
                 )}
