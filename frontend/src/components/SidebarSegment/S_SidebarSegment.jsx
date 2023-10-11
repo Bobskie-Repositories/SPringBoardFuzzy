@@ -15,12 +15,14 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
   const [editableProjectId, setEditableProjectId] = useState(null);
   const [editedProjectName, setEditedProjectName] = useState('');
   const [userGroupId, setUserGroupId] = useState('');
+  const [staff, setStaff] = useState(false)
   const { groupid } = useParams();
   const { getUser } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
       const user = await getUser();
+      setStaff(user.is_staff);
       setUserGroupId(user.group_fk);
       axios.get(`http://127.0.0.1:8000/api/group/${user.group_fk}/projects`)
         .then((response) => {
@@ -31,10 +33,16 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
         .catch((error) => {
           console.error('Error fetching data:', error);
         });
+
     };
 
     fetchData();
   }, [setSelected, getUser]);
+
+  if (!staff) {
+    // Display a loading indicator or message
+    return <p></p>;
+  }
 
   const handleButtonClick = (projectId) => {
     setSelected(projectId);
@@ -175,7 +183,10 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
             <FontAwesomeIcon icon={projects.length > 0 ? faSquareCaretDown : faSquareCaretRight} className={styles.dropdown} size="xl" /> &nbsp;
             Projects
           </div>
-          <FontAwesomeIcon icon={faPlus} className={styles.plus} size="lg" onClick={showCreateProjectModal} />
+          {!staff &&
+            <FontAwesomeIcon icon={faPlus} className={styles.plus} size="lg" onClick={showCreateProjectModal} />
+          }
+          
         </li>
       </ol>
 
@@ -212,8 +223,9 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
                     {project.name}
                   </div>
                 )}
-                {clickedProjectId === project.id && (
-                  <FontAwesomeIcon icon={faTrash} className={styles.deleteIcon} onClick={showDeleteProjectModal} />
+                {project.name}
+                {!staff && clickedProjectId === project.id && (
+                  <FontAwesomeIcon icon={faTrash} className={styles.deleteIcon} onClick={showDeleteProjectModal}/>
                 )}
                 </div>
               </li>
