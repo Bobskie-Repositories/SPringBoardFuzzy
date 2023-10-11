@@ -1,9 +1,8 @@
 .scrollable{
     padding: 0px 0px 15px 0px;
     /* margin-top: -0.5rem; */
-    max-height: 510px; 
+    max-height: 550px; 
     overflow-y: auto;
-
     scrollbar-width: none;
     -ms-overflow-style: none; 
 }
@@ -20,6 +19,14 @@
   .scrollable::-webkit-scrollbar-track {
     background-color: transparent; 
   }
+
+  .head {
+    font-size: 25px;
+    color: #9C7B16;
+    margin: 30px 0px 0px 0px;
+  }
+
+  /* style={{ fontSize: "25px", color: '#9c7b16' }} */
 
 .card {
     padding: 0 0 20px 0;
