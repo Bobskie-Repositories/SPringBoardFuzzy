@@ -5,7 +5,7 @@ import styles from './SidebarSegment.module.css';
 import global from '../../assets/global.module.css';
 import GroupIcon from '@assets/groupicon.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faSquareCaretDown, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faSquareCaretDown, faTrash, faSquareCaretRight } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 
@@ -153,7 +153,7 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
       <ol className={styles.orList}>
         <li className={`${global.center} ${styles.customLi}`}>
           <div onClick={handleNameIconClick} className={styles.nameIcon}>
-            <FontAwesomeIcon icon={faSquareCaretDown} className={styles.dropdown} size="xl" /> &nbsp;
+            <FontAwesomeIcon icon={projects.length > 0 ? faSquareCaretDown : faSquareCaretRight} className={styles.dropdown} size="xl" /> &nbsp;
             Projects
           </div>
           <FontAwesomeIcon icon={faPlus} className={styles.plus} size="lg" onClick={showCreateProjectModal} />
