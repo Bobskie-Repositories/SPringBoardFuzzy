@@ -14,14 +14,16 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
   const [open, setOpen] = useState(false);
   const [clickedProjectId, setClickedProjectId] = useState(null);
   const [userGroupId, setUserGroupId] = useState('');
+  const [staff, setStaff] = useState(false)
   const { groupid } = useParams();
   const { getUser } = useAuth()
 
   useEffect(() => {
     const fetchData = async () => {
       const user = await getUser();
+      setStaff(user.is_staff);
       setUserGroupId(user.group_fk);
-      axios.get(`http://127.0.0.1:8000/api/group/${user.group_fk}/projects`)
+      axios.get(`http://127.0.0.1:8000/api/group/${groupid}/projects`)
       .then((response) => {
         setProjects(response.data);
         setSelected(response.data[0].id);
@@ -35,6 +37,11 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
     fetchData();
     
   }, []);
+
+  if (!staff) {
+    // Display a loading indicator or message
+    return <p></p>;
+  }
 
   const handleButtonClick = (projectId) => {
     setSelected(projectId);
@@ -156,7 +163,10 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
             <FontAwesomeIcon icon={faSquareCaretDown} className={styles.dropdown} size="xl" /> &nbsp;
             Projects
           </div>
-          <FontAwesomeIcon icon={faPlus} className={styles.plus} size="lg" onClick={showCreateProjectModal} />
+          {!staff &&
+            <FontAwesomeIcon icon={faPlus} className={styles.plus} size="lg" onClick={showCreateProjectModal} />
+          }
+          
         </li>
       </ol>
 
@@ -172,7 +182,7 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
                 onClick={() => handleButtonClick(project.id)}
               >
                 {project.name}
-                {clickedProjectId === project.id && (
+                {!staff && clickedProjectId === project.id && (
                   <FontAwesomeIcon icon={faTrash} className={styles.deleteIcon} onClick={showDeleteProjectModal}/>
                 )}
               </li>

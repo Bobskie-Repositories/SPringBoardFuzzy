@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router';
+import { useAuth } from '../../context/AuthContext';
 import styles from './ViewBoard.module.css';
 import global from '@assets/global.module.css'
 import Header from '../Header/Header';
@@ -14,6 +15,8 @@ const ViewBoard = () => {
   const [activeTab, setActiveTab] = useState('results');
   const [contents, setContents] = useState(null)
   const [groupId, setGroupId] = useState(null)
+  const [staff, setStaff] = useState(false)
+  const { getUser } = useAuth();
   const { id } = useParams();
   const groupIdRef = useRef();
   const navigate = useNavigate();
@@ -21,6 +24,9 @@ const ViewBoard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const user = await getUser();
+        setStaff(user.is_staff);
+
         const response = await axios.get(`http://127.0.0.1:8000/api/projectboards/${id}`);
         const projectResponse = await axios.get(`http://127.0.0.1:8000/api/project/${response.data.project_fk}`);
         const projectData = projectResponse.data;
@@ -139,14 +145,16 @@ const ViewBoard = () => {
           </div>
         </div>
 
-        <div className={styles.btmButton}>
+        {!staff && 
+        (<div className={styles.btmButton}>
           <Button className={styles.button} onClick={() => navigate('edit')}>
             Improve Result
           </Button>
           <Button className={styles.button} style={{backgroundColor: '#8A252C'}} onClick={showDeleteBoardModal}>
             Delete
           </Button>
-        </div>
+        </div>)
+        }
       </div>
     </div>
   );

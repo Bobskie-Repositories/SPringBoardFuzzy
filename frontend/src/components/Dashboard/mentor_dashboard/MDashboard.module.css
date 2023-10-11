@@ -6,6 +6,14 @@
     width: 65vw;
 }
 
+.butName{
+    background-color: #9C7B16;
+    height: 40px;
+    margin-top: 40px;
+    font-size: 12px;
+    width: 180px;
+}
+
 .button {
     font: inherit;
     padding: 0.45rem 2.5rem;
