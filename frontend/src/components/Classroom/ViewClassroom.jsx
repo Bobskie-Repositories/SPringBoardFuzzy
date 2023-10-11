@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
+import { NavLink } from 'react-router-dom';
 import Card from '../UI/Card/Card';
-import styles from './Classroom.module.css';
+import styles from './ViewClassroom.module.css';
 import global from '@assets/global.module.css';
 import axios from 'axios';
 
 
-const Classroom = ({selected}) => {
+const ViewClassroom = ({selected}) => {
   const [classroom, setClassroom] = useState(null)
   const [groups, setGroups] = useState(null)
 
@@ -31,6 +32,10 @@ const Classroom = ({selected}) => {
     }
   }, [selected]);
 
+  const goGroupPage = () => {
+    
+  }
+
   // if(!groups){
   //   return <p>Loading...</p>;
   // }
@@ -46,7 +51,7 @@ const Classroom = ({selected}) => {
             <h3 style={{color: 'white'}}> List of Groups </h3>
           </div>
 
-          <div className={styles.container} style={{borderBottom: "1px solid #9c7b16", color: "#BCBEC0"}}>
+          <div className={styles.container} style={{borderBottom: "1px solid #9c7b16", color: "#BCBEC0", marginBottom: "10px"}}>
             <span className={styles.centerText}>Group Name</span>
             {/* <span className={styles.centerText}>Group Id</span> */}
             <span className={styles.centerText}>Top Group</span>
@@ -54,8 +59,10 @@ const Classroom = ({selected}) => {
 
           {groups ? (
             groups.map((group) => (
-              <div className={styles.container} style={{ gridTemplateRows: '3rem' }} key={group.id}>
-                <span className={styles.centerText}>{group.name}</span>
+              <div className={styles.container} style={{ gridTemplateRows: '2.5rem' }} key={group.id}>
+                <NavLink to={ `group/${group.id}`}>
+                  <span className={styles.centerTextName} onClick={goGroupPage}>{group.name}</span>
+                </NavLink>
                 <span className={styles.centerText}>{group.rank}</span>
               </div>
             ))
@@ -69,4 +76,4 @@ const Classroom = ({selected}) => {
   )
 }
 
-export default Classroom
+export default ViewClassroom
