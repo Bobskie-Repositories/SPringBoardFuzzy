@@ -37,7 +37,7 @@ function Board( {selected} ) {
     <div>
       {project ? ( 
         <>
-          <h2 style={{ fontSize: "30px", color: '#9c7b16' }}>{project.name} Boards</h2>
+          <h2 className={styles.head}>{project.name} Boards</h2>
         </>
       ) : (
         <p>Loading...</p>
