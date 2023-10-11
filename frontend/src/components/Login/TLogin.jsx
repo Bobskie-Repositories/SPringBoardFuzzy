@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Header_landing from '../Header/Header_landing';
 import styles from './SLogin.module.css';
 
-const SLoginComponent = () => {
+const TLoginComponent = () => {
   // State to manage user inputs
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -13,21 +13,19 @@ const SLoginComponent = () => {
   const navigate = useNavigate();
 
   // login function from AuthContext
-  const { loginStudent, getUser } = useAuth();
+  const { loginTeacher, getUser } = useAuth();
 
   // Function to handle form submission
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const loginResult = await loginStudent(username, password);
+      const loginResult = await loginTeacher(username, password);
       
       if (loginResult.success) {
         try{
           const user = await getUser();
           // console.log(user);
-          const groupId = user.group_fk;
-          // console.log(groupId);
-          navigate(`/group/${groupId}`);
+          navigate(`/teacher/${user.id}`);
         }catch(error){
           console.error('Login failed. Please check your credentials.' + error);
         }
@@ -42,7 +40,7 @@ const SLoginComponent = () => {
       <Header_landing />
       <div className={styles.rectangle}>
 
-        <h2 className={styles.title}>Student Login</h2>
+        <h2 className={styles.title}>Teacher Login</h2>
 
         <h3 className={styles.header}>
           Welcome back! Please login to your account.
@@ -101,4 +99,4 @@ const SLoginComponent = () => {
   );
 };
 
-export default SLoginComponent;
+export default TLoginComponent;

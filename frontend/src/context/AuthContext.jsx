@@ -30,26 +30,69 @@ export const AuthProvider = ({ children }) => {
 
   const getUser = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/active-student', {
+      // Attempt to fetch student data
+      const studentResponse = await fetch('http://127.0.0.1:8000/api/active-student', {
         method: 'GET',
         credentials: 'include',
       });
   
-      if (!response.ok) {
-        throw new Error('Failed to fetch user data');
+      if (studentResponse.ok) {
+        const studentData = await studentResponse.json();
+        return studentData;
       }
   
-      const userData = await response.json();
-      return userData;
+      // Attempt to fetch teacher data if student data fetch fails
+      const teacherResponse = await fetch('http://127.0.0.1:8000/api/active-teacher', {
+        method: 'GET',
+        credentials: 'include',
+      });
+  
+      if (teacherResponse.ok) {
+        const teacherData = await teacherResponse.json();
+        return teacherData;
+      }
+  
+      throw new Error('Failed to fetch both student and teacher data');
     } catch (error) {
       console.error('Error fetching user data:', error);
       throw error;
     }
   };
 
-  const login = async (email, password) => {
+
+  const loginStudent = async (email, password) => {
     try {
       const response = await fetch('http://127.0.0.1:8000/api/login-student', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', 
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      if (response.status === 200) {
+        const data = await response.json();
+        const token = data.jwt;
+        localStorage.setItem('jwt', token);
+        setIsAuthenticated(true); 
+        return { success: true };
+      } else {
+        console.error('Login failed. Please check your credentials.');
+        return response;
+      }
+    } catch (error) {
+      console.error('An error occurred while logging in:', error.message);
+      return response;
+    }
+  };
+
+  const loginTeacher = async (email, password) => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/login-teacher', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -102,7 +145,8 @@ export const AuthProvider = ({ children }) => {
   const authValue = {
     token,
     id,
-    login,
+    loginStudent,
+    loginTeacher,
     logout,
     getUser,
     isAuthenticated,

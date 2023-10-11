@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareCaretDown, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import { useAuth } from '../../context/AuthContext';
 
 const T_SidebarSegment = ({ selected, setSelected }) => {
   const [classrooms, setClassrooms] = useState([]);
@@ -14,23 +15,27 @@ const T_SidebarSegment = ({ selected, setSelected }) => {
   const [clickedClassId, setClickedClassId] = useState(null);
   const navigate = useNavigate();
   const { id } = useParams();
+  const { getUser } = useAuth();
 
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/classroom/1/all`)
-      .then((response) => {
+    const fetchData = async () => {
+      try {
+        const user = await getUser();
+  
+        const response = await axios.get(`http://127.0.0.1:8000/api/classroom/${user.id}/all`);
         setClassrooms(response.data);
-        setSelected(response.data[0].id);
-        setClickedClassId(response.data[0].id);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error('Error fetching data:', error);
-      });
+      }
+    };
+  
+    fetchData();
   }, [id]);
 
-  const handleButtonClick = (projectId) => {
-    setSelected(projectId);
-    setClickedClassId(projectId);
-    navigate(`/classroom/${projectId}`)
+  const handleButtonClick = (classId) => {
+    setSelected(classId);
+    setClickedClassId(classId);
+    navigate(`/classroom/${classId}`)
   };
 
   const handleNameIconClick = (e) => {

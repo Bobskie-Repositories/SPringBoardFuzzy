@@ -15,7 +15,9 @@ function App() {
   return (
       <Routes>
         {/* <Route path="/" exact element={<RequireAuth><Home /></RequireAuth>} /> */}
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login choose={0}/>} />
+        <Route path="/login-student" element={<Login choose={1}/>} />
+        <Route path="/login-teacher" element={<Login choose={2}/>} />
 
         <Route path="/group/:id">
           <Route 
