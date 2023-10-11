@@ -12,28 +12,29 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
   const [projects, setProjects] = useState([]);
   const [open, setOpen] = useState(false);
   const [clickedProjectId, setClickedProjectId] = useState(null);
+  const [editableProjectId, setEditableProjectId] = useState(null);
+  const [editedProjectName, setEditedProjectName] = useState('');
   const [userGroupId, setUserGroupId] = useState('');
   const { groupid } = useParams();
-  const { getUser } = useAuth()
+  const { getUser } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
       const user = await getUser();
       setUserGroupId(user.group_fk);
       axios.get(`http://127.0.0.1:8000/api/group/${user.group_fk}/projects`)
-      .then((response) => {
-        setProjects(response.data);
-        setSelected(response.data[0].id);
-        setClickedProjectId(response.data[0].id);
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      });
+        .then((response) => {
+          setProjects(response.data);
+          setSelected(response.data[0].id);
+          setClickedProjectId(response.data[0].id);
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+        });
     };
-  
+
     fetchData();
-    
-  }, []);
+  }, [setSelected, getUser]);
 
   const handleButtonClick = (projectId) => {
     setSelected(projectId);
@@ -41,8 +42,27 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
   };
 
   const handleNameIconClick = (e) => {
-    e.preventDefault(); // Prevent navigation
+    e.preventDefault(); 
     setOpen(!open);
+  };
+
+  const handleProjectDoubleClick = (projectId) => {
+    if (editableProjectId === null) {
+      setEditableProjectId(projectId);
+      const projectToEdit = projects.find((project) => project.id === projectId);
+      setEditedProjectName(projectToEdit.name);
+    }
+  };
+
+  const handleEditProjectName = () => {
+    const updatedProjects = projects.map((project) => {
+      if (project.id === editableProjectId) {
+        return { ...project, name: editedProjectName };
+      }
+      return project;
+    });
+    setProjects(updatedProjects);
+    setEditableProjectId(null); 
   };
 
 
@@ -149,7 +169,6 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
 
   return (
     <div className={styles.body}>
-
       <ol className={styles.orList}>
         <li className={`${global.center} ${styles.customLi}`}>
           <div onClick={handleNameIconClick} className={styles.nameIcon}>
@@ -170,11 +189,33 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
                 }`}
                 key={project.id}
                 onClick={() => handleButtonClick(project.id)}
+                onDoubleClick={() => handleProjectDoubleClick(project.id)}
               >
-                {project.name}
-                {clickedProjectId === project.id && (
-                  <FontAwesomeIcon icon={faTrash} className={styles.deleteIcon} onClick={showDeleteProjectModal}/>
+                <div className={styles.projectList}>
+                {editableProjectId === project.id ? (
+                  <div>
+                    <input
+                      className={styles.inputProject}
+                      type="text"
+                      value={editedProjectName}
+                      onChange={(e) => setEditedProjectName(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          handleEditProjectName();
+                        }
+                      }}
+                      onBlur={handleEditProjectName}
+                    />
+                  </div>
+                ) : (
+                  <div>
+                    {project.name}
+                  </div>
                 )}
+                {clickedProjectId === project.id && (
+                  <FontAwesomeIcon icon={faTrash} className={styles.deleteIcon} onClick={showDeleteProjectModal} />
+                )}
+                </div>
               </li>
             ))}
           </ul>

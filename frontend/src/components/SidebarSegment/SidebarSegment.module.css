@@ -74,18 +74,17 @@
 }
 
 .clickedProject {
-    color: rgb(139, 139, 139); /* Add your desired text color */
-    /* Add any other styles you want to apply to the clicked project */
+    color: rgb(139, 139, 139); 
   }
 
 .plus{
-    cursor: pointer; /* Change cursor to pointer on hover */
-    transition: color 0.3s; /* Smooth color transition */
+    cursor: pointer;
+    transition: color 0.3s; 
     margin-left: 7rem;
 }
 
 .plus:hover {
-    color: rgb(181, 178, 178); /* Change color on hover */
+    color: rgb(181, 178, 178); 
   }
 
 .nameIcon:hover {
@@ -95,13 +94,32 @@
 .orList {
     list-style-type: none;
     padding: 0;
-    margin-top: 4%;
+
 }
 
 .deleteIcon {
     position: absolute;
     right: 3rem;
 }
+
+.projectList {
+    display: flex;
+}
+
+.inputProject{
+    border: 2px solid #ffffff;
+    background-color: #ffffff;
+    color: #9c7b16;
+    font-size: small;
+    font-weight: 600;
+    width: 60%;
+}
+
+.inputProject:focus{
+    border: 2px solid rgb(255, 255, 255); 
+    outline: none; 
+}
+
 
 
   
