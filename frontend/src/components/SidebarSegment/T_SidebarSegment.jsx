@@ -49,7 +49,7 @@ const T_SidebarSegment = ({ selected, setSelected }) => {
       <ol className={styles.orList}>
         <li className={`${global.center} ${styles.customLi}`}>
           <div onClick={handleNameIconClick} className={styles.nameIcon}>
-            <FontAwesomeIcon icon={faSquareCaretDown} className={styles.dropdown} size="xl" /> &nbsp;
+            <FontAwesomeIcon icon={classrooms.length > 0 ? faSquareCaretDown : faSquareCaretRight} className={styles.dropdown} size="xl" /> &nbsp;
             Class
           </div>
         </li>
