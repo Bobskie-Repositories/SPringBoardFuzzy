@@ -3,9 +3,8 @@ import { useParams } from 'react-router';
 import { useAuth } from '../../context/AuthContext';
 import styles from './SidebarSegment.module.css';
 import global from '../../assets/global.module.css';
-import GroupIcon from '@assets/groupicon.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faSquareCaretDown, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faSquareCaretDown, faTrash, faSquareCaretRight } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 
@@ -13,11 +12,13 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
   const [projects, setProjects] = useState([]);
   const [open, setOpen] = useState(false);
   const [clickedProjectId, setClickedProjectId] = useState(null);
+  const [editableProjectId, setEditableProjectId] = useState(null);
+  const [editedProjectName, setEditedProjectName] = useState('');
   const [userGroupId, setUserGroupId] = useState('');
   const [staff, setStaff] = useState(false)
   const [isLoading, setIsLoading] = useState(true);
   const { groupid } = useParams();
-  const { getUser } = useAuth()
+  const { getUser } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,10 +36,9 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
         console.error('Error fetching data:', error);
       });
     };
-  
+
     fetchData();
-    
-  }, []);
+  }, [setSelected, getUser]);
 
   const handleButtonClick = (projectId) => {
     setSelected(projectId);
@@ -46,9 +46,29 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
   };
 
   const handleNameIconClick = (e) => {
-    e.preventDefault(); // Prevent navigation
+    e.preventDefault(); 
     setOpen(!open);
   };
+
+  const handleProjectDoubleClick = (projectId) => {
+    if (editableProjectId === null) {
+      setEditableProjectId(projectId);
+      const projectToEdit = projects.find((project) => project.id === projectId);
+      setEditedProjectName(projectToEdit.name);
+    }
+  };
+
+  const handleEditProjectName = () => {
+    const updatedProjects = projects.map((project) => {
+      if (project.id === editableProjectId) {
+        return { ...project, name: editedProjectName };
+      }
+      return project;
+    });
+    setProjects(updatedProjects);
+    setEditableProjectId(null); 
+  };
+
 
   const addProject = async (newProject) => {
     try {
@@ -159,7 +179,7 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
       <ol className={styles.orList}>
         <li className={`${global.center} ${styles.customLi}`}>
           <div onClick={handleNameIconClick} className={styles.nameIcon}>
-            <FontAwesomeIcon icon={faSquareCaretDown} className={styles.dropdown} size="xl" /> &nbsp;
+            <FontAwesomeIcon icon={projects.length > 0 ? faSquareCaretDown : faSquareCaretRight} className={styles.dropdown} size="xl" /> &nbsp;
             Projects
           </div>
           {!staff &&
@@ -180,11 +200,33 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
                 }`}
                 key={project.id}
                 onClick={() => handleButtonClick(project.id)}
+                onDoubleClick={() => handleProjectDoubleClick(project.id)}
               >
-                {project.name}
+                <div className={styles.projectList}>
+                {editableProjectId === project.id ? (
+                  <div>
+                    <input
+                      className={styles.inputProject}
+                      type="text"
+                      value={editedProjectName}
+                      onChange={(e) => setEditedProjectName(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          handleEditProjectName();
+                        }
+                      }}
+                      onBlur={handleEditProjectName}
+                    />
+                  </div>
+                ) : (
+                  <div>
+                    {project.name}
+                  </div>
+                )}
                 {!staff && clickedProjectId === project.id && (
                   <FontAwesomeIcon icon={faTrash} className={styles.deleteIcon} onClick={showDeleteProjectModal}/>
                 )}
+                </div>
               </li>
             ))}
           </ul>
