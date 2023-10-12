@@ -5,7 +5,6 @@
     width: fit-content;
     max-height: 680px;   
     position: relative;
-    cursor: pointer;
 }
 
 .subbody {
@@ -55,6 +54,7 @@
 
 .img {
     padding: 20px;
+    cursor: pointer;
 }
 
 .customLi {

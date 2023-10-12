@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { NavLink } from 'react-router-dom';
 import styles from './SidebarSegment.module.css';
 import global from '../../assets/global.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquareCaretDown, faTrash } from '@fortawesome/free-solid-svg-icons';
-import Swal from 'sweetalert2';
+import { faSquareCaretDown, faSquareCaretRight } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 
@@ -49,7 +47,7 @@ const T_SidebarSegment = ({ selected, setSelected }) => {
       <ol className={styles.orList}>
         <li className={`${global.center} ${styles.customLi}`}>
           <div onClick={handleNameIconClick} className={styles.nameIcon}>
-            <FontAwesomeIcon icon={classrooms.length > 0 ? faSquareCaretDown : faSquareCaretRight} className={styles.dropdown} size="xl" /> &nbsp;
+            <FontAwesomeIcon icon={open ? faSquareCaretDown : faSquareCaretRight} className={styles.dropdown} size="xl" /> &nbsp;
             Class
           </div>
         </li>
