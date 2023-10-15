@@ -20,10 +20,6 @@
       setSelected(id);
     }, [selected, id]);
 
-    const handleCreateBoardClick = () => {
-      
-    };
-
     return (
       <div className={ styles.container } style={{padding: '20px 150px 20px 30px'}}>
         <T_Sidebar setSelected={setSelected} choose={choose} setSelectedProj={setSelectedProj}/>
@@ -38,12 +34,6 @@
               <div>
                 <div className={ styles.container }>
                   <h2 style={{fontSize: "30px", color: '#9c7b16'}}>Classrooms</h2>
-                  <Button 
-                    className={styles.butName}
-                    onClick={handleCreateBoardClick}
-                    > 
-                        Create Template
-                  </Button>
                 </div>
                 <ClassroomList />
               </div>
