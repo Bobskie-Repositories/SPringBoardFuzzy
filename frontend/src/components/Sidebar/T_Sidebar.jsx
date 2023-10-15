@@ -9,7 +9,7 @@ import { faCircleInfo, faGear, faArrowRightFromBracket } from '@fortawesome/free
 import { useNavigate } from 'react-router';
 import { useAuth } from '../../context/AuthContext';
 
-const T_Sidebar = ({ setSelected, choose, setSelectedProj }) => {
+const T_Sidebar = ({ setSelected, choose, setSelectedProj, toggleCreateAction }) => {
     const navigate = useNavigate()
     const { getUser, logout } = useAuth();
     
@@ -28,13 +28,13 @@ const T_Sidebar = ({ setSelected, choose, setSelectedProj }) => {
         <div className={styles.sidebar}>
             <img src={Logo} alt="Logo" className={styles.img} onClick={goHome}/>
             
-            <T_SidebarSegment setSelected={setSelected}/>
+            <T_SidebarSegment setSelected={setSelected} toggleCreateAction={toggleCreateAction}/>
 
             {/* adding the groups project list 
                 2 - because that's the conditional statement in MDashboard where it renders the group board
                 this is only meant for teachers            
             */}
-            {choose === 2 && <S_SidebarSegment setSelected={setSelectedProj}/>}
+            {choose === 2 && <S_SidebarSegment setSelected={setSelectedProj} />}
 
             <ol className={styles.list}>
                 <li className={`${global.center} ${styles.customLi}`} >

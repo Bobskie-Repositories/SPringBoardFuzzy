@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useAuth } from '../../context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquareCaretDown, faSquareCaretRight } from '@fortawesome/free-solid-svg-icons';
+import { faSquareCaretDown, faSquareCaretRight,  faTableCellsLarge} from '@fortawesome/free-solid-svg-icons';
 import styles from './SidebarSegment.module.css';
 import global from '../../assets/global.module.css';
 import axios from 'axios';
 
 
-const T_SidebarSegment = ({ selected, setSelected }) => {
+const T_SidebarSegment = ({ selected, setSelected, toggleCreateAction }) => {
   const [classrooms, setClassrooms] = useState([]);
   const [open, setOpen] = useState(false);
   const [clickedClassId, setClickedClassId] = useState(null);
@@ -32,6 +32,7 @@ const T_SidebarSegment = ({ selected, setSelected }) => {
   }, [id]);
 
   const handleButtonClick = (classId) => {
+    toggleCreateAction(false);
     setSelected(classId);
     setClickedClassId(classId);
     navigate(`/classroom/${classId}`)
@@ -43,7 +44,7 @@ const T_SidebarSegment = ({ selected, setSelected }) => {
   };
 
   const goMyTemplate = () => {
-    navigate('template')
+    toggleCreateAction(true);
   }
 
   return (
@@ -52,7 +53,8 @@ const T_SidebarSegment = ({ selected, setSelected }) => {
       <ol className={styles.orList}>
 
         <li className={`${global.center} ${styles.customLi}`}>
-          <div onClick={goMyTemplate} className={styles.nameIcon}>
+        <div onClick={goMyTemplate} className={styles.nameIcon}> 
+          <FontAwesomeIcon icon={faTableCellsLarge} className={styles.templates} size="xl"/>
             My Template
           </div>
         </li>
