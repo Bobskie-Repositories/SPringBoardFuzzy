@@ -9,11 +9,13 @@
 
 .subbody {
     padding-left: 2rem;
+    margin-bottom: 10px;
 }
 
 .grouptext {
     font-weight: 500;
     color: #9c7b16;
+    margin: 10px;
 }
 
 .groupbutton {

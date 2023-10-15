@@ -7,13 +7,24 @@ import Profile from '../../ProfileSegment/Profile';
 import BoardCreation from '../../BoardCreation/BoardCreation';
 import Button from '../../UI/Button/Button';
 import styles from './SDashboard.module.css';
+import Swal from 'sweetalert2';
 
 const SDashboard = () => {
   const [selected, setSelected] = useState();
   const [createAction, setCreateAction] = useState(false);
+  const [boardCount, setBoardCount] = useState(0);
 
   const handleCreateBoardClick = () => {
-    setCreateAction(true); 
+    if (boardCount >= 5) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Board Limit Reached',
+        text: 'You have reached the board creation limit for this project. You cannot create more boards.',
+        confirmButtonColor: '#8A252C',
+      });
+    } else {
+      setCreateAction(true);
+    }
   };
 
   return (
@@ -27,7 +38,7 @@ const SDashboard = () => {
         </div>
 
         <div className={ styles.container }>
-          {createAction ? <BoardCreation selected={selected} setCreateAction={setCreateAction}/> : <Boards selected={selected} />}
+          {createAction ? <BoardCreation selected={selected} setCreateAction={setCreateAction}/> : <Boards selected={selected} setBoardCount={setBoardCount} />}
         
           <Button 
           className={styles.butName}

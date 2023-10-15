@@ -49,15 +49,15 @@ const S_Sidebar = ({ setSelected }) => {
             <div className={styles.subbody}>
                 <h4 className={styles.grouptext}>Your Group</h4>
                 <button className={styles.groupbutton}>
-                <div style={{minWidth: '150px'}}>
-                    <img
-                    className={styles.groupicon}
-                    src={GroupIcon}
-                    alt="GroupIcon"
-                    />
-                    <h3>{group}</h3>
-                    <h4>ABC-QWE-123</h4>
-                </div>
+                    <div style={{minWidth: '150px'}}>
+                        <img
+                        className={styles.groupicon}
+                        src={GroupIcon}
+                        alt="GroupIcon"
+                        />
+                        <h3>{group}</h3>
+                        <h4>ABC-QWE-123</h4>
+                    </div>
                 </button>
             </div>
             

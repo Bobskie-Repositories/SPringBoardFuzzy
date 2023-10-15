@@ -5,11 +5,9 @@ import IdeaIcon from '@assets/idea.png';
 import Button from '../UI/Button/Button';
 import { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from "react-router-dom";
-
-
 import CircularProgressWithLabel from '../UI/ProgressBar/CircularProgressWithLabel';
 
-function Board( {selected} ) {
+function Board( {selected, setBoardCount} ) {
   const navigate = useNavigate();
   const [boards, setBoards] = useState([])
   const [project, setProject] = useState()
@@ -18,7 +16,11 @@ function Board( {selected} ) {
     if (selected !== null && selected !== undefined) {
       fetch('http://127.0.0.1:8000/api/project/' + selected + '/projectboards')
         .then((response) => response.json())
-        .then((boards) => setBoards(boards));
+        .then((boards) => {
+          setBoards(boards);
+          const boardCount = boards.length;
+          setBoardCount(boardCount);
+        });
 
       fetch('http://127.0.0.1:8000/api/project/' + selected )
         .then((response) => response.json())
