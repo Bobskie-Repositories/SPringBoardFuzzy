@@ -51,7 +51,7 @@
 }
 
 .customLi {
-    padding: 13px 40px;
+    padding: 15px 40px;
 }
 
 .customLi:hover {
@@ -71,6 +71,10 @@
 
 .dropdown{
     margin-right: 7px;
+}
+
+.templates {
+    margin-right: 15px;
 }
 
 .clickedProject {
