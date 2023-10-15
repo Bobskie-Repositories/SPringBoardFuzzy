@@ -2,7 +2,7 @@ from django.urls import path
 from .controllers.ClassroomController import GetClassroom, GetClassroomById, GetGroupByClassId
 from .controllers.ProjectController import ProjectCreateView, ProjectView, GetProjectsByGroupId, GetProjectById, ProjectCreateView, ProjectUpdateView, DeleteProjectView
 from .controllers.ProjectBoardController import GetProjectBoards, CreateProjectBoard, GetProjectBoardById, UpdateBoard, DeleteProjectBoard
-from .controllers.TemplateController import GetTemplate, GetAllTemplate
+from .controllers.TemplateController import GetTemplate, GetAllTemplate, CreateTemplate, DeleteTemplate
 from .controllers.StudentController import RegisterStudent, LoginStudent, LogoutStudent, StudentView
 from .controllers.TeacherController import RegisterTeacher, LoginTeacher, LogoutTeacher, TeacherView
 from .controllers.GroupController import GetGroupById
@@ -40,6 +40,8 @@ urlpatterns = [
 
     path('api/template/<int:template_id>', GetTemplate.as_view()),
     path('api/template/', GetAllTemplate.as_view()),
+    path('api/template/add', CreateTemplate.as_view()),
+    path('api/template/<int:template_id>/delete', DeleteTemplate.as_view()),
 
     path('api/group/<int:group_id>', GetGroupById.as_view()),
 ]
