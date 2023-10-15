@@ -1,31 +1,31 @@
-.body{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 50px;
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 50px;
 }
 
-.container{
-    display: flex;
-    flex-direction: column;
-    width: 60%;
-    max-width: 70rem;
-    align-items: center;
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  max-width: 70rem;
+  align-items: center;
 }
 
-.content{
-    margin-top: 30px;
-    line-height: 2; 
-    text-align: justify;
+.content {
+  margin-top: 30px;
+  line-height: 2;
+  text-align: justify;
 }
 
-.button{
-    margin-top: 150px;
-    height: 40px;
-    background-color: #82C36B;
-    font-size: 14px;
+.button {
+  margin-top: 150px;
+  height: 40px;
+  background-color: #82c36b;
+  font-size: 14px;
 }
 
-.textColor{
-    color: red;
+.textColor {
+  color: red;
 }
