@@ -7,7 +7,7 @@
   import ClassroomList from '../../Classroom/ClassroomList';
   import ViewClassroom from '../../Classroom/ViewClassroom';
   import ViewProject from '../../ViewProject/ViewProject';
-  import Button from '../../UI/Button/Button';
+  import TemplateList from '../../TemplateList/TemplateList';
   import styles from './MDashboard.module.css';
 
 
@@ -30,7 +30,7 @@
             <Profile identification={1} />
           </div>
           
-            { choose === 0 ? (
+            {/* { choose === 0 ? (
               <div>
                 <div className={ styles.container }>
                   <h2 style={{fontSize: "30px", color: '#9c7b16'}}>Classrooms</h2>
@@ -41,7 +41,15 @@
               <ViewClassroom selected={selected}/>
             ) : (
               <ViewProject selected={selectedProj}/>
-            )}
+            )} */}
+            
+              <div>
+                <div className={ styles.container }>
+                  <h2 style={{fontSize: "30px", color: '#9c7b16'}}>Your Templates</h2>
+                </div>
+                <TemplateList/>
+              </div>
+            
           
         </div>  
 
