@@ -72,6 +72,21 @@ class GetProjectById(generics.ListAPIView):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class ProjectUpdateView(generics.UpdateAPIView):
+    serializer_class = ProjectSerializer
+    queryset = Project.objects.all()
+
+    def put(self, request, *args, **kwargs):
+        project_id = self.kwargs.get('project_id')
+        project = get_object_or_404(Project, pk=project_id)
+
+        serializer = self.get_serializer(project, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class DeleteProjectView(generics.DestroyAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
