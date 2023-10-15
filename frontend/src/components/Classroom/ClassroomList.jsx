@@ -20,9 +20,7 @@ const ClassroomList = () => {
     }, []);
 
   return (
-    <div>       
-        <h2 style={{fontSize: "30px", color: '#9c7b16'}}>Classrooms</h2>
-        
+    <div>             
         {
             rooms.map ( classroom => {
             return (

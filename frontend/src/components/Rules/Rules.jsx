@@ -53,8 +53,8 @@ const Rules = () => {
 
         Please input your data carefully, as this will determine the outcome of your assessment.
 
-        <h3>Techer's rules:</h3>
-        {template.rules}
+        {/* <h3>Techer's rules:</h3>
+        {template.rules} */}
 
         </span>
       

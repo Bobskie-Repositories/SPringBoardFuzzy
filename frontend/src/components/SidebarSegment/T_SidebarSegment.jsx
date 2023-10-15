@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import styles from './SidebarSegment.module.css';
-import global from '../../assets/global.module.css';
+import { useAuth } from '../../context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareCaretDown, faSquareCaretRight } from '@fortawesome/free-solid-svg-icons';
+import styles from './SidebarSegment.module.css';
+import global from '../../assets/global.module.css';
 import axios from 'axios';
-import { useAuth } from '../../context/AuthContext';
+
 
 const T_SidebarSegment = ({ selected, setSelected }) => {
   const [classrooms, setClassrooms] = useState([]);
@@ -41,16 +42,28 @@ const T_SidebarSegment = ({ selected, setSelected }) => {
     setOpen(!open);
   };
 
+  const goMyTemplate = () => {
+    navigate('template')
+  }
+
   return (
     <div className={styles.body}>
 
       <ol className={styles.orList}>
+
+        <li className={`${global.center} ${styles.customLi}`}>
+          <div onClick={goMyTemplate} className={styles.nameIcon}>
+            My Template
+          </div>
+        </li>
+
         <li className={`${global.center} ${styles.customLi}`}>
           <div onClick={handleNameIconClick} className={styles.nameIcon}>
             <FontAwesomeIcon icon={open ? faSquareCaretDown : faSquareCaretRight} className={styles.dropdown} size="xl" /> &nbsp;
             Class
           </div>
         </li>
+
       </ol>
 
       {open && (

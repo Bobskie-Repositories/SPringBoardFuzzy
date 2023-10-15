@@ -44,6 +44,9 @@ function Board( {selected} ) {
       )}
       
       <div className={styles.scrollable}>
+        {boards.length === 0 && (
+          <p className={styles.centeredText}>It looks like you haven't created any boards yet. <br/> Click on the "Create Board" button to get started and create your first board.</p>
+        )}
         {
           boards.map (board => {
             return (
