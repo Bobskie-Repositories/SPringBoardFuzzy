@@ -66,5 +66,5 @@ class StudentSerializer(serializers.ModelSerializer):
 class TemplateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Template
-        fields = ('id', 'title', 'content', 'rules', 'description',
+        fields = ('id', 'title', 'content', 'rules', 'description', 'isPublic',
                   'teacher_fk', 'created_at', 'deleted_at')

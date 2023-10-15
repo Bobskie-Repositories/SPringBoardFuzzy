@@ -8,10 +8,11 @@ import global from '../../assets/global.module.css';
 import axios from 'axios';
 
 
-const T_SidebarSegment = ({ selected, setSelected, toggleCreateAction }) => {
+const T_SidebarSegment = ({ selected, setSelected }) => {
   const [classrooms, setClassrooms] = useState([]);
   const [open, setOpen] = useState(false);
   const [clickedClassId, setClickedClassId] = useState(null);
+  const [userId, setUserId] = useState(0);
   const navigate = useNavigate();
   const { id } = useParams();
   const { getUser } = useAuth();
@@ -22,6 +23,7 @@ const T_SidebarSegment = ({ selected, setSelected, toggleCreateAction }) => {
         const user = await getUser();
   
         const response = await axios.get(`http://127.0.0.1:8000/api/classroom/${user.id}/all`);
+        setUserId(user.id);
         setClassrooms(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -32,7 +34,6 @@ const T_SidebarSegment = ({ selected, setSelected, toggleCreateAction }) => {
   }, [id]);
 
   const handleButtonClick = (classId) => {
-    toggleCreateAction(false);
     setSelected(classId);
     setClickedClassId(classId);
     navigate(`/classroom/${classId}`)
@@ -44,7 +45,7 @@ const T_SidebarSegment = ({ selected, setSelected, toggleCreateAction }) => {
   };
 
   const goMyTemplate = () => {
-    toggleCreateAction(true);
+    navigate(`/teacher/${userId}/template`)
   }
 
   return (

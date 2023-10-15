@@ -21,45 +21,19 @@
       setSelected(id);
     }, [selected, id]);
 
-    const toggleCreateAction = (value) => {
-      setCreate(value);
-    };
-
     return (
       <div className={ styles.container } style={{padding: '20px 150px 20px 30px'}}>
-        <T_Sidebar setSelected={setSelected} choose={choose} setSelectedProj={setSelectedProj}  toggleCreateAction={toggleCreateAction}/>
-        
+
+        <T_Sidebar setSelected={setSelected} choose={choose} setSelectedProj={setSelectedProj} />
+
         <div>
           <div className={ styles.container } style={{gap: "150px", marginTop: '30px'}}>
             <Search />
             <Profile identification={1} />
           </div>
 
-          {createAction ? 
-            <div>
-              <div className={ styles.container }>
-                <h2 style={{fontSize: "30px", color: '#9c7b16'}}>Your Templates</h2>
-              </div>
-              <TemplateList />
-            </div> 
-          : 
-            <div>
-            { choose === 0 ? (
-              <div>
-                <div className={ styles.container }>
-                  <h2 style={{fontSize: "30px", color: '#9c7b16'}}>Classrooms</h2>
-                </div>
-                <ClassroomList />
-              </div>
-            ) : choose === 1 ? (
-              <ViewClassroom selected={selected}/>
-            ) : (
-              <ViewProject selected={selectedProj}/>
-            )}
-            </div>
-          }
           
-            {/* <div>
+            <div>
             { choose === 0 ? (
               <div>
                 <div className={ styles.container }>
@@ -69,20 +43,18 @@
               </div>
             ) : choose === 1 ? (
               <ViewClassroom selected={selected}/>
-            ) : (
+            ) : choose === 2 ? (
               <ViewProject selected={selectedProj}/>
-            )}
-            </div> */}
-            
-            
-              {/* <div>
+            ) : (
+              <div>
                 <div className={ styles.container }>
                   <h2 style={{fontSize: "30px", color: '#9c7b16'}}>Your Templates</h2>
                 </div>
-                <TemplateList/>
-              </div> */}
-            
-          
+                <TemplateList />
+              </div>
+            )}
+
+            </div>
         </div>  
 
       </div>

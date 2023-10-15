@@ -59,27 +59,43 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
   };
 
   const handleEditProjectName = () => {
-    const updatedProjects = projects.map((project) => {
-      if (project.id === editableProjectId) {
-        const updatedProject = { ...project, name: editedProjectName };
-
-        axios
-          .put(`http://127.0.0.1:8000/api/project/${project.id}/update`, updatedProject)
-          .then((response) => {
-            console.log('Project name updated');
-          })
-          .catch((error) => {
-            console.error('Error updating project name:', error);
-          });
+    if (!editedProjectName) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Project name cannot be empty',
+        confirmButtonColor: '#8A252C',
+      });
+    } else if (projects.some((p) => p.name === editedProjectName && p.id !== editableProjectId)) {
+      Swal.fire({
+        icon: 'error',
+        title: `Project with the name '${editedProjectName}' already exists`,
+        text: 'Please enter another project name.',
+        confirmButtonColor: '#8A252C',
+      });
+    } else {
+      const updatedProjects = projects.map((project) => {
+        if (project.id === editableProjectId) {
+          const updatedProject = { ...project, name: editedProjectName };
   
-        return updatedProject;
-      }
-      return project;
-    });
-    
-    setProjects(updatedProjects);
-    setEditableProjectId(null);
+          axios
+            .put(`http://127.0.0.1:8000/api/project/${project.id}/update`, updatedProject)
+            .then((response) => {
+              console.log('Project name updated');
+            })
+            .catch((error) => {
+              console.error('Error updating project name:', error);
+            });
+  
+          return updatedProject;
+        }
+        return project;
+      });
+  
+      setProjects(updatedProjects);
+      setEditableProjectId(null);
+    }
   };
+  
 
 
   const addProject = async (newProject) => {
@@ -127,35 +143,47 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
   
 
   const showCreateProjectModal = () => {
-    Swal.fire({
-      html: '<span style="font-size: 20px">Create a New Project</span>',
-      input: 'text',
-      inputPlaceholder: 'Enter new project name',
-      showCancelButton: true,
-      confirmButtonText: 'Create',
-      confirmButtonColor: '#9c7b16',
-      cancelButtonText: 'Cancel',
-      cancelButtonColor: 'rgb(181, 178, 178)',
-      inputValidator: (value) => {
-        if (!value) {
-          return 'Project name cannot be empty';
+    if (projects.length >= 3) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Project Limit Reached',
+        html: 'You have reached the project limit.<br>Only 3 projects per group are allowed.',
+        confirmButtonColor: '#8A252C',
+      });
+    } else {
+      Swal.fire({
+        html: '<span style="font-size: 20px">Create a New Project</span>',
+        input: 'text',
+        inputPlaceholder: 'Enter new project name',
+        showCancelButton: true,
+        confirmButtonText: 'Create',
+        confirmButtonColor: '#9c7b16',
+        cancelButtonText: 'Cancel',
+        cancelButtonColor: 'rgb(181, 178, 178)',
+        inputValidator: (value) => {
+          if (!value) {
+            return 'Project name cannot be empty';
+          } else if (projects.some((project) => project.name === value)) {
+            return `Project with the name '${value}' already exists. Please enter another project name.`;
+          }
+        },
+        inputAttributes: {
+          style: 'height: 35px; font-size: 16px',
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const newProjectName = result.value;
+          addProject(newProjectName);
+          Swal.fire({
+            title: 'Project Created',
+            icon: 'success',
+            confirmButtonColor: '#9c7b16',
+          });
         }
-      },
-      inputAttributes: {
-        style: 'height: 35px; font-size: 16px',
-      },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const newProjectName = result.value;
-        addProject(newProjectName);
-        Swal.fire({
-          title: 'Project Created',
-          icon: 'success',
-          confirmButtonColor: '#9c7b16',
-        });
-      }
-    });
+      });
+    }
   };
+  
 
   const showDeleteProjectModal = () => {
     Swal.fire({
@@ -225,10 +253,13 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
                       onChange={(e) => setEditedProjectName(e.target.value)}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
+                          e.preventDefault();
                           handleEditProjectName();
                         }
                       }}
-                      onBlur={handleEditProjectName}
+                      onBlur={() => {
+                        handleEditProjectName(); // Move this line to onBlur
+                      }}
                     />
                   </div>
                 ) : (

@@ -105,6 +105,7 @@ class Template(models.Model):
     content = models.TextField()
     rules = models.TextField()
     description = models.TextField()
+    isPublic = models.BooleanField(default=False)
     teacher_fk = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=timezone.now)
     deleted_at = models.DateTimeField(default='0000-00-00 00:00:00')
