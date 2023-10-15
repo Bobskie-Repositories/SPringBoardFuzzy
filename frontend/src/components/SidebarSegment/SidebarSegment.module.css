@@ -77,9 +77,10 @@
     margin-right: 15px;
 }
 
-.clickedProject {
+.clickedProject{
     color: rgb(139, 139, 139); 
   }
+
 
 .plus{
     cursor: pointer;

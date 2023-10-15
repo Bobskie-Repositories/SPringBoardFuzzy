@@ -8,7 +8,7 @@ import global from '../../assets/global.module.css';
 import axios from 'axios';
 
 
-const T_SidebarSegment = ({ selected, setSelected }) => {
+const T_SidebarSegment = ({ selected, setSelected, toggleCreateAction }) => {
   const [classrooms, setClassrooms] = useState([]);
   const [open, setOpen] = useState(false);
   const [clickedClassId, setClickedClassId] = useState(null);
@@ -32,6 +32,7 @@ const T_SidebarSegment = ({ selected, setSelected }) => {
   }, [id]);
 
   const handleButtonClick = (classId) => {
+    toggleCreateAction(false);
     setSelected(classId);
     setClickedClassId(classId);
     navigate(`/classroom/${classId}`)
@@ -43,7 +44,7 @@ const T_SidebarSegment = ({ selected, setSelected }) => {
   };
 
   const goMyTemplate = () => {
-    navigate('template')
+    toggleCreateAction(true);
   }
 
   return (
