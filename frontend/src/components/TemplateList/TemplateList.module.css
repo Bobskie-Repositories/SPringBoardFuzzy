@@ -7,25 +7,23 @@
 }
 
 .container_card{
-    padding: 40px 10px 40px 10px;
+    padding: 0 10px 40px 10px;
     margin-top: 15px;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    background-color: rgba(246, 199, 25, 0.2);
-    max-width: 40rem;
+    background-color: #fff;
+    max-width: 45rem;
 }
 
 .container_board{
-    margin: 10px 0;
-    padding: 5px 5px 15px 5px;
-    display: flex;
+    margin: 15px 0;
+    padding: 5px 5px 10px 30px;
     text-align: left;
-    width: 80%;
     max-height: 10rem;
-    background-color: rgba(246, 199, 25);
+    background-color: #FEFAF1;
     cursor: pointer;
 }
 
@@ -33,12 +31,23 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   }
 
-.ideaicon{
-   width: 120px;
-}
-
 .words p{
     font-size: smaller;
+    color: #464646;
+}
+
+.date{
+    gap: 220px;
+    display: flex;
+}
+
+.publish {
+    display: flex;
+}
+
+.date p{
+    color: #7e7e7e;
+    font-size: 12px;
 }
 
 .scrollable {
@@ -46,28 +55,26 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    max-height: 320px; 
+    max-height: 500px; 
     overflow-y: auto;
-    width: 100%;
+    width: 110%;
 }
 
-/* Hide the default scrollbar */
 .scrollable::-webkit-scrollbar {
     width: 8px;
 }
 
-/* Customize the scrollbar track
-.scrollable::-webkit-scrollbar-track {
-    background-color: #f1f1f1;
-} */
 
-/* Customize the scrollbar thumb */
+
 .scrollable::-webkit-scrollbar-thumb {
     background-color: #888;
     border-radius: 4px;
 }
 
-/* Customize the scrollbar thumb when hovered */
 .scrollable::-webkit-scrollbar-thumb:hover {
     background-color: #555;
 }
+
+.customLabel {
+    color: #929292;
+  }
