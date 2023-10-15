@@ -61,12 +61,24 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
   const handleEditProjectName = () => {
     const updatedProjects = projects.map((project) => {
       if (project.id === editableProjectId) {
-        return { ...project, name: editedProjectName };
+        const updatedProject = { ...project, name: editedProjectName };
+
+        axios
+          .put(`http://127.0.0.1:8000/api/project/${project.id}/update`, updatedProject)
+          .then((response) => {
+            console.log('Project name updated');
+          })
+          .catch((error) => {
+            console.error('Error updating project name:', error);
+          });
+  
+        return updatedProject;
       }
       return project;
     });
+    
     setProjects(updatedProjects);
-    setEditableProjectId(null); 
+    setEditableProjectId(null);
   };
 
 
@@ -181,6 +193,7 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
           <div onClick={handleNameIconClick} className={styles.nameIcon}>
             <FontAwesomeIcon icon={open ? faSquareCaretDown : faSquareCaretRight} className={styles.dropdown} size="xl" /> &nbsp;
             Projects
+            
           </div>
           {!staff &&
             <FontAwesomeIcon icon={faPlus} className={styles.plus} size="lg" onClick={showCreateProjectModal} />

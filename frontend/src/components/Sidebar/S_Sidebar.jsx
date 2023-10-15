@@ -18,7 +18,7 @@ const S_Sidebar = ({ setSelected }) => {
     useEffect(() => {
         const fetchData = async () => {
             const user = await getUser();
-            console.log(user)
+            // console.log(user)
             try {
               const response = await axios.get(`http://127.0.0.1:8000/api/group/${user.group_fk}`);
               setGroup(response.data.name);
