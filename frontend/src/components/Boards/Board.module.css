@@ -7,6 +7,15 @@
     -ms-overflow-style: none; 
 }
 
+.centeredText {
+    text-align: center; /* Horizontal centering */
+    display: flex;
+    align-items: center; /* Vertical centering */
+    justify-content: center; /* Vertical centering */
+    margin-top: 200px;
+    color: rgb(131, 131, 131);
+  }
+
 .scrollable::-webkit-scrollbar {
     width: 0.1rem; 
     background-color: transparent; 
