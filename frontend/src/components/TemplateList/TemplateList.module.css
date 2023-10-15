@@ -1,80 +1,78 @@
 .container {
-    /* padding: 20px 150px 20px 30px; */
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 100px;
-    width: 110%;
+  /* padding: 20px 150px 20px 30px; */
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 100px;
+  width: 110%;
 }
 
-.container_card{
-    padding: 0 10px 40px 10px;
-    margin-top: 15px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    background-color: #fff;
-    max-width: 45rem;
+.container_card {
+  padding: 0 10px 40px 10px;
+  margin-top: 15px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-color: #fff;
+  max-width: 45rem;
 }
 
-.container_board{
-    margin: 15px 0;
-    padding: 5px 5px 10px 30px;
-    text-align: left;
-    max-height: 10rem;
-    background-color: #FEFAF1;
-    cursor: pointer;
+.container_board {
+  margin: 15px 0;
+  padding: 5px 5px 10px 30px;
+  text-align: left;
+  max-height: 10rem;
+  background-color: #fefaf1;
+  cursor: pointer;
 }
 
 .container_board:hover {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  }
-
-.words p{
-    font-size: smaller;
-    color: #464646;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
-.date{
-    gap: 220px;
-    display: flex;
+.words p {
+  font-size: smaller;
+  color: #464646;
+}
+
+.date {
+  gap: 220px;
+  display: flex;
 }
 
 .publish {
-    display: flex;
+  display: flex;
 }
 
-.date p{
-    color: #7e7e7e;
-    font-size: 12px;
+.date p {
+  color: #7e7e7e;
+  font-size: 12px;
 }
 
 .scrollable {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    max-height: 500px; 
-    overflow-y: auto;
-    width: 110%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-height: 500px;
+  overflow-y: auto;
+  width: 110%;
 }
 
 .scrollable::-webkit-scrollbar {
-    width: 8px;
+  width: 8px;
 }
 
-
-
 .scrollable::-webkit-scrollbar-thumb {
-    background-color: #888;
-    border-radius: 4px;
+  background-color: #888;
+  border-radius: 4px;
 }
 
 .scrollable::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
+  background-color: #555;
 }
 
 .customLabel {
-    color: #929292;
-  }
+  color: #929292;
+}
