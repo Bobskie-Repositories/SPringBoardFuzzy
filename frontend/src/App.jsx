@@ -10,7 +10,7 @@ import Result from "./pages/Result";
 import ViewBoard from "./pages/ViewBoard";
 import EditBoard from "./pages/EditBoard";
 import Edit_Result from "./pages/Edit_Result";
-
+import MyTemplate from "./pages/MyTemplate";
 
 function App() {
   return (
@@ -84,15 +84,25 @@ function App() {
           />
         </Route>
 
-        <Route 
-          path="/teacher/:id" 
-          index={true} 
-          exact 
-          element={
-            <RequireAuth>
-              <M_Dashboard choose={0}/>
-            </RequireAuth>} 
-        />
+        <Route path="/teacher/:id" >
+          <Route
+            index={true} 
+            exact 
+            element={
+              <RequireAuth>
+                <M_Dashboard choose={0}/>
+              </RequireAuth>} 
+          />
+          <Route 
+            path="template"
+            index={true} 
+            exact 
+            element={
+              <RequireAuth>
+                <MyTemplate/>
+              </RequireAuth>} 
+          />
+        </Route>
 
         <Route path="/classroom/:id" >
           <Route
@@ -113,8 +123,8 @@ function App() {
                 <M_Dashboard choose={2}/>
               </RequireAuth>} 
           />
-
         </Route>
+
       </Routes>
   )
 }
