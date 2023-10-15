@@ -8,7 +8,8 @@ const SLoginComponent = () => {
   // State to manage user inputs
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
+  const [incorrect, setIncorrect] = useState(false)
+ 
   // Get the navigate function from react-router-dom
   const navigate = useNavigate();
 
@@ -29,10 +30,15 @@ const SLoginComponent = () => {
           // console.log(groupId);
           navigate(`/group/${groupId}`);
         }catch(error){
+          setIncorrect(true)
           console.error('Login failed. Please check your credentials.' + error);
         }
-      } 
+      }else if (loginResult.status === 403) {
+        setIncorrect(true);
+        console.error('Login failed. Please check your credentials.');
+      }
     } catch (error) {
+      setIncorrect(true)
       console.error('Login failed. Please check your credentials.' + error);
     }
   };
@@ -83,7 +89,9 @@ const SLoginComponent = () => {
               <div className={styles.forgot} >
                 <a style={{ color: 'gray' }} href="/forgot-password">Forgot Password?</a>
               </div>
-
+              {incorrect && (
+                <p className={styles.warning}>Incorrect username or password. Please try again.</p>
+              )}
               {/* Login Button */}
               <button type="submit" className={styles.buttonPrimary}>
                 Login
