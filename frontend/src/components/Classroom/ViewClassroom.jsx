@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import Card from "../UI/Card/Card";
 import styles from "./ViewClassroom.module.css";
@@ -8,11 +9,12 @@ import axios from "axios";
 const ViewClassroom = ({ selected }) => {
   const [classroom, setClassroom] = useState(null);
   const [groups, setGroups] = useState(null);
+  const { id } = useParams();
 
   useEffect(() => {
     if (selected !== null && selected !== undefined) {
       axios
-        .get(`http://127.0.0.1:8000/api/classroom/${selected}`)
+        .get(`http://127.0.0.1:8000/api/classroom/${id}`)
         .then((response) => {
           setClassroom(response.data.class_name);
           // console.log(response.data.class_name)
@@ -22,7 +24,7 @@ const ViewClassroom = ({ selected }) => {
         });
 
       axios
-        .get(`http://127.0.0.1:8000/api/classroom/${selected}/group`)
+        .get(`http://127.0.0.1:8000/api/classroom/${id}/group`)
         .then((response) => {
           setGroups(response.data);
           // console.log(response.data)
