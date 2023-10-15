@@ -12,6 +12,7 @@ const T_SidebarSegment = ({ selected, setSelected }) => {
   const [classrooms, setClassrooms] = useState([]);
   const [open, setOpen] = useState(false);
   const [clickedClassId, setClickedClassId] = useState(null);
+  const [isMyTemplateClicked, setMyTemplateClicked] = useState(false);
   const [userId, setUserId] = useState(0);
   const navigate = useNavigate();
   const { id } = useParams();
@@ -34,6 +35,7 @@ const T_SidebarSegment = ({ selected, setSelected }) => {
   }, [id]);
 
   const handleButtonClick = (classId) => {
+    setMyTemplateClicked(false);
     setSelected(classId);
     setClickedClassId(classId);
     navigate(`/classroom/${classId}`)
@@ -45,6 +47,8 @@ const T_SidebarSegment = ({ selected, setSelected }) => {
   };
 
   const goMyTemplate = () => {
+    setMyTemplateClicked(!isMyTemplateClicked);
+    setClickedClassId(null);
     navigate(`/teacher/${userId}/template`)
   }
 
@@ -54,7 +58,7 @@ const T_SidebarSegment = ({ selected, setSelected }) => {
       <ol className={styles.orList}>
 
         <li className={`${global.center} ${styles.customLi}`}>
-        <div onClick={goMyTemplate} className={styles.nameIcon}> 
+        <div onClick={goMyTemplate} className={`${styles.nameIcon} ${isMyTemplateClicked ? styles.clickedButton : ''}`}> 
           <FontAwesomeIcon icon={faTableCellsLarge} className={styles.templates} size="xl"/>
             My Template
           </div>
@@ -75,9 +79,7 @@ const T_SidebarSegment = ({ selected, setSelected }) => {
             {classrooms.map((classroom) => (
                 <li
                   key={classroom.id}
-                  className={`${styles.projectName} ${
-                    clickedClassId === classroom.id ? styles.clickedProject : ''
-                  }`}
+                  className={`${styles.projectName} ${clickedClassId === classroom.id ? styles.clickedProject : ''}`}
                   onClick={() => handleButtonClick(classroom.id)}
                 >
                   {classroom.class_name}

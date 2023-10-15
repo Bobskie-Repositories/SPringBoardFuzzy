@@ -77,7 +77,7 @@
     margin-right: 15px;
 }
 
-.clickedProject{
+.clickedProject, .clickedButton{
     color: rgb(139, 139, 139); 
   }
 
