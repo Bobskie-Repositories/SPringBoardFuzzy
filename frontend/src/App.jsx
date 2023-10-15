@@ -99,7 +99,7 @@ function App() {
             exact 
             element={
               <RequireAuth>
-                <MyTemplate/>
+                <M_Dashboard choose={3}/>
               </RequireAuth>} 
           />
         </Route>

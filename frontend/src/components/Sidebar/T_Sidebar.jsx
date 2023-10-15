@@ -28,7 +28,7 @@ const T_Sidebar = ({ setSelected, choose, setSelectedProj, toggleCreateAction })
         <div className={styles.sidebar}>
             <img src={Logo} alt="Logo" className={styles.img} onClick={goHome}/>
             
-            <T_SidebarSegment setSelected={setSelected} toggleCreateAction={toggleCreateAction}/>
+            <T_SidebarSegment setSelected={setSelected}/>
 
             {/* adding the groups project list 
                 2 - because that's the conditional statement in MDashboard where it renders the group board
