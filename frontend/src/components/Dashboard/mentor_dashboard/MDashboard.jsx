@@ -26,10 +26,16 @@
       navigate('/add-template')
     }
 
-    return (
-      <div className={ styles.container } style={{padding: '20px 150px 20px 30px'}}>
-
-        <T_Sidebar setSelected={setSelected} choose={choose} setSelectedProj={setSelectedProj} />
+  return (
+    <div
+      className={styles.container}
+      style={{ padding: "20px 150px 20px 30px" }}
+    >
+      <T_Sidebar
+        setSelected={setSelected}
+        choose={choose}
+        setSelectedProj={setSelectedProj}
+      />
 
         <div>
           <div className={ styles.container } style={{gap: "150px", marginTop: '30px'}}>
@@ -72,7 +78,8 @@
         </div>  
 
       </div>
-    )
-  }
+    </div>
+  );
+};
 
-  export default MDashboard;
+export default MDashboard;

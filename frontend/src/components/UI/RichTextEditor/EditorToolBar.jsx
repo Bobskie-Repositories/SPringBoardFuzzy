@@ -1,7 +1,6 @@
 import React from "react";
 import { Quill } from "react-quill";
-import ImageResize from 'quill-image-resize-module-react';
-
+import ImageResize from "quill-image-resize-module-react";
 
 // Custom Undo button icon component for Quill editor. You can import it directly
 // from 'quill/assets/icons/undo.svg' but I found that a number of loaders do not
@@ -48,29 +47,29 @@ Font.whitelist = [
   "courier-new",
   "georgia",
   "helvetica",
-  "lucida"
+  "lucida",
 ];
 Quill.register(Font, true);
 
-Quill.register('modules/imageResize', ImageResize);
+Quill.register("modules/imageResize", ImageResize);
 // Modules object for setting up the Quill editor
 export const modules = {
-    imageResize: {
-        parchment: Quill.import('parchment'),
-        modules: ['Resize', 'DisplaySize']
-      },
-    toolbar: {
-        container: "#toolbar",
-        handlers: {
-        undo: undoChange,
-        redo: redoChange
-        }
+  imageResize: {
+    parchment: Quill.import("parchment"),
+    modules: ["Resize", "DisplaySize"],
+  },
+  toolbar: {
+    container: "#toolbar",
+    handlers: {
+      undo: undoChange,
+      redo: redoChange,
     },
-    history: {
-        delay: 500,
-        maxStack: 100,
-        userOnly: true
-    }
+  },
+  history: {
+    delay: 500,
+    maxStack: 100,
+    userOnly: true,
+  },
 };
 
 // Formats objects for setting up the Quill editor
@@ -92,7 +91,7 @@ export const formats = [
   "link",
   "image",
   "color",
-  "code-block"
+  "code-block",
 ];
 
 // Quill Toolbar component

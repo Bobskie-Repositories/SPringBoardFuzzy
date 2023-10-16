@@ -1,38 +1,44 @@
-import React from 'react'
-import styles from './TemplateList.module.css';
-import IdeaIcon from '@assets/idea.png';
-import Card from '../UI/Card/Card';
+import React from "react";
+import { useState } from "react";
+import styles from "./TemplateList.module.css";
+import Card from "../UI/Card/Card";
+import { Switch } from "@mui/material";
 
 const TemplateList = () => {
+  const [checked, setChecked] = useState(true);
+
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+  };
+
   return (
-    <div  style={{padding: '20px 150px 20px 30px'}}>
+    <div className={styles.container}>
+      <div className={styles.container_card}>
+        <div className={styles.scrollable}>
+          <Card className={styles.container_board}>
+            <div className={styles.words}>
+              <h3>Idea Venture</h3>
+              <p>
+                Create and refine innovative ideas that can be turned into
+                successful products, services, or businesses
+              </p>
+            </div>
 
-      <div className={ styles.container }>   
-                <Card className={styles.container_card} >
-                  <div className={styles.scrollable}>
-                 
-                      <Card className={styles.container_board} >
-                          <div>
-                            <img 
-                                className={styles.ideaicon} 
-                                src={IdeaIcon} 
-                                alt="IdeaIcon" 
-                            />
-                          </div>
-
-                        <div className={styles.words}>
-                          <h4>Idea Venture</h4>
-                          <p>
-                           Template Description
-                          </p>
-                        </div> 
-                      </Card>
-                  </div>
-                </Card>
+            <div className={styles.date}>
+              <p>Date Created: 10/15/2023</p>
+              <div className={styles.publish}>
+                <p>Publish</p>
+                <Switch
+                  onChange={handleChange}
+                  inputProps={{ "aria-label": "controlled" }}
+                />
+              </div>
+            </div>
+          </Card>
+        </div>
       </div>
-      
-  </div>
-  )
-}
+    </div>
+  );
+};
 
-export default TemplateList
+export default TemplateList;

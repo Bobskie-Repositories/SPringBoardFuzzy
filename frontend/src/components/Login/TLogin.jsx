@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import Header_landing from '../Header/Header_landing';
-import styles from './SLogin.module.css';
+import React, { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import Header_landing from "../Header/Header_landing";
+import styles from "./SLogin.module.css";
 
 const TLoginComponent = () => {
   // State to manage user inputs
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [incorrect, setIncorrect] = useState(false)
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [incorrect, setIncorrect] = useState(false);
 
   // Get the navigate function from react-router-dom
   const navigate = useNavigate();
@@ -21,23 +21,23 @@ const TLoginComponent = () => {
     e.preventDefault();
     try {
       const loginResult = await loginTeacher(username, password);
-      
+
       if (loginResult.success) {
-        try{
+        try {
           const user = await getUser();
           // console.log(user);
           navigate(`/teacher/${user.id}`);
-        }catch(error){
-          setIncorrect(true)
-          console.error('Login failed. Please check your credentials.' + error);
+        } catch (error) {
+          setIncorrect(true);
+          console.error("Login failed. Please check your credentials." + error);
         }
       } else if (loginResult.status === 403) {
         setIncorrect(true);
-        console.error('Login failed. Please check your credentials.');
+        console.error("Login failed. Please check your credentials.");
       }
     } catch (error) {
-      setIncorrect(true)
-      console.error('Login failed. Please check your credentials.' + error);
+      setIncorrect(true);
+      console.error("Login failed. Please check your credentials." + error);
     }
   };
 
@@ -45,14 +45,13 @@ const TLoginComponent = () => {
     <div className={styles.body}>
       <Header_landing />
       <div className={styles.rectangle}>
-
         <h2 className={styles.title}>Teacher Login</h2>
 
         <h3 className={styles.header}>
           Welcome back! Please login to your account.
         </h3>
 
-        <div className={styles['center-container']}>
+        <div className={styles["center-container"]}>
           <form onSubmit={handleLogin}>
             <div className={styles.input}>
               {/* Username Input */}
@@ -84,11 +83,15 @@ const TLoginComponent = () => {
             </div>
             <div className={styles.buttonPrimary1}>
               {/* Forgot Password Link */}
-              <div className={styles.forgot} >
-                <a style={{ color: 'gray' }} href="/forgot-password">Forgot Password?</a>
+              <div className={styles.forgot}>
+                <a style={{ color: "gray" }} href="/forgot-password">
+                  Forgot Password?
+                </a>
               </div>
               {incorrect && (
-                <p className={styles.warning}>Incorrect username or password. Please try again.</p>
+                <p className={styles.warning}>
+                  Incorrect username or password. Please try again.
+                </p>
               )}
               {/* Login Button */}
               <button type="submit" className={styles.buttonPrimary}>
@@ -97,10 +100,13 @@ const TLoginComponent = () => {
             </div>
           </form>
         </div>
-        
+
         {/* Sign Up Link */}
         <p className={styles.signup}>
-          Don’t have an account? <a style={{ color: 'black' }} href="/signup">Sign Up</a>
+          Don’t have an account?{" "}
+          <a style={{ color: "black" }} href="/signup">
+            Sign Up
+          </a>
         </p>
       </div>
     </div>

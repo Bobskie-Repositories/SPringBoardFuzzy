@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router';
-import { useRef } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router";
+import { useRef } from "react";
+import axios from "axios";
 
-import Header from '../Header/Header';
-import Card from '../UI/Card/Card';
-import Button from '../UI/Button/Button';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import EditorToolbar, { modules, formats } from '../UI/RichTextEditor/EditorToolBar';
-import styles from './Template.module.css';
-import global from '@assets/global.module.css'
+import Header from "../Header/Header";
+import Card from "../UI/Card/Card";
+import Button from "../UI/Button/Button";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import EditorToolbar, {
+  modules,
+  formats,
+} from "../UI/RichTextEditor/EditorToolBar";
+import styles from "./Template.module.css";
+import global from "@assets/global.module.css";
 
 const Template = () => {
   const { id, templateid } = useParams();
@@ -18,11 +21,14 @@ const Template = () => {
   const navigate = useNavigate();
 
   const editor = useRef(null);
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState("");
 
-  const feedback = "here are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text."
-  const recommendation = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-  const references = "<ul><li>http://www.ecommerce-store-example.com</li><li>http://www.personal-blog-example.com</li><li>http://www.ecommerce-store-example.com</li></ul>"
+  const feedback =
+    "here are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.";
+  const recommendation =
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
+  const references =
+    "<ul><li>http://www.ecommerce-store-example.com</li><li>http://www.personal-blog-example.com</li><li>http://www.ecommerce-store-example.com</li></ul>";
   const getRandomDigit = () => Math.floor(Math.random() * 10) + 1;
 
   // Handle changes in the React Quill editor
@@ -33,11 +39,13 @@ const Template = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/template/${templateid}`);
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/template/${templateid}`
+        );
         setTemplate(response.data);
-        setContent(response.data.content || '');
+        setContent(response.data.content || "");
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -52,24 +60,26 @@ const Template = () => {
         return isoTimestamp;
       };
 
-      const response = await axios.post(`http://127.0.0.1:8000/api/project/${templateid}/addprojectboards`, {
-        title: template.title,
-        content: content, // Use the content from the React Quill editor
-        novelty: getRandomDigit(),
-        capability: getRandomDigit(),
-        technical_feasibility: getRandomDigit(),
-        feedback: feedback,
-        recommendation: recommendation,
-        references: references,
-        project_fk: id,
-      });
+      const response = await axios.post(
+        `http://127.0.0.1:8000/api/project/${templateid}/addprojectboards`,
+        {
+          title: template.title,
+          content: content, // Use the content from the React Quill editor
+          novelty: getRandomDigit(),
+          capability: getRandomDigit(),
+          technical_feasibility: getRandomDigit(),
+          feedback: feedback,
+          recommendation: recommendation,
+          references: references,
+          project_fk: id,
+        }
+      );
 
-      navigate(`/project/${id}/create-board/${response.data.id}/result`)
-      
+      navigate(`/project/${id}/create-board/${response.data.id}/result`);
 
-      console.log('ProjectBoard created successfully:', response.data.id);
+      console.log("ProjectBoard created successfully:", response.data.id);
     } catch (error) {
-      console.error('Error creating ProjectBoard:', error);
+      console.error("Error creating ProjectBoard:", error);
     }
   };
 

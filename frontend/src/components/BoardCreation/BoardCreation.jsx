@@ -1,17 +1,15 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import Card from '../UI/Card/Card';
-import IdeaIcon from '@assets/idea.png';
-import styles from './BoardCreation.module.css';
-import global from '@assets/global.module.css';
-import axios from 'axios';
+import React from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import Card from "../UI/Card/Card";
+import IdeaIcon from "@assets/idea.png";
+import styles from "./BoardCreation.module.css";
+import global from "@assets/global.module.css";
+import axios from "axios";
 
-
-
-const BoardCreation = ({selected, setCreateAction}) => {
+const BoardCreation = ({ selected, setCreateAction }) => {
   const [allTemplate, setAllTemplate] = useState();
   const navigate = useNavigate();
 
@@ -21,7 +19,7 @@ const BoardCreation = ({selected, setCreateAction}) => {
         const response = await axios.get(`http://127.0.0.1:8000/api/template/`);
         setAllTemplate(response.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -40,59 +38,71 @@ const BoardCreation = ({selected, setCreateAction}) => {
     return <p>Loading...</p>;
   }
 
-
   return (
-    <div className={ styles.container } style={{padding: '20px 150px 20px 30px'}}>
+    <div
+      className={styles.container}
+      style={{ padding: "20px 150px 20px 30px" }}
+    >
+      <div>
+        <div className={styles.container}>
+          <div className={styles.leftContainer}>
+            <FontAwesomeIcon
+              icon={faArrowLeft}
+              onClick={goBack}
+              className={styles.back}
+            />
 
-    <div>
+            <div className={styles.containersub}>
+              <h2 className={`${global.brownText} ${styles.textMargin}`}>
+                Create Board
+              </h2>
+              <h5 className={styles.textMargin}>
+                Great! Let's get started on creating your new board.
+              </h5>
 
-      <div className={ styles.container }>
-            <div className={styles.leftContainer}>
-              <FontAwesomeIcon icon={faArrowLeft} onClick={goBack} className={styles.back}/>
+              <Card className={styles.container_card}>
+                <h5>
+                  Choose a template from the following predefined selection that
+                  best fits your idea:
+                </h5>
 
-              <div className={styles.containersub}>
-                <h2 className={`${global.brownText} ${styles.textMargin}`}>Create Board</h2>
-                <h5 className={styles.textMargin}>Great! Let's get started on creating your new board.</h5>
-            
-                <Card className={styles.container_card}>
-                  <h5>Choose a template from the following predefined selection that best fits your idea:</h5>
-                  
-                  <div className={styles.scrollable}>
-                    {allTemplate.map((template, index) => (
-                      <Card key={index} className={styles.container_board} onClick={() => handleClick(template.id)}>
-                          <div>
-                            <img 
-                                className={styles.ideaicon} 
-                                src={IdeaIcon} 
-                                alt="IdeaIcon" 
-                            />
-                          </div>
+                <div className={styles.scrollable}>
+                  {allTemplate.map((template, index) => (
+                    <Card
+                      key={index}
+                      className={styles.container_board}
+                      onClick={() => handleClick(template.id)}
+                    >
+                      <div>
+                        <img
+                          className={styles.ideaicon}
+                          src={IdeaIcon}
+                          alt="IdeaIcon"
+                        />
+                      </div>
 
-                        <div className={styles.words}>
-                          <h4>{template.title}</h4>
-                          <p>
-                            {
-                              template.description.length > 100 ?
-                              (template.description.substr(0, 100).split(' ').slice(0, -1).join(' ') + "..." ) :
-                              template.description
-                            }
-                          </p>
-                        </div> 
-                      </Card>
-                      
-                    ))}
-                  </div>
-                
-                </Card>
-              </div>
+                      <div className={styles.words}>
+                        <h4>{template.title}</h4>
+                        <p>
+                          {template.description.length > 100
+                            ? template.description
+                                .substr(0, 100)
+                                .split(" ")
+                                .slice(0, -1)
+                                .join(" ") + "..."
+                            : template.description}
+                        </p>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              </Card>
             </div>
-      
+          </div>
+        </div>
       </div>
-      
-    </div>  
-
-  </div>
+    </div>
   );
-}
+};
 
 export default BoardCreation;

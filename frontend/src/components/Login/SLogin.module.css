@@ -18,7 +18,7 @@
 .center-container {
   background: #fff;
   padding-bottom: 30px;
-  text-align: auto; 
+  text-align: auto;
   width: 100%;
   max-width: 350px;
   margin-left: auto; /* Add this line to move it to the right */
@@ -31,7 +31,7 @@
   margin-bottom: 20px;
 }
 
-.header{
+.header {
   text-align: center;
   font-size: 13px;
   margin-bottom: 20px;
@@ -42,10 +42,10 @@
   text-align: justify;
   font-size: 16px;
   margin-bottom: 10px;
-  color: #9C7B16;
+  color: #9c7b16;
 }
 
-.input{
+.input {
   margin-top: 17px;
 }
 
@@ -53,13 +53,13 @@
   width: 95%;
   padding: 10px;
   /* margin-bottom: 16px; */
-  border: 2px solid #9C7B16;
+  border: 2px solid #9c7b16;
   border-radius: 5px;
   font-size: 15px;
   background-color: white;
   color: black;
 }
-.signup{
+.signup {
   text-align: center;
   font-size: 15px;
   margin-bottom: 10px;
@@ -78,7 +78,7 @@
 }
 
 .buttonPrimary {
-  background-color: #9C7B16;
+  background-color: #9c7b16;
   color: #fff;
   padding: 10px 20px;
   border: none;
@@ -91,7 +91,7 @@
   background-color: maroon;
 }
 
-.warning{
+.warning {
   color: red;
   font-size: 13px;
 }
