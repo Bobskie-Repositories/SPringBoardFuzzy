@@ -62,8 +62,6 @@ const Template = () => {
         recommendation: recommendation,
         references: references,
         project_fk: id,
-        created_at: getCurrentTimestamp(),
-        deleted_at: getCurrentTimestamp()
       });
 
       navigate(`/project/${id}/create-board/${response.data.id}/result`)

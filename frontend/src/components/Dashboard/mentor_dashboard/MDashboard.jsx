@@ -1,6 +1,7 @@
   import React from 'react'
   import { useState, useEffect } from 'react';
-  import { useParams } from 'react-router';
+  import { useParams, useNavigate } from 'react-router';
+  import Button from '../../UI/Button/Button';
   import T_Sidebar from '../../Sidebar/T_Sidebar';
   import Search from '../../Search/Search';
   import Profile from '../../ProfileSegment/Profile';
@@ -14,12 +15,16 @@
   const MDashboard = ({ choose }) => {
     const [selected, setSelected] = useState();
     const [selectedProj, setSelectedProj] = useState();
-    const [createAction, setCreate] = useState(false);
     const { id, groupid } = useParams();
+    const navigate = useNavigate()
 
     useEffect(() => {
       setSelected(id);
     }, [selected, id]);
+
+    const handleCreateTemplateClick = () => {
+      navigate('/add-template')
+    }
 
     return (
       <div className={ styles.container } style={{padding: '20px 150px 20px 30px'}}>
@@ -31,9 +36,7 @@
             <Search />
             <Profile identification={1} />
           </div>
-
-          
-            <div>
+          <div>
             { choose === 0 ? (
               <div>
                 <div className={ styles.container }>
@@ -42,19 +45,30 @@
                 <ClassroomList />
               </div>
             ) : choose === 1 ? (
+
               <ViewClassroom selected={selected}/>
+
             ) : choose === 2 ? (
+
               <ViewProject selected={selectedProj}/>
+
             ) : (
+
               <div>
                 <div className={ styles.container }>
                   <h2 style={{fontSize: "30px", color: '#9c7b16'}}>Your Templates</h2>
+                  <Button 
+                    className={styles.butName}
+                    onClick={handleCreateTemplateClick}
+                    > 
+                        Create Template
+                  </Button>
                 </div>
                 <TemplateList />
               </div>
-            )}
 
-            </div>
+            )}
+          </div>
         </div>  
 
       </div>
