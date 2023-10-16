@@ -20,11 +20,12 @@
 
 .container_board {
   margin: 15px 0;
-  padding: 5px 5px 10px 30px;
+  padding: 5px 20px 10px 30px;
   text-align: left;
   max-height: 10rem;
   background-color: #fefaf1;
   cursor: pointer;
+  min-width: 500px;
 }
 
 .container_board:hover {
