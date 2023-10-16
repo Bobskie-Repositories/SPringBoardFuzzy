@@ -1,30 +1,29 @@
-  import React from 'react'
-  import { useState, useEffect } from 'react';
-  import { useParams, useNavigate } from 'react-router';
-  import Button from '../../UI/Button/Button';
-  import T_Sidebar from '../../Sidebar/T_Sidebar';
-  import Search from '../../Search/Search';
-  import Profile from '../../ProfileSegment/Profile';
-  import ClassroomList from '../../Classroom/ClassroomList';
-  import ViewClassroom from '../../Classroom/ViewClassroom';
-  import ViewProject from '../../ViewProject/ViewProject';
-  import TemplateList from '../../TemplateList/TemplateList';
-  import styles from './MDashboard.module.css';
+import React from "react";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router";
+import Button from "../../UI/Button/Button";
+import T_Sidebar from "../../Sidebar/T_Sidebar";
+import Search from "../../Search/Search";
+import Profile from "../../ProfileSegment/Profile";
+import ClassroomList from "../../Classroom/ClassroomList";
+import ViewClassroom from "../../Classroom/ViewClassroom";
+import ViewProject from "../../ViewProject/ViewProject";
+import TemplateList from "../../TemplateList/TemplateList";
+import styles from "./MDashboard.module.css";
 
+const MDashboard = ({ choose }) => {
+  const [selected, setSelected] = useState();
+  const [selectedProj, setSelectedProj] = useState();
+  const { id, groupid } = useParams();
+  const navigate = useNavigate();
 
-  const MDashboard = ({ choose }) => {
-    const [selected, setSelected] = useState();
-    const [selectedProj, setSelectedProj] = useState();
-    const { id, groupid } = useParams();
-    const navigate = useNavigate()
+  useEffect(() => {
+    setSelected(id);
+  }, [selected, id]);
 
-    useEffect(() => {
-      setSelected(id);
-    }, [selected, id]);
-
-    const handleCreateTemplateClick = () => {
-      navigate('/add-template')
-    }
+  const handleCreateTemplateClick = () => {
+    navigate("/add-template");
+  };
 
   return (
     <div
@@ -37,46 +36,45 @@
         setSelectedProj={setSelectedProj}
       />
 
+      <div>
+        <div
+          className={styles.container}
+          style={{ gap: "150px", marginTop: "30px" }}
+        >
+          <Search />
+          <Profile identification={1} />
+        </div>
         <div>
-          <div className={ styles.container } style={{gap: "150px", marginTop: '30px'}}>
-            <Search />
-            <Profile identification={1} />
-          </div>
-          <div>
-            { choose === 0 ? (
-              <div>
-                <div className={ styles.container }>
-                  <h2 style={{fontSize: "30px", color: '#9c7b16'}}>Classrooms</h2>
-                </div>
-                <ClassroomList />
+          {choose === 0 ? (
+            <div>
+              <div className={styles.container}>
+                <h2 style={{ fontSize: "30px", color: "#9c7b16" }}>
+                  Classrooms
+                </h2>
               </div>
-            ) : choose === 1 ? (
-
-              <ViewClassroom selected={selected}/>
-
-            ) : choose === 2 ? (
-
-              <ViewProject selected={selectedProj}/>
-
-            ) : (
-
-              <div>
-                <div className={ styles.container }>
-                  <h2 style={{fontSize: "30px", color: '#9c7b16'}}>Your Templates</h2>
-                  <Button 
-                    className={styles.butName}
-                    onClick={handleCreateTemplateClick}
-                    > 
-                        Create Template
-                  </Button>
-                </div>
-                <TemplateList />
+              <ClassroomList />
+            </div>
+          ) : choose === 1 ? (
+            <ViewClassroom selected={selected} />
+          ) : choose === 2 ? (
+            <ViewProject selected={selectedProj} />
+          ) : (
+            <div>
+              <div className={styles.container}>
+                <h2 style={{ fontSize: "30px", color: "#9c7b16" }}>
+                  Your Templates
+                </h2>
+                <Button
+                  className={styles.butName}
+                  onClick={handleCreateTemplateClick}
+                >
+                  Create Template
+                </Button>
               </div>
-
-            )}
-          </div>
-        </div>  
-
+              <TemplateList />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
