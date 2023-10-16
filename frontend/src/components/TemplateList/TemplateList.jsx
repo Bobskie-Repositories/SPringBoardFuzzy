@@ -102,6 +102,13 @@ const TemplateList = () => {
     <div className={styles.container}>
       <div className={styles.container_card}>
         <div className={styles.scrollable}>
+          {templates.length === 0 && (
+            <p className={styles.centeredText}>
+              It looks like you haven't created any templates yet. <br /> Click
+              on the "Create Template" button to get started and create your
+              first template.
+            </p>
+          )}
           {templates.map((template) => (
             <Card
               key={template.id}
