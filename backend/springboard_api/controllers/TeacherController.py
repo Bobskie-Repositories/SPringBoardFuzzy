@@ -4,7 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
-from springboard_api.serializers import TeacherSerializer
+from springboard_api.serializers import TeacherSerializer, CustomTeacherSerializer
 from springboard_api.models import Teacher
 from rest_framework.exceptions import AuthenticationFailed
 import jwt
@@ -89,3 +89,18 @@ class LogoutTeacher(APIView):
             return response
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class GetTeacherById(generics.RetrieveAPIView):
+    queryset = Teacher.objects.all()  # Replace with your specific queryset
+    serializer_class = CustomTeacherSerializer  # Use the serializer for teachers
+
+    def retrieve(self, request, *args, **kwargs):
+        # Get the teacher's id from the URL parameter
+        teacher_id = self.kwargs.get('id')
+        try:
+            teacher = Teacher.objects.get(id=teacher_id)
+            serializer = CustomTeacherSerializer(teacher)
+            return Response(serializer.data)
+        except Teacher.DoesNotExist:
+            return Response({"error": "Teacher not found"}, status=status.HTTP_404_NOT_FOUND)
