@@ -1,10 +1,12 @@
-import React from 'react'
-import RulesComponent from '../components/Rules/Rules';
+import React from "react";
+import RulesComponent from "../components/Rules/Rules";
 
 const Rules = () => {
   return (
-    <div><RulesComponent /></div>
-  )
-}
+    <div>
+      <RulesComponent />
+    </div>
+  );
+};
 
-export default Rules
+export default Rules;
