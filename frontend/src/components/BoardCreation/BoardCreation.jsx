@@ -75,14 +75,6 @@ const BoardCreation = ({ selected, setCreateAction }) => {
                       className={styles.container_board}
                       onClick={() => handleClick(template.id)}
                     >
-                      <div>
-                        <img
-                          className={styles.ideaicon}
-                          src={IdeaIcon}
-                          alt="IdeaIcon"
-                        />
-                      </div>
-
                       <div className={styles.words}>
                         <h4>{template.title}</h4>
                         <p>
@@ -94,6 +86,9 @@ const BoardCreation = ({ selected, setCreateAction }) => {
                                 .join(" ") + "..."
                             : template.description}
                         </p>
+                        <div className={styles.date}>
+                          <p>Created By: Bob Kyle Rosales</p>
+                        </div>
                       </div>
                     </Card>
                   ))}
