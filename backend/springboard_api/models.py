@@ -67,7 +67,8 @@ class ProjectBoard(models.Model):
     project_fk = models.ForeignKey(
         Project, on_delete=models.CASCADE, default=None)
     created_at = models.DateTimeField(default=timezone.now)
-    deleted_at = models.DateTimeField(default='0000-00-00 00:00:00')
+    deleted_at = models.DateTimeField(null=True, blank=True)
+    # deleted_at = models.DateTimeField(default='0000-00-00 00:00:00')
 
 
 class StudentManager(BaseUserManager):
@@ -108,4 +109,4 @@ class Template(models.Model):
     isPublic = models.BooleanField(default=False)
     teacher_fk = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=timezone.now)
-    deleted_at = models.DateTimeField(default='0000-00-00 00:00:00')
+    deleted_at = models.DateTimeField(null=True, blank=True)

@@ -10,6 +10,7 @@ import Result from "./pages/Result";
 import ViewBoard from "./pages/ViewBoard";
 import EditBoard from "./pages/EditBoard";
 import Edit_Result from "./pages/Edit_Result";
+import AddTemplate from "./pages/AddTemplate";
 import MyTemplate from "./pages/MyTemplate";
 
 function App() {
@@ -134,6 +135,16 @@ function App() {
           }
         />
       </Route>
+      <Route
+        path="/add-template"
+        index={true}
+        exact
+        element={
+          <RequireAuth>
+            <AddTemplate />
+          </RequireAuth>
+        }
+      />
     </Routes>
   );
 }

@@ -72,8 +72,6 @@ const Template = () => {
           recommendation: recommendation,
           references: references,
           project_fk: id,
-          created_at: getCurrentTimestamp(),
-          deleted_at: getCurrentTimestamp(),
         }
       );
 

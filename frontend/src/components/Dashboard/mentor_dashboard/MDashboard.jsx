@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
+import Button from "../../UI/Button/Button";
 import T_Sidebar from "../../Sidebar/T_Sidebar";
 import Search from "../../Search/Search";
 import Profile from "../../ProfileSegment/Profile";
@@ -13,12 +14,16 @@ import styles from "./MDashboard.module.css";
 const MDashboard = ({ choose }) => {
   const [selected, setSelected] = useState();
   const [selectedProj, setSelectedProj] = useState();
-  const [createAction, setCreate] = useState(false);
   const { id, groupid } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setSelected(id);
   }, [selected, id]);
+
+  const handleCreateTemplateClick = () => {
+    navigate("/add-template");
+  };
 
   return (
     <div
@@ -39,7 +44,6 @@ const MDashboard = ({ choose }) => {
           <Search />
           <Profile identification={1} />
         </div>
-
         <div>
           {choose === 0 ? (
             <div>
@@ -60,6 +64,12 @@ const MDashboard = ({ choose }) => {
                 <h2 style={{ fontSize: "30px", color: "#9c7b16" }}>
                   Your Templates
                 </h2>
+                <Button
+                  className={styles.butName}
+                  onClick={handleCreateTemplateClick}
+                >
+                  Create Template
+                </Button>
               </div>
               <TemplateList />
             </div>
