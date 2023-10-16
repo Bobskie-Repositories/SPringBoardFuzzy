@@ -19,7 +19,19 @@ const BoardCreation = ({ selected, setCreateAction }) => {
         const response = await axios.get(
           `http://127.0.0.1:8000/api/template/public`
         );
-        setAllTemplate(response.data);
+        const templatesWithTeacher = await Promise.all(
+          response.data.map(async (template) => {
+            const teacherResponse = await axios.get(
+              `http://127.0.0.1:8000/api/teacher/${template.teacher_fk}`
+            );
+            const templateWithTeacher = {
+              ...template,
+              teacher: teacherResponse.data,
+            };
+            return templateWithTeacher;
+          })
+        );
+        setAllTemplate(templatesWithTeacher);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -87,7 +99,10 @@ const BoardCreation = ({ selected, setCreateAction }) => {
                             : template.description}
                         </p>
                         <div className={styles.date}>
-                          <p>Created By: Bob Kyle Rosales</p>
+                          <p>
+                            Created By: {template.teacher.firstname}{" "}
+                            {template.teacher.lastname}
+                          </p>
                         </div>
                       </div>
                     </Card>
