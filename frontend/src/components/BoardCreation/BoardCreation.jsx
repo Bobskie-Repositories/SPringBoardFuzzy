@@ -16,7 +16,9 @@ const BoardCreation = ({ selected, setCreateAction }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/template/`);
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/template/public`
+        );
         setAllTemplate(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -84,9 +86,9 @@ const BoardCreation = ({ selected, setCreateAction }) => {
                       <div className={styles.words}>
                         <h4>{template.title}</h4>
                         <p>
-                          {template.description.length > 100
+                          {template.description.length > 150
                             ? template.description
-                                .substr(0, 100)
+                                .substr(0, 150)
                                 .split(" ")
                                 .slice(0, -1)
                                 .join(" ") + "..."
