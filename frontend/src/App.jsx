@@ -11,6 +11,7 @@ import ViewBoard from "./pages/ViewBoard";
 import EditBoard from "./pages/EditBoard";
 import Edit_Result from "./pages/Edit_Result";
 import AddTemplate from "./pages/AddTemplate";
+import EditTemplate from "./pages/EditTemplate";
 
 function App() {
   return (
@@ -134,6 +135,7 @@ function App() {
           }
         />
       </Route>
+
       <Route
         path="/add-template"
         index={true}
@@ -141,6 +143,17 @@ function App() {
         element={
           <RequireAuth>
             <AddTemplate />
+          </RequireAuth>
+        }
+      />
+
+      <Route
+        path="/template/:id"
+        index={true}
+        exact
+        element={
+          <RequireAuth>
+            <EditTemplate />
           </RequireAuth>
         }
       />
