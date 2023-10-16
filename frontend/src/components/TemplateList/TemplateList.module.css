@@ -44,6 +44,16 @@
 
 .publish {
   display: flex;
+  align-items: center;
+}
+
+.deleteIcon {
+  margin-left: 1rem;
+  color: #7e7e7e;
+}
+
+.deleteIcon:hover {
+  color: #bdbdbd;
 }
 
 .date p {
