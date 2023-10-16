@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
 import styles from "./TemplateList.module.css";
@@ -10,6 +11,7 @@ const TemplateList = () => {
   const [checked, setChecked] = useState(true);
   const [templates, setTemplates] = useState([]);
   const { getUser } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -101,7 +103,11 @@ const TemplateList = () => {
       <div className={styles.container_card}>
         <div className={styles.scrollable}>
           {templates.map((template) => (
-            <Card key={template.id} className={styles.container_board}>
+            <Card
+              key={template.id}
+              className={styles.container_board}
+              onClick={() => navigate(`/template/${template.id}`)}
+            >
               <div className={styles.words}>
                 <h3>{template.title}</h3>
                 <p>{template.description}</p>

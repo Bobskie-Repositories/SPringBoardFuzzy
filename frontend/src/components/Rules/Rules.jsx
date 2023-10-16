@@ -5,6 +5,7 @@ import React from "react";
 import Header from "../Header/Header";
 import styles from "./Rules.module.css";
 import Button from "../UI/Button/Button";
+import parse from "html-react-parser";
 
 const Rules = () => {
   const navigate = useNavigate();
@@ -43,6 +44,8 @@ const Rules = () => {
           Before we proceed, please take note of the following guidelines for a
           successful evaluation of your idea.
         </h3>
+        <h3>Techer's rules:</h3>
+        <p> {parse(template.rules)}</p>
 
         <span className={styles.content}>
           We will now assess your idea based on the data you inputted. It's
@@ -61,7 +64,7 @@ const Rules = () => {
           viability Please input your data carefully, as this will determine the
           outcome of your assessment.
           {/* <h3>Techer's rules:</h3>
-        {template.rules} */}
+          {template.rules} */}
         </span>
       </div>
       <Button

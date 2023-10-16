@@ -1,37 +1,37 @@
 .gold {
-    background-color: #fecc00;
+  background-color: #fecc00;
 }
 
 .brown {
-    background-color: #9c7b16;
+  background-color: #9c7b16;
 }
 
 .brownText {
-    color: #9c7b16;
+  color: #9c7b16;
 }
 
-.center{
-    display: flex;
-    align-items: center;
+.center {
+  display: flex;
+  align-items: center;
 }
 
-.body{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 50px;
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 50px;
 }
 
-.quill{
-    height: 800px;
-    font-size: 12px;
+.quill {
+  height: 800px;
+  font-size: 12px;
 }
 
-.button{
-    margin-top: 20px;
-    align-self: center;
-    height: 40px;
-    background-color: #9C7B16;
-    font-size: 14px;
-    transition: background-color 0.3s;
+.button {
+  margin-top: 20px;
+  align-self: center;
+  height: 40px;
+  background-color: #9c7b16;
+  font-size: 14px;
+  transition: background-color 0.3s;
 }
