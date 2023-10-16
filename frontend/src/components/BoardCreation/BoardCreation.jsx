@@ -16,8 +16,22 @@ const BoardCreation = ({ selected, setCreateAction }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/template/`);
-        setAllTemplate(response.data);
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/template/public`
+        );
+        const templatesWithTeacher = await Promise.all(
+          response.data.map(async (template) => {
+            const teacherResponse = await axios.get(
+              `http://127.0.0.1:8000/api/teacher/${template.teacher_fk}`
+            );
+            const templateWithTeacher = {
+              ...template,
+              teacher: teacherResponse.data,
+            };
+            return templateWithTeacher;
+          })
+        );
+        setAllTemplate(templatesWithTeacher);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -76,16 +90,19 @@ const BoardCreation = ({ selected, setCreateAction }) => {
                       <div className={styles.words}>
                         <h4>{template.title}</h4>
                         <p>
-                          {template.description.length > 100
+                          {template.description.length > 150
                             ? template.description
-                                .substr(0, 100)
+                                .substr(0, 150)
                                 .split(" ")
                                 .slice(0, -1)
                                 .join(" ") + "..."
                             : template.description}
                         </p>
                         <div className={styles.date}>
-                          <p>Created By: Bob Kyle Rosales</p>
+                          <p>
+                            Created By: {template.teacher.firstname}{" "}
+                            {template.teacher.lastname}
+                          </p>
                         </div>
                       </div>
                     </Card>

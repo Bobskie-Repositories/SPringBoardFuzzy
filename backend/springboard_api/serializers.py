@@ -47,6 +47,12 @@ class TeacherSerializer(serializers.ModelSerializer):
         return instance
 
 
+class CustomTeacherSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Teacher
+        fields = ('id', 'firstname', 'lastname')
+
+
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student

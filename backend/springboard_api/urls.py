@@ -2,9 +2,9 @@ from django.urls import path
 from .controllers.ClassroomController import GetClassroom, GetClassroomById, GetGroupByClassId
 from .controllers.ProjectController import ProjectCreateView, ProjectView, GetProjectsByGroupId, GetProjectById, ProjectCreateView, ProjectUpdateView, DeleteProjectView
 from .controllers.ProjectBoardController import GetProjectBoards, CreateProjectBoard, GetProjectBoardById, UpdateBoard, DeleteProjectBoard
-from .controllers.TemplateController import GetTemplate, GetAllTemplate, GetTemplateByTeacherId, CreateTemplate, DeleteTemplate
+from .controllers.TemplateController import GetTemplate, GetAllTemplate, GetTemplateByTeacherId, GetAllPublicTemplates, CreateTemplate, UpdateTemplate, DeleteTemplate
 from .controllers.StudentController import RegisterStudent, LoginStudent, LogoutStudent, StudentView
-from .controllers.TeacherController import RegisterTeacher, LoginTeacher, LogoutTeacher, TeacherView
+from .controllers.TeacherController import RegisterTeacher, LoginTeacher, LogoutTeacher, TeacherView, GetTeacherById
 from .controllers.GroupController import GetGroupById
 
 urlpatterns = [
@@ -17,6 +17,8 @@ urlpatterns = [
     path('api/login-teacher', LoginTeacher.as_view()),
     path('api/active-teacher', TeacherView.as_view()),
     path('api/logout-teacher', LogoutTeacher.as_view()),
+
+    path('api/teacher/<int:id>', GetTeacherById.as_view()),
 
     path('', ProjectView.as_view()),
     path('api/group/<int:group_id>/projects', GetProjectsByGroupId.as_view()),
@@ -40,9 +42,11 @@ urlpatterns = [
 
     path('api/template/<int:template_id>', GetTemplate.as_view()),
     path('api/template/', GetAllTemplate.as_view()),
+    path('api/template/public', GetAllPublicTemplates.as_view()),
     path('api/teacher/template/<int:teacher_id>/',
          GetTemplateByTeacherId.as_view()),
     path('api/template/add', CreateTemplate.as_view()),
+    path('api/template/<int:template_id>/update', UpdateTemplate.as_view()),
     path('api/template/<int:template_id>/delete', DeleteTemplate.as_view()),
 
     path('api/group/<int:group_id>', GetGroupById.as_view()),

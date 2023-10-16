@@ -11,7 +11,6 @@ import ViewBoard from "./pages/ViewBoard";
 import EditBoard from "./pages/EditBoard";
 import Edit_Result from "./pages/Edit_Result";
 import AddTemplate from "./pages/AddTemplate";
-import MyTemplate from "./pages/MyTemplate";
 
 function App() {
   return (
