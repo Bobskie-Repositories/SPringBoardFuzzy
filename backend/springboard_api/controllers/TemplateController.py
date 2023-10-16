@@ -41,6 +41,23 @@ class GetTemplate(generics.ListAPIView):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class GetTemplateByTeacherId(generics.ListAPIView):
+    serializer_class = TemplateSerializer
+    queryset = Template.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        teacher_id = self.kwargs.get('teacher_id')
+
+        try:
+            templates = Template.objects.filter(teacher_fk_id=teacher_id)
+            serializer = TemplateSerializer(templates, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Template.DoesNotExist:
+            return Response({"error": "Template not found"}, status=status.HTTP_404_NOT_FOUND)
+        except ValueError as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
 class DeleteTemplate(generics.DestroyAPIView):
     serializer_class = TemplateSerializer
     queryset = Template.objects.all()
