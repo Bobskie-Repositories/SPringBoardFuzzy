@@ -99,3 +99,14 @@
   margin-left: -8rem;
   margin-top: 1rem;
 }
+
+.publish {
+  display: flex;
+  align-items: center;
+}
+
+.alignment {
+  gap: 420px;
+  display: flex;
+  align-items: flex-end;
+}
