@@ -3,11 +3,11 @@
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 100px;
-  width: 110%;
+  width: 100%;
 }
 
 .container_card {
-  padding: 0 10px 40px 10px;
+  padding: 0 10px 10px 10px;
   margin-top: 15px;
   width: 100%;
   display: flex;
@@ -25,7 +25,8 @@
   max-height: 10rem;
   background-color: #fefaf1;
   cursor: pointer;
-  min-width: 500px;
+  min-width: 30rem;
+  min-height: 10rem;
 }
 
 .container_board:hover {
@@ -35,11 +36,13 @@
 .words p {
   font-size: smaller;
   color: #464646;
+  height: 45px;
 }
 
 .date {
   gap: 220px;
   display: flex;
+  align-items: flex-end;
 }
 
 .publish {
