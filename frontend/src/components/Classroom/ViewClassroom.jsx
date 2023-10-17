@@ -24,7 +24,7 @@ const ViewClassroom = ({ selected }) => {
         });
 
       axios
-        .get(`http://127.0.0.1:8000/api/classroom/${id}/group`)
+        .get(`http://127.0.0.1:8000/api/classroom/${id}/groupproject`)
         .then((response) => {
           setGroups(response.data);
           // console.log(response.data)
@@ -62,23 +62,26 @@ const ViewClassroom = ({ selected }) => {
           }}
         >
           <span className={styles.centerText}>Group Name</span>
-          {/* <span className={styles.centerText}>Group Id</span> */}
+          <span className={styles.centerText}>Project</span>
           <span className={styles.centerText}>Top Group</span>
         </div>
 
         {groups ? (
-          groups.map((group) => (
+          groups.map((group, index) => (
             <div
-              className={styles.container}
+              className={styles.groupContainer}
               style={{ gridTemplateRows: "2.5rem" }}
               key={group.id}
             >
               <NavLink to={`group/${group.id}`}>
                 <span className={styles.centerTextName} onClick={goGroupPage}>
-                  {group.name}
+                  {group.group_name}
                 </span>
               </NavLink>
-              <span className={styles.centerText}>{group.rank}</span>
+              <span className={styles.centerText}>
+                {group.top_project ? group.top_project.name : "No Top Project"}
+              </span>
+              <span className={styles.centerText}>{index + 1}</span>
             </div>
           ))
         ) : (

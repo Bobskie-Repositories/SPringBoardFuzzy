@@ -1,6 +1,6 @@
 from django.urls import path
-from .controllers.ClassroomController import GetClassroom, GetClassroomById, GetGroupByClassId
-from .controllers.ProjectController import ProjectCreateView, ProjectView, GetProjectsByGroupId, GetProjectById, ProjectCreateView, ProjectUpdateView, DeleteProjectView
+from .controllers.ClassroomController import GetClassroom, GetClassroomById, GetGroupByClassId, GetTopProjectsByClassroom
+from .controllers.ProjectController import ProjectCreateView, ProjectView, GetProjectsByGroupId, GetProjectById, ProjectCreateView, ProjectUpdateView, UpdateProjectScoreView, DeleteProjectView
 from .controllers.ProjectBoardController import GetProjectBoards, CreateProjectBoard, GetProjectBoardById, UpdateBoard, DeleteProjectBoard
 from .controllers.TemplateController import GetTemplate, GetAllTemplate, GetTemplateByTeacherId, GetAllPublicTemplates, CreateTemplate, UpdateTemplate, DeleteTemplate
 from .controllers.StudentController import RegisterStudent, LoginStudent, LogoutStudent, StudentView
@@ -25,11 +25,15 @@ urlpatterns = [
     path('api/project/<int:project_id>', GetProjectById.as_view()),
     path('api/project/create', ProjectCreateView.as_view()),
     path('api/project/<int:project_id>/update', ProjectUpdateView.as_view()),
+    path('api/project/<int:project_id>/update_score',
+         UpdateProjectScoreView.as_view()),
     path('api/project/<int:project_id>/delete', DeleteProjectView.as_view()),
 
     path('api/classroom/<int:teacher_fk_id>/all', GetClassroom.as_view()),
     path('api/classroom/<int:class_id>', GetClassroomById.as_view()),
     path('api/classroom/<int:class_id>/group', GetGroupByClassId.as_view()),
+    path('api/classroom/<int:classroom_id>/groupproject',
+         GetTopProjectsByClassroom.as_view()),
 
     path('api/project/<int:project_id>/projectboards', GetProjectBoards.as_view()),
     path('api/projectboards/<int:projectboard_id>',

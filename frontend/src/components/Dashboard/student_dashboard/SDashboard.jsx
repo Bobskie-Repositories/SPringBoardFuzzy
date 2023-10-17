@@ -30,7 +30,7 @@ const SDashboard = () => {
   return (
     <div
       className={styles.container}
-      style={{ padding: "20px 150px 20px 30px" }}
+      style={{ padding: "20px 150px 0px 30px" }}
     >
       <S_Sidebar setSelected={setSelected} />
 

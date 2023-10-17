@@ -50,6 +50,8 @@ class Group(models.Model):
 
 class Project(models.Model):
     name = models.CharField(max_length=50)
+    isPublic = models.BooleanField(default=False)
+    score = models.FloatField(default=0)
     group_fk = models.ForeignKey(
         Group, on_delete=models.SET_NULL, null=True, default=None)
     created_at = models.DateTimeField(default=timezone.now)

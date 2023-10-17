@@ -1,7 +1,7 @@
 .scrollable {
   padding: 0px 0px 15px 0px;
   /* margin-top: -0.5rem; */
-  max-height: 550px;
+  max-height: 500px;
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -32,7 +32,10 @@
 .head {
   font-size: 25px;
   color: #9c7b16;
-  margin: 30px 0px 0px 0px;
+  /* margin: 30px 0px 0px 0px; */
+  align-items: center;
+  font-size: 25px;
+  font-weight: bold;
 }
 
 /* style={{ fontSize: "25px", color: '#9c7b16' }} */
@@ -98,4 +101,18 @@
   width: 130px;
   margin-left: -8rem;
   margin-top: 1rem;
+}
+
+.publish {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.alignment {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  gap: 420px;
+  display: flex;
+  align-items: center;
 }
