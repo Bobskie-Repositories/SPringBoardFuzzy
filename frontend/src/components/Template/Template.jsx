@@ -75,6 +75,8 @@ const Template = () => {
         }
       );
 
+      await axios.put(`http://127.0.0.1:8000/api/project/${id}/update_score`);
+
       navigate(`/project/${id}/create-board/${response.data.id}/result`);
 
       console.log("ProjectBoard created successfully:", response.data.id);
