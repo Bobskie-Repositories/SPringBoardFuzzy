@@ -1,33 +1,80 @@
 .sidebar {
-    background-color: rgba(156, 123, 22, 0.05);
-    border-radius: 10px;
-    height: 680px;
-    width: fit-content;
-    max-height: 680px;   
-    position: relative;
-    cursor: pointer;
+  background-color: rgba(156, 123, 22, 0.05);
+  border-radius: 10px;
+  height: 680px;
+  width: fit-content;
+  max-height: 680px;
+  position: relative;
+}
+
+.subbody {
+  padding-left: 2rem;
+  margin-bottom: 10px;
+}
+
+.grouptext {
+  font-weight: 500;
+  color: #9c7b16;
+  margin: 10px;
+}
+
+.groupbutton {
+  border-style: hidden;
+  font-size: 75%;
+  background-color: #9c7b16;
+  background-size: 50%;
+  padding: 5px 50px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.groupbutton h3 {
+  font-weight: 350;
+  color: #ffffff;
+  text-align: left;
+  padding-left: 2.5rem;
+}
+
+.groupbutton h4 {
+  margin-top: -10px;
+  font-weight: 400;
+  font-size: 80%;
+  color: rgb(181, 178, 178);
+  text-align: left;
+  padding-left: 2.5rem;
+}
+
+.groupbutton:focus {
+  outline: none;
+}
+
+.groupicon {
+  width: 70px;
+  position: absolute;
+  left: 3rem;
 }
 
 .img {
-    padding: 20px;
+  padding: 20px;
+  cursor: pointer;
 }
 
 .customLi {
-    padding: 10px 100px;
-    width: 100px;
-    color: rgb(139, 139, 139);
-    /* background-color: rgba(156, 123, 22, 0.15); */
+  padding: 10px 100px;
+  width: 100px;
+  color: rgb(139, 139, 139);
+  /* background-color: rgba(156, 123, 22, 0.15); */
 }
 
 .customLi:hover {
-    background-color: rgba(156, 123, 22, 0.15);
-    border-color: rgba(156, 123, 22, 0.15);
-    cursor: pointer;
-  }
+  background-color: rgba(156, 123, 22, 0.15);
+  border-color: rgba(156, 123, 22, 0.15);
+  cursor: pointer;
+}
 
 .list {
-    list-style-type: none;
-    padding: 0;
-    position: absolute;
-    bottom: 20px;
+  list-style-type: none;
+  padding: 0;
+  position: absolute;
+  bottom: 20px;
 }

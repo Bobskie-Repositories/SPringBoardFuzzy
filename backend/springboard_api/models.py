@@ -4,14 +4,32 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 # Create your models here.
 
 
-class Teacher(models.Model):
+class TeacherManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError('The Email field must be set')
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+
+class Teacher(AbstractBaseUser):
     firstname = models.CharField(max_length=50)
     lastname = models.CharField(max_length=50)
-    email = models.CharField(max_length=50, unique=True)
-    password = models.CharField(max_length=50)
+    email = models.EmailField(unique=True, default=None)
     is_staff = models.BooleanField(default=True)
     created_at = models.DateTimeField(default=timezone.now)
     deleted_at = models.DateTimeField(default='0000-00-00 00:00:00')
+
+    objects = TeacherManager()
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    def __str__(self):
+        return self.email
 
 
 class Classroom(models.Model):
@@ -32,6 +50,8 @@ class Group(models.Model):
 
 class Project(models.Model):
     name = models.CharField(max_length=50)
+    isPublic = models.BooleanField(default=False)
+    score = models.FloatField(default=0)
     group_fk = models.ForeignKey(
         Group, on_delete=models.SET_NULL, null=True, default=None)
     created_at = models.DateTimeField(default=timezone.now)
@@ -49,7 +69,8 @@ class ProjectBoard(models.Model):
     project_fk = models.ForeignKey(
         Project, on_delete=models.CASCADE, default=None)
     created_at = models.DateTimeField(default=timezone.now)
-    deleted_at = models.DateTimeField(default='0000-00-00 00:00:00')
+    deleted_at = models.DateTimeField(null=True, blank=True)
+    # deleted_at = models.DateTimeField(default='0000-00-00 00:00:00')
 
 
 class StudentManager(BaseUserManager):
@@ -87,6 +108,7 @@ class Template(models.Model):
     content = models.TextField()
     rules = models.TextField()
     description = models.TextField()
+    isPublic = models.BooleanField(default=False)
     teacher_fk = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=timezone.now)
-    deleted_at = models.DateTimeField(default='0000-00-00 00:00:00')
+    deleted_at = models.DateTimeField(null=True, blank=True)

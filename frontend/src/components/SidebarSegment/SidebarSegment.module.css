@@ -1,107 +1,127 @@
 .subbody {
-    padding-left: 2rem;
+  padding-left: 2rem;
 }
 
 .grouptext {
-    font-weight: 500;
-    color: #9c7b16;
+  font-weight: 500;
+  color: #9c7b16;
 }
 
 .groupbutton {
-    border-style: hidden;
-    font-size: 75%;
-    background-color: #9c7b16;
-    background-size: 50%;
-    padding: 5px 50px;
-    border-radius: 7px;
-    cursor: pointer;
+  border-style: hidden;
+  font-size: 75%;
+  background-color: #9c7b16;
+  background-size: 50%;
+  padding: 5px 50px;
+  border-radius: 7px;
+  cursor: pointer;
 }
 
 .groupbutton h3 {
-    font-weight: 350;
-    color: #ffffff;
-    text-align: left;
-    padding-left: 2.5rem;
+  font-weight: 350;
+  color: #ffffff;
+  text-align: left;
+  padding-left: 2.5rem;
 }
 
 .groupbutton h4 {
-    margin-top: -10px;
-    font-weight: 400;
-    font-size: 80%;
-    color: rgb(181, 178, 178);
-    text-align: left;
-    padding-left: 2.5rem;
+  margin-top: -10px;
+  font-weight: 400;
+  font-size: 80%;
+  color: rgb(181, 178, 178);
+  text-align: left;
+  padding-left: 2.5rem;
 }
 
 .groupbutton:focus {
-    outline:none;
+  outline: none;
 }
 
 .groupicon {
-    width: 70px;
-    position:absolute;
-    left: 4.5rem;
+  width: 70px;
+  position: absolute;
+  left: 3rem;
 }
 
-.customLi, .projectName{
-    color: #9c7b16;
-    font-size: smaller;
-    font-weight: 600;
-    /* background-color: rgba(156, 123, 22, 0.15); */
+.customLi,
+.projectName {
+  color: #9c7b16;
+  font-size: smaller;
+  font-weight: 600;
+  /* background-color: rgba(156, 123, 22, 0.15); */
 }
 
 .customLi {
-    padding: 13px 40px;
+  padding: 15px 40px;
 }
 
 .customLi:hover {
-    background-color: rgba(156, 123, 22, 0.15);
-    border-color: rgba(156, 123, 22, 0.15);
-    cursor: pointer;
-  }
+  background-color: rgba(156, 123, 22, 0.15);
+  border-color: rgba(156, 123, 22, 0.15);
+  cursor: pointer;
+}
 
 .projectName {
-    padding-top: 7%;
+  padding-top: 7%;
 }
 
 .projectName:hover {
-    cursor: pointer;
-    color: rgb(181, 178, 178);
+  cursor: pointer;
+  color: rgb(181, 178, 178);
 }
 
-.dropdown{
-    margin-right: 7px;
+.dropdown {
+  margin-right: 7px;
 }
 
-.clickedProject {
-    color: rgb(139, 139, 139); /* Add your desired text color */
-    /* Add any other styles you want to apply to the clicked project */
-  }
+.templates {
+  margin-right: 15px;
+}
 
-.plus{
-    cursor: pointer; /* Change cursor to pointer on hover */
-    transition: color 0.3s; /* Smooth color transition */
-    margin-left: 7rem;
+.clickedProject,
+.clickedButton {
+  color: rgb(139, 139, 139);
+}
+
+.plus {
+  cursor: pointer;
+  transition: color 0.3s;
+  margin-left: 7rem;
 }
 
 .plus:hover {
-    color: rgb(181, 178, 178); /* Change color on hover */
-  }
+  color: rgb(181, 178, 178);
+}
 
 .nameIcon:hover {
-    color: rgb(181, 178, 178);
+  color: rgb(181, 178, 178);
 }
 
 .orList {
-    list-style-type: none;
-    padding: 0;
-    margin-top: 4%;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
 .deleteIcon {
-    position: absolute;
-    right: 3rem;
+  position: absolute;
+  right: 3rem;
 }
 
+.projectList {
+  display: flex;
+}
 
-  
+.inputProject {
+  border: 2px solid #ffffff;
+  background-color: #ffffff;
+  color: #9c7b16;
+  font-size: small;
+  font-weight: 600;
+  width: 60%;
+}
+
+.inputProject:focus {
+  border: 2px solid rgb(255, 255, 255);
+  outline: none;
+}

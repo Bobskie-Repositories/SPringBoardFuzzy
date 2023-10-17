@@ -1,0 +1,48 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 2rem;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.groupContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 2rem;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+}
+.groupContainer:hover {
+  background-color: #f0f0f0;
+}
+
+.card {
+  padding: 0 0 20px 0;
+  max-width: 50rem;
+  min-height: 30rem;
+}
+
+.centerTextName {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #9c7b16;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.centerTextName:hover {
+  font-weight: 700;
+}
+
+.centerText {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 100%;
+  color: #292929;
+}

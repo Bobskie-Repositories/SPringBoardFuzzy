@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
@@ -41,6 +41,7 @@ class LoginStudent(APIView):
 
         payload = {
             'id': user.id,
+            'role': 'student',
             'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
             'iat': datetime.datetime.utcnow()
         }
@@ -82,9 +83,9 @@ class StudentView(APIView):
 
 class LogoutStudent(APIView):
     def post(self, request):
-        response = Response()
-        response.delete_cookie('jwt')
-        response.data = {
-            'message': 'Success'
-        }
-        return response
+        try:
+            response = JsonResponse({'message': 'Logout successful'})
+            response.delete_cookie('jwt')
+            return response
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

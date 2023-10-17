@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const RequireAuth = ({ children }) => {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ const RequireAuth = ({ children }) => {
   useEffect(() => {
     if (!isAuthenticated) {
       // If the user is not authenticated, redirect to the login page
-      navigate('/login');
+      navigate("/login");
     }
   }, [isAuthenticated, navigate]);
 
