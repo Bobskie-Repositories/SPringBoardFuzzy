@@ -28,7 +28,7 @@ const MDashboard = ({ choose }) => {
   return (
     <div
       className={styles.container}
-      style={{ padding: "20px 150px 20px 30px" }}
+      style={{ padding: "20px 150px 0px 30px" }}
     >
       <T_Sidebar
         setSelected={setSelected}

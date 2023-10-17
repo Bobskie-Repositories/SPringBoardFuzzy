@@ -93,7 +93,7 @@ function Board({ selected, setBoardCount }) {
     <div>
       {project ? (
         <div className={styles.alignment}>
-          <h2 className={styles.head}>{project.name} Boards</h2>
+          <div className={styles.head}>{project.name} Boards</div>
           <div className={styles.publish}>
             <p>Publish</p>
             <Switch
