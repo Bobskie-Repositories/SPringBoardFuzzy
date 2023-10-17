@@ -5,6 +5,8 @@ import axios from "axios";
 import styles from "./TemplateList.module.css";
 import Card from "../UI/Card/Card";
 import Swal from "sweetalert2";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Switch } from "@mui/material";
 
 const TemplateList = () => {
@@ -98,10 +100,41 @@ const TemplateList = () => {
     return `${month}/${day}/${year}`;
   };
 
+  const showDeleteProjectModal = () => {
+    Swal.fire({
+      icon: "warning",
+      title:
+        '<span style="font-size: 20px">Are you sure you want to delete?</span>',
+      html: '<span style="font-size: 15px">This will delete this template permanently. You cannot undo this action.</span>',
+      showCancelButton: true,
+      confirmButtonText: "Delete",
+      confirmButtonColor: "#8A252C",
+      cancelButtonText: "Cancel",
+      cancelButtonColor: "rgb(181, 178, 178)",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title:
+            '<span style="font-size: 20px">Template Sucessfully Deleted</span>',
+          icon: "success",
+          confirmButtonColor: "#9c7b16",
+          confirmButtonText: "OK",
+        });
+      }
+    });
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.container_card}>
         <div className={styles.scrollable}>
+          {templates.length === 0 && (
+            <p className={styles.centeredText}>
+              It looks like you haven't created any templates yet. <br /> Click
+              on the "Create Template" button to get started and create your
+              first template.
+            </p>
+          )}
           {templates.map((template) => (
             <Card
               key={template.id}
@@ -121,6 +154,14 @@ const TemplateList = () => {
                     onChange={(event) => handleToggleClick(template)}
                     inputProps={{ "aria-label": "controlled" }}
                     checked={template.isPublic}
+                  />
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    className={styles.deleteIcon}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      showDeleteProjectModal();
+                    }}
                   />
                 </div>
               </div>

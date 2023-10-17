@@ -47,6 +47,16 @@
 
 .publish {
   display: flex;
+  align-items: center;
+}
+
+.deleteIcon {
+  margin-left: 1rem;
+  color: #7e7e7e;
+}
+
+.deleteIcon:hover {
+  color: #bdbdbd;
 }
 
 .date p {
@@ -79,4 +89,13 @@
 
 .customLabel {
   color: #929292;
+}
+
+.centeredText {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 200px;
+  color: rgb(131, 131, 131);
 }
