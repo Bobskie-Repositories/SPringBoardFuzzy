@@ -1,6 +1,5 @@
-// AuthContext.js
-
 import React, { createContext, useContext, useState, useEffect } from "react";
+import jwt_decode from "jwt-decode";
 
 const AuthContext = createContext();
 
@@ -30,32 +29,37 @@ export const AuthProvider = ({ children }) => {
 
   const getUser = async () => {
     try {
+      const decodedToken = jwt_decode(localStorage.getItem("jwt"));
+      const role = decodedToken.role;
+
       // Attempt to fetch student data
-      const studentResponse = await fetch(
-        "http://127.0.0.1:8000/api/active-student",
-        {
-          method: "GET",
-          credentials: "include",
+      if (role === "student") {
+        const studentResponse = await fetch(
+          "http://127.0.0.1:8000/api/active-student",
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
+
+        if (studentResponse.ok) {
+          const studentData = await studentResponse.json();
+          return studentData;
         }
-      );
+      } else {
+        // Attempt to fetch teacher data
+        const teacherResponse = await fetch(
+          "http://127.0.0.1:8000/api/active-teacher",
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
 
-      if (studentResponse.ok) {
-        const studentData = await studentResponse.json();
-        return studentData;
-      }
-
-      // Attempt to fetch teacher data if student data fetch fails
-      const teacherResponse = await fetch(
-        "http://127.0.0.1:8000/api/active-teacher",
-        {
-          method: "GET",
-          credentials: "include",
+        if (teacherResponse.ok) {
+          const teacherData = await teacherResponse.json();
+          return teacherData;
         }
-      );
-
-      if (teacherResponse.ok) {
-        const teacherData = await teacherResponse.json();
-        return teacherData;
       }
 
       throw new Error("Failed to fetch both student and teacher data");
