@@ -121,8 +121,9 @@ function App() {
             <RequireAuth>
               <M_Dashboard choose={1} />
             </RequireAuth>
-          />
+          }
         />
+        
 
         <Route
           path="group/:groupid"
