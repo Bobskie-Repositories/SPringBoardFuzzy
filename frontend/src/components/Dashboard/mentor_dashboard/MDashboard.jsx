@@ -1,92 +1,83 @@
-import React from 'react'
-import Sidebar from '../../Sidebar/Sidebar';
-import Search from '../../Search/Search';
-import Profile from '../../ProfileSegment/Profile';
-import styles from './MDashboard.module.css';
-import global from '@assets/global.module.css';
-import rightImg from '@assets/chevron-right.png';
-import classroomImg from '@assets/Classroom.png';
-import Card from '../../UI/Card/Card';
-import Button from '../../UI/Button/Button';
+import React from "react";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router";
+import Button from "../../UI/Button/Button";
+import T_Sidebar from "../../Sidebar/T_Sidebar";
+import Search from "../../Search/Search";
+import Profile from "../../ProfileSegment/Profile";
+import ClassroomList from "../../Classroom/ClassroomList";
+import ViewClassroom from "../../Classroom/ViewClassroom";
+import ViewProject from "../../ViewProject/ViewProject";
+import TemplateList from "../../TemplateList/TemplateList";
+import styles from "./MDashboard.module.css";
 
-const MDashboard = () => {
+const MDashboard = ({ choose }) => {
+  const [selected, setSelected] = useState();
+  const [selectedProj, setSelectedProj] = useState();
+  const { id, groupid } = useParams();
+  const navigate = useNavigate();
 
-  const rooms = [
-    {
-      title: "Classroom 1",
-      objectID: 0,
-    },
-    {
-      title: "Classroom 2",
-      objectID: 1,
-    },
-    {
-      title: "Classroom 3",
-      objectID: 2,
-    }, 
-    {
-      title: "Classroom 4",
-      objectID: 3,
-    },
-    {
-      title: "Classroom 5",
-      objectID: 4,
-    },
-    {
-      title: "Classroom 6",
-      objectID: 5,
-    },
-    {
-      title: "Classroom 7",
-      objectID: 6,
-    },
-    {
-      title: "Classroom 8",
-      objectID: 7,
-    },
-  ];
+  useEffect(() => {
+    setSelected(id);
+  }, [selected, id]);
 
+  const handleCreateTemplateClick = () => {
+    navigate("/add-template");
+  };
 
   return (
-    <div className={ styles.container }>
-      <Sidebar />
+    <div
+      className={styles.container}
+      style={{ padding: "20px 150px 0px 30px" }}
+    >
+      <T_Sidebar
+        setSelected={setSelected}
+        choose={choose}
+        setSelectedProj={setSelectedProj}
+      />
 
       <div>
-        <div className={ styles.container }style={{padding: 0, gap: '200px'}}>
+        <div
+          className={styles.container}
+          style={{ gap: "150px", marginTop: "30px" }}
+        >
           <Search />
           <Profile identification={1} />
         </div>
-        
-        <div>       
-            <h2 style={{fontSize: "30px", color: '#9c7b16'}}>Classrooms</h2>
-            
-            {
-              rooms.map ( classroom => {
-                return (
-                  <div key={classroom.objectID} style={{ display: "inline-block", margin: "20px 30px" }}>
-
-                    <Card className={ styles.classroom } style={{padding: 0}}>
-
-                      <div style={{padding: "1rem"}}>
-                        <img src={ classroomImg }/>
-                        <h4>{classroom.title}</h4>
-                      </div>
-
-                      <Button className = { global.brown } style={{borderRadius: "0 0 10px 10px", width: "100%"}}>
-                        <img src={ rightImg }/>
-                      </Button>
-
-                    </Card>
-                  </div>
-                );
-              })
-            }
+        <div>
+          {choose === 0 ? (
+            <div>
+              <div className={styles.container}>
+                <h2 style={{ fontSize: "30px", color: "#9c7b16" }}>
+                  Classrooms
+                </h2>
+              </div>
+              <ClassroomList />
+            </div>
+          ) : choose === 1 ? (
+            <ViewClassroom selected={selected} />
+          ) : choose === 2 ? (
+            <ViewProject selected={selectedProj} />
+          ) : (
+            <div>
+              <div className={styles.container}>
+                <h2 style={{ fontSize: "30px", color: "#9c7b16" }}>
+                  Your Templates
+                </h2>
+                <Button
+                  className={styles.butName}
+                  onClick={handleCreateTemplateClick}
+                >
+                  Create Template
+                </Button>
+              </div>
+              <TemplateList />
+            </div>
+          )}
         </div>
-
-      </div>  
-
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default MDashboard;

@@ -1,0 +1,84 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 50px;
+}
+
+.title {
+  font-size: 26px;
+  font-weight: bold;
+  margin-top: 40px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 70rem;
+}
+
+.resultContainer {
+  margin: 30px 0;
+  padding: 0 20px;
+}
+
+.criteria {
+  display: flex;
+  gap: 80px;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+
+.cardCriteria {
+  padding: 10px 20px 20px 20px;
+  /* height: 50px; */
+  width: 13rem;
+  border-radius: 25px;
+  display: flex;
+  gap: 15px;
+  background-color: #fefaf1;
+}
+
+.cardContent {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.ratings {
+  font-size: small;
+  font-weight: 500;
+  color: rgb(131, 131, 131);
+}
+
+.circleSize {
+  height: 10rem;
+  width: 10rem;
+}
+
+.advice {
+  width: 40%;
+  text-align: center;
+}
+
+.content {
+  text-align: justify;
+}
+
+.boxContent {
+  border: 1px solid #9c7b16;
+  min-height: 150px;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.button {
+  margin-top: 20px;
+  align-self: center;
+  height: 40px;
+  background-color: #9c7b16;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}

@@ -1,0 +1,10 @@
+.center {
+  display: flex;
+  align-items: center;
+}
+
+@media screen and (max-width: 1200px) {
+  .center {
+    font-size: 0; /* Hide the text for smaller screens */
+  }
+}
