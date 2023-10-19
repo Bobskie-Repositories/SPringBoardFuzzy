@@ -13,3 +13,33 @@
   height: 20px;
   width: 100%;
 }
+
+/* Search.module.css */
+
+.searchContainer {
+  position: relative;
+  width: 100%;
+}
+
+.itemList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  position: absolute;
+  width: 100%;
+  background-color: white;
+}
+
+.listItem {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.listItem:hover {
+  background-color: #f2f2f2;
+}
