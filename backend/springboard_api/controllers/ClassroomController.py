@@ -93,12 +93,14 @@ class GetTopProjectsByClassroom(generics.ListAPIView):
                 if top_project:
                     project_serializer = ProjectSerializer(top_project)
                     group_top_projects.append({
+                        'group_id': group.id,  # Add group ID
                         'group_name': group.name,
                         'top_project': project_serializer.data
                     })
                 else:
                     # If no top project found, set the top_project field to zero
                     group_top_projects.append({
+                        'group_id': group.id,  # Add group ID
                         'group_name': group.name,
                         'top_project': {'score': 0}
                     })
