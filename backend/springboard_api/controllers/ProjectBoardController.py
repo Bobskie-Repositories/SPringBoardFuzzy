@@ -5,21 +5,53 @@ from rest_framework.response import Response
 from rest_framework import status
 from springboard_api.serializers import ProjectBoardSerializer
 from springboard_api.models import ProjectBoard
+import requests 
 
 
 class CreateProjectBoard(generics.CreateAPIView):
     serializer_class = ProjectBoardSerializer
-
+    
     def perform_create(self, serializer):
         serializer.save()
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
+
+        api_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
+        prompt = "Parse these data " + str(request.data) + "And Give the percentage rating in terms of novelty, technical feasibility, Capability and provide atleast 2 sentences for recommendations and feedback. The output for each should be concatanated with a '+'"
+        request_payload = {
+            "prompt": prompt,
+            "temperature": 0.5,
+            "max_tokens": 256,
+            "top_p": 1.0,
+            "frequency_penalty": 0.0,
+            "presence_penalty": 0.0
+        }
+        headers = {
+            "Authorization": "Bearer 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"
+        }
+
+        try:
+            response = requests.post(api_url, json=request_payload, headers=headers)
+
+            if response.status_code == 200:
+                response_content = response.json()
+
+                if response_content and response_content.get("choices"):
+                    improved_unit_test = response_content["choices"][0]["text"].strip()
+                    print(improved_unit_test)
+                else:
+                    print("No response content or choices found.")
+            else:
+                error_message = response.text
+                print(error_message)
+        except requests.exceptions.RequestException as e:
+            print(f"An error occurred: {e}")
+        
         if serializer.is_valid():
             self.perform_create(serializer)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class GetProjectBoards(generics.ListAPIView):
     serializer_class = ProjectBoardSerializer
@@ -84,3 +116,4 @@ class DeleteProjectBoard(generics.DestroyAPIView):
             return Response({"error": "ProjectBoard not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
