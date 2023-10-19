@@ -53,6 +53,35 @@ class GetProjectsByGroupId(generics.ListAPIView):
         except ValueError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+
+class GetPublicProjectsByGroupId(generics.ListAPIView):
+    serializer_class = ProjectSerializer
+
+    def get_queryset(self):
+        group_id = self.kwargs.get('group_id')
+        # Filter projects by group ID and isPublic attribute
+        return Project.objects.filter(group_fk_id=group_id, isPublic=True)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class GetPublicProjectsView(generics.ListAPIView):
+    serializer_class = ProjectSerializer
+    queryset = Project.objects.filter(isPublic=True)
+
+    def list(self, request, *args, **kwargs):
+        public_projects = self.get_queryset()  # Get the queryset of public projects
+        serializer = self.get_serializer(public_projects, many=True)
+
+        if public_projects:
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response([], status=status.HTTP_204_NO_CONTENT)
+
+
 # Get project by id
 
 
