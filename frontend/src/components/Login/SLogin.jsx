@@ -19,15 +19,14 @@ const SLoginComponent = () => {
   // Function to handle form submission
   const handleLogin = async (e) => {
     e.preventDefault();
+
     try {
       const loginResult = await loginStudent(username, password);
 
       if (loginResult.success) {
         try {
           const user = await getUser();
-          // console.log(user);
           const groupId = user.group_fk;
-          // console.log(groupId);
           navigate(`/group/${groupId}`);
         } catch (error) {
           setIncorrect(true);

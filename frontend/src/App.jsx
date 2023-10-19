@@ -12,6 +12,7 @@ import EditBoard from "./pages/EditBoard";
 import Edit_Result from "./pages/Edit_Result";
 import AddTemplate from "./pages/AddTemplate";
 import EditTemplate from "./pages/EditTemplate";
+import GPTChat from './components/GPTRequestHandler/GPTChat'; // Import the GPTChat component
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Route path="/login" element={<Login choose={0} />} />
       <Route path="/login-student" element={<Login choose={1} />} />
       <Route path="/login-teacher" element={<Login choose={2} />} />
+      <Route path="/chat-gpt" element={<GPTChat />} /> {/* Add this route for GPT Chat */}
 
       <Route path="/group/:groupid">
         <Route
@@ -123,6 +125,7 @@ function App() {
             </RequireAuth>
           }
         />
+        
 
         <Route
           path="group/:groupid"
