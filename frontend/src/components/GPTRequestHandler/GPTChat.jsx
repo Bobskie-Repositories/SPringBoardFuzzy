@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { generateResponse } from './components/GPTRequestHandler/gptHandler';
-import GPTChat from './GPTChat'; // Import the GPTChat component
 
 function GPTChat() {
   const [input, setInput] = useState('');
