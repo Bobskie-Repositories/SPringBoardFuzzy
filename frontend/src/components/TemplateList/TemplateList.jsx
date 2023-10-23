@@ -14,6 +14,7 @@ const TemplateList = () => {
   const [templates, setTemplates] = useState([]);
   const { getUser } = useAuth();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,6 +24,7 @@ const TemplateList = () => {
           `http://127.0.0.1:8000/api/teacher/template/${user.id}/`
         );
         setTemplates(response.data);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -100,7 +102,7 @@ const TemplateList = () => {
     return `${month}/${day}/${year}`;
   };
 
-  const showDeleteProjectModal = () => {
+  const showDeleteProjectModal = async (templateId) => {
     Swal.fire({
       icon: "warning",
       title:
@@ -111,8 +113,16 @@ const TemplateList = () => {
       confirmButtonColor: "#8A252C",
       cancelButtonText: "Cancel",
       cancelButtonColor: "rgb(181, 178, 178)",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
+        await axios.delete(
+          `http://127.0.0.1:8000/api/template/${templateId}/delete`
+        );
+
+        // Update the list of templates
+        setTemplates((prevTemplates) =>
+          prevTemplates.filter((t) => t.id !== templateId)
+        );
         Swal.fire({
           title:
             '<span style="font-size: 20px">Template Sucessfully Deleted</span>',
@@ -128,7 +138,7 @@ const TemplateList = () => {
     <div className={styles.container}>
       <div className={styles.container_card}>
         <div className={styles.scrollable}>
-          {templates.length === 0 && (
+          {!isLoading && templates.length === 0 && (
             <p className={styles.centeredText}>
               It looks like you haven't created any templates yet. <br /> Click
               on the "Create Template" button to get started and create your
@@ -154,13 +164,16 @@ const TemplateList = () => {
                     onChange={(event) => handleToggleClick(template)}
                     inputProps={{ "aria-label": "controlled" }}
                     checked={template.isPublic}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                    }}
                   />
                   <FontAwesomeIcon
                     icon={faTrash}
                     className={styles.deleteIcon}
                     onClick={(event) => {
                       event.stopPropagation();
-                      showDeleteProjectModal();
+                      showDeleteProjectModal(template.id);
                     }}
                   />
                 </div>
