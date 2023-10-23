@@ -29,6 +29,23 @@ const ResultBoard = ({ boardid }) => {
     return <p>Loading...</p>;
   }
 
+  // Function to parse references string into an array
+  const parseReferences = (references) => {
+    if (!references) return [];
+
+    // Remove the first and last characters from the entire string
+    // const trimmedReferencesString = references.slice(0, -1).trim();
+
+    // Split the references string by ',' and trim spaces
+    const referencesArray = references
+      .split(",")
+      .map((reference) => reference.trim());
+
+    return referencesArray;
+  };
+
+  const referencesArray = parseReferences(board.references);
+
   return (
     <div className={styles.container}>
       <span className={styles.title}>Results</span>
@@ -63,33 +80,27 @@ const ResultBoard = ({ boardid }) => {
           </Card>
         </div>
 
-        <div className={styles.criteria} style={{ marginTop: "40px" }}>
+        <div className={styles.adviceDiv} style={{ marginTop: "40px" }}>
           <div className={styles.advice}>
             <h4>Feedback</h4>
-            <div className={styles.content}>
-              {/* Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. */}
-            </div>
+            <div className={styles.content}>{board.feedback}</div>
           </div>
           <div className={styles.advice}>
             <h4>Recommendations</h4>
-            <div className={styles.content}>
-              {/* Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. */}
-            </div>
+            <div className={styles.content}>{board.recommendation}</div>
           </div>
         </div>
 
         <div>
           <h4>References</h4>
           <div className={styles.boxContent}>
-            <ul> http://www.ecommerce-store-example.com</ul>
-            <ul> http://www.personal-blog-example.com</ul>
-            <ul> http://www.ecommerce-store-example.com</ul>
+            {referencesArray.map((reference, index) => (
+              <li key={index}>
+                <a href={reference} target="_blank" rel="noopener noreferrer">
+                  {reference}
+                </a>
+              </li>
+            ))}
           </div>
         </div>
       </div>
