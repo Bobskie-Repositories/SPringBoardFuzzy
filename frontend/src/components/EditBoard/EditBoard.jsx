@@ -17,6 +17,7 @@ import EditorToolbar, {
 const EditBoard = () => {
   const [title, setTitle] = useState(null);
   const [content, setContent] = useState(null);
+  const [projectId, SetProjectId] = useState(null);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -28,6 +29,7 @@ const EditBoard = () => {
         );
         setTitle(response.data.title || "");
         setContent(response.data.content || "");
+        SetProjectId(response.data.project_fk || "");
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -50,12 +52,13 @@ const EditBoard = () => {
         {
           title: title,
           content: content, // Use the content from the React Quill editor
-          novelty: getRandomDigit(),
-          capability: getRandomDigit(),
-          technical_feasibility: getRandomDigit(),
-          feedback: feedback,
-          recommendation: recommendation,
-          references: references,
+          novelty: 0,
+          capability: 0,
+          technical_feasibility: 0,
+          feedback: "s",
+          recommendation: "s",
+          references: "s",
+          project_fk: projectId,
         }
       );
       console.log(response.data.project_fk);
