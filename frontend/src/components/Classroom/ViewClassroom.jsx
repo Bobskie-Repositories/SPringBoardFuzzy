@@ -35,11 +35,9 @@ const ViewClassroom = ({ selected }) => {
     }
   }, [selected]);
 
-  const goGroupPage = () => {};
-
-  // if(!groups){
-  //   return <p>Loading...</p>;
-  // }
+  if (!groups) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div>
@@ -66,27 +64,21 @@ const ViewClassroom = ({ selected }) => {
           <span className={styles.centerText}>Top Group</span>
         </div>
 
-        {groups ? (
-          groups.map((group, index) => (
-            <div
-              className={styles.groupContainer}
-              style={{ gridTemplateRows: "2.5rem" }}
-              key={group.id}
-            >
-              <NavLink to={`group/${group.id}`}>
-                <span className={styles.centerTextName} onClick={goGroupPage}>
-                  {group.group_name}
-                </span>
-              </NavLink>
-              <span className={styles.centerText}>
-                {group.top_project ? group.top_project.name : "No Top Project"}
-              </span>
-              <span className={styles.centerText}>{index + 1}</span>
-            </div>
-          ))
-        ) : (
-          <p>Loading...</p>
-        )}
+        {groups.map((group, index) => (
+          <div
+            className={styles.groupContainer}
+            style={{ gridTemplateRows: "2.5rem" }}
+            key={group.group_id}
+          >
+            <NavLink to={`group/${group.group_id}`}>
+              <span className={styles.centerTextName}>{group.group_name}</span>
+            </NavLink>
+            <span className={styles.centerText}>
+              {group.top_project ? group.top_project.name : "No Top Project"}
+            </span>
+            <span className={styles.centerText}>{index + 1}</span>
+          </div>
+        ))}
       </Card>
     </div>
   );

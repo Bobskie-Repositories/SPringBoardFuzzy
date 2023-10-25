@@ -62,12 +62,12 @@ const Template = () => {
         {
           title: template.title,
           content: content, // Use the content from the React Quill editor
-          novelty: getRandomDigit(),
-          capability: getRandomDigit(),
-          technical_feasibility: getRandomDigit(),
-          feedback: feedback,
-          recommendation: recommendation,
-          references: references,
+          novelty: 0,
+          capability: 0,
+          technical_feasibility: 0,
+          feedback: "s",
+          recommendation: "s",
+          references: "s",
           project_fk: id,
         }
       );

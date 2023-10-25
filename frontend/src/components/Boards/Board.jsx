@@ -5,6 +5,7 @@ import IdeaIcon from "@assets/idea.png";
 import Button from "../UI/Button/Button";
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import CircularProgressWithLabel from "../UI/ProgressBar/CircularProgressWithLabel";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -14,24 +15,41 @@ function Board({ selected, setBoardCount }) {
   const navigate = useNavigate();
   const [boards, setBoards] = useState([]);
   const [project, setProject] = useState();
+  const [staff, setStaff] = useState(false);
+  const { getUser } = useAuth();
 
   useEffect(() => {
-    if (selected !== null && selected !== undefined) {
-      fetch("http://127.0.0.1:8000/api/project/" + selected + "/projectboards")
-        .then((response) => response.json())
-        .then((boards) => {
-          setBoards(boards);
-          const boardCount = boards.length;
-          setBoardCount(boardCount);
-        });
+    const fetchData = async () => {
+      try {
+        const user = await getUser();
+        setStaff(user.is_staff);
 
-      fetch("http://127.0.0.1:8000/api/project/" + selected)
-        .then((response) => response.json())
-        .then((project) => {
+        if (selected !== null && selected !== undefined) {
+          const boardsResponse = await axios.get(
+            `http://127.0.0.1:8000/api/project/${selected}/projectboards`
+          );
+          const boards = boardsResponse.data;
+          setBoards(boards);
+
+          const projectResponse = await axios.get(
+            `http://127.0.0.1:8000/api/project/${selected}`
+          );
+          const project = projectResponse.data;
           setProject(project);
-        });
-    }
-  }, [selected]);
+
+          //checks if there is setBoardCount that was passed
+          if (typeof setBoardCount === "function") {
+            const boardCount = boards.length;
+            setBoardCount(boardCount);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [selected, setBoardCount, getUser]);
 
   const handleToggleClick = async (event) => {
     if (!project.isPublic) {
@@ -94,14 +112,16 @@ function Board({ selected, setBoardCount }) {
       {project ? (
         <div className={styles.alignment}>
           <div className={styles.head}>{project.name} Boards</div>
-          <div className={styles.publish}>
-            <p>Publish</p>
-            <Switch
-              onChange={(event) => handleToggleClick(event)}
-              inputProps={{ "aria-label": "controlled" }}
-              checked={project.isPublic}
-            />
-          </div>
+          {!staff && (
+            <div className={styles.publish}>
+              <p>Publish</p>
+              <Switch
+                onChange={(event) => handleToggleClick(event)}
+                inputProps={{ "aria-label": "controlled" }}
+                checked={project.isPublic}
+              />
+            </div>
+          )}
         </div>
       ) : (
         <p>Loading...</p>
