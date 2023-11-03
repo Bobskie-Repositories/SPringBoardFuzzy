@@ -19,7 +19,7 @@ class GroupSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ('id', 'name', 'group_fk', 'score', 'isPublic', 'created_at')
+        fields = ('id', 'name', 'group_fk', 'score', 'isActive', 'created_at')
 
 
 class ProjectBoardSerializer(serializers.ModelSerializer):
@@ -72,5 +72,5 @@ class StudentSerializer(serializers.ModelSerializer):
 class TemplateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Template
-        fields = ('id', 'title', 'content', 'rules', 'description', 'isPublic',
+        fields = ('id', 'title', 'content', 'rules', 'description', 'isActive',
                   'teacher_fk', 'created_at', 'deleted_at')

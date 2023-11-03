@@ -52,7 +52,7 @@ function Board({ selected, setBoardCount }) {
   }, [selected, setBoardCount, getUser]);
 
   const handleToggleClick = async (event) => {
-    if (!project.isPublic) {
+    if (!project.isActive) {
       const result = await Swal.fire({
         title: "Are you sure you want to publish this project?",
         icon: "warning",
@@ -83,22 +83,22 @@ function Board({ selected, setBoardCount }) {
   };
 
   const toggleProjectPublic = async (project) => {
-    const newIsPublic = !project.isPublic;
+    const newisActive = !project.isActive;
     try {
       await axios.put(
         `http://127.0.0.1:8000/api/project/${project.id}/update`,
         {
           name: project.name,
-          isPublic: newIsPublic,
+          isActive: newisActive,
           group_fk: project.group_fk,
         }
       );
       setProject((prevProject) => ({
         ...prevProject,
-        isPublic: newIsPublic,
+        isActive: newisActive,
       }));
     } catch (error) {
-      console.error("Error updating isPublic:", error);
+      console.error("Error updating isActive:", error);
       Swal.fire("Error", "Failed to publish the template", "error");
     }
   };
@@ -118,7 +118,7 @@ function Board({ selected, setBoardCount }) {
               <Switch
                 onChange={(event) => handleToggleClick(event)}
                 inputProps={{ "aria-label": "controlled" }}
-                checked={project.isPublic}
+                checked={project.isActive}
               />
             </div>
           )}

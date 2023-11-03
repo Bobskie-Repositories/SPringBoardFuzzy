@@ -19,6 +19,16 @@ export const AuthProvider = ({ children }) => {
     if (storedToken) {
       setToken(storedToken);
       setIsAuthenticated(true);
+
+      // Check token expiration
+      const decodedToken = jwt_decode(storedToken);
+      const currentTime = Date.now() / 1000; // Convert to seconds
+      if (decodedToken.exp < currentTime / 60) {
+        // Token has expired
+        setIsAuthenticated(false);
+        setToken(null);
+        localStorage.removeItem("jwt");
+      }
     }
     if (storedId) {
       setId(storedId);
