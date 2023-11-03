@@ -39,6 +39,9 @@ class Classroom(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     deleted_at = models.DateTimeField(default='0000-00-00 00:00:00')
 
+    def __str__(self):
+        return self.class_name
+
 
 class Group(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -47,14 +50,20 @@ class Group(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     deleted_at = models.DateTimeField(default='0000-00-00 00:00:00')
 
+    def __str__(self):
+        return self.name
+
 
 class Project(models.Model):
     name = models.CharField(max_length=50)
-    isPublic = models.BooleanField(default=False)
+    isActive = models.BooleanField(default=False)
     score = models.FloatField(default=0)
     group_fk = models.ForeignKey(
         Group, on_delete=models.SET_NULL, null=True, default=None)
     created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.name
 
 
 class ProjectBoard(models.Model):
@@ -71,6 +80,9 @@ class ProjectBoard(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     deleted_at = models.DateTimeField(null=True, blank=True)
     # deleted_at = models.DateTimeField(default='0000-00-00 00:00:00')
+
+    def __str__(self):
+        return self.title
 
 
 class StudentManager(BaseUserManager):
@@ -108,7 +120,10 @@ class Template(models.Model):
     content = models.TextField()
     rules = models.TextField()
     description = models.TextField()
-    isPublic = models.BooleanField(default=False)
+    isActive = models.BooleanField(default=False)
     teacher_fk = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=timezone.now)
     deleted_at = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return self.title
