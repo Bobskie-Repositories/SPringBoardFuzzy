@@ -114,7 +114,7 @@ function Board({ selected, setBoardCount }) {
           <div className={styles.head}>{project.name} Boards</div>
           {!staff && (
             <div className={styles.publish}>
-              <p>Publish</p>
+              <p>Activate</p>
               <Switch
                 onChange={(event) => handleToggleClick(event)}
                 inputProps={{ "aria-label": "controlled" }}
