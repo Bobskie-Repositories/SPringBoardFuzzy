@@ -88,7 +88,7 @@ class GetTopProjectsByClassroom(generics.ListAPIView):
                 group_projects = Project.objects.filter(group_fk=group)
 
                 top_project = group_projects.filter(
-                    isPublic=True).order_by('-score').first()
+                    isActive=True).order_by('-score').first()
 
                 if top_project:
                     project_serializer = ProjectSerializer(top_project)

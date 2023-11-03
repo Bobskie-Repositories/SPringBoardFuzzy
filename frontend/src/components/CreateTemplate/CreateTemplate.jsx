@@ -97,7 +97,7 @@ const CreateTemplate = () => {
           content: templateContent,
           rules: rulesContent,
           description: description,
-          isPublic: false,
+          isActive: false,
           teacher_fk: user.id,
         }
       );
