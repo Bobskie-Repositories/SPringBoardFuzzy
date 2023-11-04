@@ -118,41 +118,39 @@ class ProjectUpdateView(generics.UpdateAPIView):
 
 
 class UpdateProjectScoreView(generics.UpdateAPIView):
-    queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 
-    def update(self, request, *args, **kwargs):
-        project_id = self.kwargs.get('project_id')
+    def update(self, request, project_id, *args, **kwargs):
+        try:
+            instance = Project.objects.get(id=project_id)
+        except Project.DoesNotExist:
+            return Response("Project not found", status=status.HTTP_404_NOT_FOUND)
+
+        # Get the new score as a string (default to '0' if not provided)
+        new_score_str = request.data.get('score', '0')
 
         try:
-            project = Project.objects.get(id=project_id)
-        except Project.DoesNotExist:
-            return Response({"error": "Project not found"}, status=status.HTTP_404_NOT_FOUND)
+            new_score = float(new_score_str)
+        except ValueError:
+            return Response("Invalid score format", status=status.HTTP_400_BAD_REQUEST)
 
-        # Calculate the average for each field for each project board
-        average_scores = ProjectBoard.objects.filter(project_fk=project).annotate(
-            average_novelty=Avg('novelty'),
-            average_technical_feasibility=Avg('technical_feasibility'),
-            average_capability=Avg('capability')
-        )
+        # Get the temporary parameter for subtracting the score (default to 0 if not provided)
+        subtract_score_str = request.data.get('subtract_score', '0')
 
-        # Calculate the overall average score for each project board
-        overall_average = ExpressionWrapper(
-            (F('average_novelty') + F('average_technical_feasibility') +
-             F('average_capability')) / 3,
-            output_field=fields.FloatField()
-        )
+        try:
+            subtract_score = float(subtract_score_str)
+        except ValueError:
+            return Response("Invalid subtract_score format", status=status.HTTP_400_BAD_REQUEST)
 
-        # Calculate the average of the overall average scores for all project boards
-        overall_score = average_scores.aggregate(
-            overall_score=Avg(overall_average)
-        )['overall_score']
+        # Update the score by adding the new score and subtracting the subtract_score
+        instance.score += (new_score - subtract_score)
 
-        # Update the project's score
-        project.score = overall_score
-        project.save()
+        # Save the updated instance to the database
+        instance.save()
 
-        serializer = self.get_serializer(project)
+        # Instantiate the serializer with the updated instance
+        serializer = self.serializer_class(instance)
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
