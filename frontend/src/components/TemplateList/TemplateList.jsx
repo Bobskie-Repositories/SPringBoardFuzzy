@@ -34,7 +34,7 @@ const TemplateList = () => {
   }, []);
 
   const handleToggleClick = async (template) => {
-    if (!template.isPublic) {
+    if (!template.isActive) {
       const result = await Swal.fire({
         title: "Are you sure you want to publish this template?",
         icon: "warning",
@@ -65,7 +65,7 @@ const TemplateList = () => {
   };
 
   const toggleTemplatePublic = async (template) => {
-    const newIsPublic = !template.isPublic;
+    const newisActive = !template.isActive;
     try {
       await axios.patch(
         `http://127.0.0.1:8000/api/template/${template.id}/update`,
@@ -74,7 +74,7 @@ const TemplateList = () => {
           content: template.content,
           rules: template.rules,
           description: template.description,
-          isPublic: newIsPublic,
+          isActive: newisActive,
           teacher_fk: template.teacher_fk,
         }
       );
@@ -82,12 +82,12 @@ const TemplateList = () => {
       setTemplates((prevTemplates) =>
         prevTemplates.map((prevTemplate) =>
           prevTemplate.id === template.id
-            ? { ...prevTemplate, isPublic: newIsPublic }
+            ? { ...prevTemplate, isActive: newisActive }
             : prevTemplate
         )
       );
     } catch (error) {
-      console.error("Error updating isPublic:", error);
+      console.error("Error updating isActive:", error);
       Swal.fire("Error", "Failed to publish the template", "error");
     }
   };
@@ -163,7 +163,7 @@ const TemplateList = () => {
                   <Switch
                     onChange={(event) => handleToggleClick(template)}
                     inputProps={{ "aria-label": "controlled" }}
-                    checked={template.isPublic}
+                    checked={template.isActive}
                     onClick={(event) => {
                       event.stopPropagation();
                     }}

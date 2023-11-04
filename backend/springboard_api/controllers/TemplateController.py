@@ -27,7 +27,7 @@ class GetAllPublicTemplates(generics.ListAPIView):
     serializer_class = TemplateSerializer
 
     def get_queryset(self):
-        return Template.objects.filter(isPublic=True)
+        return Template.objects.filter(isActive=True)
 
 
 # Get Template by id

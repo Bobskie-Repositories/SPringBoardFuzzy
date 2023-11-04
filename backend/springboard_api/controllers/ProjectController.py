@@ -59,8 +59,8 @@ class GetPublicProjectsByGroupId(generics.ListAPIView):
 
     def get_queryset(self):
         group_id = self.kwargs.get('group_id')
-        # Filter projects by group ID and isPublic attribute
-        return Project.objects.filter(group_fk_id=group_id, isPublic=True)
+        # Filter projects by group ID and isActive attribute
+        return Project.objects.filter(group_fk_id=group_id, isActive=True)
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
@@ -70,7 +70,7 @@ class GetPublicProjectsByGroupId(generics.ListAPIView):
 
 class GetPublicProjectsView(generics.ListAPIView):
     serializer_class = ProjectSerializer
-    queryset = Project.objects.filter(isPublic=True)
+    queryset = Project.objects.filter(isActive=True)
 
     def list(self, request, *args, **kwargs):
         public_projects = self.get_queryset()  # Get the queryset of public projects
