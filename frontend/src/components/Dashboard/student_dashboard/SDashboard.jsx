@@ -15,16 +15,18 @@ const SDashboard = () => {
   const [boardCount, setBoardCount] = useState(0);
 
   const handleCreateBoardClick = () => {
-    if (boardCount >= 5) {
-      Swal.fire({
-        icon: "error",
-        title: "Board Limit Reached",
-        text: "You have reached the board creation limit for this project. You cannot create more boards.",
-        confirmButtonColor: "#8A252C",
-      });
-    } else {
-      setCreateAction(true);
-    }
+    //swal for board limits
+    // if (boardCount >= 5) {
+    //   Swal.fire({
+    //     icon: "error",
+    //     title: "Board Limit Reached",
+    //     text: "You have reached the board creation limit for this project. You cannot create more boards.",
+    //     confirmButtonColor: "#8A252C",
+    //   });
+    // } else {
+    //   setCreateAction(true);
+    // }
+    setCreateAction(true);
   };
 
   return (
