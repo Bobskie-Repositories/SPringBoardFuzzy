@@ -23,11 +23,6 @@ const Template = () => {
   const editor = useRef(null);
   const [content, setContent] = useState("");
 
-  const feedback = "";
-  const recommendation = "";
-  const references = "";
-  const getRandomDigit = () => Math.floor(Math.random() * 10) + 1;
-
   // Handle changes in the React Quill editor
   const handleEditorChange = (newContent) => {
     setContent(newContent);
@@ -71,8 +66,9 @@ const Template = () => {
           project_fk: id,
         }
       );
+      console.log("Response from createProjectBoard:", response);
 
-      await axios.put(`http://127.0.0.1:8000/api/project/${id}/update_score`);
+      // await axios.put(`http://127.0.0.1:8000/api/project/${id}/update_score`);
 
       navigate(`/project/${id}/create-board/${response.data.id}/result`);
 

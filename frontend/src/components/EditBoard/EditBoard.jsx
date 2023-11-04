@@ -18,6 +18,9 @@ const EditBoard = () => {
   const [title, setTitle] = useState(null);
   const [content, setContent] = useState(null);
   const [projectId, SetProjectId] = useState(null);
+  const [priorNovelVal, setPriorNovelVal] = useState(null);
+  const [priorTechVal, setPriorTechVal] = useState(null);
+  const [priorCapableVal, setPriorCapableVal] = useState(null);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -30,20 +33,16 @@ const EditBoard = () => {
         setTitle(response.data.title || "");
         setContent(response.data.content || "");
         SetProjectId(response.data.project_fk || "");
+
+        setPriorNovelVal(response.data.novelty || 0);
+        setPriorTechVal(response.data.technical_feasibility || 0);
+        setPriorCapableVal(response.data.capability || 0);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
   }, [id]);
-
-  const getRandomDigit = () => Math.floor(Math.random() * 10) + 1;
-  const feedback =
-    "here are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.";
-  const recommendation =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
-  const references =
-    "<ul><li>http://www.ecommerce-store-example.com</li><li>http://www.personal-blog-example.com</li><li>http://www.ecommerce-store-example.com</li></ul>";
 
   const updateProjectBoard = async () => {
     try {
@@ -52,19 +51,19 @@ const EditBoard = () => {
         {
           title: title,
           content: content, // Use the content from the React Quill editor
-          novelty: 0,
-          capability: 0,
-          technical_feasibility: 0,
+          novelty: priorNovelVal,
+          capability: priorCapableVal,
+          technical_feasibility: priorTechVal,
           feedback: "s",
           recommendation: "s",
           references: "s",
           project_fk: projectId,
         }
       );
-      console.log(response.data.project_fk);
-      await axios.put(
-        `http://127.0.0.1:8000/api/project/${response.data.project_fk}/update_score`
-      );
+      // console.log(response.data.project_fk);
+      // await axios.put(
+      //   `http://127.0.0.1:8000/api/project/${response.data.project_fk}/update_score`
+      // );
 
       navigate(`result`);
 
@@ -87,7 +86,7 @@ const EditBoard = () => {
     <div className={global.body}>
       <Header />
       <div className={styles.container}>
-        <span className={styles.title}></span>
+        <span className={styles.title}> {title} </span>
 
         <Card className={styles.cardContainer}>
           <div className={styles.box} />
