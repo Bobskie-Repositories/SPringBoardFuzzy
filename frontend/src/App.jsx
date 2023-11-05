@@ -102,16 +102,6 @@ function App() {
             </RequireAuth>
           }
         />
-        {/* <Route
-          path="template"
-          index={true}
-          exact
-          element={
-            <RequireAuth>
-              <M_Dashboard choose={3} />
-            </RequireAuth>
-          }
-        /> */}
       </Route>
       <Route path="/classroom/:id">
         <Route
@@ -141,6 +131,26 @@ function App() {
           element={
             <RequireAuth>
               <A_Dashboard choose={0} />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="active"
+          index={true}
+          exact
+          element={
+            <RequireAuth>
+              <A_Dashboard choose={1} />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="inactive"
+          index={true}
+          exact
+          element={
+            <RequireAuth>
+              <A_Dashboard choose={2} />
             </RequireAuth>
           }
         />

@@ -53,10 +53,11 @@ const Template = () => {
       };
 
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/project/${templateid}/addprojectboards`,
+        `http://127.0.0.1:8000/api/project/${id}/addprojectboards`,
         {
           title: template.title,
           content: content, // Use the content from the React Quill editor
+          templateId: templateid,
           novelty: 0,
           capability: 0,
           technical_feasibility: 0,

@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import { useNavigate } from "react-router";
 import styles from "./ADashboard.module.css";
 import Profile from "../../ProfileSegment/Profile";
@@ -7,7 +6,7 @@ import Search from "../../Search/Search";
 import A_Sidebar from "../../Sidebar/A_Sidebar";
 import TemplateList from "../../TemplateList/TemplateList";
 import Button from "../../UI/Button/Button";
-import ViewClassroom from "../../Classroom/ViewClassroom";
+import ListInActiveProj from "../../Table/ListInActiveProj";
 
 const ADashboard = ({ choose }) => {
   const navigate = useNavigate();
@@ -32,7 +31,7 @@ const ADashboard = ({ choose }) => {
           <Profile identification={1} />
         </div>
 
-        <div>
+        <div style={{ paddingTop: "30px" }}>
           {choose === 0 ? (
             <div>
               <div className={styles.container}>
@@ -48,8 +47,10 @@ const ADashboard = ({ choose }) => {
               </div>
               <TemplateList />
             </div>
-          ) : (
+          ) : choose === 1 ? (
             <p>Else</p>
+          ) : (
+            <ListInActiveProj />
           )}
         </div>
       </div>
