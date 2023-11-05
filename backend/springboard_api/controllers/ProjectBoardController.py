@@ -6,6 +6,7 @@ from rest_framework import status
 from springboard_api.serializers import ProjectBoardSerializer
 from springboard_api.models import ProjectBoard, Project
 import requests
+from .ProjectController import UpdateProjectScoreView
 
 
 class CreateProjectBoard(generics.CreateAPIView):
@@ -20,7 +21,7 @@ class CreateProjectBoard(generics.CreateAPIView):
 
         api_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
         prompt = "Parse these data " + \
-            str(request.data.get('content', '')) + "And Give the percentage rating(1-10) in terms of novelty, technical feasibility, Capability and provide at least 2 sentence for recommendations, and 2 for feedback. Add 3 referrence links for that topic in string. The output for each should be separated with a '+' all in single line"
+            str(request.data.get('content', '')) + "And Give the percentage rating(1-10) in terms of novelty, technical feasibility, Capability and provide at least 2 sentence for recommendations, and 2 for feedback. Add 2 referrence links for that topic in string. The output for each should be separated with a '+' all in single line"
         request_payload = {
             "prompt": prompt,
             "temperature": 0.5,
@@ -72,6 +73,14 @@ class CreateProjectBoard(generics.CreateAPIView):
                         'references': reference_links,
                         'project_fk': Project.objects.get(id=project_fk),
                     }
+                    project_fk = request.data.get('project_fk', None)
+                    update_score_url = f"http://127.0.0.1:8000/api/project/{project_fk}/update_score"
+                    update_score_data = {
+                        "score": novelty + technical_feasibility + capability,
+                        "subtract_score": 0
+                    }
+                    response = requests.put(
+                        update_score_url, json=update_score_data)
 
                 else:
                     print("No response content or choices found.")
@@ -138,6 +147,14 @@ class UpdateBoard(generics.UpdateAPIView):
             # Code for updating the board's content and other details with OpenAI
             data = {}  # Initialize data dictionary for OpenAI request
 
+            existing_novelty = instance.novelty
+            existing_technical_feasibility = instance.technical_feasibility
+            existing_capability = instance.capability
+            prev_score = existing_capability + \
+                existing_novelty + existing_technical_feasibility
+
+            print("Previous Score: {}".format(prev_score))
+
             api_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
             prompt = "Parse these data " + str(request.data.get('content', '')) + \
                 "And Give the percentage rating(1-10) in terms of novelty, technical feasibility, Capability and provide at least 2 sentences for recommendations, and 2 for feedback. Add 3 reference links for that topic in string. The output for each should be separated with a '+' all in a single line"
@@ -189,6 +206,14 @@ class UpdateBoard(generics.UpdateAPIView):
                             'feedback': feedback,
                             'references': reference_links,
                         }
+                        project_fk = request.data.get('project_fk', None)
+                        update_score_url = f"http://127.0.0.1:8000/api/project/{project_fk}/update_score"
+                        update_score_data = {
+                            "score": novelty + technical_feasibility + capability,
+                            "subtract_score": prev_score
+                        }
+                        response = requests.put(
+                            update_score_url, json=update_score_data)
                     else:
                         print("No response content or choices found.")
                 else:

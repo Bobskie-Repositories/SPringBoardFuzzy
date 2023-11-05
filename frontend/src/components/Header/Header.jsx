@@ -14,7 +14,7 @@ const Header = () => {
   const goHome = async () => {
     const user = await getUser();
     if (user.is_staff) {
-      navigate(`/teacher/${user.id}`);
+      navigate(`/admin`);
     } else {
       navigate(`/group/${user.group_fk}`);
     }
