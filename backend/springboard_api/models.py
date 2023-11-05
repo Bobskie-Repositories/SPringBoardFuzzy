@@ -149,7 +149,6 @@ class Template(models.Model):
     rules = models.TextField()
     description = models.TextField()
     isActive = models.BooleanField(default=False)
-    teacher_fk = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=timezone.now)
     deleted_at = models.DateTimeField(null=True, blank=True)
 

@@ -89,4 +89,4 @@ class TemplateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Template
         fields = ('id', 'title', 'content', 'rules', 'description', 'isActive',
-                  'teacher_fk', 'created_at', 'deleted_at')
+                  'created_at', 'deleted_at')
