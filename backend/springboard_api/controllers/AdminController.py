@@ -41,7 +41,7 @@ class LoginAdmin(APIView):
 
         payload = {
             'id': user.id,
-            'role': 'teacher',
+            'role': 'admin',
             'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=600),
             'iat': datetime.datetime.utcnow()
         }
