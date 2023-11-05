@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Classroom, Group, Project, ProjectBoard, Teacher, Student, Template
+from .models import Classroom, Group, Project, ProjectBoard, Teacher, Student, Template, Admin
 
 
 class ClassroomSerializer(serializers.ModelSerializer):
@@ -69,8 +69,24 @@ class StudentSerializer(serializers.ModelSerializer):
         return instance
 
 
+class AdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Admin
+        fields = ('id', 'firstname', 'lastname', "password", "is_staff", 'email',
+                  'created_at', 'deleted_at')
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        password = validated_data.pop('password', None)
+        instance = self.Meta.model(**validated_data)
+        if password is not None:
+            instance.set_password(password)
+        instance.save()
+        return instance
+
+
 class TemplateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Template
         fields = ('id', 'title', 'content', 'rules', 'description', 'isActive',
-                  'teacher_fk', 'created_at', 'deleted_at')
+                  'created_at', 'deleted_at')

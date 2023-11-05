@@ -88,8 +88,6 @@ const CreateTemplate = () => {
 
   const submitTemplate = async () => {
     try {
-      const user = await getUser();
-
       const response = await axios.post(
         `http://127.0.0.1:8000/api/template/add`,
         {
@@ -97,12 +95,11 @@ const CreateTemplate = () => {
           content: templateContent,
           rules: rulesContent,
           description: description,
-          isActive: false,
-          teacher_fk: user.id,
+          isActive: true,
         }
       );
 
-      navigate(`/teacher/${user.id}/template`);
+      navigate(`/admin`);
       console.log("Template created successfully:", response.data.id);
     } catch (error) {
       console.error("Error creating Template:", error);
