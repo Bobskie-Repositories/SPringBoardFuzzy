@@ -247,7 +247,7 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
                 icon={faDiagramProject}
                 className={styles.dropdown}
                 size="xl"
-              />{" "}
+              />
               &nbsp; Inactive Projects
             </div>
           </div>
