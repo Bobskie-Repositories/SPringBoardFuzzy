@@ -82,6 +82,11 @@ function Board({ selected, setBoardCount }) {
       const result = await Swal.fire({
         title: "Are you sure you want to deactivate this project?",
         icon: "warning",
+        html: '<span style="font-size: 17px">Before deactivating this project, <br>please enter a reason</span>',
+        input: "text",
+        inputAttributes: {
+          required: "required",
+        },
         showCancelButton: true,
         confirmButtonText: "Deactivate",
         cancelButtonText: "Cancel",
@@ -127,7 +132,7 @@ function Board({ selected, setBoardCount }) {
             <div className={styles.head}>{project.name} Boards</div>
             {!staff && (
               <div className={styles.publish}>
-                <p>Activate</p>
+                {project.isActive ? "Activated" : "Inactive"}
                 <Switch
                   onChange={(event) => handleToggleClick(event)}
                   inputProps={{ "aria-label": "controlled" }}
