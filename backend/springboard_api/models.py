@@ -58,6 +58,7 @@ class Project(models.Model):
     name = models.CharField(max_length=50)
     isActive = models.BooleanField(default=False)
     score = models.FloatField(default=0)
+    reason = models.TextField(default='')
     group_fk = models.ForeignKey(
         Group, on_delete=models.SET_NULL, null=True, default=None)
     created_at = models.DateTimeField(default=timezone.now)
@@ -68,6 +69,7 @@ class Project(models.Model):
 
 class ProjectBoard(models.Model):
     title = models.CharField(max_length=50)
+    templateId = models.IntegerField(default=0)
     content = models.TextField()
     novelty = models.IntegerField()
     capability = models.IntegerField()
