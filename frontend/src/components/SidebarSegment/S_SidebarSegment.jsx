@@ -9,6 +9,7 @@ import {
   faSquareCaretDown,
   faTrash,
   faSquareCaretRight,
+  faDiagramProject,
 } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -240,6 +241,17 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
         <div> </div>
       ) : (
         <ol className={styles.orList}>
+          <div className={`${global.center} ${styles.customLi}`}>
+            <div className={styles.inactive}>
+              <FontAwesomeIcon
+                icon={faDiagramProject}
+                className={styles.dropdown}
+                size="xl"
+              />{" "}
+              &nbsp; Inactive Projects
+            </div>
+          </div>
+
           <li className={`${global.center} ${styles.customLi}`}>
             <div onClick={handleNameIconClick} className={styles.nameIcon}>
               <FontAwesomeIcon
@@ -288,7 +300,7 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
                           }
                         }}
                         onBlur={() => {
-                          handleEditProjectName(); // Move this line to onBlur
+                          handleEditProjectName();
                         }}
                       />
                     </div>

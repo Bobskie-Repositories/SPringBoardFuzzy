@@ -93,7 +93,8 @@
   color: rgb(181, 178, 178);
 }
 
-.nameIcon:hover {
+.nameIcon:hover,
+.inactive:hover {
   color: rgb(181, 178, 178);
 }
 
