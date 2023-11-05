@@ -117,11 +117,37 @@ const EditTemplate = () => {
         teacher_fk: template.teacher_fk,
       });
 
-      navigate(`/teacher/${user.id}/template`);
+      navigate(`/admin`);
       console.log("Template updated successfully");
     } catch (error) {
       console.error("Error updating Template:", error);
     }
+  };
+
+  const showDeleteProjectModal = async () => {
+    Swal.fire({
+      icon: "warning",
+      title:
+        '<span style="font-size: 20px">Are you sure you want to delete?</span>',
+      html: '<span style="font-size: 15px">This will delete this template permanently. You cannot undo this action.</span>',
+      showCancelButton: true,
+      confirmButtonText: "Delete",
+      confirmButtonColor: "#8A252C",
+      cancelButtonText: "Cancel",
+      cancelButtonColor: "rgb(181, 178, 178)",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await axios.delete(`http://127.0.0.1:8000/api/template/${id}/delete`);
+        Swal.fire({
+          title:
+            '<span style="font-size: 20px">Template Sucessfully Deleted</span>',
+          icon: "success",
+          confirmButtonColor: "#9c7b16",
+          confirmButtonText: "OK",
+        });
+        navigate("/admin");
+      }
+    });
   };
 
   return (
@@ -173,9 +199,17 @@ const EditTemplate = () => {
                 />
               </div>
             </Card>
-            <Button className={styles.button} onClick={handleNextClick}>
-              Next
-            </Button>
+            <div className={styles.btmButton}>
+              <Button
+                className={styles.buttonR}
+                onClick={showDeleteProjectModal}
+              >
+                Delete
+              </Button>
+              <Button className={styles.buttonG} onClick={handleNextClick}>
+                Next
+              </Button>
+            </div>
           </>
         ) : (
           <>
@@ -196,10 +230,16 @@ const EditTemplate = () => {
               </div>
             </Card>
             <div className={styles.btmButton}>
-              <Button className={styles.button} onClick={handleBackClick}>
+              <Button
+                className={styles.buttonR}
+                onClick={showDeleteProjectModal}
+              >
+                Delete
+              </Button>
+              <Button className={styles.buttonG} onClick={handleBackClick}>
                 Back
               </Button>
-              <Button className={styles.button} onClick={submitTemplate}>
+              <Button className={styles.buttonG} onClick={submitTemplate}>
                 Submit
               </Button>
             </div>

@@ -1,0 +1,21 @@
+.container {
+  /* padding: 20px 150px 20px 30px; */
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 100px;
+  width: 65vw;
+}
+
+.classroom {
+  /* padding: 0; */
+  text-align: center;
+  min-width: 10rem;
+  max-width: 10rem;
+}
+
+.butName {
+  background-color: #9c7b16;
+  height: 40px;
+  margin-top: 40px;
+  font-size: 12px;
+}

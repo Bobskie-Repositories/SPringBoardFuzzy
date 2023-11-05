@@ -19,10 +19,7 @@ const TemplateList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const user = await getUser();
-        const response = await axios.get(
-          `http://127.0.0.1:8000/api/teacher/template/${user.id}/`
-        );
+        const response = await axios.get(`http://127.0.0.1:8000/api/template/`);
         setTemplates(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -33,64 +30,64 @@ const TemplateList = () => {
     fetchData();
   }, []);
 
-  const handleToggleClick = async (template) => {
-    if (!template.isActive) {
-      const result = await Swal.fire({
-        title: "Are you sure you want to publish this template?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Publish",
-        cancelButtonText: "Cancel!",
-        reverseButtons: true,
-      });
+  // const handleToggleClick = async (template) => {
+  //   if (!template.isActive) {
+  //     const result = await Swal.fire({
+  //       title: "Are you sure you want to publish this template?",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonText: "Publish",
+  //       cancelButtonText: "Cancel!",
+  //       reverseButtons: true,
+  //     });
 
-      if (result.isConfirmed) {
-        toggleTemplatePublic(template);
-      }
-    } else {
-      // The template is already public
-      const result = await Swal.fire({
-        title: "Are you sure you want to unpublish this template?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Unpublish",
-        cancelButtonText: "Cancel",
-        reverseButtons: true,
-      });
+  //     if (result.isConfirmed) {
+  //       toggleTemplatePublic(template);
+  //     }
+  //   } else {
+  //     // The template is already public
+  //     const result = await Swal.fire({
+  //       title: "Are you sure you want to unpublish this template?",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonText: "Unpublish",
+  //       cancelButtonText: "Cancel",
+  //       reverseButtons: true,
+  //     });
 
-      if (result.isConfirmed) {
-        toggleTemplatePublic(template);
-      }
-    }
-  };
+  //     if (result.isConfirmed) {
+  //       toggleTemplatePublic(template);
+  //     }
+  //   }
+  // };
 
-  const toggleTemplatePublic = async (template) => {
-    const newisActive = !template.isActive;
-    try {
-      await axios.patch(
-        `http://127.0.0.1:8000/api/template/${template.id}/update`,
-        {
-          title: template.title,
-          content: template.content,
-          rules: template.rules,
-          description: template.description,
-          isActive: newisActive,
-          teacher_fk: template.teacher_fk,
-        }
-      );
+  // const toggleTemplatePublic = async (template) => {
+  //   const newisActive = !template.isActive;
+  //   try {
+  //     await axios.patch(
+  //       `http://127.0.0.1:8000/api/template/${template.id}/update`,
+  //       {
+  //         title: template.title,
+  //         content: template.content,
+  //         rules: template.rules,
+  //         description: template.description,
+  //         isActive: newisActive,
+  //         teacher_fk: template.teacher_fk,
+  //       }
+  //     );
 
-      setTemplates((prevTemplates) =>
-        prevTemplates.map((prevTemplate) =>
-          prevTemplate.id === template.id
-            ? { ...prevTemplate, isActive: newisActive }
-            : prevTemplate
-        )
-      );
-    } catch (error) {
-      console.error("Error updating isActive:", error);
-      Swal.fire("Error", "Failed to publish the template", "error");
-    }
-  };
+  //     setTemplates((prevTemplates) =>
+  //       prevTemplates.map((prevTemplate) =>
+  //         prevTemplate.id === template.id
+  //           ? { ...prevTemplate, isActive: newisActive }
+  //           : prevTemplate
+  //       )
+  //     );
+  //   } catch (error) {
+  //     console.error("Error updating isActive:", error);
+  //     Swal.fire("Error", "Failed to publish the template", "error");
+  //   }
+  // };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -102,37 +99,37 @@ const TemplateList = () => {
     return `${month}/${day}/${year}`;
   };
 
-  const showDeleteProjectModal = async (templateId) => {
-    Swal.fire({
-      icon: "warning",
-      title:
-        '<span style="font-size: 20px">Are you sure you want to delete?</span>',
-      html: '<span style="font-size: 15px">This will delete this template permanently. You cannot undo this action.</span>',
-      showCancelButton: true,
-      confirmButtonText: "Delete",
-      confirmButtonColor: "#8A252C",
-      cancelButtonText: "Cancel",
-      cancelButtonColor: "rgb(181, 178, 178)",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        await axios.delete(
-          `http://127.0.0.1:8000/api/template/${templateId}/delete`
-        );
+  // const showDeleteProjectModal = async (templateId) => {
+  //   Swal.fire({
+  //     icon: "warning",
+  //     title:
+  //       '<span style="font-size: 20px">Are you sure you want to delete?</span>',
+  //     html: '<span style="font-size: 15px">This will delete this template permanently. You cannot undo this action.</span>',
+  //     showCancelButton: true,
+  //     confirmButtonText: "Delete",
+  //     confirmButtonColor: "#8A252C",
+  //     cancelButtonText: "Cancel",
+  //     cancelButtonColor: "rgb(181, 178, 178)",
+  //   }).then(async (result) => {
+  //     if (result.isConfirmed) {
+  //       await axios.delete(
+  //         `http://127.0.0.1:8000/api/template/${templateId}/delete`
+  //       );
 
-        // Update the list of templates
-        setTemplates((prevTemplates) =>
-          prevTemplates.filter((t) => t.id !== templateId)
-        );
-        Swal.fire({
-          title:
-            '<span style="font-size: 20px">Template Sucessfully Deleted</span>',
-          icon: "success",
-          confirmButtonColor: "#9c7b16",
-          confirmButtonText: "OK",
-        });
-      }
-    });
-  };
+  //       // Update the list of templates
+  //       setTemplates((prevTemplates) =>
+  //         prevTemplates.filter((t) => t.id !== templateId)
+  //       );
+  //       Swal.fire({
+  //         title:
+  //           '<span style="font-size: 20px">Template Sucessfully Deleted</span>',
+  //         icon: "success",
+  //         confirmButtonColor: "#9c7b16",
+  //         confirmButtonText: "OK",
+  //       });
+  //     }
+  //   });
+  // };
 
   return (
     <div className={styles.container}>
@@ -149,7 +146,7 @@ const TemplateList = () => {
             <Card
               key={template.id}
               className={styles.container_board}
-              onClick={() => navigate(`/template/${template.id}`)}
+              onClick={() => navigate(`template/${template.id}`)}
             >
               <div className={styles.words}>
                 <h3>{template.title}</h3>
@@ -158,7 +155,7 @@ const TemplateList = () => {
 
               <div className={styles.date}>
                 <p>Date Created: {formatDate(template.created_at)}</p>
-                <div className={styles.publish}>
+                {/* <div className={styles.publish}>
                   <p>Publish</p>
                   <Switch
                     onChange={(event) => handleToggleClick(template)}
@@ -176,7 +173,7 @@ const TemplateList = () => {
                       showDeleteProjectModal(template.id);
                     }}
                   />
-                </div>
+                </div> */}
               </div>
             </Card>
           ))}
