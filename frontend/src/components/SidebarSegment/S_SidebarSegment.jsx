@@ -23,6 +23,7 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
   const [userGroupId, setUserGroupId] = useState("");
   const [staff, setStaff] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [clickedSection, setClickedSection] = useState(null);
   const { groupid } = useParams();
   const { getUser } = useAuth();
 
@@ -55,6 +56,10 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
   const handleNameIconClick = (e) => {
     e.preventDefault();
     setOpen(!open);
+  };
+
+  const handleInactiveClick = (e) => {
+    setClickedSection(1);
   };
 
   const handleProjectDoubleClick = (projectId) => {
@@ -241,16 +246,19 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
         <div> </div>
       ) : (
         <ol className={styles.orList}>
-          <div className={`${global.center} ${styles.customLi}`}>
-            <div className={styles.inactive}>
+          <li className={`${global.center} ${styles.customLi}`}>
+            <div
+              onClick={handleInactiveClick}
+              className={`${styles.inactive} ${clickedSection === 1}`}
+            >
               <FontAwesomeIcon
                 icon={faDiagramProject}
                 className={styles.dropdown}
-                size="xl"
+                size="lg"
               />
-              &nbsp; Inactive Projects
+              &nbsp; Inactive Project
             </div>
-          </div>
+          </li>
 
           <li className={`${global.center} ${styles.customLi}`}>
             <div onClick={handleNameIconClick} className={styles.nameIcon}>
