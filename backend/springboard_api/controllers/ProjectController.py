@@ -83,8 +83,6 @@ class GetActiveProjectsView(generics.ListAPIView):
 
 
 # Get project by id
-
-
 class GetProjectById(generics.ListAPIView):
     serializer_class = ProjectSerializer
     queryset = Project.objects.all()
@@ -150,6 +148,30 @@ class UpdateProjectScoreView(generics.UpdateAPIView):
 
         # Instantiate the serializer with the updated instance
         serializer = self.serializer_class(instance)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UpdateProjectStatusView(generics.UpdateAPIView):
+    serializer_class = ProjectSerializer
+
+    def update(self, request, project_id, *args, **kwargs):
+        try:
+            project = Project.objects.get(id=project_id)
+        except Project.DoesNotExist:
+            return Response("Project not found", status=status.HTTP_404_NOT_FOUND)
+
+        # Get the group ID of the project
+        group_id = project.group_fk_id
+
+        # Set isActive=False for all projects in the same group
+        Project.objects.filter(group_fk=group_id).update(isActive=False)
+
+        # Set isActive=True for the specific project
+        project.isActive = True
+        project.save()
+
+        serializer = self.serializer_class(project)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
