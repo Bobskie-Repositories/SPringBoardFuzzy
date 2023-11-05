@@ -124,13 +124,13 @@ class GetTopProjectsByClassroom(generics.ListAPIView):
 # the classroom name, list of groups (group name and list of projects),
 # list of projects per group that are active with the average scores of each board
 class GetClassroomGroupsAndProjects(APIView):
-    def get(self, request, classroom_id):
+    def get(self, request, class_id):
         try:
-            classroom = Classroom.objects.get(id=classroom_id)
+            classroom = Classroom.objects.get(id=class_id)
 
             classroom_data = {
                 "id": classroom.id,
-                "name": classroom.name,
+                "name": classroom.class_name,
                 "groups": []
             }
 
@@ -149,7 +149,6 @@ class GetClassroomGroupsAndProjects(APIView):
                         "id": project.id,
                         "name": project.name,
                         "project_score": project.score,
-                        "template_id": project.template_id,  # Include templateId
                         "project_boards": []
                     }
 
@@ -162,6 +161,7 @@ class GetClassroomGroupsAndProjects(APIView):
                         project_board_data = {
                             "id": board.id,
                             "board_score": board_score,
+                            "templateId": board.templateId  # Include templateId
                         }
                         project_data["project_boards"].append(
                             project_board_data)
