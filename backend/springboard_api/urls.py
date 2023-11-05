@@ -1,6 +1,6 @@
 from django.urls import path
 from .controllers.ClassroomController import GetClassroomGroupsAndProjects, GetClassroom, GetClassroomById, GetGroupByClassId, GetTopProjectsByClassroom
-from .controllers.ProjectController import ProjectCreateView, ProjectView, GetProjectsByGroupId, GetActiveProjectsView, GetProjectById, GetPublicProjectsByGroupId, InactiveProjectsView, ProjectCreateView, ProjectUpdateView, UpdateProjectScoreView, DeleteProjectView
+from .controllers.ProjectController import ProjectCreateView, ProjectView, GetProjectsByGroupId, GetActiveProjectsView, GetProjectById, GetPublicProjectsByGroupId, InactiveProjectsView, ProjectCreateView, ProjectUpdateView, UpdateProjectStatusView, UpdateProjectScoreView, DeleteProjectView
 from .controllers.ProjectBoardController import GetProjectBoards, CreateProjectBoard, GetProjectBoardById, UpdateBoard, DeleteProjectBoard
 from .controllers.TemplateController import GetTemplate, GetAllTemplate, GetTemplateByTeacherId, GetAllPublicTemplates, CreateTemplate, UpdateTemplate, DeleteTemplate
 from .controllers.StudentController import RegisterStudent, LoginStudent, LogoutStudent, StudentView
@@ -36,6 +36,8 @@ urlpatterns = [
     path('api/project/<int:project_id>/update', ProjectUpdateView.as_view()),
     path('api/project/<int:project_id>/update_score',
          UpdateProjectScoreView.as_view()),
+    path('api/project/<int:project_id>/update_status',
+         UpdateProjectStatusView.as_view()),
     path('api/project/<int:project_id>/delete', DeleteProjectView.as_view()),
 
     path('api/inactive_proj', InactiveProjectsView.as_view()),
