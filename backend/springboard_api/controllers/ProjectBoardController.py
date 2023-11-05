@@ -76,7 +76,7 @@ class CreateProjectBoard(generics.CreateAPIView):
                     project_fk = request.data.get('project_fk', None)
                     update_score_url = f"http://127.0.0.1:8000/api/project/{project_fk}/update_score"
                     update_score_data = {
-                        "score": novelty + technical_feasibility + capability,
+                        "score": (novelty + technical_feasibility + capability)/3,
                         "subtract_score": 0
                     }
                     response = requests.put(
@@ -209,8 +209,8 @@ class UpdateBoard(generics.UpdateAPIView):
                         project_fk = request.data.get('project_fk', None)
                         update_score_url = f"http://127.0.0.1:8000/api/project/{project_fk}/update_score"
                         update_score_data = {
-                            "score": novelty + technical_feasibility + capability,
-                            "subtract_score": prev_score
+                            "score": (novelty + technical_feasibility + capability)/3,
+                            "subtract_score": prev_score/3
                         }
                         response = requests.put(
                             update_score_url, json=update_score_data)
@@ -240,6 +240,26 @@ class DeleteProjectBoard(generics.DestroyAPIView):
     def destroy(self, request, *args, **kwargs):
         try:
             instance = self.get_object()
+
+            # Get the project_fk from the project board
+            project_fk = instance.project_fk.id
+
+            # Calculate subtract_score based on the project board's values
+            subtract_score = (
+                instance.novelty + instance.technical_feasibility + instance.capability) / 3
+
+            # Update the project's score using the calculated subtract_score
+            update_score_url = f"http://127.0.0.1:8000/api/project/{project_fk}/update_score"
+            update_score_data = {
+                "score": 0,
+                "subtract_score": subtract_score
+            }
+            response = requests.put(update_score_url, json=update_score_data)
+
+            if response.status_code != 200:
+                # Handle the case where updating the project score fails
+                return Response({"error": "Failed to update project score"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
             instance.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except ProjectBoard.DoesNotExist:

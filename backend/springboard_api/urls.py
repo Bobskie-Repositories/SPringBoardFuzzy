@@ -1,6 +1,6 @@
 from django.urls import path
-from .controllers.ClassroomController import GetClassroom, GetClassroomById, GetGroupByClassId, GetTopProjectsByClassroom
-from .controllers.ProjectController import ProjectCreateView, ProjectView, GetProjectsByGroupId, GetPublicProjectsView, GetProjectById, GetPublicProjectsByGroupId, ProjectCreateView, ProjectUpdateView, UpdateProjectScoreView, DeleteProjectView
+from .controllers.ClassroomController import GetClassroomGroupsAndProjects, GetClassroom, GetClassroomById, GetGroupByClassId, GetTopProjectsByClassroom
+from .controllers.ProjectController import ProjectCreateView, ProjectView, GetProjectsByGroupId, GetActiveProjectsView, GetProjectById, GetPublicProjectsByGroupId, InactiveProjectsView, ProjectCreateView, ProjectUpdateView, UpdateProjectScoreView, DeleteProjectView
 from .controllers.ProjectBoardController import GetProjectBoards, CreateProjectBoard, GetProjectBoardById, UpdateBoard, DeleteProjectBoard
 from .controllers.TemplateController import GetTemplate, GetAllTemplate, GetTemplateByTeacherId, GetAllPublicTemplates, CreateTemplate, UpdateTemplate, DeleteTemplate
 from .controllers.StudentController import RegisterStudent, LoginStudent, LogoutStudent, StudentView
@@ -31,16 +31,20 @@ urlpatterns = [
     path('api/group/<int:group_id>/public-projects',
          GetPublicProjectsByGroupId.as_view()),
     path('api/project/<int:project_id>', GetProjectById.as_view()),
-    path('api/project/public', GetPublicProjectsView.as_view()),
+    path('api/project/public', GetActiveProjectsView.as_view()),
     path('api/project/create', ProjectCreateView.as_view()),
     path('api/project/<int:project_id>/update', ProjectUpdateView.as_view()),
     path('api/project/<int:project_id>/update_score',
          UpdateProjectScoreView.as_view()),
     path('api/project/<int:project_id>/delete', DeleteProjectView.as_view()),
 
+    path('api/inactive_proj', InactiveProjectsView.as_view()),
+
     path('api/classroom/<int:teacher_fk_id>/all', GetClassroom.as_view()),
     path('api/classroom/<int:class_id>', GetClassroomById.as_view()),
     path('api/classroom/<int:class_id>/group', GetGroupByClassId.as_view()),
+    path('api/classroom/<int:class_id>/class_group_proj',
+         GetClassroomGroupsAndProjects.as_view()),
     path('api/classroom/<int:classroom_id>/groupproject',
          GetTopProjectsByClassroom.as_view()),
 
