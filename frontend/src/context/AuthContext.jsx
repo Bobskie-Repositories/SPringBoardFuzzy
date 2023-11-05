@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
           const studentData = await studentResponse.json();
           return studentData;
         }
-      } else {
+      } else if (role === "teacher") {
         // Attempt to fetch teacher data
         const teacherResponse = await fetch(
           "http://127.0.0.1:8000/api/active-teacher",
@@ -69,6 +69,20 @@ export const AuthProvider = ({ children }) => {
         if (teacherResponse.ok) {
           const teacherData = await teacherResponse.json();
           return teacherData;
+        }
+      } else {
+        // Attempt to fetch admin data
+        const adminResponse = await fetch(
+          "http://127.0.0.1:8000/api/active-admin",
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
+
+        if (adminResponse.ok) {
+          const adminData = await adminResponse.json();
+          return adminData;
         }
       }
 
@@ -139,6 +153,36 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const loginAdmin = async (email, password) => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/login-admin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      if (response.status === 200) {
+        const data = await response.json();
+        const token = data.jwt;
+        localStorage.setItem("jwt", token);
+        setIsAuthenticated(true);
+        return { success: true };
+      } else {
+        console.error("Login failed. Please check your credentials.");
+        return response;
+      }
+    } catch (error) {
+      console.error("An error occurred while logging in:", error.message);
+      return response;
+    }
+  };
+
   const logout = async () => {
     try {
       const response = await fetch("http://127.0.0.1:8000/api/logout-student", {
@@ -165,6 +209,7 @@ export const AuthProvider = ({ children }) => {
     id,
     loginStudent,
     loginTeacher,
+    loginAdmin,
     logout,
     getUser,
     isAuthenticated,
