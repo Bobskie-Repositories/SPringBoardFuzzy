@@ -1,48 +1,26 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router";
-import { useAuth } from "../../context/AuthContext";
+import React, { useState } from "react";
+import { useNavigate } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSquareCaretDown,
-  faSquareCaretRight,
-  faTableCellsLarge,
-} from "@fortawesome/free-solid-svg-icons";
+import { faTableCellsLarge } from "@fortawesome/free-solid-svg-icons";
 import styles from "./SidebarSegment.module.css";
 import global from "../../assets/global.module.css";
-import axios from "axios";
 
-const A_SidebarSegment = ({ selected, setSelected }) => {
-  const [classrooms, setClassrooms] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [clickedClassId, setClickedClassId] = useState(null);
-  const [isMyTemplateClicked, setMyTemplateClicked] = useState(false);
-  const [userId, setUserId] = useState(0);
+const A_SidebarSegment = () => {
+  const [clickedSection, setClickedSection] = useState(null);
   const navigate = useNavigate();
-  const { id } = useParams();
-  const { getUser } = useAuth();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const user = await getUser();
-
-        const response = await axios.get(
-          `http://127.0.0.1:8000/api/classroom/${user.id}/all`
-        );
-        setUserId(user.id);
-        setClassrooms(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, [id]);
 
   const goMyTemplate = () => {
-    setMyTemplateClicked(!isMyTemplateClicked);
-    setClickedClassId(null);
+    setClickedSection(1);
     navigate(`/admin`);
+  };
+
+  const goListActiveProj = () => {
+    setClickedSection(2);
+    navigate(`/admin/active`);
+  };
+  const goListInActiveProj = () => {
+    setClickedSection(3);
+    navigate(`/admin/inactive`);
   };
 
   return (
@@ -52,7 +30,7 @@ const A_SidebarSegment = ({ selected, setSelected }) => {
           <div
             onClick={goMyTemplate}
             className={`${styles.nameIcon} ${
-              isMyTemplateClicked ? styles.clickedButton : ""
+              clickedSection === 1 ? styles.clickedButton : ""
             }`}
           >
             <FontAwesomeIcon
@@ -60,7 +38,37 @@ const A_SidebarSegment = ({ selected, setSelected }) => {
               className={styles.templates}
               size="xl"
             />
-            My Template
+            Templates
+          </div>
+        </li>
+        <li className={`${global.center} ${styles.customLi}`}>
+          <div
+            onClick={goListActiveProj}
+            className={`${styles.nameIcon} ${
+              clickedSection === 2 ? styles.clickedButton : ""
+            }`}
+          >
+            <FontAwesomeIcon
+              icon={faTableCellsLarge}
+              className={styles.templates}
+              size="xl"
+            />
+            Active Project
+          </div>
+        </li>
+        <li className={`${global.center} ${styles.customLi}`}>
+          <div
+            onClick={goListInActiveProj}
+            className={`${styles.nameIcon} ${
+              clickedSection === 3 ? styles.clickedButton : ""
+            }`}
+          >
+            <FontAwesomeIcon
+              icon={faTableCellsLarge}
+              className={styles.templates}
+              size="xl"
+            />
+            Inactive Project
           </div>
         </li>
       </ol>
