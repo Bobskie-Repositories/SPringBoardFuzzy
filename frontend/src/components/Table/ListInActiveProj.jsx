@@ -62,7 +62,7 @@ const ListInActiveProj = () => {
         >
           <span className={styles.centerText}>Project Name</span>
           <span className={styles.centerText}>Created By</span>
-          <span className={styles.centerText}>Section</span>
+          <span className={styles.centerText}>Description</span>
           <span className={styles.centerText}>Handled By</span>
           <span className={styles.centerText}>
             Reason for discontinuing the project
@@ -71,16 +71,22 @@ const ListInActiveProj = () => {
         </div>
 
         {projectsToDisplay.map((project) => (
-          <div className={styles.container} key={project.id}>
+          <div
+            className={styles.container}
+            style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}
+            key={project.id}
+          >
             <span className={styles.centerText}>{project.name}</span>
             <span className={styles.centerText}>{project.group_name}</span>
-            <span className={styles.centerText}>{project.classroom_name}</span>
+            <span className={styles.centerText}>{project.description}</span>
             <span className={styles.centerText}>{project.teacher_name}</span>
             <span className={styles.centerText} style={{ color: "red" }}>
               {project.reason}
             </span>
             <span className={styles.centerText}>
-              {project.score === 0 ? 0 : project.score / project.template_count}
+              {project.score === 0
+                ? 0
+                : (project.score / project.template_count).toFixed(2)}
               %
             </span>
           </div>
