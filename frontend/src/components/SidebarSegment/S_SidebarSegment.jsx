@@ -20,10 +20,10 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
   const [clickedProjectId, setClickedProjectId] = useState(null);
   const [editableProjectId, setEditableProjectId] = useState(null);
   const [editedProjectName, setEditedProjectName] = useState("");
+  const [isInactiveClicked, setisInactiveClicked] = useState(false);
   const [userGroupId, setUserGroupId] = useState("");
   const [staff, setStaff] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [clickedSection, setClickedSection] = useState(null);
   const { groupid } = useParams();
   const { getUser } = useAuth();
 
@@ -49,6 +49,7 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
   }, [setSelected, getUser]);
 
   const handleButtonClick = (projectId) => {
+    setisInactiveClicked(false);
     setSelected(projectId);
     setClickedProjectId(projectId);
   };
@@ -59,7 +60,8 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
   };
 
   const handleInactiveClick = (e) => {
-    setClickedSection(1);
+    setisInactiveClicked(!isInactiveClicked);
+    setClickedProjectId(null);
   };
 
   const handleProjectDoubleClick = (projectId) => {
@@ -249,7 +251,9 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
           <li className={`${global.center} ${styles.customLi}`}>
             <div
               onClick={handleInactiveClick}
-              className={`${styles.inactive} ${clickedSection === 1}`}
+              className={`${styles.inactive} ${
+                isInactiveClicked ? styles.clickedButton : ""
+              }`}
             >
               <FontAwesomeIcon
                 icon={faDiagramProject}
