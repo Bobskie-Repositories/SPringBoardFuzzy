@@ -119,7 +119,7 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
     }
   };
 
-  const addProject = async (newProject) => {
+  const addProject = async (newProject, desc) => {
     try {
       const getCurrentTimestamp = () => {
         const now = new Date();
@@ -131,6 +131,7 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
         `http://127.0.0.1:8000/api/project/create`,
         {
           name: newProject,
+          description: desc,
           group_fk: userGroupId,
           created_at: getCurrentTimestamp(),
         }
@@ -144,7 +145,7 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
 
       setProjects([...projects, newProjectData]);
 
-      console.log("ProjectB created successfully:", response.data.id);
+      // console.log("ProjectB created successfully:", response.data.id);
     } catch (error) {
       console.error("Error creating Project:", error);
     }
@@ -161,15 +162,15 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
       setProjects(updatedProjects);
       setSelected(projects[0].id);
       setClickedProjectId(projects[0].id);
-      if (response.status === 204) {
-        console.log("Project deleted successfully");
-      } else {
-        console.error(
-          "Failed to delete Project:",
-          response.status,
-          response.data
-        );
-      }
+      // if (response.status === 204) {
+      //   console.log("Project deleted successfully");
+      // } else {
+      //   console.error(
+      //     "Failed to delete Project:",
+      //     response.status,
+      //     response.data
+      //   );
+      // }
     } catch (error) {
       console.error("Error deleting Project:", error);
     }
@@ -185,28 +186,39 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
       });
     } else {
       Swal.fire({
-        html: '<span style="font-size: 20px">Create a New Project</span>',
-        input: "text",
-        inputPlaceholder: "Enter new project name",
+        html: `
+          <span style="font-size: 20px">Create a New Project</span>
+          <br>
+          <input type="text" id="input1" placeholder="Enter new project name" class="swal2-input" style="height: 35px; width: 86%; font-size: 16px; font-family: 'Calibri', sans-serif; display: flex;"/>
+          <br>
+          <textarea id="input2" placeholder="Enter project description" class="swal2-textarea" style="margin: 0 auto; width: 86%; height: 100px; resize: none; font-size: 16px; font-family: 'Calibri', sans-serif;"></textarea>
+        `,
         showCancelButton: true,
         confirmButtonText: "Create",
         confirmButtonColor: "#9c7b16",
         cancelButtonText: "Cancel",
         cancelButtonColor: "rgb(181, 178, 178)",
-        inputValidator: (value) => {
-          if (!value) {
-            return "Project name cannot be empty";
-          } else if (projects.some((project) => project.name === value)) {
-            return `Project with the name '${value}' already exists. Please enter another project name.`;
+        preConfirm: () => {
+          // Retrieve values from input fields
+          const input1Value = document.getElementById("input1").value;
+          const input2Value = document.getElementById("input2").value;
+
+          // Validate and process the values as needed
+          if (!input1Value) {
+            Swal.showValidationMessage("Project name cannot be empty");
+          } else if (!input2Value) {
+            Swal.showValidationMessage("Second input cannot be empty");
+          } else if (projects.some((project) => project.name === input1Value)) {
+            Swal.showValidationMessage(
+              `Project with the name '${input1Value}' already exists. Please enter another project name.`
+            );
           }
-        },
-        inputAttributes: {
-          style: "height: 35px; font-size: 16px",
         },
       }).then((result) => {
         if (result.isConfirmed) {
-          const newProjectName = result.value;
-          addProject(newProjectName);
+          const newProjectName = document.getElementById("input1").value;
+          const desc = document.getElementById("input2").value;
+          addProject(newProjectName, desc);
           Swal.fire({
             title: "Project Created",
             icon: "success",
