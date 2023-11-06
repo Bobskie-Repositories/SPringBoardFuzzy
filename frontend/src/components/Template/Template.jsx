@@ -6,12 +6,14 @@ import axios from "axios";
 import Header from "../Header/Header";
 import Card from "../UI/Card/Card";
 import Button from "../UI/Button/Button";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import EditorToolbar, {
-  modules,
-  formats,
-} from "../UI/RichTextEditor/EditorToolBar";
+// import ReactQuill from "react-quill";
+// import "react-quill/dist/quill.snow.css";
+// import EditorToolbar, {
+//   modules,
+//   formats,
+// } from "../UI/RichTextEditor/EditorToolBar";
+import Details from "../UI/RichTextEditor/Details";
+import { Tiptap } from "../UI/RichTextEditor/TipTap";
 import styles from "./Template.module.css";
 import global from "@assets/global.module.css";
 
@@ -19,7 +21,7 @@ const Template = () => {
   const { id, templateid } = useParams();
   const [template, setTemplate] = useState(null);
   const navigate = useNavigate();
-
+  const [description, setDescription] = useState("");
   const editor = useRef(null);
   const [content, setContent] = useState("");
 
@@ -94,7 +96,7 @@ const Template = () => {
           <div className={styles.box} />
 
           <div className={styles.containerStyle}>
-            <EditorToolbar />
+            {/* <EditorToolbar />
             <ReactQuill
               theme="snow"
               value={content}
@@ -103,7 +105,8 @@ const Template = () => {
               modules={modules}
               formats={formats}
               className={global.quill}
-            />
+            /> */}
+            <Tiptap setDescription={setDescription} />
           </div>
         </Card>
 
