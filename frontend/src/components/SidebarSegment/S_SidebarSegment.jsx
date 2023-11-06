@@ -24,7 +24,6 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
   const [userGroupId, setUserGroupId] = useState("");
   const [staff, setStaff] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [clickedSection, setClickedSection] = useState(null);
   const { groupid } = useParams();
   const { getUser } = useAuth();
 
