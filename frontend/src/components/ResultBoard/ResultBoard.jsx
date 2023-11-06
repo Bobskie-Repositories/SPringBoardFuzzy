@@ -26,7 +26,7 @@ const ResultBoard = ({ boardid }) => {
   }, [boardid]);
 
   if (!board) {
-    return <p>Loading...</p>;
+    return <p></p>;
   }
 
   // Function to parse references string into an array

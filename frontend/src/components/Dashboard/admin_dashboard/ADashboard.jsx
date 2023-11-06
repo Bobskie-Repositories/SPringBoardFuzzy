@@ -31,7 +31,7 @@ const ADashboard = ({ choose }) => {
           <Profile identification={1} />
         </div>
 
-        <div style={{ paddingTop: "30px" }}>
+        <div>
           {choose === 0 ? (
             <div>
               <div className={styles.container}>

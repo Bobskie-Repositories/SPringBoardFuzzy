@@ -11,6 +11,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { Switch } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Loading from "../UI/Loading/Loading";
 
 function Board({ selected, setBoardCount }) {
   const navigate = useNavigate();
@@ -144,7 +145,7 @@ function Board({ selected, setBoardCount }) {
           </div>
         </ThemeProvider>
       ) : (
-        <p>Loading...</p>
+        <Loading />
       )}
 
       <div className={styles.scrollable}>

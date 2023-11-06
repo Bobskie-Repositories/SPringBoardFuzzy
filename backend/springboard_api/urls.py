@@ -1,7 +1,7 @@
 from django.urls import path
 from .controllers.ClassroomController import GetClassroomGroupsAndProjects, GetClassroom, GetClassroomById, GetGroupByClassId, GetTopProjectsByClassroom
 from .controllers.ProjectController import ProjectCreateView, ProjectView, GetProjectsByGroupId, GetActiveProjectsView, GetProjectById, GetPublicProjectsByGroupId, InactiveProjectsView, ProjectCreateView, ProjectUpdateView, UpdateProjectStatusView, UpdateProjectScoreView, DeleteProjectView
-from .controllers.ProjectBoardController import GetProjectBoards, CreateProjectBoard, GetProjectBoardById, UpdateBoard, DeleteProjectBoard
+from .controllers.ProjectBoardController import GetProjectBoards, CreateProjectBoard, GetProjectBoardById, GetVersionProjectBoards, UpdateBoard, DeleteProjectBoard
 from .controllers.TemplateController import GetTemplate, GetAllTemplate, GetTemplateByTeacherId, GetAllPublicTemplates, CreateTemplate, UpdateTemplate, DeleteTemplate
 from .controllers.StudentController import RegisterStudent, LoginStudent, LogoutStudent, StudentView
 from .controllers.TeacherController import RegisterTeacher, LoginTeacher, LogoutTeacher, TeacherView, GetTeacherById
@@ -53,6 +53,8 @@ urlpatterns = [
     path('api/project/<int:project_id>/projectboards', GetProjectBoards.as_view()),
     path('api/projectboards/<int:projectboard_id>',
          GetProjectBoardById.as_view()),
+    path('api/projectboards/<int:projectboard_id>/versions',
+         GetVersionProjectBoards.as_view()),
     path('api/project/<int:project_id>/addprojectboards',
          CreateProjectBoard.as_view()),
     path('api/projectboards/<int:projectboard_id>/update', UpdateBoard.as_view()),

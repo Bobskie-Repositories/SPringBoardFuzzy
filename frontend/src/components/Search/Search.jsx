@@ -51,7 +51,7 @@ const Search = () => {
         }}
       />
       {isLoading ? (
-        <p>Loading...</p>
+        <p></p>
       ) : (
         isListVisible && (
           <ul className={styles.itemList}>

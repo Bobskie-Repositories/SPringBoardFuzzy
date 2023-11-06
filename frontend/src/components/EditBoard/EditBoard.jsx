@@ -17,6 +17,7 @@ import EditorToolbar, {
 const EditBoard = () => {
   const [title, setTitle] = useState(null);
   const [content, setContent] = useState(null);
+  const [boardId, setBoardId] = useState(null);
   const [projectId, SetProjectId] = useState(null);
   const [priorNovelVal, setPriorNovelVal] = useState(null);
   const [priorTechVal, setPriorTechVal] = useState(null);
@@ -32,6 +33,7 @@ const EditBoard = () => {
         );
         setTitle(response.data.title || "");
         setContent(response.data.content || "");
+        setBoardId(response.data.boardId || "");
         SetProjectId(response.data.project_fk || "");
 
         setPriorNovelVal(response.data.novelty || 0);
@@ -46,7 +48,7 @@ const EditBoard = () => {
 
   const updateProjectBoard = async () => {
     try {
-      const response = await axios.patch(
+      const response = await axios.post(
         `http://127.0.0.1:8000/api/projectboards/${id}/update`,
         {
           title: title,
@@ -54,10 +56,11 @@ const EditBoard = () => {
           novelty: priorNovelVal,
           capability: priorCapableVal,
           technical_feasibility: priorTechVal,
-          feedback: "s",
-          recommendation: "s",
-          references: "s",
+          feedback: "error",
+          recommendation: "error",
+          references: "error",
           project_fk: projectId,
+          boardId: boardId,
         }
       );
       // console.log(response.data.project_fk);
@@ -79,7 +82,7 @@ const EditBoard = () => {
   };
 
   if (!content) {
-    return <p>Loading...</p>;
+    return <p></p>;
   }
 
   return (

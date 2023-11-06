@@ -80,7 +80,7 @@ const Template = () => {
   };
 
   if (!template) {
-    return <p>Loading...</p>;
+    return <p></p>;
   }
 
   return (

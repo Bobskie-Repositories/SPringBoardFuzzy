@@ -8,6 +8,7 @@ import IdeaIcon from "@assets/idea.png";
 import styles from "./BoardCreation.module.css";
 import global from "@assets/global.module.css";
 import axios from "axios";
+import Loading from "../UI/Loading/Loading";
 
 const BoardCreation = ({ selected, setCreateAction }) => {
   const [allTemplate, setAllTemplate] = useState();
@@ -47,7 +48,7 @@ const BoardCreation = ({ selected, setCreateAction }) => {
   };
 
   if (!allTemplate) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   return (
