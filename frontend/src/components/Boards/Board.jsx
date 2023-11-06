@@ -10,6 +10,7 @@ import CircularProgressWithLabel from "../UI/ProgressBar/CircularProgressWithLab
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Switch } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Loading from "../UI/Loading/Loading";
 
 function Board({ selected, setBoardCount }) {
@@ -18,6 +19,17 @@ function Board({ selected, setBoardCount }) {
   const [project, setProject] = useState();
   const [staff, setStaff] = useState(false);
   const { getUser } = useAuth();
+
+  const theme = createTheme({
+    palette: {
+      success: {
+        main: "#87EE63",
+        light: "#81c784",
+        dark: "#388e3c",
+        contrastText: "#242105",
+      },
+    },
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,10 +67,10 @@ function Board({ selected, setBoardCount }) {
   const handleToggleClick = async (event) => {
     if (!project.isActive) {
       const result = await Swal.fire({
-        title: "Are you sure you want to publish this project?",
+        title: "Are you sure you want to activate this project?",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonText: "Publish",
+        confirmButtonText: "Activate",
         cancelButtonText: "Cancel!",
         reverseButtons: true,
       });
@@ -69,10 +81,15 @@ function Board({ selected, setBoardCount }) {
     } else {
       // The project is already public
       const result = await Swal.fire({
-        title: "Are you sure you want to unpublish this project?",
+        title: "Are you sure you want to deactivate this project?",
         icon: "warning",
+        html: '<span style="font-size: 17px">Before deactivating this project, <br>please enter a reason</span>',
+        input: "text",
+        inputAttributes: {
+          required: "required",
+        },
         showCancelButton: true,
-        confirmButtonText: "Unpublish",
+        confirmButtonText: "Deactivate",
         cancelButtonText: "Cancel",
         reverseButtons: true,
       });
@@ -111,19 +128,22 @@ function Board({ selected, setBoardCount }) {
   return (
     <div>
       {project ? (
-        <div className={styles.alignment}>
-          <div className={styles.head}>{project.name} Boards</div>
-          {!staff && (
-            <div className={styles.publish}>
-              <p>Publish</p>
-              <Switch
-                onChange={(event) => handleToggleClick(event)}
-                inputProps={{ "aria-label": "controlled" }}
-                checked={project.isActive}
-              />
-            </div>
-          )}
-        </div>
+        <ThemeProvider theme={theme}>
+          <div className={styles.alignment}>
+            <div className={styles.head}>{project.name} Boards</div>
+            {!staff && (
+              <div className={styles.publish}>
+                {project.isActive ? "Activated" : "Inactive"}
+                <Switch
+                  onChange={(event) => handleToggleClick(event)}
+                  inputProps={{ "aria-label": "controlled" }}
+                  checked={project.isActive}
+                  color="success"
+                />
+              </div>
+            )}
+          </div>
+        </ThemeProvider>
       ) : (
         <Loading />
       )}
