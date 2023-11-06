@@ -26,7 +26,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 class ProjectBoardSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectBoard
-        fields = ('id', 'title', 'content', 'templateId',
+        fields = ('id', 'boardId', 'title', 'content', 'templateId',
                   'novelty', 'capability', 'technical_feasibility',
                   'feedback', 'recommendation', 'references',
                   'project_fk', 'created_at', 'deleted_at')

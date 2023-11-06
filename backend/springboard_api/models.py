@@ -68,6 +68,7 @@ class Project(models.Model):
 
 
 class ProjectBoard(models.Model):
+    boardId = models.IntegerField(default=0)
     title = models.CharField(max_length=50)
     templateId = models.IntegerField(default=0)
     content = models.TextField()
