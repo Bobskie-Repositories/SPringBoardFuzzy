@@ -84,7 +84,18 @@ function Board({ selected, setBoardCount }) {
         title: "Are you sure you want to deactivate this project?",
         icon: "warning",
         html: '<span style="font-size: 17px">Before deactivating this project, <br>please enter a reason</span>',
-        input: "text",
+        input: "select",
+        inputOptions: {
+          option1: "Unclear goal.",
+          option2: "Difficult to implement.",
+          option3: "Scope is too big.",
+          option4: "Incompatible to the team.",
+          option5: "High development cost.",
+          option6: "Disapproved by adviser.",
+          option7: "Takes years to produce.",
+          option8: "Very similar to existing products.",
+        },
+        inputPlaceholder: "Select an option",
         inputAttributes: {
           required: "required",
         },
@@ -92,21 +103,34 @@ function Board({ selected, setBoardCount }) {
         confirmButtonText: "Deactivate",
         cancelButtonText: "Cancel",
         reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const selectedOptionKey = result.value; // This will contain the key of the selected option
+          const inputOptions = {
+            option1: "Unclear goal",
+            option2: "Difficult to implement.",
+            option3: "Very similar to existing products",
+            option4: "Incompatible to the team",
+            option5: "High development cost",
+            option6: "Disapproved by adviser",
+            option7: "Takes years to produce",
+            option8: "Low target customer",
+          };
+          const selectedOptionText = inputOptions[selectedOptionKey];
+          toggleProjectPublic(project, selectedOptionText);
+        }
       });
-
-      if (result.isConfirmed) {
-        toggleProjectPublic(project);
-      }
     }
   };
 
-  const toggleProjectPublic = async (project) => {
+  const toggleProjectPublic = async (project, selectedOption) => {
     const newisActive = !project.isActive;
     try {
       await axios.put(
-        `http://127.0.0.1:8000/api/project/${project.id}/update_status`,
+        `http://127.0.0.1:8000/api/project/${project.id}/update`,
         {
           name: project.name,
+          reason: selectedOption,
           isActive: newisActive,
           group_fk: project.group_fk,
         }
