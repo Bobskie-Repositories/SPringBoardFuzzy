@@ -10,6 +10,7 @@ import CircularProgressWithLabel from "../UI/ProgressBar/CircularProgressWithLab
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Switch } from "@mui/material";
+import Loading from "../UI/Loading/Loading";
 
 function Board({ selected, setBoardCount }) {
   const navigate = useNavigate();
@@ -124,7 +125,7 @@ function Board({ selected, setBoardCount }) {
           )}
         </div>
       ) : (
-        <p>Loading...</p>
+        <Loading />
       )}
 
       <div className={styles.scrollable}>
