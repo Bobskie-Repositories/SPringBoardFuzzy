@@ -103,7 +103,7 @@ function Board({ selected, setBoardCount }) {
     const newisActive = !project.isActive;
     try {
       await axios.put(
-        `http://127.0.0.1:8000/api/project/${project.id}/update`,
+        `http://127.0.0.1:8000/api/project/${project.id}/update_status`,
         {
           name: project.name,
           isActive: newisActive,
