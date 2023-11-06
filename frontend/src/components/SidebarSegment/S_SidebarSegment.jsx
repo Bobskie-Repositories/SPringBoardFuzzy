@@ -9,6 +9,7 @@ import {
   faSquareCaretDown,
   faTrash,
   faSquareCaretRight,
+  faDiagramProject,
 } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -22,6 +23,7 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
   const [userGroupId, setUserGroupId] = useState("");
   const [staff, setStaff] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [clickedSection, setClickedSection] = useState(null);
   const { groupid } = useParams();
   const { getUser } = useAuth();
 
@@ -54,6 +56,10 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
   const handleNameIconClick = (e) => {
     e.preventDefault();
     setOpen(!open);
+  };
+
+  const handleInactiveClick = (e) => {
+    setClickedSection(1);
   };
 
   const handleProjectDoubleClick = (projectId) => {
@@ -241,6 +247,20 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
       ) : (
         <ol className={styles.orList}>
           <li className={`${global.center} ${styles.customLi}`}>
+            <div
+              onClick={handleInactiveClick}
+              className={`${styles.inactive} ${clickedSection === 1}`}
+            >
+              <FontAwesomeIcon
+                icon={faDiagramProject}
+                className={styles.dropdown}
+                size="lg"
+              />
+              &nbsp; Inactive Projects
+            </div>
+          </li>
+
+          <li className={`${global.center} ${styles.customLi}`}>
             <div onClick={handleNameIconClick} className={styles.nameIcon}>
               <FontAwesomeIcon
                 icon={open ? faSquareCaretDown : faSquareCaretRight}
@@ -288,7 +308,7 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
                           }
                         }}
                         onBlur={() => {
-                          handleEditProjectName(); // Move this line to onBlur
+                          handleEditProjectName();
                         }}
                       />
                     </div>
