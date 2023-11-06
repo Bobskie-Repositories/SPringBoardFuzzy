@@ -3,9 +3,12 @@ import styles from "./Tiptap.module.css";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import Table from "@tiptap/extension-table";
-import TableRow from "@tiptap/extension-table-row";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
+import TableRow from "@tiptap/extension-table-row";
+import Gapcursor from "@tiptap/extension-gapcursor";
+import Text from "@tiptap/extension-text";
+import { useState, useEffect } from "react";
 import Image from "@tiptap/extension-image";
 import {
   FaBold,
@@ -21,6 +24,7 @@ import {
   FaTable, // Import a suitable table icon
   FaImage, // Import an image icon
 } from "react-icons/fa";
+import { Height } from "@mui/icons-material";
 
 const MenuBar = ({ editor }) => {
   if (!editor) {
@@ -95,13 +99,17 @@ const MenuBar = ({ editor }) => {
 
         <button
           onClick={() => {
-            editor.chain().focus().insertTable({ rows: 3, cols: 3 }).run();
+            editor
+              .chain()
+              .focus()
+              .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+              .run();
           }}
         >
           <FaTable />
         </button>
 
-        <button
+        {/* <button
           onClick={() => {
             const imageUrl = prompt("Enter the image URL:");
             if (imageUrl) {
@@ -110,7 +118,7 @@ const MenuBar = ({ editor }) => {
           }}
         >
           <FaImage />
-        </button>
+        </button> */}
       </div>
       <div>
         <button onClick={() => editor.chain().focus().undo().run()}>
@@ -129,6 +137,8 @@ export const Tiptap = ({ setDescription }) => {
     extensions: [
       StarterKit,
       Underline,
+      Text,
+      Gapcursor,
       Table.configure({
         resizable: true,
       }),
@@ -147,7 +157,7 @@ export const Tiptap = ({ setDescription }) => {
   return (
     <div className={styles.textEditor}>
       <MenuBar editor={editor} />
-      <EditorContent editor={editor} />
+      <EditorContent editor={editor} className={styles.edit} />
     </div>
   );
 };
