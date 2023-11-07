@@ -36,7 +36,7 @@ const ViewClassroom = ({ selected }) => {
   }, [selected]);
 
   if (!groups) {
-    return <p>Loading...</p>;
+    return <p></p>;
   }
 
   return (

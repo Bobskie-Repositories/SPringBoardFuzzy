@@ -5,10 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from springboard_api.serializers import ClassroomSerializer, GroupSerializer, ProjectSerializer
 from springboard_api.models import Classroom, Group, Project, ProjectBoard
-from django.db.models import OuterRef, Subquery
-from django.db.models.functions import Coalesce
 from django.db.models import Max
-from django.db.models import F
 from rest_framework.views import APIView
 
 
@@ -152,16 +149,22 @@ class GetClassroomGroupsAndProjects(APIView):
                         "project_boards": []
                     }
 
+                    # Get the latest distinct project boards for each templateId within the project
                     project_boards = ProjectBoard.objects.filter(
-                        project_fk=project)
-                    for board in project_boards:
+                        project_fk=project
+                    ).values('templateId').annotate(
+                        latest_id=Max('id')
+                    ).values('latest_id')
+
+                    for board_data in project_boards:
+                        board = ProjectBoard.objects.get(
+                            id=board_data['latest_id'])
                         board_score = (
-                            board.novelty + board.technical_feasibility + board.capability
-                        ) / 3
+                            board.novelty + board.technical_feasibility + board.capability) / 3
                         project_board_data = {
                             "id": board.id,
                             "board_score": board_score,
-                            "templateId": board.templateId  # Include templateId
+                            "templateId": board.templateId
                         }
                         project_data["project_boards"].append(
                             project_board_data)

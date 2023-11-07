@@ -1,13 +1,14 @@
 .card {
   padding: 0 0 20px 0;
+  margin-top: 30px;
   max-width: 80rem;
   min-height: 30rem;
 }
 
 .container {
   display: grid;
-  grid-template-columns: 1fr 1fr 0.5fr 1fr 1.5fr 0.5fr;
-  grid-template-rows: 2rem;
+  grid-template-columns: 0.8fr 1fr 1.5fr 0.5fr 1.5fr 0.5fr;
+  grid-template-rows: repeat(auto-fill, minmax(3rem, 1fr));
   padding: 0;
   justify-content: center;
   align-items: center;
@@ -41,4 +42,20 @@
   color: white;
   letter-spacing: 2px;
   font-weight: 500;
+}
+
+.pagination {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.pagination span {
+  cursor: pointer;
+}
+
+.disabled {
+  color: #ccc; /* Change the color to gray or a color of your choice */
+  cursor: not-allowed; /* Change the cursor to indicate it's not clickable */
+  pointer-events: none; /* Make the button non-interactable */
 }
