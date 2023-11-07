@@ -56,6 +56,7 @@ class Group(models.Model):
 
 class Project(models.Model):
     name = models.CharField(max_length=50)
+    description = models.TextField(default='')
     isActive = models.BooleanField(default=False)
     score = models.FloatField(default=0)
     reason = models.TextField(default='')
@@ -68,6 +69,7 @@ class Project(models.Model):
 
 
 class ProjectBoard(models.Model):
+    boardId = models.IntegerField(default=0)
     title = models.CharField(max_length=50)
     templateId = models.IntegerField(default=0)
     content = models.TextField()

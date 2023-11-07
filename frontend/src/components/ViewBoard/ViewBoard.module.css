@@ -70,3 +70,20 @@
   width: 12rem;
   transition: background-color 0.3s;
 }
+
+.navigationButtons {
+  display: flex;
+  gap: 10px; /* Adjust the spacing between buttons as needed */
+  justify-content: flex-end;
+}
+
+.disabled {
+  color: #ccc; /* Change the color to gray or a color of your choice */
+  cursor: not-allowed; /* Change the cursor to indicate it's not clickable */
+  pointer-events: none; /* Make the button non-interactable */
+}
+
+.enable {
+  color: black; /* Change the color to gray or a color of your choice */
+  cursor: pointer; /* Change the cursor to indicate it's not clickable */
+}

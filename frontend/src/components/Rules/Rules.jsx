@@ -32,7 +32,7 @@ const Rules = () => {
   };
 
   if (!template) {
-    return <p>Loading...</p>;
+    return <p></p>;
   }
 
   return (
