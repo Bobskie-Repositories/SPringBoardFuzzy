@@ -35,8 +35,10 @@ const CustomSidebarSegement = ({ selected, setSelected }) => {
         .get(`http://127.0.0.1:8000/api/group/${groupid}/projects`)
         .then((response) => {
           setProjects(response.data);
-          setSelected(response.data[0].id);
-          setClickedProjectId(response.data[0].id);
+          if (response.data.length > 0) {
+            setSelected(response.data[0].id);
+            setClickedProjectId(response.data[0].id);
+          }
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
@@ -69,7 +71,7 @@ const CustomSidebarSegement = ({ selected, setSelected }) => {
                 className={styles.dropdown}
                 size="xl"
               />{" "}
-              &nbsp; Projects
+                Projects
             </div>
           </li>
         </ol>
