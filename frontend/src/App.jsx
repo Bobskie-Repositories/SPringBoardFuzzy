@@ -13,6 +13,7 @@ import EditBoard from "./pages/EditBoard";
 import Edit_Result from "./pages/Edit_Result";
 import AddTemplate from "./pages/AddTemplate";
 import EditTemplate from "./pages/EditTemplate";
+import InActivePage from "./pages/InActivePage";
 import GPTChat from "./components/GPTRequestHandler/GPTChat"; // Import the GPTChat component
 
 function App() {
@@ -30,7 +31,7 @@ function App() {
           index={true}
           element={
             <RequireAuth>
-              <S_Dashboard />
+              <S_Dashboard choose={0} />
             </RequireAuth>
           }
         />
@@ -145,16 +146,6 @@ function App() {
           }
         />
         <Route
-          path="inactive"
-          index={true}
-          exact
-          element={
-            <RequireAuth>
-              <A_Dashboard choose={2} />
-            </RequireAuth>
-          }
-        />
-        <Route
           path="add-template"
           index={true}
           exact
@@ -175,6 +166,16 @@ function App() {
           }
         />
       </Route>
+      <Route
+        path="/inactive"
+        index={true}
+        exact
+        element={
+          <RequireAuth>
+            <InActivePage />
+          </RequireAuth>
+        }
+      />
     </Routes>
   );
 }
