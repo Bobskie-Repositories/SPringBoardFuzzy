@@ -27,7 +27,7 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-function Board({ selected, setBoardCount }) {
+function Board({ selected, setBoardCount, onProjectUpdate }) {
   const navigate = useNavigate();
   const [projectList, setProjectList] = useState([]);
   const [project, setProject] = useState();
@@ -58,10 +58,6 @@ function Board({ selected, setBoardCount }) {
       try {
         const user = await getUser();
         setStaff(user.is_staff);
-        const projectListResponse = await axios.get(
-          `http://127.0.0.1:8000/api/group/${user.group_fk}/projects`
-        );
-        setProjectList(projectListResponse.data);
 
         if (selected !== null && selected !== undefined) {
           const boardsResponse = await axios.get(
@@ -75,6 +71,11 @@ function Board({ selected, setBoardCount }) {
           );
           const project = projectResponse.data;
           setProject(project);
+
+          const projectListResponse = await axios.get(
+            `http://127.0.0.1:8000/api/group/${project.group_fk}/projects`
+          );
+          setProjectList(projectListResponse.data);
 
           //checks if there is setBoardCount that was passed
           if (typeof setBoardCount === "function") {
@@ -149,6 +150,7 @@ function Board({ selected, setBoardCount }) {
                   });
                 toggleProjectPublic(project, "None");
                 setIsModalOpen(false);
+                onProjectUpdate();
               }}
             >
               Confirm
@@ -180,6 +182,7 @@ function Board({ selected, setBoardCount }) {
                 const textareaValue = document.getElementById("input2").value;
                 toggleProjectPublic(project, textareaValue);
                 setIsModalOpen(false);
+                onProjectUpdate();
               }}
               className={styles.button}
               style={{ backgroundColor: "#8A252C" }}

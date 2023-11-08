@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTableCellsLarge } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTableCellsLarge,
+  faDiagramProject,
+  faRankingStar,
+} from "@fortawesome/free-solid-svg-icons";
 import styles from "./SidebarSegment.module.css";
 import global from "../../assets/global.module.css";
 
@@ -20,7 +24,7 @@ const A_SidebarSegment = () => {
   };
   const goListInActiveProj = () => {
     setClickedSection(3);
-    navigate(`/admin/inactive`);
+    navigate(`/inactive`);
   };
 
   return (
@@ -49,7 +53,7 @@ const A_SidebarSegment = () => {
             }`}
           >
             <FontAwesomeIcon
-              icon={faTableCellsLarge}
+              icon={faRankingStar}
               className={styles.templates}
               size="xl"
             />
@@ -64,7 +68,7 @@ const A_SidebarSegment = () => {
             }`}
           >
             <FontAwesomeIcon
-              icon={faTableCellsLarge}
+              icon={faDiagramProject}
               className={styles.templates}
               size="xl"
             />

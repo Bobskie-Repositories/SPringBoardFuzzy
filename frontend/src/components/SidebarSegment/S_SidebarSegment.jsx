@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { useAuth } from "../../context/AuthContext";
 import styles from "./SidebarSegment.module.css";
 import global from "../../assets/global.module.css";
@@ -10,11 +10,12 @@ import {
   faTrash,
   faSquareCaretRight,
   faDiagramProject,
+  faCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 import axios from "axios";
 
-const S_SidebarSegment = ({ selected, setSelected }) => {
+const S_SidebarSegment = ({ selected, setSelected, sidebarKey }) => {
   const [projects, setProjects] = useState([]);
   const [open, setOpen] = useState(false);
   const [clickedProjectId, setClickedProjectId] = useState(null);
@@ -24,6 +25,7 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
   const [userGroupId, setUserGroupId] = useState("");
   const [staff, setStaff] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
   const { groupid } = useParams();
   const { getUser } = useAuth();
 
@@ -33,8 +35,13 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
       setStaff(user.is_staff);
       setUserGroupId(user.group_fk);
       setIsLoading(false);
+
       axios
-        .get(`http://127.0.0.1:8000/api/group/${groupid}/projects`)
+        .get(
+          `http://127.0.0.1:8000/api/group/${
+            groupid !== undefined ? groupid : user.group_fk
+          }/projects`
+        )
         .then((response) => {
           setProjects(response.data);
           setSelected(response.data[0].id);
@@ -62,6 +69,7 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
   const handleInactiveClick = (e) => {
     setisInactiveClicked(!isInactiveClicked);
     setClickedProjectId(null);
+    navigate("/inactive");
   };
 
   const handleProjectDoubleClick = (projectId) => {
@@ -299,7 +307,7 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
 
       {open && (
         <div style={{ marginTop: "-7%", paddingLeft: "20%" }}>
-          <ul>
+          <ul className={styles.ul}>
             {projects.map((project) => (
               <li
                 className={`${styles.projectName} ${
@@ -329,7 +337,22 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
                       />
                     </div>
                   ) : (
-                    <div>{project.name}</div>
+                    <div>
+                      {project.isActive ? (
+                        <FontAwesomeIcon
+                          icon={faCircle}
+                          className={styles.greenBullet}
+                          size="xs"
+                        />
+                      ) : (
+                        <FontAwesomeIcon
+                          icon={faCircle}
+                          className={styles.defaultBullet}
+                          size="xs"
+                        />
+                      )}
+                      {project.name}
+                    </div>
                   )}
                   {!staff && clickedProjectId === project.id && (
                     <FontAwesomeIcon

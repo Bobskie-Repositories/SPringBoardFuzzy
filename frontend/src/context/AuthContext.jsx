@@ -7,6 +7,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
+  const [role, setRole] = useState(null);
   const [id, setId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -22,6 +23,7 @@ export const AuthProvider = ({ children }) => {
 
       // Check token expiration
       const decodedToken = jwt_decode(storedToken);
+      setRole(decodedToken.role);
       const currentTime = Date.now() / 1000; // Convert to seconds
       if (decodedToken.exp < currentTime / 60) {
         // Token has expired
@@ -111,6 +113,9 @@ export const AuthProvider = ({ children }) => {
         const data = await response.json();
         const token = data.jwt;
         localStorage.setItem("jwt", token);
+        const decodedToken = jwt_decode(localStorage.getItem("jwt"));
+        const role = decodedToken.role;
+        setRole(role);
         setIsAuthenticated(true);
         return { success: true };
       } else {
@@ -141,6 +146,9 @@ export const AuthProvider = ({ children }) => {
         const data = await response.json();
         const token = data.jwt;
         localStorage.setItem("jwt", token);
+        const decodedToken = jwt_decode(localStorage.getItem("jwt"));
+        const role = decodedToken.role;
+        setRole(role);
         setIsAuthenticated(true);
         return { success: true };
       } else {
@@ -171,6 +179,9 @@ export const AuthProvider = ({ children }) => {
         const data = await response.json();
         const token = data.jwt;
         localStorage.setItem("jwt", token);
+        const decodedToken = jwt_decode(localStorage.getItem("jwt"));
+        const role = decodedToken.role;
+        setRole(role);
         setIsAuthenticated(true);
         return { success: true };
       } else {
@@ -207,6 +218,7 @@ export const AuthProvider = ({ children }) => {
   const authValue = {
     token,
     id,
+    role,
     loginStudent,
     loginTeacher,
     loginAdmin,
