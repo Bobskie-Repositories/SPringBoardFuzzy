@@ -4,21 +4,43 @@ import Card from "../UI/Card/Card";
 import IdeaIcon from "@assets/idea.png";
 import Button from "../UI/Button/Button";
 import { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import CircularProgressWithLabel from "../UI/ProgressBar/CircularProgressWithLabel";
-import axios from "axios";
-import Swal from "sweetalert2";
 import { Switch } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CircularProgressWithLabel from "../UI/ProgressBar/CircularProgressWithLabel";
 import Loading from "../UI/Loading/Loading";
+import ModalCustom from "../UI/Modal/Modal";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 function Board({ selected, setBoardCount }) {
   const navigate = useNavigate();
-  const [boards, setBoards] = useState([]);
+  const [projectList, setProjectList] = useState([]);
   const [project, setProject] = useState();
+  const [boards, setBoards] = useState([]);
   const [staff, setStaff] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
   const { getUser } = useAuth();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   const theme = createTheme({
     palette: {
@@ -36,6 +58,10 @@ function Board({ selected, setBoardCount }) {
       try {
         const user = await getUser();
         setStaff(user.is_staff);
+        const projectListResponse = await axios.get(
+          `http://127.0.0.1:8000/api/group/${user.group_fk}/projects`
+        );
+        setProjectList(projectListResponse.data);
 
         if (selected !== null && selected !== undefined) {
           const boardsResponse = await axios.get(
@@ -65,72 +91,138 @@ function Board({ selected, setBoardCount }) {
   }, [selected, setBoardCount, getUser]);
 
   const handleToggleClick = async (event) => {
+    setIsModalOpen(true);
     if (!project.isActive) {
-      const result = await Swal.fire({
-        title: "Are you sure you want to activate this project?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Activate",
-        cancelButtonText: "Cancel!",
-        reverseButtons: true,
-      });
+      setModalContent(
+        <div style={{ textAlign: "center" }}>
+          <FontAwesomeIcon
+            icon={faCircleExclamation}
+            style={{ color: "#ad1424" }}
+            size="5x"
+          />
+          <h2>
+            You are activating <b>"{project.name}"</b>
+          </h2>
 
-      if (result.isConfirmed) {
-        toggleProjectPublic(project);
-      }
+          <div>
+            {projectList.length > 1 ? (
+              <div>
+                <p style={{ fontSize: "14px" }}>
+                  You have {projectList.length - 1} other project in your group.
+                  Before activating this project, please select a reason why the
+                  other projects are not activated/discontinued.
+                </p>
+                {projectList
+                  .filter((projectItem) => projectItem.id !== selected)
+                  .map((projectItem) => (
+                    <div key={projectItem.id} style={{ textAlign: "left" }}>
+                      <p>
+                        <b>{projectItem.name}</b>
+                      </p>
+                      <textarea
+                        id={projectItem.id}
+                        placeholder="State the reason"
+                        defaultValue={projectItem.reason}
+                        className={styles.textarea}
+                      />
+                    </div>
+                  ))}
+              </div>
+            ) : (
+              <p style={{ textAlign: "center" }}>
+                Are you sure you want to activate this project?
+              </p>
+            )}
+          </div>
+          <div className={styles.btmButton}>
+            <Button
+              className={styles.button}
+              style={{ backgroundColor: "#5fab3c" }}
+              onClick={() => {
+                projectList
+                  .filter((projectItem) => projectItem.id !== selected)
+                  .forEach((projectItem) => {
+                    const textareaValue = document.getElementById(
+                      projectItem.id
+                    ).value;
+                    updateProjectReason(projectItem, textareaValue);
+                  });
+                toggleProjectPublic(project, "None");
+                setIsModalOpen(false);
+              }}
+            >
+              Confirm
+            </Button>
+            <Button
+              className={styles.button}
+              style={{ backgroundColor: "#8A252C" }}
+              onClick={() => setIsModalOpen(false)}
+            >
+              Cancel
+            </Button>
+          </div>
+        </div>
+      );
     } else {
-      // The project is already public
-      const result = await Swal.fire({
-        title: "Are you sure you want to deactivate this project?",
-        icon: "warning",
-        html: '<span style="font-size: 17px">Before deactivating this project, <br>please enter a reason</span>',
-        input: "select",
-        inputOptions: {
-          option1: "Unclear goal.",
-          option2: "Difficult to implement.",
-          option3: "Scope is too big.",
-          option4: "Incompatible to the team.",
-          option5: "High development cost.",
-          option6: "Disapproved by adviser.",
-          option7: "Takes years to produce.",
-          option8: "Very similar to existing products.",
-        },
-        inputPlaceholder: "Select an option",
-        inputAttributes: {
-          required: "required",
-        },
-        showCancelButton: true,
-        confirmButtonText: "Deactivate",
-        cancelButtonText: "Cancel",
-        reverseButtons: true,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          const selectedOptionKey = result.value; // This will contain the key of the selected option
-          const inputOptions = {
-            option1: "Unclear goal",
-            option2: "Difficult to implement.",
-            option3: "Very similar to existing products",
-            option4: "Incompatible to the team",
-            option5: "High development cost",
-            option6: "Disapproved by adviser",
-            option7: "Takes years to produce",
-            option8: "Low target customer",
-          };
-          const selectedOptionText = inputOptions[selectedOptionKey];
-          toggleProjectPublic(project, selectedOptionText);
-        }
-      });
+      // The project is already active
+      setModalContent(
+        <div style={{ textAlign: "center" }}>
+          <h2>Are you sure you want to deactivate this project?</h2>
+          <textarea
+            id="input2"
+            placeholder="State the reason"
+            className={styles.textarea}
+          />
+
+          <div className={styles.btmButton}>
+            <Button
+              onClick={() => {
+                const textareaValue = document.getElementById("input2").value;
+                toggleProjectPublic(project, textareaValue);
+                setIsModalOpen(false);
+              }}
+              className={styles.button}
+              style={{ backgroundColor: "#8A252C" }}
+            >
+              Deactivate
+            </Button>
+            <Button
+              className={styles.button}
+              onClick={() => setIsModalOpen(false)}
+            >
+              Cancel
+            </Button>
+          </div>
+        </div>
+      );
     }
   };
 
-  const toggleProjectPublic = async (project, selectedOption) => {
+  const updateProjectReason = async (project, reason) => {
+    const newStatus = project.isActive ? !project.isActive : project.isActive;
+    try {
+      await axios.put(
+        `http://127.0.0.1:8000/api/project/${project.id}/update`,
+        {
+          name: project.name,
+          reason: reason,
+          isActive: newStatus,
+          group_fk: project.group_fk,
+        }
+      );
+    } catch (error) {
+      Swal.fire("Error", "Failed to publish the template", "error");
+    }
+  };
+
+  const toggleProjectPublic = async (project, reason) => {
     const newisActive = !project.isActive;
     try {
       await axios.put(
         `http://127.0.0.1:8000/api/project/${project.id}/update`,
         {
           name: project.name,
-          reason: selectedOption,
+          reason: reason,
           isActive: newisActive,
           group_fk: project.group_fk,
         }
@@ -140,7 +232,6 @@ function Board({ selected, setBoardCount }) {
         isActive: newisActive,
       }));
     } catch (error) {
-      console.error("Error updating isActive:", error);
       Swal.fire("Error", "Failed to publish the template", "error");
     }
   };
@@ -170,6 +261,12 @@ function Board({ selected, setBoardCount }) {
         </ThemeProvider>
       ) : (
         <Loading />
+      )}
+
+      {isModalOpen && (
+        <ModalCustom isOpen={isModalOpen} onClose={handleCloseModal}>
+          {modalContent}
+        </ModalCustom>
       )}
 
       <div className={styles.scrollable}>
