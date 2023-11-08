@@ -32,12 +32,14 @@ const ListInActiveProj = () => {
   );
 
   const handleNextPage = () => {
-    setCurrentPage(currentPage + 1);
+    if (currentPage < totalPageCount) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
   };
 
   const handlePreviousPage = () => {
     if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+      setCurrentPage((prevPage) => prevPage - 1);
     }
   };
 
