@@ -37,10 +37,11 @@ const ViewBoard = () => {
 
         // Set both boards and groupId together
         setBoards(response.data);
-        if (currentIndex >= boards.length) {
-          setCurrentIndex(boards.length - 1);
-        }
+        // if (currentIndex >= boards.length) {
+        //   setCurrentIndex(boards.length - 1);
+        // }
         setGroupId(projectData.group_fk);
+        // console.log(groupId);
         groupIdRef.current = projectData.group_fk;
       } catch (error) {
         console.error("Error fetching data:", error);
