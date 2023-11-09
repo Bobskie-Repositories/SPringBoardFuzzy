@@ -15,6 +15,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import Caution from "../UI/Caution/Caution";
 
 const style = {
   position: "absolute",
@@ -96,11 +97,7 @@ function Board({ selected, setBoardCount, onProjectUpdate }) {
     if (!project.isActive) {
       setModalContent(
         <div style={{ textAlign: "center" }}>
-          <FontAwesomeIcon
-            icon={faCircleExclamation}
-            style={{ color: "#ad1424" }}
-            size="5x"
-          />
+          <Caution />
           <h2>
             You are activating <b>"{project.name}"</b>
           </h2>
@@ -168,6 +165,7 @@ function Board({ selected, setBoardCount, onProjectUpdate }) {
       // The project is already active
       setModalContent(
         <div style={{ textAlign: "center" }}>
+          <Caution />
           <h2>Are you sure you want to deactivate this project?</h2>
           <textarea
             id="input2"
