@@ -9,6 +9,7 @@ import {
   faSquareCaretDown,
   faTrash,
   faSquareCaretRight,
+  faCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -79,7 +80,7 @@ const CustomSidebarSegement = ({ selected, setSelected }) => {
 
       {open && (
         <div style={{ marginTop: "-7%", paddingLeft: "20%" }}>
-          <ul>
+          <ul className={styles.ul}>
             {projects.map((project) => (
               <li
                 className={`${styles.projectName} ${
@@ -89,7 +90,22 @@ const CustomSidebarSegement = ({ selected, setSelected }) => {
                 onClick={() => handleButtonClick(project.id)}
               >
                 <div className={styles.projectList}>
-                  <div>{project.name}</div>
+                  <div>
+                    {project.isActive ? (
+                      <FontAwesomeIcon
+                        icon={faCircle}
+                        className={styles.greenBullet}
+                        size="xs"
+                      />
+                    ) : (
+                      <FontAwesomeIcon
+                        icon={faCircle}
+                        className={styles.defaultBullet}
+                        size="xs"
+                      />
+                    )}
+                    {project.name}
+                  </div>
                 </div>
               </li>
             ))}
