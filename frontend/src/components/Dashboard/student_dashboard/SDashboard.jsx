@@ -41,7 +41,10 @@ const SDashboard = ({ choose }) => {
       className={styles.container}
       style={{ padding: "20px 150px 0px 30px" }}
     >
-      <S_Sidebar setSelected={setSelected} />
+      <S_Sidebar
+        projectUpdateKey={projectUpdateKey}
+        setSelected={setSelected}
+      />
 
       <div>
         <div
@@ -66,6 +69,7 @@ const SDashboard = ({ choose }) => {
                 onProjectUpdate={handleProjectUpdate}
               />
             )}
+            {console.log(projectUpdateKey)}
 
             <Button className={styles.butName} onClick={handleCreateBoardClick}>
               Create Board

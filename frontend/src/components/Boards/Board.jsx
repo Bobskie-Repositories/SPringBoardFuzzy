@@ -150,14 +150,13 @@ function Board({ selected, setBoardCount, onProjectUpdate }) {
                   });
                 toggleProjectPublic(project, "None");
                 setIsModalOpen(false);
-                onProjectUpdate();
               }}
             >
               Confirm
             </Button>
             <Button
               className={styles.button}
-              style={{ backgroundColor: "#8A252C" }}
+              style={{ backgroundColor: "rgb(181, 178, 178)" }}
               onClick={() => setIsModalOpen(false)}
             >
               Cancel
@@ -182,7 +181,6 @@ function Board({ selected, setBoardCount, onProjectUpdate }) {
                 const textareaValue = document.getElementById("input2").value;
                 toggleProjectPublic(project, textareaValue);
                 setIsModalOpen(false);
-                onProjectUpdate();
               }}
               className={styles.button}
               style={{ backgroundColor: "#8A252C" }}
@@ -234,6 +232,7 @@ function Board({ selected, setBoardCount, onProjectUpdate }) {
         ...prevProject,
         isActive: newisActive,
       }));
+      onProjectUpdate();
     } catch (error) {
       Swal.fire("Error", "Failed to publish the template", "error");
     }

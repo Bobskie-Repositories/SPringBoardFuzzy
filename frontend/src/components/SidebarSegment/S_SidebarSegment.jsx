@@ -55,6 +55,24 @@ const S_SidebarSegment = ({ selected, setSelected, sidebarKey }) => {
     fetchData();
   }, [setSelected, getUser]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      axios
+        .get(
+          `http://127.0.0.1:8000/api/group/${
+            groupid !== undefined ? groupid : user.group_fk
+          }/projects`
+        )
+        .then((response) => {
+          setProjects(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    };
+    fetchData();
+  }, [sidebarKey]);
+
   const handleButtonClick = (projectId) => {
     setisInactiveClicked(false);
     setSelected(projectId);
@@ -280,7 +298,7 @@ const S_SidebarSegment = ({ selected, setSelected, sidebarKey }) => {
                 className={styles.dropdown}
                 size="lg"
               />
-              &nbsp; Inactive Projects
+              &nbsp; Inactive Projects {sidebarKey}
             </div>
           </li>
 
