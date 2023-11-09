@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import styles from "./ADashboard.module.css";
 import Profile from "../../ProfileSegment/Profile";
@@ -6,10 +6,34 @@ import Search from "../../Search/Search";
 import A_Sidebar from "../../Sidebar/A_Sidebar";
 import TemplateList from "../../TemplateList/TemplateList";
 import Button from "../../UI/Button/Button";
+import ListActiveProj from "../../Table/ListActiveProj";
 import ListInActiveProj from "../../Table/ListInActiveProj";
+import axios from "axios";
 
 const ADashboard = ({ choose }) => {
   const navigate = useNavigate();
+  const [groups, setGroups] = useState(null);
+  const [templates, setTemplates] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`http://127.0.0.1:8000/api/group/group_proj`)
+      .then((response) => {
+        setGroups(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+
+    axios
+      .get(`http://127.0.0.1:8000/api/template/`)
+      .then((response) => {
+        setTemplates(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
 
   const handleCreateTemplateClick = () => {
     navigate("add-template");
@@ -48,7 +72,9 @@ const ADashboard = ({ choose }) => {
               <TemplateList />
             </div>
           ) : choose === 1 ? (
-            <p>Else</p>
+            <div style={{ marginTop: "30px" }}>
+              <ListActiveProj groups={groups} templates={templates} />
+            </div>
           ) : (
             <ListInActiveProj />
           )}

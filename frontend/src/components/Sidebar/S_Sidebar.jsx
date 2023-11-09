@@ -14,7 +14,7 @@ import { useNavigate } from "react-router";
 import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
 
-const S_Sidebar = ({ setSelected }) => {
+const S_Sidebar = ({ setSelected, projectUpdateKey }) => {
   const navigate = useNavigate();
   const [group, setGroup] = useState();
   const { getUser, logout } = useAuth();
@@ -60,8 +60,10 @@ const S_Sidebar = ({ setSelected }) => {
           </div>
         </button>
       </div>
-
-      <S_SidebarSegment setSelected={setSelected} />
+      <S_SidebarSegment
+        sidebarKey={projectUpdateKey}
+        setSelected={setSelected}
+      />
 
       <ol className={styles.list}>
         <li className={`${global.center} ${styles.customLi}`}>
