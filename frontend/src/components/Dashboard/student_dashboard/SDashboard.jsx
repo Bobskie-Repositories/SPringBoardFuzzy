@@ -69,7 +69,6 @@ const SDashboard = ({ choose }) => {
                 onProjectUpdate={handleProjectUpdate}
               />
             )}
-            {console.log(projectUpdateKey)}
 
             <Button className={styles.butName} onClick={handleCreateBoardClick}>
               Create Board

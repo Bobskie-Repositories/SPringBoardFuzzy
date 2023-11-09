@@ -29,7 +29,7 @@ class CreateProjectBoard(generics.CreateAPIView):
 
         api_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
         prompt = "Parse these data " + \
-            str(request.data.get('content', '')) + "And Give the percentage rating(1-10) in terms of novelty, technical feasibility, Capability and provide at least 2 sentence for recommendations, and 2 for feedback. Add 2 referrence links for that topic in string. The output for each should be separated with a '+' all in single line"
+            str(request.data.get('content', '')) + "And Give percentage rating(1-10) in terms of novelty, technical feasibility, Capability and provide at least 2 sentence for recommendations, and 2 for feedback. Add 2 referrence links for that topic in string. The output for each should be separated with a ' + ' all in single line"
         request_payload = {
             "prompt": prompt,
             "temperature": 0.5,
@@ -192,7 +192,7 @@ class UpdateBoard(generics.CreateAPIView):
             # Perform OpenAI API request
             api_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
             prompt = "Parse these data " + \
-                str(data.get('content', '')) + "And Give the percentage rating(1-10) in terms of novelty, technical feasibility, Capability and provide at least 2 sentence for recommendations, and 2 for feedback. Add 2 referrence links for that topic in string. The output for each should be separated with a '+' all in single line"
+                str(data.get('content', '')) + "And Give the percentage rating(1-10) in terms of novelty, technical feasibility, Capability. Put labels like 'Novelty: (value)'. Give bad rating to bad composition and lack of information. and provide at least 2 sentence for recommendations on parts of the data, and 2 for feedback on parts of the data. Add 2 referrence links for that topic in string. The output for each should be separated with a '+' all in single line"
 
             request_payload = {
                 "prompt": prompt,
@@ -215,7 +215,7 @@ class UpdateBoard(generics.CreateAPIView):
                 if response_content and response_content.get("choices"):
                     improved_unit_test = response_content["choices"][0]["text"].strip(
                     )
-
+                    print(improved_unit_test)
                     values = improved_unit_test.split('+')
 
                     novelty = int(values[0].split(': ')[1].replace('%', ''))
@@ -274,17 +274,18 @@ class DeleteProjectBoard(generics.DestroyAPIView):
 
     def destroy(self, request, *args, **kwargs):
         try:
+            # Get the ProjectBoard instance based on the provided ID
             instance = self.get_object()
 
-            # Get the project_fk from the project board
-            project_fk = instance.project_fk.id
-
-            # Calculate subtract_score based on the project board's values
+            # Calculate subtract_score for the specified project board
             subtract_score = (
-                (instance.novelty * 0.4) + (instance.technical_feasibility * 0.3) + (instance.capability * 0.3))
+                (instance.novelty * 0.4) +
+                (instance.technical_feasibility * 0.3) +
+                (instance.capability * 0.3)
+            )
 
             # Update the project's score using the calculated subtract_score
-            update_score_url = f"http://127.0.0.1:8000/api/project/{project_fk}/update_score"
+            update_score_url = f"http://127.0.0.1:8000/api/project/{instance.project_fk.id}/update_score"
             update_score_data = {
                 "score": 0,
                 "subtract_score": subtract_score
@@ -295,7 +296,11 @@ class DeleteProjectBoard(generics.DestroyAPIView):
                 # Handle the case where updating the project score fails
                 return Response({"error": "Failed to update project score"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-            instance.delete()
+            # Delete all related project boards with the same boardId
+            related_boards = ProjectBoard.objects.filter(
+                boardId=instance.boardId)
+            related_boards.delete()
+
             return Response(status=status.HTTP_204_NO_CONTENT)
         except ProjectBoard.DoesNotExist:
             return Response({"error": "ProjectBoard not found"}, status=status.HTTP_404_NOT_FOUND)

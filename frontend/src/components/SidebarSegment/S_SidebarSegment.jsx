@@ -298,7 +298,7 @@ const S_SidebarSegment = ({ selected, setSelected, sidebarKey }) => {
                 className={styles.dropdown}
                 size="lg"
               />
-              &nbsp; Inactive Projects {sidebarKey}
+              &nbsp; Inactive Projects
             </div>
           </li>
 
