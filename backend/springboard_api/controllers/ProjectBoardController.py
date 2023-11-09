@@ -85,7 +85,7 @@ class CreateProjectBoard(generics.CreateAPIView):
                     project_fk = request.data.get('project_fk', None)
                     update_score_url = f"http://127.0.0.1:8000/api/project/{project_fk}/update_score"
                     update_score_data = {
-                        "score": (novelty + technical_feasibility + capability)/3,
+                        "score": ((novelty * 0.4) + (technical_feasibility * 0.3) + (capability * 0.3)),
                         "subtract_score": 0
                     }
                     response = requests.put(
@@ -187,7 +187,7 @@ class UpdateBoard(generics.CreateAPIView):
 
             # Calculate subtract_score based on novelty, technical feasibility, and capability
             subtract_score = (
-                project_board.novelty + project_board.technical_feasibility + project_board.capability) / 3
+                (project_board.novelty * 0.4) + (project_board.technical_feasibility * 0.3) + (project_board.capability * 0.3))
 
             # Perform OpenAI API request
             api_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
@@ -249,7 +249,7 @@ class UpdateBoard(generics.CreateAPIView):
                     # Update the project score
                     update_score_url = f"http://127.0.0.1:8000/api/project/{project_board.project_fk.id}/update_score"
                     update_score_data = {
-                        "score": (novelty + technical_feasibility + capability) / 3,
+                        "score": ((novelty * 0.4) + (technical_feasibility * 0.3) + (capability * 0.3)),
                         "subtract_score": subtract_score
                     }
                     response = requests.put(
@@ -281,7 +281,7 @@ class DeleteProjectBoard(generics.DestroyAPIView):
 
             # Calculate subtract_score based on the project board's values
             subtract_score = (
-                instance.novelty + instance.technical_feasibility + instance.capability) / 3
+                (instance.novelty * 0.4) + (instance.technical_feasibility * 0.3) + (instance.capability * 0.3))
 
             # Update the project's score using the calculated subtract_score
             update_score_url = f"http://127.0.0.1:8000/api/project/{project_fk}/update_score"
