@@ -63,14 +63,15 @@ const EditBoard = () => {
           boardId: boardId,
         }
       );
+      // console.log(response);
       // console.log(response.data.project_fk);
       // await axios.put(
       //   `http://127.0.0.1:8000/api/project/${response.data.project_fk}/update_score`
       // );
 
-      navigate(`result`);
+      navigate(`/board/${response.data.id}/edit/result`);
 
-      console.log("ProjectBoard updated successfully:", response.data.id);
+      //console.log("ProjectBoard updated successfully:", response.data.id);
     } catch (error) {
       console.error("Error updating ProjectBoard:", error);
     }
