@@ -10,11 +10,16 @@ import {
   faGear,
   faArrowRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
 
-const S_Sidebar = ({ setSelected, projectUpdateKey }) => {
+const S_Sidebar = ({
+  setSelected,
+  projectUpdateKey,
+  setCreateAction,
+  selected,
+}) => {
   const navigate = useNavigate();
   const [group, setGroup] = useState();
   const { getUser, logout } = useAuth();
@@ -63,6 +68,8 @@ const S_Sidebar = ({ setSelected, projectUpdateKey }) => {
       <S_SidebarSegment
         sidebarKey={projectUpdateKey}
         setSelected={setSelected}
+        setCreateAction={setCreateAction}
+        selected={selected}
       />
 
       <ol className={styles.list}>

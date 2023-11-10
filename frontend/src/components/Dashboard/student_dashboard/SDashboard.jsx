@@ -9,13 +9,16 @@ import ListInActiveProj from "../../Table/ListInActiveProj";
 import Button from "../../UI/Button/Button";
 import styles from "./SDashboard.module.css";
 import Swal from "sweetalert2";
+import { useLocation } from "react-router";
 
 const SDashboard = ({ choose }) => {
-  const [selected, setSelected] = useState();
+  const location = useLocation();
+  const [selected, setSelected] = useState(location.state?.selectedProjectId);
   const [createAction, setCreateAction] = useState(false);
   const [boardCount, setBoardCount] = useState(0);
   const [boardTemplateIds, setBoardTemplateIds] = useState([]);
   const [projectUpdateKey, setProjectUpdateKey] = useState(0);
+
   const handleProjectUpdate = () => {
     // This function will be called when there are updates to projects in the Boards component
     // It increments the projectUpdateKey to force a re-render of S_Sidebar
@@ -44,7 +47,9 @@ const SDashboard = ({ choose }) => {
     >
       <S_Sidebar
         projectUpdateKey={projectUpdateKey}
+        selected={selected}
         setSelected={setSelected}
+        setCreateAction={setCreateAction}
       />
 
       <div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router";
+import { useParams, useNavigate, useLocation } from "react-router";
 import { useAuth } from "../../context/AuthContext";
 import styles from "./SidebarSegment.module.css";
 import global from "../../assets/global.module.css";
@@ -15,9 +15,14 @@ import {
 import Swal from "sweetalert2";
 import axios from "axios";
 
-const S_SidebarSegment = ({ selected, setSelected, sidebarKey }) => {
+const S_SidebarSegment = ({
+  selected,
+  setSelected,
+  sidebarKey,
+  setCreateAction,
+}) => {
   const [projects, setProjects] = useState([]);
-  const [open, setOpen] = useState(false);
+
   const [clickedProjectId, setClickedProjectId] = useState(null);
   const [editableProjectId, setEditableProjectId] = useState(null);
   const [editedProjectName, setEditedProjectName] = useState("");
@@ -28,6 +33,8 @@ const S_SidebarSegment = ({ selected, setSelected, sidebarKey }) => {
   const navigate = useNavigate();
   const { groupid } = useParams();
   const { getUser } = useAuth();
+  const location = useLocation();
+  const [open, setOpen] = useState(location.state?.open ? true : false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,8 +51,12 @@ const S_SidebarSegment = ({ selected, setSelected, sidebarKey }) => {
         )
         .then((response) => {
           setProjects(response.data);
-          setSelected(response.data[0].id);
-          setClickedProjectId(response.data[0].id);
+          if (!selected) {
+            setSelected(response.data[0].id);
+            setClickedProjectId(response.data[0].id);
+          } else {
+            setClickedProjectId(selected);
+          }
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
@@ -77,6 +88,10 @@ const S_SidebarSegment = ({ selected, setSelected, sidebarKey }) => {
     setisInactiveClicked(false);
     setSelected(projectId);
     setClickedProjectId(projectId);
+    setCreateAction(false);
+    navigate(`/group/${userGroupId}`, {
+      state: { selectedProjectId: projectId, open: true },
+    });
   };
 
   const handleNameIconClick = (e) => {
