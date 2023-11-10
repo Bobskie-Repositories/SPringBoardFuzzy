@@ -29,7 +29,8 @@ class CreateProjectBoard(generics.CreateAPIView):
 
         api_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
         prompt = "Parse these data " + \
-            str(request.data.get('content', '')) + "And Give percentage rating(1-10) in terms of novelty, technical feasibility, Capability and provide at least 2 sentence for recommendations, and 2 for feedback. Add 2 referrence links for that topic in string. The output for each should be separated with a ' + ' all in single line"
+            str(data.get('content', '')) + "And Give the percentage rating(1-10) in terms of novelty, technical feasibility, Capability. Give below 5 rating to data which has bad composition, lack effort, and lack of information. Put labels like 'Novelty: (value), References: (value), Feedback : (value) ...'. Provide at least 2 sentence for recommendations on parts of the data, 2 for feedback on parts of the data in regards with how the data is presented and structure. Add 2 referrence links for that topic in string.The output for each should be separated with a '+' all in one line"
+
         request_payload = {
             "prompt": prompt,
             "temperature": 0.5,
@@ -192,7 +193,10 @@ class UpdateBoard(generics.CreateAPIView):
             # Perform OpenAI API request
             api_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
             prompt = "Parse these data " + \
-                str(data.get('content', '')) + "And Give the percentage rating(1-10) in terms of novelty, technical feasibility, Capability. Put labels like 'Novelty: (value)'. Give bad rating to bad composition and lack of information. and provide at least 2 sentence for recommendations on parts of the data, and 2 for feedback on parts of the data. Add 2 referrence links for that topic in string. The output for each should be separated with a '+' all in single line"
+                str(data.get('content', '')) + "And Give the percentage rating(1-10) in terms of novelty, technical feasibility, Capability. Give below 5 rating to data which has bad composition, lack effort, and lack of information. Put labels like 'Novelty: (value), References: (value), Feedback : (value) ...'. Provide at least 2 sentence for recommendations on parts of the data, 2 for feedback on parts of the data in regards with how the data is presented and structure. Add 2 referrence links for that topic in string.The output for each should be separated with a '+' all in one line"
+
+            # prompt = "Parse these data " + \
+            #     str(data.get('content', '')) + "And Give the percentage rating(1-10) in terms of novelty, technical feasibility, Capability. Put labels like 'Novelty: (value)'. Give very low rating to bad composition, lack effort and lack of information. and provide at least 2 sentence for recommendations on parts of the data, and 2 for feedback on parts of the data. Add 2 referrence links for that topic in string. The output for each should be separated with a '+' all in single line"
 
             request_payload = {
                 "prompt": prompt,
@@ -264,7 +268,7 @@ class UpdateBoard(generics.CreateAPIView):
         except requests.exceptions.RequestException as e:
             return Response(f"An error occurred: {e}", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        return Response("ProjectBoard created successfully", status=status.HTTP_201_CREATED)
+        return Response({"id": new_board_instance.id}, status=status.HTTP_201_CREATED)
 
 
 class DeleteProjectBoard(generics.DestroyAPIView):

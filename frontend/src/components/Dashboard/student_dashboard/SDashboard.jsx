@@ -14,6 +14,7 @@ const SDashboard = ({ choose }) => {
   const [selected, setSelected] = useState();
   const [createAction, setCreateAction] = useState(false);
   const [boardCount, setBoardCount] = useState(0);
+  const [boardTemplateIds, setBoardTemplateIds] = useState([]);
   const [projectUpdateKey, setProjectUpdateKey] = useState(0);
   const handleProjectUpdate = () => {
     // This function will be called when there are updates to projects in the Boards component
@@ -61,12 +62,14 @@ const SDashboard = ({ choose }) => {
               <BoardCreation
                 selected={selected}
                 setCreateAction={setCreateAction}
+                boardTemplateIds={boardTemplateIds}
               />
             ) : (
               <Boards
                 selected={selected}
                 setBoardCount={setBoardCount}
                 onProjectUpdate={handleProjectUpdate}
+                setBoardTemplateIds={setBoardTemplateIds}
               />
             )}
 
