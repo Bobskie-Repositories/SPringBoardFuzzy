@@ -88,7 +88,9 @@ const ListInActiveProj = () => {
             <span className={styles.centerText}>
               {project.score === 0
                 ? 0
-                : (project.score / project.template_count).toFixed(2)}
+                : Math.ceil(
+                    (project.score / project.template_count).toFixed(2) * 10
+                  )}
               %
             </span>
           </div>
