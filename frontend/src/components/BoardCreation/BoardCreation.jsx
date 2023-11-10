@@ -10,7 +10,7 @@ import global from "@assets/global.module.css";
 import axios from "axios";
 import Loading from "../UI/Loading/Loading";
 
-const BoardCreation = ({ selected, setCreateAction }) => {
+const BoardCreation = ({ selected, setCreateAction, boardTemplateIds }) => {
   const [allTemplate, setAllTemplate] = useState();
   const navigate = useNavigate();
 
@@ -83,8 +83,16 @@ const BoardCreation = ({ selected, setCreateAction }) => {
                   {allTemplate.map((template, index) => (
                     <Card
                       key={index}
-                      className={styles.container_board}
-                      onClick={() => handleClick(template.id)}
+                      className={`${styles.container_board} ${
+                        boardTemplateIds.has(template.id)
+                          ? styles.unavailable
+                          : ""
+                      }`}
+                      onClick={() => {
+                        boardTemplateIds.has(template.id)
+                          ? ""
+                          : handleClick(template.id);
+                      }}
                     >
                       <div className={styles.words}>
                         <h4>{template.title}</h4>

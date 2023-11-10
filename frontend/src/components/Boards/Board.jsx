@@ -28,7 +28,12 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-function Board({ selected, setBoardCount, onProjectUpdate }) {
+function Board({
+  selected,
+  setBoardCount,
+  onProjectUpdate,
+  setBoardTemplateIds,
+}) {
   const navigate = useNavigate();
   const [projectList, setProjectList] = useState([]);
   const [project, setProject] = useState();
@@ -65,6 +70,15 @@ function Board({ selected, setBoardCount, onProjectUpdate }) {
             `http://127.0.0.1:8000/api/project/${selected}/projectboards`
           );
           const boards = boardsResponse.data;
+          const templateIds = new Set(boards.map((board) => board.templateId));
+
+          // Set the templateIds
+          if (setBoardTemplateIds) {
+            const templateIds = new Set(
+              boards.map((board) => board.templateId)
+            );
+            setBoardTemplateIds(templateIds);
+          }
           setBoards(boards);
 
           const projectResponse = await axios.get(
