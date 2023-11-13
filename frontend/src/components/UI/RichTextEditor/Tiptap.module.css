@@ -161,3 +161,12 @@ button.active {
   max-width: 100%;
   height: auto;
 }
+
+.myeditor {
+  border: 1px solid #ccc;
+  padding: 5px;
+  min-height: 50rem;
+  max-height: 50rem;
+  overflow-y: auto;
+  outline: none;
+}

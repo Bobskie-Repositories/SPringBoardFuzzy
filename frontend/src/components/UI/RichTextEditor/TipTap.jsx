@@ -1,5 +1,6 @@
 import { useEditor, EditorContent, FloatingMenu } from "@tiptap/react";
 import styles from "./Tiptap.module.css";
+import "./Tiptap.css";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import Table from "@tiptap/extension-table";
@@ -91,45 +92,57 @@ const MenuBar = ({ editor }) => {
         <button
           onClick={() => editor.chain().focus().toggleBold().run()}
           disabled={!editor.can().chain().focus().toggleBold().run()}
-          className={editor.isActive("bold") ? styles.active : ""}
-          class="butHover"
+          className={
+            editor.isActive("bold") ? `${styles.active} butHover` : "butHover"
+          }
         >
           <BiBold title="Bold" />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleItalic().run()}
           disabled={!editor.can().chain().focus().toggleItalic().run()}
-          className={editor.isActive("italic") ? styles.active : ""}
-          class="butHover"
+          className={
+            editor.isActive("italic") ? `${styles.active} butHover` : "butHover"
+          }
         >
           <BiItalic title="Italic" />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleUnderline().run()}
-          className={editor.isActive("underline") ? styles.active : ""}
-          class="butHover"
+          className={
+            editor.isActive("underline")
+              ? `${styles.active} butHover`
+              : "butHover"
+          }
         >
           <FiUnderline title="Underline" />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleStrike().run()}
           disabled={!editor.can().chain().focus().toggleStrike().run()}
-          className={editor.isActive("strike") ? styles.active : ""}
-          class="butHover"
+          className={
+            editor.isActive("strike") ? `${styles.active} butHover` : "butHover"
+          }
         >
           <AiOutlineStrikethrough title="Strikethrough" />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleSubscript().run()}
-          className={editor.isActive("subscript") ? styles.active : ""}
-          class="butHover"
+          className={
+            editor.isActive("subscript")
+              ? `${styles.active} butHover`
+              : "butHover"
+          }
         >
           <MdSubscript title="Subscript" />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleSuperscript().run()}
-          className={editor.isActive("superscript") ? styles.active : ""}
-          class="butHover"
+          className={
+            editor.isActive("superscript")
+              ? `${styles.active} butHover`
+              : "butHover"
+          }
         >
           <MdSuperscript title="Superscript" />
         </button>
@@ -145,8 +158,11 @@ const MenuBar = ({ editor }) => {
 
         <button
           onClick={() => editor.chain().focus().toggleHighlight().run()}
-          className={editor.isActive("highlight") ? styles.active : ""}
-          class="butHover"
+          className={
+            editor.isActive("highlight")
+              ? `${styles.active} butHover`
+              : "butHover"
+          }
         >
           <BiHighlight title="Highlight" />
         </button>
@@ -164,9 +180,10 @@ const MenuBar = ({ editor }) => {
             editor.chain().focus().toggleHeading({ level: 1 }).run()
           }
           className={
-            editor.isActive("heading", { level: 1 }) ? styles.active : ""
+            editor.isActive("heading", { level: 1 })
+              ? `${styles.active} butHover`
+              : "butHover"
           }
-          class="butHover"
         >
           <RiH1 title="Heading 1" />
         </button>
@@ -175,9 +192,10 @@ const MenuBar = ({ editor }) => {
             editor.chain().focus().toggleHeading({ level: 2 }).run()
           }
           className={
-            editor.isActive("heading", { level: 2 }) ? styles.active : ""
+            editor.isActive("heading", { level: 2 })
+              ? `${styles.active} butHover`
+              : "butHover"
           }
-          class="butHover"
         >
           <RiH2 title="Heading 2" />
         </button>
@@ -186,9 +204,10 @@ const MenuBar = ({ editor }) => {
             editor.chain().focus().toggleHeading({ level: 3 }).run()
           }
           className={
-            editor.isActive("heading", { level: 3 }) ? styles.active : ""
+            editor.isActive("heading", { level: 3 })
+              ? `${styles.active} butHover`
+              : "butHover"
           }
-          class="butHover"
         >
           <RiH3 title="Heading 3" />
         </button>
@@ -197,36 +216,40 @@ const MenuBar = ({ editor }) => {
         <button
           onClick={() => editor.chain().focus().setTextAlign("left").run()}
           className={
-            editor.isActive({ textAlign: "left" }) ? styles.active : ""
+            editor.isActive({ textAlign: "left" })
+              ? `${styles.active} butHover`
+              : "butHover"
           }
-          class="butHover"
         >
           <BiAlignLeft title="Align Left" />
         </button>
         <button
           onClick={() => editor.chain().focus().setTextAlign("center").run()}
           className={
-            editor.isActive({ textAlign: "center" }) ? styles.active : ""
+            editor.isActive({ textAlign: "center" })
+              ? `${styles.active} butHover`
+              : "butHover"
           }
-          class="butHover"
         >
           <BiAlignMiddle title="Center" />
         </button>
         <button
           onClick={() => editor.chain().focus().setTextAlign("right").run()}
           className={
-            editor.isActive({ textAlign: "right" }) ? styles.active : ""
+            editor.isActive({ textAlign: "right" })
+              ? `${styles.active} butHover`
+              : "butHover"
           }
-          class="butHover"
         >
           <BiAlignRight title="Align Right" />
         </button>
         <button
           onClick={() => editor.chain().focus().setTextAlign("justify").run()}
           className={
-            editor.isActive({ textAlign: "justify" }) ? styles.active : ""
+            editor.isActive({ textAlign: "justify" })
+              ? `${styles.active} butHover`
+              : "butHover"
           }
-          class="butHover"
         >
           <BiAlignJustify title="Justify" />
         </button>
@@ -234,34 +257,39 @@ const MenuBar = ({ editor }) => {
       <div className={styles.divSeparator}>
         <button
           onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={editor.isActive("bulletList") ? styles.active : ""}
-          class="butHover"
+          className={
+            editor.isActive("bulletList")
+              ? `${styles.active} butHover`
+              : "butHover"
+          }
         >
           <AiOutlineUnorderedList title="Bullets" />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          className={editor.isActive("orderedList") ? styles.active : ""}
-          class="butHover"
+          className={
+            editor.isActive("orderedList")
+              ? `${styles.active} butHover`
+              : "butHover"
+          }
         >
           <AiOutlineOrderedList title="Numbering" />
         </button>
       </div>
       {/* <button
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          className={editor.isActive("blockquote") ? styles.active : ""}
+          className={editor.isActive("blockquote") ? `${styles.active} butHover` : "butHover"}
         >
           <MdFormatQuote />
         </button> */}
       <div className={styles.divSeparator}>
         <button
           onClick={() => editor.chain().focus().setHorizontalRule().run()}
-          class="butHover"
         >
           <MdHorizontalRule title="Horizontal Rule" />
         </button>
 
-        <button onClick={addImage} class="butHover">
+        <button onClick={addImage} className="butHover">
           <LuImagePlus title="Insert Image" />
         </button>
 
@@ -273,7 +301,7 @@ const MenuBar = ({ editor }) => {
               .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
               .run();
           }}
-          class="butHover"
+          className="butHover"
         >
           <BiTable title="Add a Table" />
         </button>
@@ -303,55 +331,55 @@ const MenuBar = ({ editor }) => {
             <div className={styles.floating}>
               <button
                 onClick={() => editor.chain().focus().addColumnBefore().run()}
-                class="butHover"
+                className="butHover"
               >
                 <RiInsertColumnLeft title="Insert Left" />
               </button>
               <button
                 onClick={() => editor.chain().focus().addColumnAfter().run()}
-                class="butHover"
+                className="butHover"
               >
                 <RiInsertColumnRight title="Insert Right" />
               </button>
               <button
                 onClick={() => editor.chain().focus().deleteColumn().run()}
-                class="butHover"
+                className="butHover"
               >
                 <RiDeleteColumn title="Delete Column" />
               </button>
               <button
                 onClick={() => editor.chain().focus().addRowBefore().run()}
-                class="butHover"
+                className="butHover"
               >
                 <RiInsertRowTop title="Insert Above" />
               </button>
               <button
                 onClick={() => editor.chain().focus().addRowAfter().run()}
-                class="butHover"
+                className="butHover"
               >
                 <RiInsertRowBottom title="Insert Below" />
               </button>
               <button
                 onClick={() => editor.chain().focus().deleteRow().run()}
-                class="butHover"
+                className="butHover"
               >
                 <RiDeleteRow title="Delete Column" />
               </button>
               <button
                 onClick={() => editor.chain().focus().deleteTable().run()}
-                class="butHover"
+                className="butHover"
               >
                 <RiDeleteBinLine title="Delete Row" />
               </button>
               <button
                 onClick={() => editor.chain().focus().mergeCells().run()}
-                class="butHover"
+                className="butHover"
               >
                 <RiMergeCellsHorizontal title="Merge Cells" />
               </button>
               <button
                 onClick={() => editor.chain().focus().splitCell().run()}
-                class="butHover"
+                className="butHover"
               >
                 <RiSplitCellsHorizontal title="Split Cells" />
               </button>
@@ -359,18 +387,18 @@ const MenuBar = ({ editor }) => {
                 onClick={() =>
                   editor.chain().focus().toggleHeaderColumn().run()
                 }
-                class="butHover"
+                className="butHover"
               >
                 <RiLayoutColumnFill title="Fill Column" />
               </button>
               <button
-                class="butHover"
+                className="butHover"
                 onClick={() => editor.chain().focus().toggleHeaderRow().run()}
               >
                 <RiLayoutRowFill title="Fill Row" />
               </button>
               <button
-                class="butHover"
+                className="butHover"
                 onClick={() => editor.chain().focus().toggleHeaderCell().run()}
               >
                 <RiPaintFill title="Fill Cell" />
@@ -383,14 +411,14 @@ const MenuBar = ({ editor }) => {
         <button
           onClick={() => editor.chain().focus().undo().run()}
           disabled={!editor.can().undo()}
-          class="childHover"
+          className="childHover"
         >
           <BiUndo title="Undo" />
         </button>
         <button
           onClick={() => editor.chain().focus().redo().run()}
           disabled={!editor.can().redo()}
-          class="childHover"
+          className="childHover"
         >
           <BiRedo title="Redo" />
         </button>
@@ -403,8 +431,7 @@ export const Tiptap = ({ setDescription }) => {
   const editor = useEditor({
     editorProps: {
       attributes: {
-        class:
-          "border border-t-gray-400 p-5 min-h-[50rem] max-h-[50rem] overflow-y-auto outline-none",
+        class: "myeditor",
       },
     },
     extensions: [
@@ -432,23 +459,24 @@ export const Tiptap = ({ setDescription }) => {
       TableRow,
       TableHeader,
       TableCell,
-      Document,
-      Paragraph,
-      Text,
-      Heading,
+      // Document,
+      // Paragraph,
+      // Text,
+      // Heading,
       Subscript,
       Superscript,
       Color,
       TextStyle,
-      Gapcursor,
+      // Gapcursor,
       Image,
-      HorizontalRule,
+      // HorizontalRule,
     ],
 
     content: ``,
 
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
+      console.log(html);
       setDescription(html);
     },
   });
