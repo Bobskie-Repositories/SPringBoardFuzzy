@@ -1,4 +1,4 @@
-.ProseMirror {
+/* .ProseMirror {
   padding: 10px;
   border-top: 1px solid grey;
   background: white;
@@ -61,9 +61,14 @@
   border: none;
   border-top: 3px solid #999999;
   margin: 2rem 0;
-}
+} */
 
 /* ............................ */
+.boldButton {
+  background-color: #e5e5e5;
+  border-radius: 0.25rem;
+}
+
 .textEditor {
   padding: 10px 30px 0px 30px;
   height: 70rem;
@@ -73,29 +78,67 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-color: #fafafa;
 }
-.menuBar button {
-  font-size: 17px;
-  margin: 3px;
+
+.floating {
+  background-color: #fafafa;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.floating[data-placement^="bottom"] {
+  top: 100%; /* Position it below the table */
+}
+
+.floating button {
+  font-size: 15px;
+  margin: 4px;
+  padding: 2px;
   outline: none;
   border: none;
   background: none;
-  color: rgb(70, 70, 70);
+  color: rgb(109, 109, 109);
   cursor: pointer;
 }
-.menuBar button:last-child {
-  margin-right: 7px;
+.menuBar button {
+  font-size: 18px;
+  margin: 10px;
+  padding: 3px;
+  outline: none;
+  border: none;
+  background: none;
+  color: rgb(109, 109, 109);
+  cursor: pointer;
 }
 
-.heading3 {
-  font-size: 5px;
-}
-
-button.is_active {
-  background: rgb(197, 197, 197);
-  padding: 2px 3px;
+button.active {
+  background: rgb(226, 226, 226);
   border-radius: 2px;
 }
+
+/* button.active:hover {
+  background: rgb(168, 168, 168);
+  border-radius: 2px;
+} */
+
+.activeHover:hover {
+  background: rgb(226, 226, 226);
+  border-radius: 2px;
+}
+
+.menuBar button:last-child {
+  margin-right: 10px;
+}
+
+.heading {
+  display: flex;
+}
+
+/* button.is_active {
+  background: rgb(128, 128, 128);
+  padding: 2px 3px;
+  border-radius: 2px;
+} */
 
 .textEditor table {
   border-collapse: collapse;
@@ -109,25 +152,12 @@ button.is_active {
   text-align: left;
 }
 
-/* Add styles for table headers (optional) */
 .textEditor table th {
   background-color: #f2f2f2;
   font-weight: bold;
 }
 
-/* Add styles for images (optional) */
 .textEditor img {
   max-width: 100%;
   height: auto;
-}
-
-.edit {
-  margin-top: 1rem;
-  width: 100%;
-  border: none;
-  border-top: 1px solid #000;
-  border-right: 1px solid #000;
-  border-bottom: 1px solid #000;
-  border-left: 1px solid #000;
-  padding: 0.2rem;
 }
