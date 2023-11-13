@@ -23,11 +23,6 @@ const Template = () => {
   const editor = useRef(null);
   const [content, setContent] = useState("");
 
-  const feedback = "";
-  const recommendation = "";
-  const references = "";
-  const getRandomDigit = () => Math.floor(Math.random() * 10) + 1;
-
   // Handle changes in the React Quill editor
   const handleEditorChange = (newContent) => {
     setContent(newContent);
@@ -58,10 +53,11 @@ const Template = () => {
       };
 
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/project/${templateid}/addprojectboards`,
+        `http://127.0.0.1:8000/api/project/${id}/addprojectboards`,
         {
           title: template.title,
           content: content, // Use the content from the React Quill editor
+          templateId: templateid,
           novelty: 0,
           capability: 0,
           technical_feasibility: 0,
@@ -71,8 +67,9 @@ const Template = () => {
           project_fk: id,
         }
       );
+      console.log("Response from createProjectBoard:", response);
 
-      await axios.put(`http://127.0.0.1:8000/api/project/${id}/update_score`);
+      // await axios.put(`http://127.0.0.1:8000/api/project/${id}/update_score`);
 
       navigate(`/project/${id}/create-board/${response.data.id}/result`);
 
@@ -83,7 +80,7 @@ const Template = () => {
   };
 
   if (!template) {
-    return <p>Loading...</p>;
+    return <p></p>;
   }
 
   return (

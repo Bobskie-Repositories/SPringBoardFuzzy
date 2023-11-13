@@ -93,7 +93,8 @@
   color: rgb(181, 178, 178);
 }
 
-.nameIcon:hover {
+.nameIcon:hover,
+.inactive:hover {
   color: rgb(181, 178, 178);
 }
 
@@ -124,4 +125,18 @@
 .inputProject:focus {
   border: 2px solid rgb(255, 255, 255);
   outline: none;
+}
+
+.greenBullet {
+  color: #5fab3c;
+  margin-right: 10px;
+}
+
+.defaultBullet {
+  color: #9c7b16;
+  margin-right: 10px;
+}
+
+.ul {
+  list-style: none;
 }

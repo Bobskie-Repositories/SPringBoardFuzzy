@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSquareCaretDown,
   faSquareCaretRight,
-  faTableCellsLarge,
+  faDiagramProject,
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./SidebarSegment.module.css";
 import global from "../../assets/global.module.css";
@@ -15,7 +15,7 @@ const T_SidebarSegment = ({ selected, setSelected }) => {
   const [classrooms, setClassrooms] = useState([]);
   const [open, setOpen] = useState(false);
   const [clickedClassId, setClickedClassId] = useState(null);
-  const [isMyTemplateClicked, setMyTemplateClicked] = useState(false);
+  const [isInactiveClicked, setisInactiveClicked] = useState(false);
   const [userId, setUserId] = useState(0);
   const navigate = useNavigate();
   const { id } = useParams();
@@ -40,7 +40,6 @@ const T_SidebarSegment = ({ selected, setSelected }) => {
   }, [id]);
 
   const handleButtonClick = (classId) => {
-    setMyTemplateClicked(false);
     setSelected(classId);
     setClickedClassId(classId);
     navigate(`/classroom/${classId}`);
@@ -50,32 +49,29 @@ const T_SidebarSegment = ({ selected, setSelected }) => {
     e.preventDefault(); // Prevent navigation
     setOpen(!open);
   };
-
-  const goMyTemplate = () => {
-    setMyTemplateClicked(!isMyTemplateClicked);
+  const handleInactiveClick = (e) => {
+    setisInactiveClicked(!isInactiveClicked);
     setClickedClassId(null);
-    navigate(`/teacher/${userId}/template`);
+    navigate("/inactive");
   };
-
   return (
     <div className={styles.body}>
       <ol className={styles.orList}>
         <li className={`${global.center} ${styles.customLi}`}>
           <div
-            onClick={goMyTemplate}
-            className={`${styles.nameIcon} ${
-              isMyTemplateClicked ? styles.clickedButton : ""
+            onClick={handleInactiveClick}
+            className={`${styles.inactive} ${
+              isInactiveClicked ? styles.clickedButton : ""
             }`}
           >
             <FontAwesomeIcon
-              icon={faTableCellsLarge}
-              className={styles.templates}
-              size="xl"
+              icon={faDiagramProject}
+              className={styles.dropdown}
+              size="lg"
             />
-            My Template
+            &nbsp; Inactive Projects
           </div>
         </li>
-
         <li className={`${global.center} ${styles.customLi}`}>
           <div onClick={handleNameIconClick} className={styles.nameIcon}>
             <FontAwesomeIcon

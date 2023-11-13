@@ -32,7 +32,7 @@ const Rules = () => {
   };
 
   if (!template) {
-    return <p>Loading...</p>;
+    return <p></p>;
   }
 
   return (
@@ -45,7 +45,7 @@ const Rules = () => {
           successful evaluation of your idea.
         </h3>
         <h3>Techer's rules:</h3>
-        <p> {parse(template.rules)}</p>
+        <div> {parse(template.rules)} </div>
 
         <span className={styles.content}>
           We will now assess your idea based on the data you inputted. It's
@@ -63,8 +63,6 @@ const Rules = () => {
           technical perspective, including its scalability, sustainability, and
           viability Please input your data carefully, as this will determine the
           outcome of your assessment.
-          {/* <h3>Techer's rules:</h3>
-          {template.rules} */}
         </span>
       </div>
       <Button

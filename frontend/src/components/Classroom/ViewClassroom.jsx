@@ -5,81 +5,45 @@ import Card from "../UI/Card/Card";
 import styles from "./ViewClassroom.module.css";
 import global from "@assets/global.module.css";
 import axios from "axios";
+import ListActiveProj from "../Table/ListActiveProj";
 
 const ViewClassroom = ({ selected }) => {
   const [classroom, setClassroom] = useState(null);
   const [groups, setGroups] = useState(null);
   const { id } = useParams();
 
+  const [templates, setTemplates] = useState([]);
+
   useEffect(() => {
     if (selected !== null && selected !== undefined) {
       axios
-        .get(`http://127.0.0.1:8000/api/classroom/${id}`)
+        .get(`http://127.0.0.1:8000/api/classroom/${id}/class_group_proj`)
         .then((response) => {
-          setClassroom(response.data.class_name);
-          // console.log(response.data.class_name)
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-        });
-
-      axios
-        .get(`http://127.0.0.1:8000/api/classroom/${id}/groupproject`)
-        .then((response) => {
-          setGroups(response.data);
-          // console.log(response.data)
+          setClassroom(response.data.name);
+          setGroups(response.data.groups);
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
         });
     }
-  }, [selected]);
+    axios
+      .get(`http://127.0.0.1:8000/api/template/`)
+      .then((response) => {
+        setTemplates(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, [selected, id]);
 
-  if (!groups) {
+  if (!groups || !templates) {
     return <p>Loading...</p>;
   }
 
   return (
     <div>
       <h2 style={{ fontSize: "30px", color: "#9c7b16" }}>{classroom}</h2>
-
-      <Card className={styles.card}>
-        <div
-          className={global.brown}
-          style={{ borderRadius: "12px 12px 0 0", padding: "5px 30px" }}
-        >
-          <h3 style={{ color: "white" }}> List of Groups </h3>
-        </div>
-
-        <div
-          className={styles.container}
-          style={{
-            borderBottom: "1px solid #9c7b16",
-            color: "#BCBEC0",
-            marginBottom: "10px",
-          }}
-        >
-          <span className={styles.centerText}>Group Name</span>
-          <span className={styles.centerText}>Project</span>
-          <span className={styles.centerText}>Top Group</span>
-        </div>
-
-        {groups.map((group, index) => (
-          <div
-            className={styles.groupContainer}
-            style={{ gridTemplateRows: "2.5rem" }}
-            key={group.group_id}
-          >
-            <NavLink to={`group/${group.group_id}`}>
-              <span className={styles.centerTextName}>{group.group_name}</span>
-            </NavLink>
-            <span className={styles.centerText}>
-              {group.top_project ? group.top_project.name : "No Top Project"}
-            </span>
-            <span className={styles.centerText}>{index + 1}</span>
-          </div>
-        ))}
-      </Card>
+      <ListActiveProj groups={groups} templates={templates} />
     </div>
   );
 };

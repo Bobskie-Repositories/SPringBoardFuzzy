@@ -1,0 +1,120 @@
+.card {
+  padding: 0 0 20px 0;
+  margin-top: 30px;
+  max-width: 62rem;
+  min-height: 31rem;
+  max-height: 31rem;
+}
+
+.groupContainer,
+.container {
+  display: grid;
+  /* grid-template-columns: 0.8fr 1fr 1.5fr 0.5fr 1.5fr 0.5fr; */
+  grid-template-columns: 15rem 10rem 30rem 10rem 25rem 10rem;
+  grid-template-rows: repeat(auto-fill, minmax(2.5rem, 1fr));
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+}
+
+.groupContainer:hover {
+  background-color: #f0f0f0;
+}
+
+.centerTextName {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #9c7b16;
+  font-weight: 500;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.centerTextName:hover {
+  font-weight: 700;
+}
+
+.centerText {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  text-align: center;
+  height: 100%;
+  color: #292929;
+  font-size: 13px;
+}
+
+.header {
+  color: white;
+  letter-spacing: 2px;
+  font-weight: 500;
+}
+
+.pagination {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.pagination span {
+  cursor: pointer;
+}
+
+.clickable span {
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.clickable:hover {
+  color: #9c7b16;
+}
+
+.disabled {
+  color: #ccc; /* Change the color to gray or a color of your choice */
+  cursor: not-allowed; /* Change the cursor to indicate it's not clickable */
+  pointer-events: none; /* Make the button non-interactable */
+}
+.yScroll {
+  width: max-content;
+  min-height: 25rem;
+  max-height: 25rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.xScroll {
+  max-width: 70rem;
+  min-height: 28.5rem;
+  max-height: 28.5rem;
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
+.yScroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.xScroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+/* Customize the scrollbar track
+.scrollable::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+} */
+
+/* Customize the scrollbar thumb */
+.yScroll::-webkit-scrollbar-thumb,
+.xScroll::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+/* Customize the scrollbar thumb when hovered */
+.yScroll::-webkit-scrollbar-thumb:hover,
+.xScroll::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}

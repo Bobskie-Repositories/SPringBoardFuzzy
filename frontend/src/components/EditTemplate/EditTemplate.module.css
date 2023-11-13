@@ -36,11 +36,20 @@
   border-radius: 12px 12px 0 0;
 }
 
-.button {
+.buttonG {
   margin-top: 20px;
   align-self: flex-end;
   height: 40px;
   background-color: #82c36b;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.buttonR {
+  margin-top: 20px;
+  align-self: flex-end;
+  height: 40px;
+  background-color: #8a252c;
   font-size: 14px;
   transition: background-color 0.3s;
 }

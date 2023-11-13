@@ -4,19 +4,60 @@ import Card from "../UI/Card/Card";
 import IdeaIcon from "@assets/idea.png";
 import Button from "../UI/Button/Button";
 import { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { Switch } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CircularProgressWithLabel from "../UI/ProgressBar/CircularProgressWithLabel";
+import Loading from "../UI/Loading/Loading";
+import ModalCustom from "../UI/Modal/Modal";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { Switch } from "@mui/material";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import Caution from "../UI/Caution/Caution";
 
-function Board({ selected, setBoardCount }) {
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+function Board({
+  selected,
+  setBoardCount,
+  onProjectUpdate,
+  setBoardTemplateIds,
+}) {
   const navigate = useNavigate();
-  const [boards, setBoards] = useState([]);
+  const [projectList, setProjectList] = useState([]);
   const [project, setProject] = useState();
+  const [boards, setBoards] = useState([]);
   const [staff, setStaff] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
   const { getUser } = useAuth();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const theme = createTheme({
+    palette: {
+      success: {
+        main: "#87EE63",
+        light: "#81c784",
+        dark: "#388e3c",
+        contrastText: "#242105",
+      },
+    },
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,6 +70,15 @@ function Board({ selected, setBoardCount }) {
             `http://127.0.0.1:8000/api/project/${selected}/projectboards`
           );
           const boards = boardsResponse.data;
+          const templateIds = new Set(boards.map((board) => board.templateId));
+
+          // Set the templateIds
+          if (setBoardTemplateIds) {
+            const templateIds = new Set(
+              boards.map((board) => board.templateId)
+            );
+            setBoardTemplateIds(templateIds);
+          }
           setBoards(boards);
 
           const projectResponse = await axios.get(
@@ -36,6 +86,11 @@ function Board({ selected, setBoardCount }) {
           );
           const project = projectResponse.data;
           setProject(project);
+
+          const projectListResponse = await axios.get(
+            `http://127.0.0.1:8000/api/group/${project.group_fk}/projects`
+          );
+          setProjectList(projectListResponse.data);
 
           //checks if there is setBoardCount that was passed
           if (typeof setBoardCount === "function") {
@@ -52,53 +107,145 @@ function Board({ selected, setBoardCount }) {
   }, [selected, setBoardCount, getUser]);
 
   const handleToggleClick = async (event) => {
-    if (!project.isPublic) {
-      const result = await Swal.fire({
-        title: "Are you sure you want to publish this project?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Publish",
-        cancelButtonText: "Cancel!",
-        reverseButtons: true,
-      });
+    setIsModalOpen(true);
+    if (!project.isActive) {
+      setModalContent(
+        <div style={{ textAlign: "center" }}>
+          <Caution />
+          <h2>
+            You are activating <b>"{project.name}"</b>
+          </h2>
 
-      if (result.isConfirmed) {
-        toggleProjectPublic(project);
-      }
+          <div>
+            {projectList.length > 1 ? (
+              <div>
+                <p style={{ fontSize: "14px" }}>
+                  You have {projectList.length - 1} other project in your group.
+                  Before activating this project, please select a reason why the
+                  other projects are not activated/discontinued.
+                </p>
+                {projectList
+                  .filter((projectItem) => projectItem.id !== selected)
+                  .map((projectItem) => (
+                    <div key={projectItem.id} style={{ textAlign: "left" }}>
+                      <p>
+                        <b>{projectItem.name}</b>
+                      </p>
+                      <textarea
+                        id={projectItem.id}
+                        placeholder="State the reason"
+                        defaultValue={projectItem.reason}
+                        className={styles.textarea}
+                      />
+                    </div>
+                  ))}
+              </div>
+            ) : (
+              <p style={{ textAlign: "center" }}>
+                Are you sure you want to activate this project?
+              </p>
+            )}
+          </div>
+          <div className={styles.btmButton}>
+            <Button
+              className={styles.button}
+              style={{ backgroundColor: "#5fab3c" }}
+              onClick={() => {
+                projectList
+                  .filter((projectItem) => projectItem.id !== selected)
+                  .forEach((projectItem) => {
+                    const textareaValue = document.getElementById(
+                      projectItem.id
+                    ).value;
+                    updateProjectReason(projectItem, textareaValue);
+                  });
+                toggleProjectPublic(project, "None");
+                setIsModalOpen(false);
+              }}
+            >
+              Confirm
+            </Button>
+            <Button
+              className={styles.button}
+              style={{ backgroundColor: "rgb(181, 178, 178)" }}
+              onClick={() => setIsModalOpen(false)}
+            >
+              Cancel
+            </Button>
+          </div>
+        </div>
+      );
     } else {
-      // The project is already public
-      const result = await Swal.fire({
-        title: "Are you sure you want to unpublish this project?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Unpublish",
-        cancelButtonText: "Cancel",
-        reverseButtons: true,
-      });
+      // The project is already active
+      setModalContent(
+        <div style={{ textAlign: "center" }}>
+          <Caution />
+          <h2>Are you sure you want to deactivate this project?</h2>
+          <textarea
+            id="input2"
+            placeholder="State the reason"
+            className={styles.textarea}
+          />
 
-      if (result.isConfirmed) {
-        toggleProjectPublic(project);
-      }
+          <div className={styles.btmButton}>
+            <Button
+              onClick={() => {
+                const textareaValue = document.getElementById("input2").value;
+                toggleProjectPublic(project, textareaValue);
+                setIsModalOpen(false);
+              }}
+              className={styles.button}
+              style={{ backgroundColor: "#8A252C" }}
+            >
+              Deactivate
+            </Button>
+            <Button
+              className={styles.button}
+              onClick={() => setIsModalOpen(false)}
+            >
+              Cancel
+            </Button>
+          </div>
+        </div>
+      );
     }
   };
 
-  const toggleProjectPublic = async (project) => {
-    const newIsPublic = !project.isPublic;
+  const updateProjectReason = async (project, reason) => {
+    const newStatus = project.isActive ? !project.isActive : project.isActive;
     try {
       await axios.put(
         `http://127.0.0.1:8000/api/project/${project.id}/update`,
         {
           name: project.name,
-          isPublic: newIsPublic,
+          reason: reason,
+          isActive: newStatus,
+          group_fk: project.group_fk,
+        }
+      );
+    } catch (error) {
+      Swal.fire("Error", "Failed to publish the template", "error");
+    }
+  };
+
+  const toggleProjectPublic = async (project, reason) => {
+    const newisActive = !project.isActive;
+    try {
+      await axios.put(
+        `http://127.0.0.1:8000/api/project/${project.id}/update`,
+        {
+          name: project.name,
+          reason: reason,
+          isActive: newisActive,
           group_fk: project.group_fk,
         }
       );
       setProject((prevProject) => ({
         ...prevProject,
-        isPublic: newIsPublic,
+        isActive: newisActive,
       }));
+      onProjectUpdate();
     } catch (error) {
-      console.error("Error updating isPublic:", error);
       Swal.fire("Error", "Failed to publish the template", "error");
     }
   };
@@ -110,21 +257,30 @@ function Board({ selected, setBoardCount }) {
   return (
     <div>
       {project ? (
-        <div className={styles.alignment}>
-          <div className={styles.head}>{project.name} Boards</div>
-          {!staff && (
-            <div className={styles.publish}>
-              <p>Publish</p>
-              <Switch
-                onChange={(event) => handleToggleClick(event)}
-                inputProps={{ "aria-label": "controlled" }}
-                checked={project.isPublic}
-              />
-            </div>
-          )}
-        </div>
+        <ThemeProvider theme={theme}>
+          <div className={styles.alignment}>
+            <div className={styles.head}>{project.name} Boards</div>
+            {!staff && (
+              <div className={styles.publish}>
+                {project.isActive ? "Activated" : "Inactive"}
+                <Switch
+                  onChange={(event) => handleToggleClick(event)}
+                  inputProps={{ "aria-label": "controlled" }}
+                  checked={project.isActive}
+                  color="success"
+                />
+              </div>
+            )}
+          </div>
+        </ThemeProvider>
       ) : (
-        <p>Loading...</p>
+        <Loading />
+      )}
+
+      {isModalOpen && (
+        <ModalCustom isOpen={isModalOpen} onClose={handleCloseModal}>
+          {modalContent}
+        </ModalCustom>
       )}
 
       <div className={styles.scrollable}>
