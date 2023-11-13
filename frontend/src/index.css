@@ -1,4 +1,43 @@
-:root {
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1 {
+    @apply text-3xl;
+  }
+  h2 {
+    @apply text-2xl;
+  }
+  h3 {
+    @apply text-xl;
+  }
+  ol {
+    @apply list-decimal;
+  }
+  ul {
+    @apply list-disc;
+  }
+}
+
+@layer components {
+  .butHover {
+    @apply p-1 hover:bg-customGray rounded-sm;
+  }
+  .childHover {
+    @apply p-1 disabled:text-gray-400 rounded-sm;
+  }
+}
+
+@layer utilities {
+  .filter-none {
+    filter: none;
+  }
+  .filter-grayscale {
+    filter: grayscale(100%);
+  }
+}
+/* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -31,7 +70,7 @@ body {
 }
 
 h1 {
-  font-size: 3.2em;
+  font-size: 2.125rem;
   line-height: 1.1;
 }
 
@@ -65,4 +104,4 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-}
+} */
