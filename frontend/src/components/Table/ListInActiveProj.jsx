@@ -54,47 +54,52 @@ const ListInActiveProj = () => {
           <p className={styles.header}> List of Deactivated Projects </p>
         </div>
 
-        <div
-          className={styles.container}
-          style={{
-            borderBottom: "1px solid #9c7b16",
-            color: "#BCBEC0",
-            marginBottom: "10px",
-          }}
-        >
-          <span className={styles.centerText}>Project Name</span>
-          <span className={styles.centerText}>Created By</span>
-          <span className={styles.centerText}>Description</span>
-          <span className={styles.centerText}>Handled By</span>
-          <span className={styles.centerText}>
-            Reason for discontinuing the project
-          </span>
-          <span className={styles.centerText}>Rating</span>
-        </div>
-
-        {projectsToDisplay.map((project) => (
+        <div className={styles.xScroll}>
           <div
             className={styles.container}
-            style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}
-            key={project.id}
+            style={{
+              borderBottom: "1px solid #9c7b16",
+              color: "#BCBEC0",
+              marginBottom: "10px",
+            }}
           >
-            <span className={styles.centerText}>{project.name}</span>
-            <span className={styles.centerText}>{project.group_name}</span>
-            <span className={styles.centerText}>{project.description}</span>
-            <span className={styles.centerText}>{project.teacher_name}</span>
-            <span className={styles.centerText} style={{ color: "red" }}>
-              {project.reason}
-            </span>
+            <span className={styles.centerText}>Project Name</span>
+            <span className={styles.centerText}>Created By</span>
+            <span className={styles.centerText}>Description</span>
+            <span className={styles.centerText}>Handled By</span>
             <span className={styles.centerText}>
-              {project.score === 0
-                ? 0
-                : Math.ceil(
-                    (project.score / project.template_count).toFixed(2) * 10
-                  )}
-              %
+              Reason for discontinuing the project
             </span>
+            <span className={styles.centerText}>Rating</span>
           </div>
-        ))}
+          <div className={styles.yScroll}>
+            {projectsToDisplay.map((project) => (
+              <div
+                className={styles.container}
+                style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}
+                key={project.id}
+              >
+                <span className={styles.centerText}>{project.name}</span>
+                <span className={styles.centerText}>{project.group_name}</span>
+                <span className={styles.centerText}>{project.description}</span>
+                <span className={styles.centerText}>
+                  {project.teacher_name}
+                </span>
+                <span className={styles.centerText} style={{ color: "red" }}>
+                  {project.reason}
+                </span>
+                <span className={styles.centerText}>
+                  {project.score === 0
+                    ? 0
+                    : Math.ceil(
+                        (project.score / project.template_count).toFixed(2) * 10
+                      )}
+                  %
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
       </Card>
       <div className={styles.pagination}>
         <span

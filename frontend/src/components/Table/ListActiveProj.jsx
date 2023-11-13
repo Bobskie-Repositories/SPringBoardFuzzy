@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import Card from "../UI/Card/Card";
-import styles from "./ListActiveProj.module.css";
+import styles from "./Table.module.css";
 import global from "@assets/global.module.css";
-import axios from "axios";
 
 const ListActiveProj = (props) => {
   const [groups, setGroups] = useState(null);
@@ -14,7 +12,7 @@ const ListActiveProj = (props) => {
   const [templates, setTemplates] = useState([]);
   const [templateSortOrder, setTemplateSortOrder] = useState({}); // object to keep track of sort order for each template
   const [currentPage, setCurrentPage] = useState(1);
-  const groupsPerPage = 9;
+  const groupsPerPage = 10;
 
   useEffect(() => {
     setGroups(props.groups);
@@ -123,98 +121,94 @@ const ListActiveProj = (props) => {
       <Card className={styles.card}>
         <div
           className={global.brown}
-          style={{
-            borderRadius: "12px 12px 0 0",
-            padding: "5px 30px",
-          }}
+          style={{ borderRadius: "12px 12px 0 0", padding: "2px 30px" }}
         >
-          <h3 style={{ color: "white" }}> List of Groups </h3>
+          <p className={styles.header}> List of Groups </p>
         </div>
-        <div
-          className={styles.container}
-          style={{
-            borderBottom: "1px solid #9c7b16",
-            color: "#BCBEC0",
-            marginBottom: "10px",
-            gridTemplateColumns: `repeat(3, 1fr) repeat(${templates.length}, 1fr)`,
-          }}
-        >
-          <span
-            className={`${styles.centerText} ${styles.clickable}`}
-            onClick={handleGroupNameSort}
+        <div className={styles.xScroll}>
+          <div
+            className={`${styles.container} ${styles.clickable}`}
+            style={{
+              borderBottom: "1px solid #9c7b16",
+              color: "#BCBEC0",
+              marginBottom: "10px",
+              gridTemplateColumns: `repeat(2, 13rem) repeat(${templates.length}, 11rem) 11rem`,
+            }}
           >
-            Group Name
-          </span>
-          <span
-            className={`${styles.centerText} ${styles.clickable}`}
-            onClick={handleProjectNameSort}
-          >
-            Project
-          </span>
-          {templates.map((template, index) => (
             <span
-              key={index}
-              className={`${styles.centerText} ${styles.clickable}`}
-              onClick={() => handleTemplateSort(template.id)}
+              className={`${styles.centerText}`}
+              onClick={handleGroupNameSort}
             >
-              {template.title}
+              Group Name
             </span>
-          ))}
-          <span
-            className={`${styles.centerText} ${styles.clickable}`}
-            onClick={handleSort}
-          >
-            Overall Rating
-          </span>
-        </div>
-        <div className={styles.content}>
-          {groupsToDisplay.map((group, index) => (
-            <div
-              className={styles.groupContainer}
-              style={{
-                gridTemplateRows: "2.5rem",
-                gridTemplateColumns: `repeat(3, 1fr) repeat(${templates.length}, 1fr)`,
-              }}
-              key={group.id}
+            <span
+              className={`${styles.centerText}`}
+              onClick={handleProjectNameSort}
             >
-              <NavLink to={`group/${group.id}`}>
-                <span className={styles.centerTextName}>{group.name}</span>
-              </NavLink>
-              <span className={styles.centerText}>
-                {group.projects.length > 0
-                  ? group.projects[0].name
-                  : "No Project"}
+              Project
+            </span>
+            {templates.map((template, index) => (
+              <span
+                key={index}
+                className={`${styles.centerText}`}
+                onClick={() => handleTemplateSort(template.id)}
+              >
+                {template.title}
               </span>
-              {templates.map((template, index) => {
-                const projectBoard =
-                  group.projects.length > 0
-                    ? group.projects[0].project_boards.find(
-                        (board) => board.templateId === template.id
-                      )
-                    : null;
-                return (
-                  <span key={index} className={styles.centerText}>
-                    {projectBoard
-                      ? `${Math.round(projectBoard.board_score * 10)}%`
-                      : "0%"}
-                  </span>
-                );
-              })}
-              <span className={styles.centerTextOverallRating}>
-                {group.projects.length > 0
-                  ? `${Math.round(
-                      (group.projects[0].project_boards.reduce(
-                        (total, board) =>
-                          total + (board ? board.board_score : 0),
-                        0
-                      ) /
-                        templates.length) *
-                        10
-                    )}%`
-                  : "0%"}
-              </span>
-            </div>
-          ))}
+            ))}
+            <span className={`${styles.centerText}`} onClick={handleSort}>
+              Overall Rating
+            </span>
+          </div>
+          <div className={styles.yScroll}>
+            {groupsToDisplay.map((group, index) => (
+              <div
+                className={styles.groupContainer}
+                style={{
+                  gridTemplateRows: "2.5rem",
+                  gridTemplateColumns: `repeat(2, 13rem) repeat(${templates.length}, 11rem) 11rem`,
+                }}
+                key={group.id}
+              >
+                <NavLink to={`group/${group.id}`}>
+                  <span className={styles.centerTextName}>{group.name}</span>
+                </NavLink>
+                <span className={styles.centerText}>
+                  {group.projects.length > 0
+                    ? group.projects[0].name
+                    : "No Project"}
+                </span>
+                {templates.map((template, index) => {
+                  const projectBoard =
+                    group.projects.length > 0
+                      ? group.projects[0].project_boards.find(
+                          (board) => board.templateId === template.id
+                        )
+                      : null;
+                  return (
+                    <span key={index} className={styles.centerText}>
+                      {projectBoard
+                        ? `${Math.round(projectBoard.board_score * 10)}%`
+                        : "0%"}
+                    </span>
+                  );
+                })}
+                <span className={styles.centerText} style={{ color: "red" }}>
+                  {group.projects.length > 0
+                    ? `${Math.round(
+                        (group.projects[0].project_boards.reduce(
+                          (total, board) =>
+                            total + (board ? board.board_score : 0),
+                          0
+                        ) /
+                          templates.length) *
+                          10
+                      )}%`
+                    : "0%"}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </Card>
       <div className={styles.pagination}>
