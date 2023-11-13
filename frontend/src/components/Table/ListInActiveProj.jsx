@@ -32,12 +32,14 @@ const ListInActiveProj = () => {
   );
 
   const handleNextPage = () => {
-    setCurrentPage(currentPage + 1);
+    if (currentPage < totalPageCount) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
   };
 
   const handlePreviousPage = () => {
     if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+      setCurrentPage((prevPage) => prevPage - 1);
     }
   };
 
@@ -86,7 +88,9 @@ const ListInActiveProj = () => {
             <span className={styles.centerText}>
               {project.score === 0
                 ? 0
-                : (project.score / project.template_count).toFixed(2)}
+                : Math.ceil(
+                    (project.score / project.template_count).toFixed(2) * 10
+                  )}
               %
             </span>
           </div>

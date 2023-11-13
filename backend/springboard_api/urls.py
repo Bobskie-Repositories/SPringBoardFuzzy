@@ -5,7 +5,7 @@ from .controllers.ProjectBoardController import GetProjectBoards, CreateProjectB
 from .controllers.TemplateController import GetTemplate, GetAllTemplate, GetTemplateByTeacherId, GetAllPublicTemplates, CreateTemplate, UpdateTemplate, DeleteTemplate
 from .controllers.StudentController import RegisterStudent, LoginStudent, LogoutStudent, StudentView
 from .controllers.TeacherController import RegisterTeacher, LoginTeacher, LogoutTeacher, TeacherView, GetTeacherById
-from .controllers.GroupController import GetGroupById
+from .controllers.GroupController import GetGroupById, GetGroupsAndProjects
 from .controllers.AdminController import RegisterAdmin, LoginAdmin, AdminView, LogoutAdmin
 
 urlpatterns = [
@@ -71,4 +71,5 @@ urlpatterns = [
     path('api/template/<int:template_id>/delete', DeleteTemplate.as_view()),
 
     path('api/group/<int:group_id>', GetGroupById.as_view()),
+    path('api/group/group_proj', GetGroupsAndProjects.as_view()),
 ]

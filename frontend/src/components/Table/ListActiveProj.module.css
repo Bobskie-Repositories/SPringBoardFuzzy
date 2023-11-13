@@ -6,24 +6,31 @@
   justify-content: start;
   align-items: center;
   width: 100%;
-  padding: 10px;
+  /* padding: 10px; */
 }
 
 .groupContainer:hover {
   background-color: #f0f0f0;
 }
+.content {
+  min-height: 25rem;
+  max-height: 25rem;
+  overflow-x: auto; /* Make it scrollable */
+}
 
 .card {
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
   padding: 0 0 20px 0;
-  max-width: 400rem;
+  max-width: 80rem;
+  min-height: 29rem;
+  max-height: 29rem;
   margin: 0 auto;
   flex-wrap: wrap;
   width: auto; /* Set a fixed width */
-  overflow-x: auto; /* Make it scrollable */
+  /* overflow-x: auto; Make it scrollable */
 }
 
 .centerTextName {
@@ -66,4 +73,20 @@
 
 .clickable:hover {
   color: #9c7b16;
+}
+
+.pagination {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.pagination span {
+  cursor: pointer;
+}
+
+.disabled {
+  color: #ccc; /* Change the color to gray or a color of your choice */
+  cursor: not-allowed; /* Change the cursor to indicate it's not clickable */
+  pointer-events: none; /* Make the button non-interactable */
 }

@@ -9,6 +9,7 @@ import {
   faSquareCaretDown,
   faTrash,
   faSquareCaretRight,
+  faCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -35,8 +36,10 @@ const CustomSidebarSegement = ({ selected, setSelected }) => {
         .get(`http://127.0.0.1:8000/api/group/${groupid}/projects`)
         .then((response) => {
           setProjects(response.data);
-          setSelected(response.data[0].id);
-          setClickedProjectId(response.data[0].id);
+          if (response.data.length > 0) {
+            setSelected(response.data[0].id);
+            setClickedProjectId(response.data[0].id);
+          }
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
@@ -69,7 +72,7 @@ const CustomSidebarSegement = ({ selected, setSelected }) => {
                 className={styles.dropdown}
                 size="xl"
               />{" "}
-              &nbsp; Projects
+                Projects
             </div>
           </li>
         </ol>
@@ -77,7 +80,7 @@ const CustomSidebarSegement = ({ selected, setSelected }) => {
 
       {open && (
         <div style={{ marginTop: "-7%", paddingLeft: "20%" }}>
-          <ul>
+          <ul className={styles.ul}>
             {projects.map((project) => (
               <li
                 className={`${styles.projectName} ${
@@ -87,7 +90,22 @@ const CustomSidebarSegement = ({ selected, setSelected }) => {
                 onClick={() => handleButtonClick(project.id)}
               >
                 <div className={styles.projectList}>
-                  <div>{project.name}</div>
+                  <div>
+                    {project.isActive ? (
+                      <FontAwesomeIcon
+                        icon={faCircle}
+                        className={styles.greenBullet}
+                        size="xs"
+                      />
+                    ) : (
+                      <FontAwesomeIcon
+                        icon={faCircle}
+                        className={styles.defaultBullet}
+                        size="xs"
+                      />
+                    )}
+                    {project.name}
+                  </div>
                 </div>
               </li>
             ))}
