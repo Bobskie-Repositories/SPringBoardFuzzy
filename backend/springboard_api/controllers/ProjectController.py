@@ -3,9 +3,10 @@ from django.http import HttpResponse
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
-from springboard_api.serializers import ProjectSerializer
-from springboard_api.models import Project
+from springboard_api.serializers import ProjectSerializer, InactiveProjectSerializer
+from springboard_api.models import Project, ProjectBoard
 from django.shortcuts import get_object_or_404
+
 
 # Create your views here.
 # Create a project
@@ -52,9 +53,36 @@ class GetProjectsByGroupId(generics.ListAPIView):
         except ValueError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+
+class GetPublicProjectsByGroupId(generics.ListAPIView):
+    serializer_class = ProjectSerializer
+
+    def get_queryset(self):
+        group_id = self.kwargs.get('group_id')
+        # Filter projects by group ID and isActive attribute
+        return Project.objects.filter(group_fk_id=group_id, isActive=True)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class GetActiveProjectsView(generics.ListAPIView):
+    serializer_class = ProjectSerializer
+    queryset = Project.objects.filter(isActive=True)
+
+    def list(self, request, *args, **kwargs):
+        public_projects = self.get_queryset()  # Get the queryset of active projects
+        serializer = self.get_serializer(public_projects, many=True)
+
+        if public_projects:
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response([], status=status.HTTP_204_NO_CONTENT)
+
+
 # Get project by id
-
-
 class GetProjectById(generics.ListAPIView):
     serializer_class = ProjectSerializer
     queryset = Project.objects.all()
@@ -72,6 +100,82 @@ class GetProjectById(generics.ListAPIView):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class ProjectUpdateView(generics.UpdateAPIView):
+    serializer_class = ProjectSerializer
+    queryset = Project.objects.all()
+
+    def put(self, request, *args, **kwargs):
+        project_id = self.kwargs.get('project_id')
+        project = get_object_or_404(Project, pk=project_id)
+
+        serializer = self.get_serializer(project, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UpdateProjectScoreView(generics.UpdateAPIView):
+    serializer_class = ProjectSerializer
+
+    def update(self, request, project_id, *args, **kwargs):
+        try:
+            instance = Project.objects.get(id=project_id)
+        except Project.DoesNotExist:
+            return Response("Project not found", status=status.HTTP_404_NOT_FOUND)
+
+        # Get the new score as a string (default to '0' if not provided)
+        new_score_str = request.data.get('score', '0')
+
+        try:
+            new_score = float(new_score_str)
+        except ValueError:
+            return Response("Invalid score format", status=status.HTTP_400_BAD_REQUEST)
+
+        # Get the temporary parameter for subtracting the score (default to 0 if not provided)
+        subtract_score_str = request.data.get('subtract_score', '0')
+
+        try:
+            subtract_score = float(subtract_score_str)
+        except ValueError:
+            return Response("Invalid subtract_score format", status=status.HTTP_400_BAD_REQUEST)
+
+        # Update the score by adding the new score and subtracting the subtract_score
+        instance.score += (new_score - subtract_score)
+
+        # Save the updated instance to the database
+        instance.save()
+
+        # Instantiate the serializer with the updated instance
+        serializer = self.serializer_class(instance)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UpdateProjectStatusView(generics.UpdateAPIView):
+    serializer_class = ProjectSerializer
+
+    def update(self, request, project_id, *args, **kwargs):
+        try:
+            project = Project.objects.get(id=project_id)
+        except Project.DoesNotExist:
+            return Response("Project not found", status=status.HTTP_404_NOT_FOUND)
+
+        # Get the group ID of the project
+        group_id = project.group_fk_id
+
+        # Set isActive=False for all projects in the same group
+        Project.objects.filter(group_fk=group_id).update(isActive=False)
+
+        # Set isActive=True for the specific project
+        project.isActive = True
+        project.save()
+
+        serializer = self.serializer_class(project)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 class DeleteProjectView(generics.DestroyAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
@@ -84,3 +188,11 @@ class DeleteProjectView(generics.DestroyAPIView):
         project.delete()
 
         return Response({"message": "Project deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+
+
+class InactiveProjectsView(generics.ListAPIView):
+    serializer_class = InactiveProjectSerializer
+
+    def get_queryset(self):
+        # Retrieve all projects with isActive=False
+        return Project.objects.filter(isActive=False)

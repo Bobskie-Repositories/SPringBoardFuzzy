@@ -141,3 +141,11 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
 ]
+
+SESSION_COOKIE_SAMESITE = 'None'  # or 'None' if needed
+
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+
+AUTH_USER_MODEL = 'springboard_api.Student'

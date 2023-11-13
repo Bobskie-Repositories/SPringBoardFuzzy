@@ -1,43 +1,60 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styles from './SLogin.module.css';
+import React, { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import Header_landing from "../Header/Header_landing";
+import styles from "./SLogin.module.css";
 
 const SLoginComponent = () => {
   // State to manage user inputs
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [incorrect, setIncorrect] = useState(false);
 
   // Get the navigate function from react-router-dom
   const navigate = useNavigate();
+
+  // login function from AuthContext
+  const { loginStudent, getUser } = useAuth();
 
   // Function to handle form submission
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    // TODO: Implement your authentication logic here (e.g., send a request to a backend API)
+    try {
+      const loginResult = await loginStudent(username, password);
 
-    // For demonstration purposes, we'll just log the entered values
-    console.log('Username:', username);
-    console.log('Password:', password);
-
-    // After successful login, navigate to the "Home" page
-    navigate('/');
+      if (loginResult.success) {
+        try {
+          const user = await getUser();
+          const groupId = user.group_fk;
+          navigate(`/group/${groupId}`);
+        } catch (error) {
+          setIncorrect(true);
+          console.error("Login failed. Please check your credentials." + error);
+        }
+      } else if (loginResult.status === 403) {
+        setIncorrect(true);
+        console.error("Login failed. Please check your credentials.");
+      }
+    } catch (error) {
+      setIncorrect(true);
+      console.error("Login failed. Please check your credentials." + error);
+    }
   };
 
   return (
     <div className={styles.body}>
+      <Header_landing />
       <div className={styles.rectangle}>
-        {/* Page Title */}
-        <h2 className={styles.title}>Login</h2>
+        <h2 className={styles.title}>Student Login</h2>
 
-        {/* Header Text */}
         <h3 className={styles.header}>
           Welcome back! Please login to your account.
         </h3>
 
-        <div className={styles['center-container']}>
+        <div className={styles["center-container"]}>
           <form onSubmit={handleLogin}>
-            <div>
+            <div className={styles.input}>
               {/* Username Input */}
               <label htmlFor="username" className={styles.label}>
                 Email
@@ -51,7 +68,7 @@ const SLoginComponent = () => {
                 required
               />
             </div>
-            <div>
+            <div className={styles.input}>
               {/* Password Input */}
               <label htmlFor="password" className={styles.label}>
                 Password
@@ -67,10 +84,16 @@ const SLoginComponent = () => {
             </div>
             <div className={styles.buttonPrimary1}>
               {/* Forgot Password Link */}
-              <p className={styles.forgot} style={{ color: 'gray' }}>
-                <a href="/forgot-password">Forgot Password?</a>
-              </p>
-
+              <div className={styles.forgot}>
+                <a style={{ color: "gray" }} href="/forgot-password">
+                  Forgot Password?
+                </a>
+              </div>
+              {incorrect && (
+                <p className={styles.warning}>
+                  Incorrect username or password. Please try again.
+                </p>
+              )}
               {/* Login Button */}
               <button type="submit" className={styles.buttonPrimary}>
                 Login
@@ -78,10 +101,13 @@ const SLoginComponent = () => {
             </div>
           </form>
         </div>
-        
+
         {/* Sign Up Link */}
         <p className={styles.signup}>
-          Don’t have an account? <a href="/signup">Sign Up</a>
+          Don’t have an account?{" "}
+          <a style={{ color: "black" }} href="/signup">
+            Sign Up
+          </a>
         </p>
       </div>
     </div>

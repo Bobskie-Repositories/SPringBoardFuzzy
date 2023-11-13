@@ -1,31 +1,57 @@
-.header{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    width: calc(100vw - 17px);
-    height: 4rem;
-    align-items: center; /* Center vertically */
+.header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: calc(100vw - 17px);
+  height: 4rem;
+  align-items: center; /* Center vertically */
 }
 
-.left{
-    display: flex;
-    align-items: center;
-    margin: 0 80px;
+.header_landing {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100vw;
+  height: 6rem;
+  align-items: center; /* Center vertically */
 }
 
-.right{
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin: 0 80px;
+.left {
+  display: flex;
+  align-items: center;
+  margin: 0 80px;
+  cursor: pointer;
 }
 
-.img{
-    width: 80px; /* Adjust the width as needed */
-    height: 30px; /* Adjust the height as needed */
+.right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 0 80px;
 }
 
-.notif{
-    width: 30px; /* Adjust the width as needed */
-    height: 30px; /* Adjust the height as needed */
-    padding-right: 20px;
+.link {
+  color: black;
+}
+
+.right_landing {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
+  margin: 0 80px;
+}
+
+.img {
+  width: 80px; /* Adjust the width as needed */
+  height: 30px; /* Adjust the height as needed */
+}
+
+.img_landing {
+  width: 50%;
+  height: auto;
+}
+
+.notif {
+  width: 30px; /* Adjust the width as needed */
+  height: 30px; /* Adjust the height as needed */
+  padding-right: 20px;
 }

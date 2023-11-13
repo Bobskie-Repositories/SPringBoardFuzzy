@@ -1,103 +1,120 @@
-import React from 'react'
-import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router';
-import axios from 'axios';
-import global from '@assets/global.module.css'
-import styles from './EditBoard.module.css'
-import Header from '../Header/Header';
-import Card from '../UI/Card/Card';
-import Button from '../UI/Button/Button';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import EditorToolbar, { modules, formats } from '../UI/RichTextEditor/EditorToolBar';
+import React from "react";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router";
+import axios from "axios";
+import global from "@assets/global.module.css";
+import styles from "./EditBoard.module.css";
+import Header from "../Header/Header";
+import Card from "../UI/Card/Card";
+import Button from "../UI/Button/Button";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import EditorToolbar, {
+  modules,
+  formats,
+} from "../UI/RichTextEditor/EditorToolBar";
 
 const EditBoard = () => {
-    const [title, setTitle] = useState(null);
-    const [content, setContent] = useState(null);
-    const navigate = useNavigate();
-    const {id} = useParams();
+  const [title, setTitle] = useState(null);
+  const [content, setContent] = useState(null);
+  const [boardId, setBoardId] = useState(null);
+  const [projectId, SetProjectId] = useState(null);
+  const [priorNovelVal, setPriorNovelVal] = useState(null);
+  const [priorTechVal, setPriorTechVal] = useState(null);
+  const [priorCapableVal, setPriorCapableVal] = useState(null);
+  const navigate = useNavigate();
+  const { id } = useParams();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`http://127.0.0.1:8000/api/projectboards/${id}`);
-                setTitle(response.data.title || '')
-                setContent(response.data.content || '');
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-        fetchData();
-    }, [id]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/projectboards/${id}`
+        );
+        setTitle(response.data.title || "");
+        setContent(response.data.content || "");
+        setBoardId(response.data.boardId || "");
+        SetProjectId(response.data.project_fk || "");
 
-    const getRandomDigit = () => Math.floor(Math.random() * 10) + 1;
-    const feedback = "here are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text."
-    const recommendation = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-    const references = "<ul><li>http://www.ecommerce-store-example.com</li><li>http://www.personal-blog-example.com</li><li>http://www.ecommerce-store-example.com</li></ul>"
-
-    const updateProjectBoard = async () => {
-        try {
-    
-            const response = await axios.patch(`http://127.0.0.1:8000/api/projectboards/${id}/update`, {
-                title: title,
-                content: content, // Use the content from the React Quill editor
-                novelty: getRandomDigit(),
-                capability: getRandomDigit(),
-                technical_feasibility: getRandomDigit(),
-                feedback: feedback,
-                recommendation: recommendation,
-                references: references,
-            });
-    
-            navigate(`result`);
-    
-            console.log('ProjectBoard updated successfully:', response.data.id);
-        } catch (error) {
-            console.error('Error updating ProjectBoard:', error);
-        }
-    };
-    
-    
-
-    // Handle changes in the React Quill editor
-    const handleEditorChange = (newContent) => {
-        setContent(newContent);
-    };
-
-    if (!content) {
-        return <p>Loading...</p>;
+        setPriorNovelVal(response.data.novelty || 0);
+        setPriorTechVal(response.data.technical_feasibility || 0);
+        setPriorCapableVal(response.data.capability || 0);
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
+    };
+    fetchData();
+  }, [id]);
 
-    return (
-        <div className={global.body}>
-            <Header />
-            <div className={styles.container}>
-                <span className={styles.title}></span>
+  const updateProjectBoard = async () => {
+    try {
+      const response = await axios.post(
+        `http://127.0.0.1:8000/api/projectboards/${id}/update`,
+        {
+          title: title,
+          content: content, // Use the content from the React Quill editor
+          novelty: priorNovelVal,
+          capability: priorCapableVal,
+          technical_feasibility: priorTechVal,
+          feedback: "error",
+          recommendation: "error",
+          references: "error",
+          project_fk: projectId,
+          boardId: boardId,
+        }
+      );
+      // console.log(response);
+      // console.log(response.data.project_fk);
+      // await axios.put(
+      //   `http://127.0.0.1:8000/api/project/${response.data.project_fk}/update_score`
+      // );
 
-                <Card className={styles.cardContainer}>
-                    <div className={styles.box} />
+      navigate(`/board/${response.data.id}/edit/result`);
 
-                    <div className={styles.containerStyle}>
-                        <EditorToolbar />
-                        <ReactQuill
-                        theme="snow"
-                        value={content}
-                        onChange={handleEditorChange} // Update content state
-                        placeholder="Write something"
-                        modules={modules}
-                        formats={formats}
-                        className={global.quill}
-                        />
-                    </div>
-                </Card>
+      //console.log("ProjectBoard updated successfully:", response.data.id);
+    } catch (error) {
+      console.error("Error updating ProjectBoard:", error);
+    }
+  };
 
-                <Button className={styles.button} onClick={updateProjectBoard}>
-                    Submit
-                </Button>
-            </div>
+  // Handle changes in the React Quill editor
+  const handleEditorChange = (newContent) => {
+    setContent(newContent);
+  };
 
-        </div>
-    )
-}
+  if (!content) {
+    return <p></p>;
+  }
 
-export default EditBoard
+  return (
+    <div className={global.body}>
+      <Header />
+      <div className={styles.container}>
+        <span className={styles.title}> {title} </span>
+
+        <Card className={styles.cardContainer}>
+          <div className={styles.box} />
+
+          <div className={styles.containerStyle}>
+            <EditorToolbar />
+            <ReactQuill
+              theme="snow"
+              value={content}
+              onChange={handleEditorChange} // Update content state
+              placeholder="Write something"
+              modules={modules}
+              formats={formats}
+              className={global.quill}
+            />
+          </div>
+        </Card>
+
+        <Button className={styles.button} onClick={updateProjectBoard}>
+          Submit
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+export default EditBoard;
