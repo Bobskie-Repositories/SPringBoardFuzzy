@@ -1,5 +1,4 @@
 const apiKey = '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';
-const organizationId = 'CdWsXeXSpiYq3JpfKktzNc7w';
 
 export async function generateResponse(prompt) {
   const apiUrl = 'https://api.openai.com/v1/chat/completions';
