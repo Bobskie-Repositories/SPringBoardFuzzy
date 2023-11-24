@@ -7,6 +7,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
+  const [role, setRole] = useState(null);
   const [id, setId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -19,6 +20,17 @@ export const AuthProvider = ({ children }) => {
     if (storedToken) {
       setToken(storedToken);
       setIsAuthenticated(true);
+
+      // Check token expiration
+      const decodedToken = jwt_decode(storedToken);
+      setRole(decodedToken.role);
+      const currentTime = Date.now() / 1000; // Convert to seconds
+      if (decodedToken.exp < currentTime / 60) {
+        // Token has expired
+        setIsAuthenticated(false);
+        setToken(null);
+        localStorage.removeItem("jwt");
+      }
     }
     if (storedId) {
       setId(storedId);
@@ -46,7 +58,7 @@ export const AuthProvider = ({ children }) => {
           const studentData = await studentResponse.json();
           return studentData;
         }
-      } else {
+      } else if (role === "teacher") {
         // Attempt to fetch teacher data
         const teacherResponse = await fetch(
           "http://127.0.0.1:8000/api/active-teacher",
@@ -59,6 +71,20 @@ export const AuthProvider = ({ children }) => {
         if (teacherResponse.ok) {
           const teacherData = await teacherResponse.json();
           return teacherData;
+        }
+      } else {
+        // Attempt to fetch admin data
+        const adminResponse = await fetch(
+          "http://127.0.0.1:8000/api/active-admin",
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
+
+        if (adminResponse.ok) {
+          const adminData = await adminResponse.json();
+          return adminData;
         }
       }
 
@@ -87,6 +113,9 @@ export const AuthProvider = ({ children }) => {
         const data = await response.json();
         const token = data.jwt;
         localStorage.setItem("jwt", token);
+        const decodedToken = jwt_decode(localStorage.getItem("jwt"));
+        const role = decodedToken.role;
+        setRole(role);
         setIsAuthenticated(true);
         return { success: true };
       } else {
@@ -117,6 +146,42 @@ export const AuthProvider = ({ children }) => {
         const data = await response.json();
         const token = data.jwt;
         localStorage.setItem("jwt", token);
+        const decodedToken = jwt_decode(localStorage.getItem("jwt"));
+        const role = decodedToken.role;
+        setRole(role);
+        setIsAuthenticated(true);
+        return { success: true };
+      } else {
+        console.error("Login failed. Please check your credentials.");
+        return response;
+      }
+    } catch (error) {
+      console.error("An error occurred while logging in:", error.message);
+      return response;
+    }
+  };
+
+  const loginAdmin = async (email, password) => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/login-admin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      if (response.status === 200) {
+        const data = await response.json();
+        const token = data.jwt;
+        localStorage.setItem("jwt", token);
+        const decodedToken = jwt_decode(localStorage.getItem("jwt"));
+        const role = decodedToken.role;
+        setRole(role);
         setIsAuthenticated(true);
         return { success: true };
       } else {
@@ -153,8 +218,10 @@ export const AuthProvider = ({ children }) => {
   const authValue = {
     token,
     id,
+    role,
     loginStudent,
     loginTeacher,
+    loginAdmin,
     logout,
     getUser,
     isAuthenticated,

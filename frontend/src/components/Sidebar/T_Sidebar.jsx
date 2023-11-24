@@ -4,6 +4,7 @@ import global from "../../assets/global.module.css";
 import Logo from "@assets/Logo.png";
 import T_SidebarSegment from "../SidebarSegment/T_SidebarSegment";
 import S_SidebarSegment from "../SidebarSegment/S_SidebarSegment";
+import CustomSidebarSegement from "../SidebarSegment/CustomSidebarSegement";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleInfo,
@@ -43,7 +44,7 @@ const T_Sidebar = ({
                 2 - because that's the conditional statement in MDashboard where it renders the group board
                 this is only meant for teachers            
             */}
-      {choose === 2 && <S_SidebarSegment setSelected={setSelectedProj} />}
+      {choose === 2 && <CustomSidebarSegement setSelected={setSelectedProj} />}
 
       <ol className={styles.list}>
         <li className={`${global.center} ${styles.customLi}`}>

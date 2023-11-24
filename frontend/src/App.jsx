@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import RequireAuth from "./components/Authentication/RequireAuth";
 import M_Dashboard from "./pages/M_Dashboard";
 import S_Dashboard from "./pages/S_Dashboard";
+import A_Dashboard from "./pages/A_Dashboard";
 import AddBoard from "./pages/AddBoard";
 import Rules from "./pages/Rules";
 import Result from "./pages/Result";
@@ -12,7 +13,8 @@ import EditBoard from "./pages/EditBoard";
 import Edit_Result from "./pages/Edit_Result";
 import AddTemplate from "./pages/AddTemplate";
 import EditTemplate from "./pages/EditTemplate";
-import GPTChat from './components/GPTRequestHandler/GPTChat'; // Import the GPTChat component
+import InActivePage from "./pages/InActivePage";
+import GPTChat from "./components/GPTRequestHandler/GPTChat"; // Import the GPTChat component
 
 function App() {
   return (
@@ -21,19 +23,19 @@ function App() {
       <Route path="/login" element={<Login choose={0} />} />
       <Route path="/login-student" element={<Login choose={1} />} />
       <Route path="/login-teacher" element={<Login choose={2} />} />
-      <Route path="/chat-gpt" element={<GPTChat />} /> {/* Add this route for GPT Chat */}
-
+      <Route path="/login-admin" element={<Login choose={3} />} />
+      <Route path="/chat-gpt" element={<GPTChat />} />{" "}
+      {/* Add this route for GPT Chat */}
       <Route path="/group/:groupid">
         <Route
           index={true}
           element={
             <RequireAuth>
-              <S_Dashboard />
+              <S_Dashboard choose={0} />
             </RequireAuth>
           }
         />
       </Route>
-
       <Route path="/project/:id/create-board">
         <Route
           path=":templateid/rules"
@@ -63,7 +65,6 @@ function App() {
           }
         />
       </Route>
-
       <Route path="/board/:id">
         <Route
           index={true}
@@ -92,7 +93,6 @@ function App() {
           }
         />
       </Route>
-
       <Route path="/teacher/:id">
         <Route
           index={true}
@@ -103,18 +103,7 @@ function App() {
             </RequireAuth>
           }
         />
-        <Route
-          path="template"
-          index={true}
-          exact
-          element={
-            <RequireAuth>
-              <M_Dashboard choose={3} />
-            </RequireAuth>
-          }
-        />
       </Route>
-
       <Route path="/classroom/:id">
         <Route
           index={true}
@@ -125,8 +114,6 @@ function App() {
             </RequireAuth>
           }
         />
-        
-
         <Route
           path="group/:groupid"
           index={true}
@@ -138,25 +125,54 @@ function App() {
           }
         />
       </Route>
-
+      <Route path="/admin">
+        <Route
+          index={true}
+          exact
+          element={
+            <RequireAuth>
+              <A_Dashboard choose={0} />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="active"
+          index={true}
+          exact
+          element={
+            <RequireAuth>
+              <A_Dashboard choose={1} />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="add-template"
+          index={true}
+          exact
+          element={
+            <RequireAuth>
+              <AddTemplate />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="template/:id"
+          index={true}
+          exact
+          element={
+            <RequireAuth>
+              <EditTemplate />
+            </RequireAuth>
+          }
+        />
+      </Route>
       <Route
-        path="/add-template"
+        path="/inactive"
         index={true}
         exact
         element={
           <RequireAuth>
-            <AddTemplate />
-          </RequireAuth>
-        }
-      />
-
-      <Route
-        path="/template/:id"
-        index={true}
-        exact
-        element={
-          <RequireAuth>
-            <EditTemplate />
+            <InActivePage />
           </RequireAuth>
         }
       />

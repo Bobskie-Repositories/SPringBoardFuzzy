@@ -4,11 +4,9 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
 from springboard_api.serializers import ClassroomSerializer, GroupSerializer, ProjectSerializer
-from springboard_api.models import Classroom, Group, Project
-from django.db.models import OuterRef, Subquery
-from django.db.models.functions import Coalesce
+from springboard_api.models import Classroom, Group, Project, ProjectBoard
 from django.db.models import Max
-from django.db.models import F
+from rest_framework.views import APIView
 
 
 class ClassroomView(generics.ListAPIView):
@@ -88,17 +86,19 @@ class GetTopProjectsByClassroom(generics.ListAPIView):
                 group_projects = Project.objects.filter(group_fk=group)
 
                 top_project = group_projects.filter(
-                    isPublic=True).order_by('-score').first()
+                    isActive=True).order_by('-score').first()
 
                 if top_project:
                     project_serializer = ProjectSerializer(top_project)
                     group_top_projects.append({
+                        'group_id': group.id,  # Add group ID
                         'group_name': group.name,
                         'top_project': project_serializer.data
                     })
                 else:
                     # If no top project found, set the top_project field to zero
                     group_top_projects.append({
+                        'group_id': group.id,  # Add group ID
                         'group_name': group.name,
                         'top_project': {'score': 0}
                     })
@@ -115,3 +115,65 @@ class GetTopProjectsByClassroom(generics.ListAPIView):
             return Response({"error": "Groups not found"}, status=status.HTTP_404_NOT_FOUND)
         except ValueError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# Gets all the Groups that belongs to the classroom. This returns:
+# the classroom name, list of groups (group name and list of projects),
+# list of projects per group that are active with the average scores of each board
+class GetClassroomGroupsAndProjects(APIView):
+    def get(self, request, class_id):
+        try:
+            classroom = Classroom.objects.get(id=class_id)
+
+            classroom_data = {
+                "id": classroom.id,
+                "name": classroom.class_name,
+                "groups": []
+            }
+
+            groups = Group.objects.filter(classroom_fk=classroom)
+            for group in groups:
+                group_data = {
+                    "id": group.id,
+                    "name": group.name,
+                    "projects": []
+                }
+
+                projects = Project.objects.filter(
+                    group_fk=group, isActive=True)
+                for project in projects:
+                    project_data = {
+                        "id": project.id,
+                        "name": project.name,
+                        "project_score": project.score,
+                        "project_boards": []
+                    }
+
+                    # Get the latest distinct project boards for each templateId within the project
+                    project_boards = ProjectBoard.objects.filter(
+                        project_fk=project
+                    ).values('templateId').annotate(
+                        latest_id=Max('id')
+                    ).values('latest_id')
+
+                    for board_data in project_boards:
+                        board = ProjectBoard.objects.get(
+                            id=board_data['latest_id'])
+                        board_score = (
+                            board.novelty + board.technical_feasibility + board.capability) / 3
+                        project_board_data = {
+                            "id": board.id,
+                            "board_score": board_score,
+                            "templateId": board.templateId
+                        }
+                        project_data["project_boards"].append(
+                            project_board_data)
+
+                    group_data["projects"].append(project_data)
+
+                classroom_data["groups"].append(group_data)
+
+            return Response(classroom_data, status=status.HTTP_200_OK)
+
+        except Classroom.DoesNotExist:
+            return Response({"error": "Classroom not found"}, status=status.HTTP_404_NOT_FOUND)

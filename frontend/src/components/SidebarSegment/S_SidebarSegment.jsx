@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router";
+import { useParams, useNavigate, useLocation } from "react-router";
 import { useAuth } from "../../context/AuthContext";
 import styles from "./SidebarSegment.module.css";
 import global from "../../assets/global.module.css";
@@ -9,21 +9,32 @@ import {
   faSquareCaretDown,
   faTrash,
   faSquareCaretRight,
+  faDiagramProject,
+  faCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 import axios from "axios";
 
-const S_SidebarSegment = ({ selected, setSelected }) => {
+const S_SidebarSegment = ({
+  selected,
+  setSelected,
+  sidebarKey,
+  setCreateAction,
+}) => {
   const [projects, setProjects] = useState([]);
-  const [open, setOpen] = useState(false);
+
   const [clickedProjectId, setClickedProjectId] = useState(null);
   const [editableProjectId, setEditableProjectId] = useState(null);
   const [editedProjectName, setEditedProjectName] = useState("");
+  const [isInactiveClicked, setisInactiveClicked] = useState(false);
   const [userGroupId, setUserGroupId] = useState("");
   const [staff, setStaff] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
   const { groupid } = useParams();
   const { getUser } = useAuth();
+  const location = useLocation();
+  const [open, setOpen] = useState(location.state?.open ? true : false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,12 +42,21 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
       setStaff(user.is_staff);
       setUserGroupId(user.group_fk);
       setIsLoading(false);
+
       axios
-        .get(`http://127.0.0.1:8000/api/group/${groupid}/projects`)
+        .get(
+          `http://127.0.0.1:8000/api/group/${
+            groupid !== undefined ? groupid : user.group_fk
+          }/projects`
+        )
         .then((response) => {
           setProjects(response.data);
-          setSelected(response.data[0].id);
-          setClickedProjectId(response.data[0].id);
+          if (!selected) {
+            setSelected(response.data[0].id);
+            setClickedProjectId(response.data[0].id);
+          } else {
+            setClickedProjectId(selected);
+          }
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
@@ -46,14 +66,43 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
     fetchData();
   }, [setSelected, getUser]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      axios
+        .get(
+          `http://127.0.0.1:8000/api/group/${
+            groupid !== undefined ? groupid : user.group_fk
+          }/projects`
+        )
+        .then((response) => {
+          setProjects(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    };
+    fetchData();
+  }, [sidebarKey]);
+
   const handleButtonClick = (projectId) => {
+    setisInactiveClicked(false);
     setSelected(projectId);
     setClickedProjectId(projectId);
+    setCreateAction(false);
+    navigate(`/group/${userGroupId}`, {
+      state: { selectedProjectId: projectId, open: true },
+    });
   };
 
   const handleNameIconClick = (e) => {
     e.preventDefault();
     setOpen(!open);
+  };
+
+  const handleInactiveClick = (e) => {
+    setisInactiveClicked(!isInactiveClicked);
+    setClickedProjectId(null);
+    navigate("/inactive");
   };
 
   const handleProjectDoubleClick = (projectId) => {
@@ -111,7 +160,7 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
     }
   };
 
-  const addProject = async (newProject) => {
+  const addProject = async (newProject, desc) => {
     try {
       const getCurrentTimestamp = () => {
         const now = new Date();
@@ -123,6 +172,7 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
         `http://127.0.0.1:8000/api/project/create`,
         {
           name: newProject,
+          description: desc,
           group_fk: userGroupId,
           created_at: getCurrentTimestamp(),
         }
@@ -136,7 +186,7 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
 
       setProjects([...projects, newProjectData]);
 
-      console.log("ProjectB created successfully:", response.data.id);
+      // console.log("ProjectB created successfully:", response.data.id);
     } catch (error) {
       console.error("Error creating Project:", error);
     }
@@ -153,15 +203,15 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
       setProjects(updatedProjects);
       setSelected(projects[0].id);
       setClickedProjectId(projects[0].id);
-      if (response.status === 204) {
-        console.log("Project deleted successfully");
-      } else {
-        console.error(
-          "Failed to delete Project:",
-          response.status,
-          response.data
-        );
-      }
+      // if (response.status === 204) {
+      //   console.log("Project deleted successfully");
+      // } else {
+      //   console.error(
+      //     "Failed to delete Project:",
+      //     response.status,
+      //     response.data
+      //   );
+      // }
     } catch (error) {
       console.error("Error deleting Project:", error);
     }
@@ -177,28 +227,39 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
       });
     } else {
       Swal.fire({
-        html: '<span style="font-size: 20px">Create a New Project</span>',
-        input: "text",
-        inputPlaceholder: "Enter new project name",
+        html: `
+          <span style="font-size: 20px">Create a New Project</span>
+          <br>
+          <input type="text" id="input1" placeholder="Enter new project name" class="swal2-input" style="height: 35px; width: 86%; font-size: 16px; font-family: 'Calibri', sans-serif; display: flex;"/>
+          <br>
+          <textarea id="input2" placeholder="Enter project description" class="swal2-textarea" style="margin: 0 auto; width: 86%; height: 100px; resize: none; font-size: 16px; font-family: 'Calibri', sans-serif;"></textarea>
+        `,
         showCancelButton: true,
         confirmButtonText: "Create",
         confirmButtonColor: "#9c7b16",
         cancelButtonText: "Cancel",
         cancelButtonColor: "rgb(181, 178, 178)",
-        inputValidator: (value) => {
-          if (!value) {
-            return "Project name cannot be empty";
-          } else if (projects.some((project) => project.name === value)) {
-            return `Project with the name '${value}' already exists. Please enter another project name.`;
+        preConfirm: () => {
+          // Retrieve values from input fields
+          const input1Value = document.getElementById("input1").value;
+          const input2Value = document.getElementById("input2").value;
+
+          // Validate and process the values as needed
+          if (!input1Value) {
+            Swal.showValidationMessage("Project name cannot be empty");
+          } else if (!input2Value) {
+            Swal.showValidationMessage("Second input cannot be empty");
+          } else if (projects.some((project) => project.name === input1Value)) {
+            Swal.showValidationMessage(
+              `Project with the name '${input1Value}' already exists. Please enter another project name.`
+            );
           }
-        },
-        inputAttributes: {
-          style: "height: 35px; font-size: 16px",
         },
       }).then((result) => {
         if (result.isConfirmed) {
-          const newProjectName = result.value;
-          addProject(newProjectName);
+          const newProjectName = document.getElementById("input1").value;
+          const desc = document.getElementById("input2").value;
+          addProject(newProjectName, desc);
           Swal.fire({
             title: "Project Created",
             icon: "success",
@@ -241,6 +302,22 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
       ) : (
         <ol className={styles.orList}>
           <li className={`${global.center} ${styles.customLi}`}>
+            <div
+              onClick={handleInactiveClick}
+              className={`${styles.inactive} ${
+                isInactiveClicked ? styles.clickedButton : ""
+              }`}
+            >
+              <FontAwesomeIcon
+                icon={faDiagramProject}
+                className={styles.dropdown}
+                size="lg"
+              />
+              &nbsp; Inactive Projects
+            </div>
+          </li>
+
+          <li className={`${global.center} ${styles.customLi}`}>
             <div onClick={handleNameIconClick} className={styles.nameIcon}>
               <FontAwesomeIcon
                 icon={open ? faSquareCaretDown : faSquareCaretRight}
@@ -263,7 +340,7 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
 
       {open && (
         <div style={{ marginTop: "-7%", paddingLeft: "20%" }}>
-          <ul>
+          <ul className={styles.ul}>
             {projects.map((project) => (
               <li
                 className={`${styles.projectName} ${
@@ -288,12 +365,27 @@ const S_SidebarSegment = ({ selected, setSelected }) => {
                           }
                         }}
                         onBlur={() => {
-                          handleEditProjectName(); // Move this line to onBlur
+                          handleEditProjectName();
                         }}
                       />
                     </div>
                   ) : (
-                    <div>{project.name}</div>
+                    <div>
+                      {project.isActive ? (
+                        <FontAwesomeIcon
+                          icon={faCircle}
+                          className={styles.greenBullet}
+                          size="xs"
+                        />
+                      ) : (
+                        <FontAwesomeIcon
+                          icon={faCircle}
+                          className={styles.defaultBullet}
+                          size="xs"
+                        />
+                      )}
+                      {project.name}
+                    </div>
                   )}
                   {!staff && clickedProjectId === project.id && (
                     <FontAwesomeIcon

@@ -8,8 +8,6 @@ from springboard_api.models import ProjectBoard, Project
 import requests
 from django.db.models import Max
 
-
-
 class CreateProjectBoard(generics.CreateAPIView):
     serializer_class = ProjectBoardSerializer
 
@@ -19,14 +17,21 @@ class CreateProjectBoard(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         data = {}
-        # Initial Changes
+
+        highest_board_id = ProjectBoard.objects.aggregate(Max('boardId'))[
+            'boardId__max']
+
+        if highest_board_id is not None:
+            new_board_id = highest_board_id + 1
+        else:
+            new_board_id = 1
+
         api_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
-        
-        # Additional Rule: Focus area, end-user/beneficiary, and knowledge/capability
+
         focus_area = request.data.get('focus_area', '')
         end_user = request.data.get('end_user', '')
         knowledge_capability = request.data.get('knowledge_capability', '')
-        
+
         prompt = (
             f"Rate the usefulness of the idea in the input data on a scale of 1-10. "
             f"Provide recommendations and feedback on how to improve the data. "
@@ -56,12 +61,8 @@ class CreateProjectBoard(generics.CreateAPIView):
 
                 if response_content and response_content.get("choices"):
                     improved_unit_test = response_content["choices"][0]["text"].strip()
-                    print(improved_unit_test)
-
-                    # Split the improved_unit_test by '+' to extract values
                     values = improved_unit_test.split('+')
 
-                    # Parse the values for each field
                     novelty = int(values[0].split(': ')[1].replace('%', ''))
                     technical_feasibility = int(values[1].split(': ')[1].replace('%', ''))
                     capability = int(values[2].split(': ')[1].replace('%', ''))
@@ -69,7 +70,6 @@ class CreateProjectBoard(generics.CreateAPIView):
                     feedback = values[4].split(': ')[1]
                     reference_links = values[5].split(': ')[1]
 
-                    # Get the title, content, and project_fk from the request data
                     title = request.data.get('title', '')
                     content = request.data.get('content', '')
                     project_fk = request.data.get('project_fk', None)
@@ -84,45 +84,25 @@ class CreateProjectBoard(generics.CreateAPIView):
                         'feedback': feedback,
                         'references': reference_links,
                         'project_fk': Project.objects.get(id=project_fk),
-                        'focus_area': focus_area,  # Added focus_area to the data
-                        'end_user': end_user,      # Added end_user to the data
-                        'knowledge_capability': knowledge_capability  # Added knowledge_capability to the data
+                        'focus_area': focus_area,
+                        'end_user': end_user,
+                        'knowledge_capability': knowledge_capability,
+                        'boardId': new_board_id,
                     }
 
-                    # Save the score to update later
-                    project_score = ((novelty * 0.4) + (technical_feasibility * 0.3) + (capability * 0.3))
-
-                    if project_score < 5:
-                        # If the score is below 5, set subtract_score to a negative value
-                        subtract_score = project_score * -1
-                    else:
-                        subtract_score = 0
-
-                    # Update the project score
                     update_score_url = f"http://127.0.0.1:8000/api/project/{project_fk}/update_score"
                     update_score_data = {
-                        "score": project_score,
-                        "subtract_score": subtract_score
+                        "score": ((novelty * 0.4) + (technical_feasibility * 0.3) + (capability * 0.3)),
+                        "subtract_score": 0
                     }
-
-                    # Add comments and references to recommendations and feedback
-                    recommendations += " This data can be improved by [Reference 1] and [Reference 2]."
-                    feedback += " Consider [Reference 3] for better structuring and [Reference 4] for more information."
-
-                    # Include the comments and references in the data
-                    data['recommendation'] = recommendations
-                    data['feedback'] = feedback
-
                     response = requests.put(update_score_url, json=update_score_data)
-
                 else:
-                    print("No response content or choices found.")
+                    return Response("No response content or choices found", status=status.HTTP_400_BAD_REQUEST)
             else:
                 error_message = response.text
-                print(error_message)
+                return Response(error_message, status=status.HTTP_400_BAD_REQUEST)
         except requests.exceptions.RequestException as e:
-            print(f"An error occurred: {e}")
-            data = {}
+            return Response(f"An error occurred: {e}", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         if serializer.is_valid():
             self.perform_create(serializer, data)
@@ -211,23 +191,20 @@ class UpdateBoard(generics.CreateAPIView):
 
             # Calculate subtract_score based on novelty, technical feasibility, and capability
             subtract_score = (
-                (project_board.novelty * 0.4) + (project_board.technical_feasibility * 0.3) + (project_board.capability * 0.3))
+                (project_board.novelty * 0.4) +
+                (project_board.technical_feasibility * 0.3) +
+                (project_board.capability * 0.3)
+            )
 
             # Perform OpenAI API request
             api_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
-
+            
+            # Updated prompt with the relevant changes
             prompt = (
                 f"Rate the usefulness of the idea in the input data on a scale of 1-10. "
                 f"Provide recommendations and feedback on how to improve the data. "
                 f"Include references to support your recommendations and feedback. {data.get('content', '')}"
             )
-            #prompt = "Parse these data " + \
-            #    str(data.get('content', '')) + "And Give the percentage rating(1-10) in terms of novelty, technical feasibility, Capability. Give below 5 rating to data which has bad composition, lack effort, and lack of information. Put labels like 'Novelty: (value), References: (value), Feedback : (value) ...'. Provide at least 2 sentence for recommendations on parts of the data, 2 for feedback on parts of the data in regards with how the data is presented and structure. Add 2 referrence links for that topic in string.The output for each should be separated with a '+' all in one line"
-
-            # prompt = "Parse these data " + \
-            #     str(data.get('content', '')) + "And Give the percentage rating(1-10) in terms of novelty, technical feasibility, Capability. Put labels like 'Novelty: (value)'. Give very low rating to bad composition, lack effort and lack of information. and provide at least 2 sentence for recommendations on parts of the data, and 2 for feedback on parts of the data. Add 2 referrence links for that topic in string. The output for each should be separated with a '+' all in single line"
-
-
 
             request_payload = {
                 "prompt": prompt,
@@ -237,30 +214,28 @@ class UpdateBoard(generics.CreateAPIView):
                 "frequency_penalty": 0.0,
                 "presence_penalty": 0.0
             }
+
             headers = {
                 "Authorization": "Bearer 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"
             }
 
-            response = requests.post(
-                api_url, json=request_payload, headers=headers)
+            response = requests.post(api_url, json=request_payload, headers=headers)
 
             if response.status_code == 200:
                 response_content = response.json()
 
                 if response_content and response_content.get("choices"):
-                    improved_unit_test = response_content["choices"][0]["text"].strip(
-                    )
-                    print(improved_unit_test)
+                    improved_unit_test = response_content["choices"][0]["text"].strip()
                     values = improved_unit_test.split('+')
 
                     novelty = int(values[0].split(': ')[1].replace('%', ''))
-                    technical_feasibility = int(
-                        values[1].split(': ')[1].replace('%', ''))
+                    technical_feasibility = int(values[1].split(': ')[1].replace('%', ''))
                     capability = int(values[2].split(': ')[1].replace('%', ''))
                     recommendations = values[3].split(': ')[1]
                     feedback = values[4].split(': ')[1]
                     reference_links = values[5].split(': ')[1]
 
+                    # Updated data dictionary with additional fields
                     data = {
                         'title': data.get('title', ''),
                         'content': data.get('content', ''),
@@ -273,6 +248,9 @@ class UpdateBoard(generics.CreateAPIView):
                         'project_fk': project_board.project_fk,
                         'templateId': project_board.templateId,
                         'boardId': project_board.boardId,  # Retain the boardId
+                        'focus_area': data.get('focus_area', ''),
+                        'end_user': data.get('end_user', ''),
+                        'knowledge_capability': data.get('knowledge_capability', ''),
                     }
 
                     # Create a new instance of ProjectBoard with provided data
@@ -287,8 +265,7 @@ class UpdateBoard(generics.CreateAPIView):
                         "score": ((novelty * 0.4) + (technical_feasibility * 0.3) + (capability * 0.3)),
                         "subtract_score": subtract_score
                     }
-                    response = requests.put(
-                        update_score_url, json=update_score_data)
+                    response = requests.put(update_score_url, json=update_score_data)
                 else:
                     return Response("No response content or choices found", status=status.HTTP_400_BAD_REQUEST)
             else:
@@ -300,7 +277,6 @@ class UpdateBoard(generics.CreateAPIView):
             return Response(f"An error occurred: {e}", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return Response({"id": new_board_instance.id}, status=status.HTTP_201_CREATED)
-
 
 class DeleteProjectBoard(generics.DestroyAPIView):
     queryset = ProjectBoard.objects.all()

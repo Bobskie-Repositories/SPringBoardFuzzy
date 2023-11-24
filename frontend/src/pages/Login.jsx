@@ -2,6 +2,7 @@ import React from "react";
 import LoginComp from "../components/Login/Login";
 import SLoginComponent from "../components/Login/SLogin";
 import TLoginComponent from "../components/Login/TLogin";
+import ALoginComponent from "../components/Login/ALogin";
 
 const Login = ({ choose }) => {
   return (
@@ -10,8 +11,10 @@ const Login = ({ choose }) => {
         <LoginComp />
       ) : choose === 1 ? (
         <SLoginComponent />
-      ) : (
+      ) : choose === 2 ? (
         <TLoginComponent />
+      ) : (
+        <ALoginComponent />
       )}
     </div>
   );

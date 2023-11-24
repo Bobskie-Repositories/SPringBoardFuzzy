@@ -9,6 +9,7 @@ import ClassroomList from "../../Classroom/ClassroomList";
 import ViewClassroom from "../../Classroom/ViewClassroom";
 import ViewProject from "../../ViewProject/ViewProject";
 import TemplateList from "../../TemplateList/TemplateList";
+import ListInActiveProj from "../../Table/ListInActiveProj";
 import styles from "./MDashboard.module.css";
 
 const MDashboard = ({ choose }) => {
@@ -59,20 +60,7 @@ const MDashboard = ({ choose }) => {
           ) : choose === 2 ? (
             <ViewProject selected={selectedProj} />
           ) : (
-            <div>
-              <div className={styles.container}>
-                <h2 style={{ fontSize: "30px", color: "#9c7b16" }}>
-                  Your Templates
-                </h2>
-                <Button
-                  className={styles.butName}
-                  onClick={handleCreateTemplateClick}
-                >
-                  Create Template
-                </Button>
-              </div>
-              <TemplateList />
-            </div>
+            <ListInActiveProj />
           )}
         </div>
       </div>

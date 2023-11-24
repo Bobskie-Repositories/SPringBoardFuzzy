@@ -12,7 +12,7 @@ import axios from "axios";
 
 const ViewBoard = () => {
   const [activeTab, setActiveTab] = useState("results");
-  const [contents, setContents] = useState(null);
+  const [boards, setBoards] = useState(null);
   const [groupId, setGroupId] = useState(null);
   const [staff, setStaff] = useState(false);
   const { getUser } = useAuth();
@@ -20,6 +20,7 @@ const ViewBoard = () => {
   const groupIdRef = useRef();
   const navigate = useNavigate();
 
+  const [currentIndex, setCurrentIndex] = useState(0);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -27,16 +28,20 @@ const ViewBoard = () => {
         setStaff(user.is_staff);
 
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/projectboards/${id}`
+          `http://127.0.0.1:8000/api/projectboards/${id}/versions`
         );
         const projectResponse = await axios.get(
-          `http://127.0.0.1:8000/api/project/${response.data.project_fk}`
+          `http://127.0.0.1:8000/api/project/${response.data[0].project_fk}`
         );
         const projectData = projectResponse.data;
 
-        // Set both contents and groupId together
-        setContents(response.data);
+        // Set both boards and groupId together
+        setBoards(response.data);
+        // if (currentIndex >= boards.length) {
+        //   setCurrentIndex(boards.length - 1);
+        // }
         setGroupId(projectData.group_fk);
+        // console.log(groupId);
         groupIdRef.current = projectData.group_fk;
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -48,6 +53,14 @@ const ViewBoard = () => {
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
+  };
+
+  const goToPreviousProjectBoard = () => {
+    setCurrentIndex((prevIndex) => prevIndex - 1);
+  };
+
+  const goToNextProjectBoard = () => {
+    setCurrentIndex((prevIndex) => prevIndex + 1);
   };
 
   const onClickDelete = async () => {
@@ -102,9 +115,11 @@ const ViewBoard = () => {
     });
   };
 
-  if (!contents) {
-    return <p>Loading...</p>;
+  if (!boards) {
+    return <p></p>;
   }
+
+  const currentProjectBoard = boards[currentIndex];
 
   return (
     <div className={global.body}>
@@ -112,7 +127,27 @@ const ViewBoard = () => {
 
       <div className={global.body}>
         <div style={{ width: "70rem" }}>
-          <h2>{contents.title}</h2>
+          <h2>{currentProjectBoard.title}</h2>
+          <div className={styles.navigationButtons}>
+            <span
+              onClick={goToNextProjectBoard}
+              className={
+                currentIndex === boards.length - 1
+                  ? styles.disabled
+                  : styles.enable
+              }
+            >
+              &lt;&lt;
+            </span>
+            <span>&nbsp; {boards.length - currentIndex} &nbsp; </span>
+            <span
+              onClick={goToPreviousProjectBoard}
+              className={currentIndex === 0 ? styles.disabled : styles.enable}
+            >
+              &gt;&gt;
+            </span>
+          </div>
+
           <div className={styles.tabsContainer}>
             <div
               className={`${styles.tab} ${
@@ -139,16 +174,16 @@ const ViewBoard = () => {
                   <p>Result</p>
                 </div>
                 <div>
-                  <ResultBoard boardid={id} />
+                  <ResultBoard boardid={currentProjectBoard.id} />
                 </div>
               </>
             )}
             {activeTab === "details" && (
               <>
                 <div className={styles.tabHeader}>
-                  <p>{contents.title}</p>
+                  <p>{currentProjectBoard.title}</p>
                 </div>
-                <div>{parse(contents.content)}</div>
+                <div>{parse(currentProjectBoard.content)}</div>
               </>
             )}
           </div>

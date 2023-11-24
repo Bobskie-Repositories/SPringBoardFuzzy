@@ -8,30 +8,29 @@ import IdeaIcon from "@assets/idea.png";
 import styles from "./BoardCreation.module.css";
 import global from "@assets/global.module.css";
 import axios from "axios";
+import Loading from "../UI/Loading/Loading";
 
-const BoardCreation = ({ selected, setCreateAction }) => {
+const BoardCreation = ({ selected, setCreateAction, boardTemplateIds }) => {
   const [allTemplate, setAllTemplate] = useState();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `http://127.0.0.1:8000/api/template/public`
-        );
-        const templatesWithTeacher = await Promise.all(
-          response.data.map(async (template) => {
-            const teacherResponse = await axios.get(
-              `http://127.0.0.1:8000/api/teacher/${template.teacher_fk}`
-            );
-            const templateWithTeacher = {
-              ...template,
-              teacher: teacherResponse.data,
-            };
-            return templateWithTeacher;
-          })
-        );
-        setAllTemplate(templatesWithTeacher);
+        const response = await axios.get(`http://127.0.0.1:8000/api/template/`);
+        // const templatesWithTeacher = await Promise.all(
+        //   response.data.map(async (template) => {
+        //     const teacherResponse = await axios.get(
+        //       `http://127.0.0.1:8000/api/teacher/${template.teacher_fk}`
+        //     );
+        //     const templateWithTeacher = {
+        //       ...template,
+        //       teacher: teacherResponse.data,
+        //     };
+        //     return templateWithTeacher;
+        //   })
+        // );
+        setAllTemplate(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -49,7 +48,7 @@ const BoardCreation = ({ selected, setCreateAction }) => {
   };
 
   if (!allTemplate) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   return (
@@ -84,8 +83,16 @@ const BoardCreation = ({ selected, setCreateAction }) => {
                   {allTemplate.map((template, index) => (
                     <Card
                       key={index}
-                      className={styles.container_board}
-                      onClick={() => handleClick(template.id)}
+                      className={`${styles.container_board} ${
+                        boardTemplateIds.has(template.id)
+                          ? styles.unavailable
+                          : ""
+                      }`}
+                      onClick={() => {
+                        boardTemplateIds.has(template.id)
+                          ? ""
+                          : handleClick(template.id);
+                      }}
                     >
                       <div className={styles.words}>
                         <h4>{template.title}</h4>
@@ -98,12 +105,12 @@ const BoardCreation = ({ selected, setCreateAction }) => {
                                 .join(" ") + "..."
                             : template.description}
                         </p>
-                        <div className={styles.date}>
+                        {/* <div className={styles.date}>
                           <p>
                             Created By: {template.teacher.firstname}{" "}
                             {template.teacher.lastname}
                           </p>
-                        </div>
+                        </div> */}
                       </div>
                     </Card>
                   ))}

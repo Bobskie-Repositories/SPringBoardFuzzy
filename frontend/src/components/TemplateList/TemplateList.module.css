@@ -40,9 +40,10 @@
 }
 
 .date {
-  gap: 220px;
+  gap: 190px;
   display: flex;
   align-items: flex-end;
+  align-items: center;
 }
 
 .publish {
