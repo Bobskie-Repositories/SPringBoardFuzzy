@@ -55,7 +55,7 @@ class Group(models.Model):
 
 
 class Project(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
     description = models.TextField(default='')
     isActive = models.BooleanField(default=False)
     score = models.FloatField(default=0)
