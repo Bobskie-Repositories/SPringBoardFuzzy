@@ -26,17 +26,6 @@ const SDashboard = ({ choose }) => {
   };
 
   const handleCreateBoardClick = () => {
-    //swal for board limits
-    // if (boardCount >= 5) {
-    //   Swal.fire({
-    //     icon: "error",
-    //     title: "Board Limit Reached",
-    //     text: "You have reached the board creation limit for this project. You cannot create more boards.",
-    //     confirmButtonColor: "#8A252C",
-    //   });
-    // } else {
-    //   setCreateAction(true);
-    // }
     setCreateAction(true);
   };
 
@@ -57,7 +46,7 @@ const SDashboard = ({ choose }) => {
           className={styles.container}
           style={{ gap: "150px", marginTop: "30px" }}
         >
-          <Search />
+          <Search setSelected={setSelected} />
           <Profile identification={1} />
         </div>
 
@@ -78,7 +67,11 @@ const SDashboard = ({ choose }) => {
               />
             )}
 
-            <Button className={styles.butName} onClick={handleCreateBoardClick}>
+            <Button
+              className={styles.butName}
+              onClick={handleCreateBoardClick}
+              disabled={selected === undefined || selected === null}
+            >
               Create Board
             </Button>
           </div>

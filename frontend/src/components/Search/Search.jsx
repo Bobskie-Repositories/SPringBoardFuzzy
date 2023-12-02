@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./Search.module.css";
 import axios from "axios";
 
-const Search = () => {
+const Search = ({ setSelected }) => {
   const [searchText, setSearchText] = useState("");
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
@@ -50,18 +50,14 @@ const Search = () => {
           handleSearch(searchText);
         }}
       />
-      {isLoading ? (
-        <p></p>
-      ) : (
-        isListVisible && (
-          <ul className={styles.itemList}>
-            {filteredProjects.map((project) => (
-              <li key={project.id} className={styles.listItem}>
-                {project.name}
-              </li>
-            ))}
-          </ul>
-        )
+      {!isLoading && isListVisible && (
+        <ul className={styles.itemList}>
+          {filteredProjects.map((project) => (
+            <li key={project.id} className={styles.listItem}>
+              {project.name}
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );

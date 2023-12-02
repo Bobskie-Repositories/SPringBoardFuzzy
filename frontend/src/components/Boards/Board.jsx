@@ -35,6 +35,7 @@ function Board({
   setBoardTemplateIds,
 }) {
   const navigate = useNavigate();
+  const [loadCount, setLoadCount] = useState(0);
   const [projectList, setProjectList] = useState([]);
   const [project, setProject] = useState();
   const [boards, setBoards] = useState([]);
@@ -64,7 +65,7 @@ function Board({
       try {
         const user = await getUser();
         setStaff(user.is_staff);
-
+        setLoadCount((prevLoadCount) => prevLoadCount + 1);
         if (selected !== null && selected !== undefined) {
           const boardsResponse = await axios.get(
             `http://127.0.0.1:8000/api/project/${selected}/projectboards`
@@ -97,6 +98,8 @@ function Board({
             const boardCount = boards.length;
             setBoardCount(boardCount);
           }
+        } else {
+          setProject();
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -273,8 +276,12 @@ function Board({
             )}
           </div>
         </ThemeProvider>
-      ) : (
+      ) : loadCount === 0 ? (
         <Loading />
+      ) : (
+        <p className={styles.centeredText}>
+          There's no project created in this group.
+        </p>
       )}
 
       {isModalOpen && (
@@ -284,7 +291,7 @@ function Board({
       )}
 
       <div className={styles.scrollable}>
-        {boards.length === 0 && (
+        {project && boards.length === 0 && (
           <p className={styles.centeredText}>
             It looks like you haven't created any boards yet. <br /> Click on
             the "Create Board" button to get started and create your first
