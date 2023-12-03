@@ -1,0 +1,41 @@
+/* YourStyles.module.css */
+.navbar {
+  background-color: #ffffff;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-image: url("../../assets/gold.png");
+}
+
+.logo {
+  margin-right: 20px;
+  margin-left: 50px;
+  margin-top: 12px;
+}
+
+.img {
+  max-width: 400px; /* Adjust the max-width of your logo */
+}
+
+/* .navlist {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  margin-left: auto;
+}
+
+.navitem {
+  margin-right: 20px;
+} */
+
+.link {
+  text-decoration: none;
+  color: rgb(0, 0, 0);
+  font-weight: 600;
+  margin-right: 40px;
+}
+
+.link:hover {
+  color: #808080;
+}
