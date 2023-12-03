@@ -2,8 +2,8 @@
   padding: 0 0 20px 0;
   margin-top: 30px;
   max-width: 62rem;
-  min-height: 31rem;
-  max-height: 31rem;
+  min-height: 29rem;
+  max-height: 29rem;
 }
 
 .groupContainer,
@@ -87,8 +87,8 @@
 
 .xScroll {
   max-width: 70rem;
-  min-height: 28.5rem;
-  max-height: 28.5rem;
+  min-height: 26.5rem;
+  max-height: 26.5rem;
   overflow-y: hidden;
   overflow-x: auto;
 }
@@ -117,4 +117,8 @@
 .yScroll::-webkit-scrollbar-thumb:hover,
 .xScroll::-webkit-scrollbar-thumb:hover {
   background-color: #555;
+}
+
+.clickable {
+  cursor: pointer;
 }

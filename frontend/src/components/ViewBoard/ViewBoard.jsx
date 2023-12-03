@@ -14,6 +14,7 @@ const ViewBoard = () => {
   const [activeTab, setActiveTab] = useState("results");
   const [boards, setBoards] = useState(null);
   const [groupId, setGroupId] = useState(null);
+  const [isGrpMem, setIsGrpMem] = useState(true);
   const [staff, setStaff] = useState(false);
   const { getUser } = useAuth();
   const { id } = useParams();
@@ -43,6 +44,9 @@ const ViewBoard = () => {
         setGroupId(projectData.group_fk);
         // console.log(groupId);
         groupIdRef.current = projectData.group_fk;
+        if (!user.is_staff && projectData.group_fk != user.group_fk) {
+          setIsGrpMem(false);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -189,7 +193,7 @@ const ViewBoard = () => {
           </div>
         </div>
 
-        {!staff && (
+        {!staff && isGrpMem && (
           <div className={styles.btmButton}>
             <Button className={styles.button} onClick={() => navigate("edit")}>
               Improve Result

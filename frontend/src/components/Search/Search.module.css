@@ -11,7 +11,7 @@
   color: black;
   outline: none;
   height: 20px;
-  width: 100%;
+  width: 92%;
 }
 
 /* Search.module.css */
@@ -31,6 +31,7 @@
   position: absolute;
   width: 100%;
   background-color: white;
+  z-index: 1;
 }
 
 .listItem {
