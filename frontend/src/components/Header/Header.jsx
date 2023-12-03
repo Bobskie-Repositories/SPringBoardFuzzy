@@ -28,7 +28,7 @@ const Header = () => {
       </div>
 
       <div className={styles.right}>
-        <img src={Notif} alt="Notif" className={styles.notif} />
+        {/* <img src={Notif} alt="Notif" className={styles.notif} /> */}
         <Profile identification={0} />
       </div>
     </div>
