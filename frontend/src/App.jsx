@@ -14,11 +14,13 @@ import Edit_Result from "./pages/Edit_Result";
 import AddTemplate from "./pages/AddTemplate";
 import EditTemplate from "./pages/EditTemplate";
 import InActivePage from "./pages/InActivePage";
+import LandingPage from "./pages/LandingPage";
 import GPTChat from "./components/GPTRequestHandler/GPTChat"; // Import the GPTChat component
 
 function App() {
   return (
     <Routes>
+      <Route path="/landing" element={<LandingPage />} />
       <Route path="/" exact element={<Login choose={0} />} />
       <Route path="/login" element={<Login choose={0} />} />
       <Route path="/login-student" element={<Login choose={1} />} />
