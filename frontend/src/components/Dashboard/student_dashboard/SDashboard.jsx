@@ -6,6 +6,7 @@ import Boards from "../../Boards/Board";
 import Profile from "../../ProfileSegment/Profile";
 import BoardCreation from "../../BoardCreation/BoardCreation";
 import ListInActiveProj from "../../Table/ListInActiveProj";
+import SearchProject from "../../Search/SearchProject";
 import Button from "../../UI/Button/Button";
 import styles from "./SDashboard.module.css";
 import Swal from "sweetalert2";
@@ -75,8 +76,12 @@ const SDashboard = ({ choose }) => {
               Create Board
             </Button>
           </div>
-        ) : (
+        ) : choose == 1 ? (
           <ListInActiveProj />
+        ) : (
+          <div className={styles.container}>
+            <SearchProject />
+          </div>
         )}
       </div>
     </div>

@@ -14,6 +14,7 @@ import Edit_Result from "./pages/Edit_Result";
 import AddTemplate from "./pages/AddTemplate";
 import EditTemplate from "./pages/EditTemplate";
 import InActivePage from "./pages/InActivePage";
+import SearchPage from "./pages/SearchPage";
 import GPTChat from "./components/GPTRequestHandler/GPTChat"; // Import the GPTChat component
 
 function App() {
@@ -173,6 +174,16 @@ function App() {
         element={
           <RequireAuth>
             <InActivePage />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/search-project/:id"
+        index={true}
+        exact
+        element={
+          <RequireAuth>
+            <SearchPage />
           </RequireAuth>
         }
       />
