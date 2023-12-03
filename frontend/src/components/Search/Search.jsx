@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import styles from "./Search.module.css";
 import axios from "axios";
 
@@ -7,6 +8,7 @@ const Search = ({ setSelected }) => {
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch data from the API
@@ -37,6 +39,10 @@ const Search = ({ setSelected }) => {
     }
   };
 
+  const handleOnClick = (id) => {
+    navigate(`/search-project/${id}`);
+  };
+
   const isListVisible = !!searchText;
 
   return (
@@ -53,7 +59,11 @@ const Search = ({ setSelected }) => {
       {!isLoading && isListVisible && (
         <ul className={styles.itemList}>
           {filteredProjects.map((project) => (
-            <li key={project.id} className={styles.listItem}>
+            <li
+              key={project.id}
+              className={styles.listItem}
+              onClick={() => handleOnClick(project.id)}
+            >
               {project.name}
             </li>
           ))}
