@@ -14,7 +14,9 @@
 }
 
 .banner {
-  background-image: url("../../assets/landingpic.png");
+  background-image: url("../../assets/landing.png");
+  object-fit: cover;
+  background-size: cover;
   height: 44rem;
   /* height: 95vh; */
 }
@@ -89,6 +91,16 @@
   height: 50rem;
 }
 
+.banner3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  text-align: center; /* Center align text within the container */
+}
+
 .slogan {
   font-size: 3rem;
   color: #9c7b16;
@@ -97,6 +109,7 @@
     "Lucida Sans", Arial, sans-serif;
   padding-left: 7rem;
   padding-right: 10rem;
+  text-align: left;
 }
 
 .centeredImage {
@@ -108,7 +121,7 @@
 .sfloating_button {
   align-self: flex-start;
   position: relative;
-  left: 25rem;
+  left: -17rem;
   top: -7rem;
 }
 
