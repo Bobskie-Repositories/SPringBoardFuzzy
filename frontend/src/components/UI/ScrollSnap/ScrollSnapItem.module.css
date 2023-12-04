@@ -1,7 +1,7 @@
 .item {
   scroll-snap-align: start;
-  height: 100vh;
+  /* height: 100vh; */
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
 }
