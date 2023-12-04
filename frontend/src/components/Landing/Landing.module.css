@@ -1,0 +1,184 @@
+.intro {
+  padding-left: 5rem;
+}
+
+.h1 {
+  font-weight: 600;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.subsub {
+  color: #b3b3b3;
+  font-weight: 500;
+}
+
+.banner {
+  background-image: url("../../assets/landingpic.png");
+  height: 44rem;
+  /* height: 95vh; */
+}
+
+.main {
+  font-size: 4.5rem;
+  font-weight: bolder;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.sub {
+  font-size: 1.3rem;
+}
+
+.banner2 {
+  height: 25rem;
+  /* justify-content: space-between;
+  background-color: #ffffff; */
+}
+
+.descriptions {
+  margin: 0px 120px 0px 120px;
+  display: flex;
+  gap: 150px;
+  align-items: center; /* Horizontal alignment */
+  justify-content: center; /* Vertical alignment */
+  text-align: center; /* Center the text */
+}
+
+.name {
+  color: #9c7b16;
+}
+
+/* .product img {
+  width: 800px;
+  height: 400px;
+  transition: 0.5s;
+}
+
+.banner2_section {
+  text-align: center;
+  padding-right: 3rem;
+}
+
+.banner2_section h1 {
+  font-size: 3rem;
+} */
+
+/* .banner3 {
+  position: relative;
+  padding: 5rem;
+  background-image: url("../../static/images/register_background.png");
+  object-fit: cover;
+  gap: 20%;
+  background-size: cover;
+  justify-content: flex-end !important;
+}
+
+.banner3::after {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #0000009a;
+  z-index: 1;
+} */
+
+.banner3 {
+  height: 50rem;
+}
+
+.slogan {
+  font-size: 3rem;
+  color: #9c7b16;
+  z-index: 10;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  padding-left: 7rem;
+  padding-right: 10rem;
+}
+
+.centeredImage {
+  text-align: center;
+  /* position: absolute;
+  margin-top: 10rem; */
+}
+
+.sfloating_button {
+  align-self: flex-start;
+  position: relative;
+  left: 25rem;
+  top: -7rem;
+}
+
+.banner4 {
+  justify-content: flex-end;
+}
+
+.bot {
+  display: flex;
+  gap: 20px;
+  padding: 0px 30px 30px 0px;
+}
+
+.back {
+  background-color: #bba53c;
+  border-radius: 60px;
+  padding: 10px 22px;
+}
+
+.footer {
+  width: 100%;
+  height: 3.5rem;
+  background-color: #bba53c;
+}
+
+/*
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.centeredImage img {
+  display: block;
+  margin: 0 auto;
+}
+
+.sfloating_button {
+  align-self: flex-start;
+  position: relative;
+  margin-left: 25rem;
+  top: 28rem;
+} */
+
+.floating_button,
+.sfloating_button {
+  position: relative;
+  display: inline-block;
+  padding: 15px 30px;
+  margin-top: 1.5rem;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #bba53c;
+  cursor: pointer;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  animation: floating 2s ease-in-out infinite;
+}
+
+@keyframes floating {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-10px, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
