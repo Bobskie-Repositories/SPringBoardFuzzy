@@ -8,6 +8,7 @@ import TemplateList from "../../TemplateList/TemplateList";
 import Button from "../../UI/Button/Button";
 import ListActiveProj from "../../Table/ListActiveProj";
 import ListInActiveProj from "../../Table/ListInActiveProj";
+import SearchProject from "../../Search/SearchProject";
 import axios from "axios";
 
 const ADashboard = ({ choose }) => {
@@ -75,8 +76,12 @@ const ADashboard = ({ choose }) => {
             <div style={{ marginTop: "30px" }}>
               <ListActiveProj groups={groups} templates={templates} />
             </div>
-          ) : (
+          ) : choose === 1 ? (
             <ListInActiveProj />
+          ) : (
+            <div className={styles.container}>
+              <SearchProject />
+            </div>
           )}
         </div>
       </div>
