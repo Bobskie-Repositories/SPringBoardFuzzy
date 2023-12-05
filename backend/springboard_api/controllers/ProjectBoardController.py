@@ -28,16 +28,13 @@ class CreateProjectBoard(generics.CreateAPIView):
 
         api_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
 
-        focus_area = request.data.get('focus_area', '')
-        end_user = request.data.get('end_user', '')
-        knowledge_capability = request.data.get('knowledge_capability', '')
-
         prompt = (
-            f"Rate the usefulness of the idea in the input data on a scale of 1-10. "
-            f"Provide recommendations and feedback on how to improve the data. "
-            f"Include references to support your recommendations and feedback. "
-            f"Focus area: {focus_area}. End-user/Beneficiary: {end_user}. Knowledge/Capability: {knowledge_capability}. "
-            f"{request.data.get('content', '')}"
+        f"Parse these data {request.data.get('content', '')} and give a detailed and critical rating (1-10) in terms of "
+        f"novelty, technical feasibility, and capability. Consider giving a rating BELOW 5 for data which has bad composition, "
+        f"lack of effort, and lack of information. Provide at least 2 sentences for recommendations on parts of the data, "
+        f"2 for feedback on parts of the data in regards to how the data is presented and structured. Add 2 reference links for "
+        f"that topic in string. Put labels like 'Novelty: (the response)...'. The output for each should be separated with a '+'. "
+        f"Please ensure to critically assess each aspect and provide a fair and balanced rating."
         )
 
         request_payload = {
@@ -84,9 +81,9 @@ class CreateProjectBoard(generics.CreateAPIView):
                         'feedback': feedback,
                         'references': reference_links,
                         'project_fk': Project.objects.get(id=project_fk),
-                        'focus_area': focus_area,
-                        'end_user': end_user,
-                        'knowledge_capability': knowledge_capability,
+                        # 'focus_area': focus_area,
+                        # 'end_user': end_user,
+                        # 'knowledge_capability': knowledge_capability,
                         'boardId': new_board_id,
                     }
 
