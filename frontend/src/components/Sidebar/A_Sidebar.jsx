@@ -3,6 +3,7 @@ import styles from "./Sidebar.module.css";
 import global from "../../assets/global.module.css";
 import Logo from "@assets/Logo.png";
 import A_SidebarSegment from "../SidebarSegment/A_SidebarSegment";
+import CustomSidebarSegement from "../SidebarSegment/CustomSidebarSegement";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleInfo,
@@ -12,7 +13,7 @@ import {
 import { useNavigate } from "react-router";
 import { useAuth } from "../../context/AuthContext";
 
-const A_Sidebar = () => {
+const A_Sidebar = ({ setSelected, choose, setSelectedProj }) => {
   const navigate = useNavigate();
   const { getUser, logout } = useAuth();
 
@@ -31,7 +32,9 @@ const A_Sidebar = () => {
     <div className={styles.sidebar}>
       <img src={Logo} alt="Logo" className={styles.img} onClick={goHome} />
 
-      <A_SidebarSegment />
+      <A_SidebarSegment setSelected={setSelected} />
+
+      {choose === 3 && <CustomSidebarSegement setSelected={setSelectedProj} />}
 
       <ol className={styles.list}>
         <li className={`${global.center} ${styles.customLi}`}>
