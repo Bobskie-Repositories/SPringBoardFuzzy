@@ -38,6 +38,15 @@ function App() {
             </RequireAuth>
           }
         />
+        <Route
+          path="project/:projectid"
+          index={true}
+          element={
+            <RequireAuth>
+              <S_Dashboard choose={0} />
+            </RequireAuth>
+          }
+        />
       </Route>
       <Route path="/project/:id/create-board">
         <Route
@@ -145,6 +154,16 @@ function App() {
           element={
             <RequireAuth>
               <A_Dashboard choose={1} />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="active/group/:groupid"
+          index={true}
+          exact
+          element={
+            <RequireAuth>
+              <A_Dashboard choose={3} />
             </RequireAuth>
           }
         />
