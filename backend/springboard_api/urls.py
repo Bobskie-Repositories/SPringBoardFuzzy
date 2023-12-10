@@ -1,11 +1,11 @@
 from django.urls import path
-from .controllers.ClassroomController import GetClassroomGroupsAndProjects, GetClassroom, GetClassroomById, GetGroupByClassId, GetTopProjectsByClassroom
+from .controllers.ClassroomController import GetClassroomGroupsAndProjects, GetClassroom, GetClassroomById,  GetTopProjectsByClassroom
 from .controllers.ProjectController import ProjectCreateView, ProjectView, GetProjectsByGroupId, GetActiveProjectsView, GetProjectById, GetPublicProjectsByGroupId, InactiveProjectsView, ProjectCreateView, ProjectUpdateView, UpdateProjectStatusView, UpdateProjectScoreView, DeleteProjectView
 from .controllers.ProjectBoardController import GetProjectBoards, CreateProjectBoard, GetProjectBoardById, GetVersionProjectBoards, UpdateBoard, DeleteProjectBoard
 from .controllers.TemplateController import GetTemplate, GetAllTemplate, GetTemplateByTeacherId, GetAllPublicTemplates, CreateTemplate, UpdateTemplate, DeleteTemplate
 from .controllers.StudentController import RegisterStudent, LoginStudent, LogoutStudent, StudentView
 from .controllers.TeacherController import RegisterTeacher, LoginTeacher, LogoutTeacher, TeacherView, GetTeacherById
-from .controllers.GroupController import GetGroupById, GetGroupsAndProjects
+from .controllers.GroupController import GetGroupById, GetGroupsAndProjects, GetGroupByClassId
 from .controllers.AdminController import RegisterAdmin, LoginAdmin, AdminView, LogoutAdmin
 
 urlpatterns = [

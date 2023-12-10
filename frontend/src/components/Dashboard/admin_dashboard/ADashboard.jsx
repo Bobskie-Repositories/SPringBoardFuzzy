@@ -8,11 +8,14 @@ import TemplateList from "../../TemplateList/TemplateList";
 import Button from "../../UI/Button/Button";
 import ListActiveProj from "../../Table/ListActiveProj";
 import ListInActiveProj from "../../Table/ListInActiveProj";
+import ViewProject from "../../ViewProject/ViewProject";
 import SearchProject from "../../Search/SearchProject";
 import axios from "axios";
 
 const ADashboard = ({ choose }) => {
   const navigate = useNavigate();
+  const [selected, setSelected] = useState();
+  const [selectedProj, setSelectedProj] = useState();
   const [groups, setGroups] = useState(null);
   const [templates, setTemplates] = useState([]);
 
@@ -45,7 +48,11 @@ const ADashboard = ({ choose }) => {
       className={styles.container}
       style={{ padding: "20px 150px 0px 30px" }}
     >
-      <A_Sidebar />
+      <A_Sidebar
+        setSelected={setSelected}
+        choose={choose}
+        setSelectedProj={setSelectedProj}
+      />
 
       <div>
         <div
@@ -76,8 +83,10 @@ const ADashboard = ({ choose }) => {
             <div style={{ marginTop: "30px" }}>
               <ListActiveProj groups={groups} templates={templates} />
             </div>
-          ) : choose === 1 ? (
+          ) : choose === 2 ? (
             <ListInActiveProj />
+          ) : choose === 3 ? (
+            <ViewProject selected={selectedProj} />
           ) : (
             <div className={styles.container}>
               <SearchProject />

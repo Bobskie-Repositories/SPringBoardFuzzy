@@ -92,7 +92,7 @@ const S_SidebarSegment = ({
     setSelected(projectId);
     setClickedProjectId(projectId);
     setCreateAction(false);
-    navigate(`/group/${userGroupId}`, {
+    navigate(`/group/${userGroupId}/project/${projectId}`, {
       state: { selectedProjectId: projectId, open: true },
     });
   };
