@@ -74,7 +74,6 @@
   height: 70rem;
 }
 .menuBar {
-  padding-bottom: 5px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -102,8 +101,8 @@
 }
 .menuBar button {
   font-size: 18px;
-  margin: 10px;
-  padding: 3px;
+  margin: 7px;
+  padding: 2px;
   outline: none;
   border: none;
   background: none;
@@ -169,4 +168,25 @@ button.active {
   max-height: 50rem;
   overflow-y: auto;
   outline: none;
+}
+
+/* Tiptap.module.css */
+
+.inputColor {
+  size: 0.5rem;
+}
+
+.divSeparator {
+  /* display: flex;
+  align-items: center;
+  justify-items: center; */
+  display: inline-flex;
+  align-items: center;
+  justify-items: center;
+}
+
+.divSeparator:after {
+  content: "|";
+  flex: 1;
+  color: #ccc;
 }

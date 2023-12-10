@@ -88,326 +88,336 @@ const MenuBar = ({ editor }) => {
 
   return (
     <div className={styles.menuBar}>
-      <div className={styles.divSeparator}>
-        <button
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          disabled={!editor.can().chain().focus().toggleBold().run()}
-          className={
-            editor.isActive("bold") ? `${styles.active} butHover` : "butHover"
-          }
-        >
-          <BiBold title="Bold" />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          disabled={!editor.can().chain().focus().toggleItalic().run()}
-          className={
-            editor.isActive("italic") ? `${styles.active} butHover` : "butHover"
-          }
-        >
-          <BiItalic title="Italic" />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleUnderline().run()}
-          className={
-            editor.isActive("underline")
-              ? `${styles.active} butHover`
-              : "butHover"
-          }
-        >
-          <FiUnderline title="Underline" />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-          disabled={!editor.can().chain().focus().toggleStrike().run()}
-          className={
-            editor.isActive("strike") ? `${styles.active} butHover` : "butHover"
-          }
-        >
-          <AiOutlineStrikethrough title="Strikethrough" />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleSubscript().run()}
-          className={
-            editor.isActive("subscript")
-              ? `${styles.active} butHover`
-              : "butHover"
-          }
-        >
-          <MdSubscript title="Subscript" />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleSuperscript().run()}
-          className={
-            editor.isActive("superscript")
-              ? `${styles.active} butHover`
-              : "butHover"
-          }
-        >
-          <MdSuperscript title="Superscript" />
-        </button>
+      <div>
+        <div className={styles.divSeparator}>
+          <button
+            onClick={() => editor.chain().focus().toggleBold().run()}
+            disabled={!editor.can().chain().focus().toggleBold().run()}
+            className={
+              editor.isActive("bold") ? `${styles.active} butHover` : "butHover"
+            }
+          >
+            <BiBold title="Bold" />
+          </button>
+          <button
+            onClick={() => editor.chain().focus().toggleItalic().run()}
+            disabled={!editor.can().chain().focus().toggleItalic().run()}
+            className={
+              editor.isActive("italic")
+                ? `${styles.active} butHover`
+                : "butHover"
+            }
+          >
+            <BiItalic title="Italic" />
+          </button>
+          <button
+            onClick={() => editor.chain().focus().toggleUnderline().run()}
+            className={
+              editor.isActive("underline")
+                ? `${styles.active} butHover`
+                : "butHover"
+            }
+          >
+            <FiUnderline title="Underline" />
+          </button>
+          <button
+            onClick={() => editor.chain().focus().toggleStrike().run()}
+            disabled={!editor.can().chain().focus().toggleStrike().run()}
+            className={
+              editor.isActive("strike")
+                ? `${styles.active} butHover`
+                : "butHover"
+            }
+          >
+            <AiOutlineStrikethrough title="Strikethrough" />
+          </button>
+          <button
+            onClick={() => editor.chain().focus().toggleSubscript().run()}
+            className={
+              editor.isActive("subscript")
+                ? `${styles.active} butHover`
+                : "butHover"
+            }
+          >
+            <MdSubscript title="Subscript" />
+          </button>
+          <button
+            onClick={() => editor.chain().focus().toggleSuperscript().run()}
+            className={
+              editor.isActive("superscript")
+                ? `${styles.active} butHover`
+                : "butHover"
+            }
+          >
+            <MdSuperscript title="Superscript" />
+          </button>
 
-        <input
-          type="color"
-          onInput={(event) =>
-            editor.chain().focus().setColor(event.target.value).run()
-          }
-          value={editor.getAttributes("textStyle").color}
-          data-testid="setColor"
-        ></input>
+          <input
+            className={styles.inputColor}
+            type="color"
+            onInput={(event) =>
+              editor.chain().focus().setColor(event.target.value).run()
+            }
+            value={editor.getAttributes("textStyle").color}
+            data-testid="setColor"
+          ></input>
 
-        <button
-          onClick={() => editor.chain().focus().toggleHighlight().run()}
-          className={
-            editor.isActive("highlight")
-              ? `${styles.active} butHover`
-              : "butHover"
-          }
-        >
-          <BiHighlight title="Highlight" />
-        </button>
-      </div>
-      {/* <div className={styles.dropdown}>
-        <button class="butHover">
+          <button
+            onClick={() => editor.chain().focus().toggleHighlight().run()}
+            className={
+              editor.isActive("highlight")
+                ? `${styles.active} butHover`
+                : "butHover"
+            }
+          >
+            <BiHighlight title="Highlight" />
+          </button>
+        </div>
+        {/* <div className={styles.divSeparator}>
+        <button class="butHover" onClick={toggleHeadings}>
           <div className={styles.heading}>
             <RiHeading /> <RiArrowDropDownFill />
           </div>
         </button>
       </div> */}
-      <div className={`${styles.divSeparator} ${styles.headings}`}>
-        <button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 1 }).run()
-          }
-          className={
-            editor.isActive("heading", { level: 1 })
-              ? `${styles.active} butHover`
-              : "butHover"
-          }
-        >
-          <RiH1 title="Heading 1" />
-        </button>
-        <button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 2 }).run()
-          }
-          className={
-            editor.isActive("heading", { level: 2 })
-              ? `${styles.active} butHover`
-              : "butHover"
-          }
-        >
-          <RiH2 title="Heading 2" />
-        </button>
-        <button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 3 }).run()
-          }
-          className={
-            editor.isActive("heading", { level: 3 })
-              ? `${styles.active} butHover`
-              : "butHover"
-          }
-        >
-          <RiH3 title="Heading 3" />
-        </button>
-      </div>
-      <div className={styles.divSeparator}>
-        <button
-          onClick={() => editor.chain().focus().setTextAlign("left").run()}
-          className={
-            editor.isActive({ textAlign: "left" })
-              ? `${styles.active} butHover`
-              : "butHover"
-          }
-        >
-          <BiAlignLeft title="Align Left" />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().setTextAlign("center").run()}
-          className={
-            editor.isActive({ textAlign: "center" })
-              ? `${styles.active} butHover`
-              : "butHover"
-          }
-        >
-          <BiAlignMiddle title="Center" />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().setTextAlign("right").run()}
-          className={
-            editor.isActive({ textAlign: "right" })
-              ? `${styles.active} butHover`
-              : "butHover"
-          }
-        >
-          <BiAlignRight title="Align Right" />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().setTextAlign("justify").run()}
-          className={
-            editor.isActive({ textAlign: "justify" })
-              ? `${styles.active} butHover`
-              : "butHover"
-          }
-        >
-          <BiAlignJustify title="Justify" />
-        </button>
-      </div>
-      <div className={styles.divSeparator}>
-        <button
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={
-            editor.isActive("bulletList")
-              ? `${styles.active} butHover`
-              : "butHover"
-          }
-        >
-          <AiOutlineUnorderedList title="Bullets" />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          className={
-            editor.isActive("orderedList")
-              ? `${styles.active} butHover`
-              : "butHover"
-          }
-        >
-          <AiOutlineOrderedList title="Numbering" />
-        </button>
-      </div>
-      {/* <button
+
+        <div className={`${styles.divSeparator} ${styles.headings}`}>
+          <button
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 1 }).run()
+            }
+            className={
+              editor.isActive("heading", { level: 1 })
+                ? `${styles.active} butHover`
+                : "butHover"
+            }
+          >
+            <RiH1 title="Heading 1" />
+          </button>
+          <button
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 2 }).run()
+            }
+            className={
+              editor.isActive("heading", { level: 2 })
+                ? `${styles.active} butHover`
+                : "butHover"
+            }
+          >
+            <RiH2 title="Heading 2" />
+          </button>
+          <button
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 3 }).run()
+            }
+            className={
+              editor.isActive("heading", { level: 3 })
+                ? `${styles.active} butHover`
+                : "butHover"
+            }
+          >
+            <RiH3 title="Heading 3" />
+          </button>
+        </div>
+        <div className={styles.divSeparator}>
+          <button
+            onClick={() => editor.chain().focus().setTextAlign("left").run()}
+            className={
+              editor.isActive({ textAlign: "left" })
+                ? `${styles.active} butHover`
+                : "butHover"
+            }
+          >
+            <BiAlignLeft title="Align Left" />
+          </button>
+          <button
+            onClick={() => editor.chain().focus().setTextAlign("center").run()}
+            className={
+              editor.isActive({ textAlign: "center" })
+                ? `${styles.active} butHover`
+                : "butHover"
+            }
+          >
+            <BiAlignMiddle title="Center" />
+          </button>
+          <button
+            onClick={() => editor.chain().focus().setTextAlign("right").run()}
+            className={
+              editor.isActive({ textAlign: "right" })
+                ? `${styles.active} butHover`
+                : "butHover"
+            }
+          >
+            <BiAlignRight title="Align Right" />
+          </button>
+          <button
+            onClick={() => editor.chain().focus().setTextAlign("justify").run()}
+            className={
+              editor.isActive({ textAlign: "justify" })
+                ? `${styles.active} butHover`
+                : "butHover"
+            }
+          >
+            <BiAlignJustify title="Justify" />
+          </button>
+        </div>
+        <div className={styles.divSeparator}>
+          <button
+            onClick={() => editor.chain().focus().toggleBulletList().run()}
+            className={
+              editor.isActive("bulletList")
+                ? `${styles.active} butHover`
+                : "butHover"
+            }
+          >
+            <AiOutlineUnorderedList title="Bullets" />
+          </button>
+          <button
+            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            className={
+              editor.isActive("orderedList")
+                ? `${styles.active} butHover`
+                : "butHover"
+            }
+          >
+            <AiOutlineOrderedList title="Numbering" />
+          </button>
+        </div>
+        {/* <button
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
           className={editor.isActive("blockquote") ? `${styles.active} butHover` : "butHover"}
         >
           <MdFormatQuote />
         </button> */}
-      <div className={styles.divSeparator}>
-        <button
-          onClick={() => editor.chain().focus().setHorizontalRule().run()}
-        >
-          <MdHorizontalRule title="Horizontal Rule" />
-        </button>
-
-        <button onClick={addImage} className="butHover">
-          <LuImagePlus title="Insert Image" />
-        </button>
-
-        <button
-          onClick={() => {
-            editor
-              .chain()
-              .focus()
-              .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
-              .run();
-          }}
-          className="butHover"
-        >
-          <BiTable title="Add a Table" />
-        </button>
-
-        {editor && (
-          <FloatingMenu
-            editor={editor}
-            tippyOptions={{ duration: 100, placement: "bottom-end" }}
-            shouldShow={({ editor, view, state, oldState }) => {
-              // Check if the current selection contains a table
-              if (state && state.doc && state.selection) {
-                const { from, to } = state.selection;
-                let hasTable = false;
-
-                state.doc.nodesBetween(from, to, (node) => {
-                  if (node.type.name === "table") {
-                    hasTable = true;
-                  }
-                });
-
-                return hasTable;
-              }
-
-              return false;
-            }}
+        <div className={styles.divSeparator}>
+          <button
+            onClick={() => editor.chain().focus().setHorizontalRule().run()}
           >
-            <div className={styles.floating}>
-              <button
-                onClick={() => editor.chain().focus().addColumnBefore().run()}
-                className="butHover"
-              >
-                <RiInsertColumnLeft title="Insert Left" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().addColumnAfter().run()}
-                className="butHover"
-              >
-                <RiInsertColumnRight title="Insert Right" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().deleteColumn().run()}
-                className="butHover"
-              >
-                <RiDeleteColumn title="Delete Column" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().addRowBefore().run()}
-                className="butHover"
-              >
-                <RiInsertRowTop title="Insert Above" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().addRowAfter().run()}
-                className="butHover"
-              >
-                <RiInsertRowBottom title="Insert Below" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().deleteRow().run()}
-                className="butHover"
-              >
-                <RiDeleteRow title="Delete Column" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().deleteTable().run()}
-                className="butHover"
-              >
-                <RiDeleteBinLine title="Delete Row" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().mergeCells().run()}
-                className="butHover"
-              >
-                <RiMergeCellsHorizontal title="Merge Cells" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().splitCell().run()}
-                className="butHover"
-              >
-                <RiSplitCellsHorizontal title="Split Cells" />
-              </button>
-              <button
-                onClick={() =>
-                  editor.chain().focus().toggleHeaderColumn().run()
+            <MdHorizontalRule title="Horizontal Rule" />
+          </button>
+
+          <button onClick={addImage} className="butHover">
+            <LuImagePlus title="Insert Image" />
+          </button>
+
+          <button
+            onClick={() => {
+              editor
+                .chain()
+                .focus()
+                .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+                .run();
+            }}
+            className="butHover"
+          >
+            <BiTable title="Add a Table" />
+          </button>
+
+          {editor && (
+            <FloatingMenu
+              editor={editor}
+              tippyOptions={{ duration: 100, placement: "bottom-end" }}
+              shouldShow={({ editor, view, state, oldState }) => {
+                // Check if the current selection contains a table
+                if (state && state.doc && state.selection) {
+                  const { from, to } = state.selection;
+                  let hasTable = false;
+
+                  state.doc.nodesBetween(from, to, (node) => {
+                    if (node.type.name === "table") {
+                      hasTable = true;
+                    }
+                  });
+
+                  return hasTable;
                 }
-                className="butHover"
-              >
-                <RiLayoutColumnFill title="Fill Column" />
-              </button>
-              <button
-                className="butHover"
-                onClick={() => editor.chain().focus().toggleHeaderRow().run()}
-              >
-                <RiLayoutRowFill title="Fill Row" />
-              </button>
-              <button
-                className="butHover"
-                onClick={() => editor.chain().focus().toggleHeaderCell().run()}
-              >
-                <RiPaintFill title="Fill Cell" />
-              </button>
-            </div>
-          </FloatingMenu>
-        )}
+
+                return false;
+              }}
+            >
+              <div className={styles.floating}>
+                <button
+                  onClick={() => editor.chain().focus().addColumnBefore().run()}
+                  className="butHover"
+                >
+                  <RiInsertColumnLeft title="Insert Left" />
+                </button>
+                <button
+                  onClick={() => editor.chain().focus().addColumnAfter().run()}
+                  className="butHover"
+                >
+                  <RiInsertColumnRight title="Insert Right" />
+                </button>
+                <button
+                  onClick={() => editor.chain().focus().deleteColumn().run()}
+                  className="butHover"
+                >
+                  <RiDeleteColumn title="Delete Column" />
+                </button>
+                <button
+                  onClick={() => editor.chain().focus().addRowBefore().run()}
+                  className="butHover"
+                >
+                  <RiInsertRowTop title="Insert Above" />
+                </button>
+                <button
+                  onClick={() => editor.chain().focus().addRowAfter().run()}
+                  className="butHover"
+                >
+                  <RiInsertRowBottom title="Insert Below" />
+                </button>
+                <button
+                  onClick={() => editor.chain().focus().deleteRow().run()}
+                  className="butHover"
+                >
+                  <RiDeleteRow title="Delete Column" />
+                </button>
+                <button
+                  onClick={() => editor.chain().focus().deleteTable().run()}
+                  className="butHover"
+                >
+                  <RiDeleteBinLine title="Delete Row" />
+                </button>
+                <button
+                  onClick={() => editor.chain().focus().mergeCells().run()}
+                  className="butHover"
+                >
+                  <RiMergeCellsHorizontal title="Merge Cells" />
+                </button>
+                <button
+                  onClick={() => editor.chain().focus().splitCell().run()}
+                  className="butHover"
+                >
+                  <RiSplitCellsHorizontal title="Split Cells" />
+                </button>
+                <button
+                  onClick={() =>
+                    editor.chain().focus().toggleHeaderColumn().run()
+                  }
+                  className="butHover"
+                >
+                  <RiLayoutColumnFill title="Fill Column" />
+                </button>
+                <button
+                  className="butHover"
+                  onClick={() => editor.chain().focus().toggleHeaderRow().run()}
+                >
+                  <RiLayoutRowFill title="Fill Row" />
+                </button>
+                <button
+                  className="butHover"
+                  onClick={() =>
+                    editor.chain().focus().toggleHeaderCell().run()
+                  }
+                >
+                  <RiPaintFill title="Fill Cell" />
+                </button>
+              </div>
+            </FloatingMenu>
+          )}
+        </div>
       </div>
-      <div className={styles.divSeparator}>
+      <div>
         <button
           onClick={() => editor.chain().focus().undo().run()}
           disabled={!editor.can().undo()}
