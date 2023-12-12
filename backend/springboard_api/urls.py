@@ -26,10 +26,11 @@ urlpatterns = [
 
     path('api/teacher/<int:id>', GetTeacherById.as_view()),
 
-    path('', ProjectView.as_view()),
+
     path('api/group/<int:group_id>/projects', GetProjectsByGroupId.as_view()),
     path('api/group/<int:group_id>/public-projects',
          GetPublicProjectsByGroupId.as_view()),
+    path('api/project', ProjectView.as_view()),
     path('api/project/<int:project_id>', GetProjectById.as_view()),
     path('api/project/public', GetActiveProjectsView.as_view()),
     path('api/project/create', ProjectCreateView.as_view()),

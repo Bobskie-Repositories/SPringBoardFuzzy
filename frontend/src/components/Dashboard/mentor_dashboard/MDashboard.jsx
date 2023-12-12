@@ -43,7 +43,7 @@ const MDashboard = ({ choose }) => {
           className={styles.container}
           style={{ gap: "150px", marginTop: "30px" }}
         >
-          <Search />
+          <Search alternateAPI={1} />
           <Profile identification={1} />
         </div>
         <div>

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import styles from "./Search.module.css";
 import axios from "axios";
 
-const Search = ({ setSelected }) => {
+const Search = ({ setSelected, alternateAPI }) => {
   const [searchText, setSearchText] = useState("");
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
@@ -11,9 +11,13 @@ const Search = ({ setSelected }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const apiUrl =
+      alternateAPI === 1
+        ? "http://127.0.0.1:8000/api/project"
+        : "http://127.0.0.1:8000/api/project/public";
     // Fetch data from the API
     axios
-      .get("http://127.0.0.1:8000/api/project/public")
+      .get(apiUrl)
       .then((response) => {
         setProjects(response.data);
         setFilteredProjects(response.data);
