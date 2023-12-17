@@ -486,7 +486,7 @@ export const Tiptap = ({ setDescription }) => {
 
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
-      console.log(html);
+      // console.log(html);
       setDescription(html);
     },
   });

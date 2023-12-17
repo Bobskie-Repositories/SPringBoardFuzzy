@@ -27,7 +27,7 @@ function App() {
       <Route path="/login-student" element={<Login choose={1} />} />
       <Route path="/login-teacher" element={<Login choose={2} />} />
       <Route path="/login-admin" element={<Login choose={3} />} />
-      <Route path="/chat-gpt" element={<GPTChat />} />{" "}
+      {/* <Route path="/chat-gpt" element={<GPTChat />} />{" "} */}
       {/* Add this route for GPT Chat */}
       <Route path="/group/:groupid">
         <Route
