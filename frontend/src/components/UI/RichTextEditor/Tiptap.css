@@ -1,8 +1,8 @@
 .myeditor {
   border: 1px solid #ccc;
   padding: 5px;
-  min-height: 50rem;
-  max-height: 50rem;
+  min-height: 68rem;
+  max-height: 68rem;
   overflow-y: auto;
   outline: none;
 }
