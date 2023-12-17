@@ -51,11 +51,13 @@ const S_SidebarSegment = ({
         )
         .then((response) => {
           setProjects(response.data);
-          if (!selected) {
-            setSelected(response.data[0].id);
-            setClickedProjectId(response.data[0].id);
-          } else {
-            setClickedProjectId(selected);
+          if (response.data.length > 0) {
+            if (!selected) {
+              setSelected(response.data[0].id);
+              setClickedProjectId(response.data[0].id);
+            } else {
+              setClickedProjectId(selected);
+            }
           }
         })
         .catch((error) => {
@@ -68,6 +70,7 @@ const S_SidebarSegment = ({
 
   useEffect(() => {
     const fetchData = async () => {
+      const user = await getUser();
       axios
         .get(
           `http://127.0.0.1:8000/api/group/${
@@ -89,7 +92,7 @@ const S_SidebarSegment = ({
     setSelected(projectId);
     setClickedProjectId(projectId);
     setCreateAction(false);
-    navigate(`/group/${userGroupId}`, {
+    navigate(`/group/${userGroupId}/project/${projectId}`, {
       state: { selectedProjectId: projectId, open: true },
     });
   };
@@ -185,10 +188,11 @@ const S_SidebarSegment = ({
       const newProjectData = newProjectResponse.data;
 
       setProjects([...projects, newProjectData]);
-
+      return newProjectId;
       // console.log("ProjectB created successfully:", response.data.id);
     } catch (error) {
-      console.error("Error creating Project:", error);
+      //console.error("Error creating Project:", error);
+      throw error;
     }
   };
 
@@ -201,8 +205,16 @@ const S_SidebarSegment = ({
         (project) => project.id !== clickedProjectId
       );
       setProjects(updatedProjects);
-      setSelected(projects[0].id);
-      setClickedProjectId(projects[0].id);
+      if (updatedProjects.length > 0) {
+        // Set selected to the first project in the updated array
+        handleButtonClick(updatedProjects[0].id);
+        // setSelected(updatedProjects[0].id);
+        // setClickedProjectId(updatedProjects[0].id);
+      } else {
+        handleButtonClick(null);
+        // setSelected(null);
+        // setClickedProjectId(null);
+      }
       // if (response.status === 204) {
       //   console.log("Project deleted successfully");
       // } else {
@@ -239,27 +251,43 @@ const S_SidebarSegment = ({
         confirmButtonColor: "#9c7b16",
         cancelButtonText: "Cancel",
         cancelButtonColor: "rgb(181, 178, 178)",
-        preConfirm: () => {
+        preConfirm: async () => {
           // Retrieve values from input fields
           const input1Value = document.getElementById("input1").value;
           const input2Value = document.getElementById("input2").value;
+          try {
+            // Validate and process the values as needed
+            if (!input1Value) {
+              throw new Error("Project name cannot be empty");
+            } else if (!input2Value) {
+              throw new Error("Please enter the project description.");
+            }
+            // else if (
+            //   projects.some((project) => project.name === input1Value)
+            // ) {
+            //   throw new Error(
+            //     `Project with the name '${input1Value}' already exists. Please enter another project name.`
+            //   );
+            // }
 
-          // Validate and process the values as needed
-          if (!input1Value) {
-            Swal.showValidationMessage("Project name cannot be empty");
-          } else if (!input2Value) {
-            Swal.showValidationMessage("Second input cannot be empty");
-          } else if (projects.some((project) => project.name === input1Value)) {
+            // Call addProject if the input values are valid
+            const newProjId = await addProject(input1Value, input2Value);
+            setSelected(newProjId);
+            setClickedProjectId(newProjId);
+            return true; // Resolve the promise to close the modal
+          } catch (error) {
+            // Display Swal validation message for errors
             Swal.showValidationMessage(
               `Project with the name '${input1Value}' already exists. Please enter another project name.`
             );
+            return false; // Reject the promise to keep the modal open
           }
         },
       }).then((result) => {
         if (result.isConfirmed) {
-          const newProjectName = document.getElementById("input1").value;
-          const desc = document.getElementById("input2").value;
-          addProject(newProjectName, desc);
+          // const newProjectName = document.getElementById("input1").value;
+          // const desc = document.getElementById("input2").value;
+          // addProject(newProjectName, desc);
           Swal.fire({
             title: "Project Created",
             icon: "success",
@@ -384,7 +412,7 @@ const S_SidebarSegment = ({
                           size="xs"
                         />
                       )}
-                      {project.name}
+                      <span className={styles.proj}>{project.name}</span>
                     </div>
                   )}
                   {!staff && clickedProjectId === project.id && (

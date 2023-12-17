@@ -14,11 +14,14 @@ import Edit_Result from "./pages/Edit_Result";
 import AddTemplate from "./pages/AddTemplate";
 import EditTemplate from "./pages/EditTemplate";
 import InActivePage from "./pages/InActivePage";
+import LandingPage from "./pages/LandingPage";
+import SearchPage from "./pages/SearchPage";
 import GPTChat from "./components/GPTRequestHandler/GPTChat"; // Import the GPTChat component
 
 function App() {
   return (
     <Routes>
+      <Route path="/landing" element={<LandingPage />} />
       <Route path="/" exact element={<Login choose={0} />} />
       <Route path="/login" element={<Login choose={0} />} />
       <Route path="/login-student" element={<Login choose={1} />} />
@@ -28,6 +31,15 @@ function App() {
       {/* Add this route for GPT Chat */}
       <Route path="/group/:groupid">
         <Route
+          index={true}
+          element={
+            <RequireAuth>
+              <S_Dashboard choose={0} />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="project/:projectid"
           index={true}
           element={
             <RequireAuth>
@@ -146,6 +158,16 @@ function App() {
           }
         />
         <Route
+          path="active/group/:groupid"
+          index={true}
+          exact
+          element={
+            <RequireAuth>
+              <A_Dashboard choose={3} />
+            </RequireAuth>
+          }
+        />
+        <Route
           path="add-template"
           index={true}
           exact
@@ -173,6 +195,16 @@ function App() {
         element={
           <RequireAuth>
             <InActivePage />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/search-project/:id"
+        index={true}
+        exact
+        element={
+          <RequireAuth>
+            <SearchPage />
           </RequireAuth>
         }
       />

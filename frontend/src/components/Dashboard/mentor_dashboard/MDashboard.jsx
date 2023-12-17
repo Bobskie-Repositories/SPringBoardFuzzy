@@ -10,6 +10,7 @@ import ViewClassroom from "../../Classroom/ViewClassroom";
 import ViewProject from "../../ViewProject/ViewProject";
 import TemplateList from "../../TemplateList/TemplateList";
 import ListInActiveProj from "../../Table/ListInActiveProj";
+import SearchProject from "../../Search/SearchProject";
 import styles from "./MDashboard.module.css";
 
 const MDashboard = ({ choose }) => {
@@ -42,7 +43,7 @@ const MDashboard = ({ choose }) => {
           className={styles.container}
           style={{ gap: "150px", marginTop: "30px" }}
         >
-          <Search />
+          <Search alternateAPI={1} />
           <Profile identification={1} />
         </div>
         <div>
@@ -59,8 +60,12 @@ const MDashboard = ({ choose }) => {
             <ViewClassroom selected={selected} />
           ) : choose === 2 ? (
             <ViewProject selected={selectedProj} />
-          ) : (
+          ) : choose === 3 ? (
             <ListInActiveProj />
+          ) : (
+            <div className={styles.container}>
+              <SearchProject />
+            </div>
           )}
         </div>
       </div>

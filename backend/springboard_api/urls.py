@@ -1,11 +1,11 @@
 from django.urls import path
-from .controllers.ClassroomController import GetClassroomGroupsAndProjects, GetClassroom, GetClassroomById, GetGroupByClassId, GetTopProjectsByClassroom
+from .controllers.ClassroomController import GetClassroomGroupsAndProjects, GetClassroom, GetClassroomById,  GetTopProjectsByClassroom
 from .controllers.ProjectController import ProjectCreateView, ProjectView, GetProjectsByGroupId, GetActiveProjectsView, GetProjectById, GetPublicProjectsByGroupId, InactiveProjectsView, ProjectCreateView, ProjectUpdateView, UpdateProjectStatusView, UpdateProjectScoreView, DeleteProjectView
 from .controllers.ProjectBoardController import GetProjectBoards, CreateProjectBoard, GetProjectBoardById, GetVersionProjectBoards, UpdateBoard, DeleteProjectBoard
 from .controllers.TemplateController import GetTemplate, GetAllTemplate, GetTemplateByTeacherId, GetAllPublicTemplates, CreateTemplate, UpdateTemplate, DeleteTemplate
 from .controllers.StudentController import RegisterStudent, LoginStudent, LogoutStudent, StudentView
 from .controllers.TeacherController import RegisterTeacher, LoginTeacher, LogoutTeacher, TeacherView, GetTeacherById
-from .controllers.GroupController import GetGroupById, GetGroupsAndProjects
+from .controllers.GroupController import GetGroupById, GetGroupsAndProjects, GetGroupByClassId
 from .controllers.AdminController import RegisterAdmin, LoginAdmin, AdminView, LogoutAdmin
 
 urlpatterns = [
@@ -26,10 +26,11 @@ urlpatterns = [
 
     path('api/teacher/<int:id>', GetTeacherById.as_view()),
 
-    path('', ProjectView.as_view()),
+
     path('api/group/<int:group_id>/projects', GetProjectsByGroupId.as_view()),
     path('api/group/<int:group_id>/public-projects',
          GetPublicProjectsByGroupId.as_view()),
+    path('api/project', ProjectView.as_view()),
     path('api/project/<int:project_id>', GetProjectById.as_view()),
     path('api/project/public', GetActiveProjectsView.as_view()),
     path('api/project/create', ProjectCreateView.as_view()),

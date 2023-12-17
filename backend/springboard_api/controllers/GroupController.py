@@ -86,3 +86,20 @@ class GetGroupsAndProjects(APIView):
 
         except Group.DoesNotExist:
             return Response({"error": "Group not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+class GetGroupByClassId(generics.ListAPIView):
+    serializer_class = GroupSerializer
+    queryset = Group.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        class_id = self.kwargs.get('class_id')  # parameter name
+
+        try:
+            groups = Group.objects.filter(classroom_fk=class_id)
+            serializer = GroupSerializer(groups, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Group.DoesNotExist:
+            return Response({"error": "Group not found"}, status=status.HTTP_404_NOT_FOUND)
+        except ValueError as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
