@@ -46,7 +46,7 @@ class CreateProjectBoard(generics.CreateAPIView):
             "presence_penalty": 0.0
         }
         headers = {
-            "Authorization": "Bearer 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"
+            "Authorization": "Bearer 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"
         }
 
         try:
@@ -240,7 +240,7 @@ class UpdateBoard(generics.CreateAPIView):
                 "presence_penalty": 0.0
             }
             headers = {
-                "Authorization": "Bearer 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"
+                "Authorization": "Bearer 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"
             }
 
             response = requests.post(
