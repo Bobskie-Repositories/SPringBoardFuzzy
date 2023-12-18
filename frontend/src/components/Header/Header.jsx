@@ -9,14 +9,16 @@ import { useAuth } from "../../context/AuthContext";
 
 const Header = () => {
   const navigate = useNavigate();
-  const { getUser } = useAuth();
+  const { role, getUser } = useAuth();
 
   const goHome = async () => {
     const user = await getUser();
-    if (user.is_staff) {
-      navigate(`/admin`);
-    } else {
+    if (role === "student") {
       navigate(`/group/${user.group_fk}`);
+    } else if (role === "teacher") {
+      navigate(`/teacher/${user.id}`);
+    } else {
+      navigate(`/admin`);
     }
   };
 
