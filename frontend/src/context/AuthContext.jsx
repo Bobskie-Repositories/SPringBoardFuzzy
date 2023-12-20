@@ -194,6 +194,73 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const registerStudent = async (firstname, lastname, email, password) => {
+    try {
+      const response = await fetch(
+        "http://127.0.0.1:8000/api/register-student",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            firstname,
+            lastname,
+            email,
+            password,
+          }),
+        }
+      );
+
+      if (response.status === 201) {
+        loginStudent(email, password);
+        return { success: true };
+      } else {
+        console.error("Error Registration");
+        return response;
+      }
+    } catch (error) {
+      console.error("An error occurred in registration:", error.message);
+      return response;
+    }
+  };
+
+  const registerTeacher = async (firstname, lastname, email, password) => {
+    try {
+      const response = await fetch(
+        "http://127.0.0.1:8000/api/register-teacher",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            firstname,
+            lastname,
+            email,
+            is_staff: true,
+            password,
+          }),
+        }
+      );
+
+      if (response.status === 201) {
+        const data = await response.json();
+        loginTeacher(email, password);
+        return { success: true, data };
+      } else {
+        const errorData = await response.json(); // Assuming the server sends error details as JSON
+        console.error("Error Registration:", errorData);
+        return { success: false, error: errorData };
+      }
+    } catch (error) {
+      console.error("An error occurred in registration:", error.message);
+      return { success: false, error: "Network error or server unreachable" };
+    }
+  };
+
   const logout = async () => {
     try {
       const response = await fetch("http://127.0.0.1:8000/api/logout-student", {
@@ -222,6 +289,8 @@ export const AuthProvider = ({ children }) => {
     loginStudent,
     loginTeacher,
     loginAdmin,
+    registerStudent,
+    registerTeacher,
     logout,
     getUser,
     isAuthenticated,
