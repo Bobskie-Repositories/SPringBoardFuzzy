@@ -1,0 +1,188 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 50px;
+  width: 100vw;
+}
+
+.card {
+  margin-top: 5rem;
+  background: #fff;
+  padding: 30px 30px 50px 30px;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.title_comp {
+  font-size: 20px;
+  text-align: center;
+}
+
+.users {
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+}
+
+.student,
+.teacher {
+  padding: 30px 30px 10px 30px;
+  border-radius: 10px;
+  text-align: center;
+  background-color: #9c7b16;
+  cursor: pointer;
+  color: #fff;
+}
+
+.student:hover,
+.teacher:hover {
+  background-color: rgb(181, 178, 178);
+}
+
+.viewbutton:hover {
+  border-color: rgb(181, 178, 178);
+}
+
+.studentIcon,
+.teacherIcon {
+  color: #fff;
+  align-items: center;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.viewbutton {
+  height: 40px;
+  border: #ffffff;
+  font-size: 80%;
+  background-color: #fff;
+  border: 3px solid #9c7b16;
+  color: #9c7b16;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 4rem;
+}
+
+.rectangle {
+  background: #fff;
+  padding: 0 30px 30px 30px;
+  width: 100%; /* Adjusted to 100% */
+  max-width: 450px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.img {
+  width: 20%;
+  padding: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.center-container {
+  background: #fff;
+  padding-bottom: 30px;
+  text-align: auto;
+  width: 100%;
+  max-width: 350px;
+  margin-left: auto; /* Add this line to move it to the right */
+  margin-right: auto; /* Add this line for centering (optional) */
+}
+
+.title {
+  text-align: center;
+  font-size: 35px;
+  margin-bottom: 20px;
+}
+
+.header {
+  text-align: center;
+  font-size: 13px;
+  margin-bottom: 20px;
+  color: gray;
+}
+
+.label {
+  text-align: justify;
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #9c7b16;
+}
+
+.input {
+  margin-top: 17px;
+}
+
+.texttextInput {
+  width: 95%;
+  padding: 10px;
+  /* margin-bottom: 16px; */
+  border: 2px solid #9c7b16;
+  border-radius: 5px;
+  font-size: 15px;
+  background-color: white;
+  color: black;
+}
+.textInput_select {
+  width: 100%;
+  padding: 10px;
+  /* margin-bottom: 16px; */
+  border: 2px solid #9c7b16;
+  border-radius: 5px;
+  font-size: 15px;
+  background-color: white;
+  color: black;
+}
+.signup {
+  text-align: center;
+  font-size: 15px;
+  margin-bottom: 10px;
+  color: gray;
+}
+.forgot {
+  text-align: right;
+  font-size: 15px;
+  margin-bottom: 20px;
+  color: rgb(94, 94, 94); /* Updated to use gray color */
+}
+
+.buttonPrimary1 {
+  text-align: center;
+  padding: 10px 20px;
+  margin-top: 20px;
+}
+
+.buttonPrimary {
+  background-color: #9c7b16;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.buttonPrimary:hover {
+  background-color: maroon;
+}
+
+.warning {
+  color: red;
+  font-size: 13px;
+}
+
+.link {
+  cursor: pointer;
+}
+
+.link:hover {
+  color: gray;
+}
