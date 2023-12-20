@@ -24,7 +24,7 @@ const Login = () => {
       <Header_landing />
 
       <Card className={styles.card}>
-        <h3 className={styles.title}>Choose you user type</h3>
+        <h3 className={styles.title_comp}>Choose you user type</h3>
         <div className={styles.users}>
           <div className={styles.student} onClick={goStudent}>
             <FontAwesomeIcon
