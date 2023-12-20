@@ -22,6 +22,7 @@ const S_Sidebar = ({
 }) => {
   const navigate = useNavigate();
   const [group, setGroup] = useState();
+  const [groupCode, setGroupCode] = useState();
   const { getUser, logout } = useAuth();
 
   useEffect(() => {
@@ -33,6 +34,7 @@ const S_Sidebar = ({
           `http://127.0.0.1:8000/api/group/${user.group_fk}`
         );
         setGroup(response.data.name);
+        setGroupCode(response.data.key_code);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -61,7 +63,7 @@ const S_Sidebar = ({
           <div style={{ minWidth: "150px" }}>
             <img className={styles.groupicon} src={GroupIcon} alt="GroupIcon" />
             <h3>{group}</h3>
-            <h4>ABC-QWE-123</h4>
+            <h4>{groupCode}</h4>
           </div>
         </button>
       </div>

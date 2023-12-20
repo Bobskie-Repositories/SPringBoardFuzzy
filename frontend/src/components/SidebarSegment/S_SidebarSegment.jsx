@@ -206,24 +206,10 @@ const S_SidebarSegment = ({
       );
       setProjects(updatedProjects);
       if (updatedProjects.length > 0) {
-        // Set selected to the first project in the updated array
         handleButtonClick(updatedProjects[0].id);
-        // setSelected(updatedProjects[0].id);
-        // setClickedProjectId(updatedProjects[0].id);
       } else {
         handleButtonClick(null);
-        // setSelected(null);
-        // setClickedProjectId(null);
       }
-      // if (response.status === 204) {
-      //   console.log("Project deleted successfully");
-      // } else {
-      //   console.error(
-      //     "Failed to delete Project:",
-      //     response.status,
-      //     response.data
-      //   );
-      // }
     } catch (error) {
       console.error("Error deleting Project:", error);
     }
