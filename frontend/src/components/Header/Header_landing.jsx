@@ -11,6 +11,9 @@ const Header_landing = () => {
   const goLogin = async () => {
     navigate(`/login`);
   };
+  const goRegister = async () => {
+    navigate(`/register`);
+  };
 
   return (
     <div className={`${styles.header_landing}`}>
@@ -22,7 +25,7 @@ const Header_landing = () => {
         <a href="#" className={styles.link}>
           About
         </a>
-        <a href="#" className={styles.link}>
+        <a className={styles.link} onClick={goRegister}>
           Sign Up
         </a>
         <Button

@@ -4,19 +4,19 @@ import Button from "../UI/Button/Button";
 import Header_landing from "../Header/Header_landing";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserTie, faUser } from "@fortawesome/free-solid-svg-icons";
-import styles from "./Login.module.css";
+import styles from "./Register.module.css";
 import { useNavigate } from "react-router";
 
-const Login = () => {
+const Register = () => {
   // State to manage user inputs
   const navigate = useNavigate();
 
   const goStudent = () => {
-    navigate("/login-student");
+    navigate("/register-student");
   };
 
   const goTeacher = () => {
-    navigate("/login-teacher");
+    navigate("/register-teacher");
   };
 
   return (
@@ -24,7 +24,7 @@ const Login = () => {
       <Header_landing />
 
       <Card className={styles.card}>
-        <h3 className={styles.title_comp}>Choose you user type</h3>
+        <h3 className={styles.title_comp}>Registration</h3>
         <div className={styles.users}>
           <div className={styles.student} onClick={goStudent}>
             <FontAwesomeIcon
@@ -51,4 +51,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

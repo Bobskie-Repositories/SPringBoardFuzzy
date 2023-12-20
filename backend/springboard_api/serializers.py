@@ -12,8 +12,8 @@ class ClassroomSerializer(serializers.ModelSerializer):
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
-        fields = ('id', 'name',
-                  'classroom_fk', 'created_at', 'deleted_at')
+        fields = ('id', 'name', 'key_code', 'classroom_fk',
+                  'created_at', 'deleted_at')
 
 
 class ProjectSerializer(serializers.ModelSerializer):

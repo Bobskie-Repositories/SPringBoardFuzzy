@@ -18,4 +18,18 @@
   height: 40px;
   margin-top: 40px;
   font-size: 12px;
+  min-width: 170px;
+  max-width: 200px;
+}
+
+.textInput_select {
+  width: 100%;
+  padding: 10px;
+  /* margin-bottom: 16px; */
+  border: 2px solid #9c7b16;
+  border-radius: 5px;
+  font-size: 15px;
+  background-color: white;
+  color: black;
+  overflow-y: auto;
 }
