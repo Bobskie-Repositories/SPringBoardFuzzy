@@ -86,11 +86,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         # 'NAME': BASE_DIR / 'db.sqlite3',
-        'NAME': 'springboard',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+        'NAME': 'bobkyle$springboard',
+        'USER': 'bobkyle',
+        'PASSWORD': 'pokemonlake',
+        'HOST': 'bobkyle.mysql.pythonanywhere-services.com',
     }
 }
 
