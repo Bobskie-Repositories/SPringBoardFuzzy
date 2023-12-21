@@ -36,7 +36,7 @@ const ClassroomList = () => {
             <Card className={styles.classroom} style={{ padding: 0 }}>
               <div style={{ padding: "1rem" }}>
                 <img src={classroomImg} />
-                <h4>{classroom.class_name}</h4>
+                <h5>{classroom.class_name}</h5>
               </div>
 
               <Button
