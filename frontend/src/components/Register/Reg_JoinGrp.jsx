@@ -4,12 +4,13 @@ import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Header_GrpCreation from "../Header/Header_GrpCreation";
 import styles from "./Register.module.css";
+import config from "../../config";
 
 const Reg_JoinGrp = () => {
   // State to manage user inputs
   const [grpCode, setGrpCode] = useState("");
   const [grpCodeMatch, setGrpCodeMatch] = useState(true);
-
+  const { API_HOST } = config;
   const navigate = useNavigate();
   const { getUser } = useAuth();
   // Function to handle form submission
@@ -18,7 +19,7 @@ const Reg_JoinGrp = () => {
     const user = await getUser();
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/update-group-fk/${user.id}`,
+        `${API_HOST}/api/update-group-fk/${user.id}`,
         {
           group_key_code: grpCode,
         }

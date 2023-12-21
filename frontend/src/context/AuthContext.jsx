@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
+import config from "../config";
 
 const AuthContext = createContext();
 
@@ -11,6 +12,7 @@ export const AuthProvider = ({ children }) => {
   const [id, setId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { API_HOST } = config;
 
   useEffect(() => {
     // Check the token & id in local storage
@@ -46,13 +48,10 @@ export const AuthProvider = ({ children }) => {
 
       // Attempt to fetch student data
       if (role === "student") {
-        const studentResponse = await fetch(
-          "http://127.0.0.1:8000/api/active-student",
-          {
-            method: "GET",
-            credentials: "include",
-          }
-        );
+        const studentResponse = await fetch(`${API_HOST}/api/active-student`, {
+          method: "GET",
+          credentials: "include",
+        });
 
         if (studentResponse.ok) {
           const studentData = await studentResponse.json();
@@ -60,13 +59,10 @@ export const AuthProvider = ({ children }) => {
         }
       } else if (role === "teacher") {
         // Attempt to fetch teacher data
-        const teacherResponse = await fetch(
-          "http://127.0.0.1:8000/api/active-teacher",
-          {
-            method: "GET",
-            credentials: "include",
-          }
-        );
+        const teacherResponse = await fetch(`${API_HOST}/api/active-teacher`, {
+          method: "GET",
+          credentials: "include",
+        });
 
         if (teacherResponse.ok) {
           const teacherData = await teacherResponse.json();
@@ -74,13 +70,10 @@ export const AuthProvider = ({ children }) => {
         }
       } else {
         // Attempt to fetch admin data
-        const adminResponse = await fetch(
-          "http://127.0.0.1:8000/api/active-admin",
-          {
-            method: "GET",
-            credentials: "include",
-          }
-        );
+        const adminResponse = await fetch(`${API_HOST}/api/active-admin`, {
+          method: "GET",
+          credentials: "include",
+        });
 
         if (adminResponse.ok) {
           const adminData = await adminResponse.json();
@@ -97,7 +90,7 @@ export const AuthProvider = ({ children }) => {
 
   const loginStudent = async (email, password) => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/login-student", {
+      const response = await fetch(`${API_HOST}/api/login-student`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -130,7 +123,7 @@ export const AuthProvider = ({ children }) => {
 
   const loginTeacher = async (email, password) => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/login-teacher", {
+      const response = await fetch(`${API_HOST}/api/login-teacher`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -163,7 +156,7 @@ export const AuthProvider = ({ children }) => {
 
   const loginAdmin = async (email, password) => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/login-admin", {
+      const response = await fetch(`${API_HOST}/api/login-admin`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -196,22 +189,19 @@ export const AuthProvider = ({ children }) => {
 
   const registerStudent = async (firstname, lastname, email, password) => {
     try {
-      const response = await fetch(
-        "http://127.0.0.1:8000/api/register-student",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            firstname,
-            lastname,
-            email,
-            password,
-          }),
-        }
-      );
+      const response = await fetch(`${API_HOST}/api/register-student`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          firstname,
+          lastname,
+          email,
+          password,
+        }),
+      });
 
       if (response.status === 201) {
         loginStudent(email, password);
@@ -228,23 +218,20 @@ export const AuthProvider = ({ children }) => {
 
   const registerTeacher = async (firstname, lastname, email, password) => {
     try {
-      const response = await fetch(
-        "http://127.0.0.1:8000/api/register-teacher",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            firstname,
-            lastname,
-            email,
-            is_staff: true,
-            password,
-          }),
-        }
-      );
+      const response = await fetch(`${API_HOST}/api/register-teacher`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          firstname,
+          lastname,
+          email,
+          is_staff: true,
+          password,
+        }),
+      });
 
       if (response.status === 201) {
         const data = await response.json();
@@ -263,7 +250,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/logout-student", {
+      const response = await fetch(`${API_HOST}/api/logout-student`, {
         method: "POST",
         credentials: "include",
       });

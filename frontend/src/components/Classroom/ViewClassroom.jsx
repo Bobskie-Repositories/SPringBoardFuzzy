@@ -6,18 +6,19 @@ import styles from "./ViewClassroom.module.css";
 import global from "@assets/global.module.css";
 import axios from "axios";
 import ListActiveProj from "../Table/ListActiveProj";
+import config from "../../config";
 
 const ViewClassroom = ({ selected }) => {
   const [classroom, setClassroom] = useState(null);
   const [groups, setGroups] = useState(null);
   const { id } = useParams();
-
+  const { API_HOST } = config;
   const [templates, setTemplates] = useState([]);
 
   useEffect(() => {
     if (selected !== null && selected !== undefined) {
       axios
-        .get(`http://127.0.0.1:8000/api/classroom/${id}/class_group_proj`)
+        .get(`${API_HOST}/api/classroom/${id}/class_group_proj`)
         .then((response) => {
           setClassroom(response.data.name);
           setGroups(response.data.groups);
@@ -27,7 +28,7 @@ const ViewClassroom = ({ selected }) => {
         });
     }
     axios
-      .get(`http://127.0.0.1:8000/api/template/`)
+      .get(`${API_HOST}/api/template/`)
       .then((response) => {
         setTemplates(response.data);
       })

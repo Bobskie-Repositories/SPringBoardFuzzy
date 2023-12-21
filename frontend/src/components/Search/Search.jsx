@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import styles from "./Search.module.css";
 import axios from "axios";
+import config from "../../config";
 
 const Search = ({ setSelected, alternateAPI }) => {
   const [searchText, setSearchText] = useState("");
@@ -9,12 +10,13 @@ const Search = ({ setSelected, alternateAPI }) => {
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const { API_HOST } = config;
 
   useEffect(() => {
     const apiUrl =
       alternateAPI === 1
-        ? "http://127.0.0.1:8000/api/project"
-        : "http://127.0.0.1:8000/api/project/public";
+        ? `${API_HOST}/api/project`
+        : `${API_HOST}/api/project/public`;
     // Fetch data from the API
     axios
       .get(apiUrl)

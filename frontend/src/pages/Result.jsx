@@ -6,18 +6,18 @@ import styles from "../components/ResultBoard/ResultBoard.module.css";
 import Button from "../components/UI/Button/Button";
 import global from "@assets/global.module.css";
 import axios from "axios";
+import config from "../config";
 
 const Result = () => {
   const { id, boardid } = useParams();
   const [groupId, setGroupId] = useState(null);
   const navigate = useNavigate();
+  const { API_HOST } = config;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const project = await axios.get(
-          `http://127.0.0.1:8000/api/project/${id}`
-        );
+        const project = await axios.get(`${API_HOST}/api/project/${id}`);
         setGroupId(project.data.group_fk);
       } catch (error) {
         console.error("Error fetching data:", error);

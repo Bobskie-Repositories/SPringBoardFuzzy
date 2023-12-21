@@ -31,7 +31,7 @@ ALLOWED_HOSTS = [
     "http://127.0.0.1:5173",
 ]
 ALLOWED_HOSTS += os.environ.get("ALLOWED_HOSTS").split()
-
+# ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -153,3 +153,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
 AUTH_USER_MODEL = 'springboard_api.Student'
+
+
+# BASE_URL = "http://127.0.0.1:8000"
+BASE_URL = "https://bobkyle.pythonanywhere.com"
