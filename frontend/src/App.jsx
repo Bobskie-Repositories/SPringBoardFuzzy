@@ -22,8 +22,8 @@ import GPTChat from "./components/GPTRequestHandler/GPTChat"; // Import the GPTC
 function App() {
   return (
     <Routes>
-      <Route path="/landing" element={<LandingPage />} />
-      <Route path="/" exact element={<Login choose={0} />} />
+      {/* <Route path="/landing" element={<LandingPage />} /> */}
+      <Route path="/" exact element={<LandingPage />} />
       <Route path="/login" element={<Login choose={0} />} />
       <Route path="/login-student" element={<Login choose={1} />} />
       <Route path="/login-teacher" element={<Login choose={2} />} />
