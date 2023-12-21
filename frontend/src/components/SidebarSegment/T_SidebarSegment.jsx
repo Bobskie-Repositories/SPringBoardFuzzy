@@ -64,8 +64,10 @@ const T_SidebarSegment = ({ selected, setSelected }) => {
       html: `
           <span style="font-size: 20px">Create a New Classroom</span>
           <br>
+          <p>Class Code</p>
           <input type="text" id="input1" placeholder="Enter Classroom Code" class="swal2-input" style="height: 35px; width: 86%; font-size: 16px; font-family: 'Calibri', sans-serif; display: flex;"/>
           <br>
+          <p>Class Name</p>
           <input type="text" id="input2" placeholder="Enter new classroom name" class="swal2-input" style="height: 35px; width: 86%; font-size: 16px; font-family: 'Calibri', sans-serif; display: flex;"/>
           `,
       showCancelButton: true,
