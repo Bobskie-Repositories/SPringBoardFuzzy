@@ -6,13 +6,19 @@ import easy from "@assets/easy.png";
 import supervise from "@assets/supervise.png";
 import time from "@assets/time.png";
 import bannerpic from "@assets/bannerpic.png";
+import { useNavigate } from "react-router";
 
 const Landing = () => {
+  const navigate = useNavigate();
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
+  };
+
+  const goRegister = () => {
+    navigate(`/register`);
   };
 
   return (
@@ -33,7 +39,7 @@ const Landing = () => {
             Look no further, Spring Board is here to help!
           </h3>
 
-          <button className={styles.floating_button}>
+          <button className={styles.floating_button} onClick={goRegister}>
             Register Now &nbsp;&nbsp;
             <FaArrowRight className={styles.arrow} />
           </button>

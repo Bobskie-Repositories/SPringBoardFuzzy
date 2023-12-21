@@ -15,10 +15,19 @@ const Header_landing = () => {
     navigate(`/register`);
   };
 
+  const goHome = async () => {
+    navigate(`/`);
+  };
+
   return (
     <div className={`${styles.header_landing}`}>
       <div className={styles.left}>
-        <img src={Web_Logo} alt="Logo" className={styles.img_landing} />
+        <img
+          src={Web_Logo}
+          alt="Logo"
+          className={styles.img_landing}
+          onClick={goHome}
+        />
       </div>
 
       <div className={styles.right_landing}>
