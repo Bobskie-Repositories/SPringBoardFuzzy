@@ -8,14 +8,15 @@ import rightImg from "@assets/chevron-right.png";
 import classroomImg from "@assets/Classroom.png";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import config from "../../config";
 
 const ClassroomList = () => {
   const { id } = useParams();
   const [rooms, setRooms] = useState([]);
   const navigate = useNavigate();
-
+  const { API_HOST } = config;
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/classroom/${id}/all`)
+    fetch(`${API_HOST}/api/classroom/${id}/all`)
       .then((response) => response.json())
       .then((rooms) => setRooms(rooms));
   }, []);

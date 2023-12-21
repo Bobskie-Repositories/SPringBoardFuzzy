@@ -13,6 +13,7 @@ import {
 import { useLocation, useNavigate } from "react-router";
 import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
+import config from "../../config";
 
 const S_Sidebar = ({
   setSelected,
@@ -24,6 +25,7 @@ const S_Sidebar = ({
   const [group, setGroup] = useState();
   const [groupCode, setGroupCode] = useState();
   const { getUser, logout } = useAuth();
+  const { API_HOST } = config;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +33,7 @@ const S_Sidebar = ({
       // console.log(user)
       try {
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/group/${user.group_fk}`
+          `${API_HOST}/api/group/${user.group_fk}`
         );
         setGroup(response.data.name);
         setGroupCode(response.data.key_code);

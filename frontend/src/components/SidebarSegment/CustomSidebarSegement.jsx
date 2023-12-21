@@ -13,6 +13,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 import axios from "axios";
+import config from "../../config";
 
 const CustomSidebarSegement = ({ selected, setSelected }) => {
   const [projects, setProjects] = useState([]);
@@ -25,6 +26,7 @@ const CustomSidebarSegement = ({ selected, setSelected }) => {
   const [isLoading, setIsLoading] = useState(true);
   const { groupid } = useParams();
   const { getUser } = useAuth();
+  const { API_HOST } = config;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +35,7 @@ const CustomSidebarSegement = ({ selected, setSelected }) => {
       setUserGroupId(user.group_fk);
       setIsLoading(false);
       axios
-        .get(`http://127.0.0.1:8000/api/group/${groupid}/projects`)
+        .get(`${API_HOST}/api/group/${groupid}/projects`)
         .then((response) => {
           setProjects(response.data);
           if (response.data.length > 0) {

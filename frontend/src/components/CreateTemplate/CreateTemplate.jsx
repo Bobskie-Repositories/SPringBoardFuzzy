@@ -14,6 +14,7 @@ import EditorToolbar, {
   modules,
   formats,
 } from "../UI/RichTextEditor/EditorToolBar";
+import config from "../../config";
 
 const CreateTemplate = () => {
   const [rulesContent, setRulesContent] = useState("");
@@ -25,6 +26,7 @@ const CreateTemplate = () => {
   const [savedRulesContent, setSavedRulesContent] = useState(""); // Store the rulesContent
   const { getUser } = useAuth();
   const navigate = useNavigate();
+  const { API_HOST } = config;
 
   const handleRulesEditorChange = (newContent) => {
     setRulesContent(newContent);
@@ -88,16 +90,13 @@ const CreateTemplate = () => {
 
   const submitTemplate = async () => {
     try {
-      const response = await axios.post(
-        `http://127.0.0.1:8000/api/template/add`,
-        {
-          title: title,
-          content: templateContent,
-          rules: rulesContent,
-          description: description,
-          isActive: true,
-        }
-      );
+      const response = await axios.post(`${API_HOST}/api/template/add`, {
+        title: title,
+        content: templateContent,
+        rules: rulesContent,
+        description: description,
+        isActive: true,
+      });
 
       navigate(`/admin`);
       console.log("Template created successfully:", response.data.id);

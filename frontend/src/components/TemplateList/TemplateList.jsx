@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Switch } from "@mui/material";
+import config from "../../config";
 
 const TemplateList = () => {
   const [checked, setChecked] = useState(true);
@@ -15,11 +16,12 @@ const TemplateList = () => {
   const { getUser } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
+  const { API_HOST } = config;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/template/`);
+        const response = await axios.get(`${API_HOST}/api/template/`);
         setTemplates(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -65,7 +67,7 @@ const TemplateList = () => {
   //   const newisActive = !template.isActive;
   //   try {
   //     await axios.patch(
-  //       `http://127.0.0.1:8000/api/template/${template.id}/update`,
+  //       `${API_HOST}/api/template/${template.id}/update`,
   //       {
   //         title: template.title,
   //         content: template.content,
@@ -113,7 +115,7 @@ const TemplateList = () => {
   //   }).then(async (result) => {
   //     if (result.isConfirmed) {
   //       await axios.delete(
-  //         `http://127.0.0.1:8000/api/template/${templateId}/delete`
+  //         `${API_HOST}/api/template/${templateId}/delete`
   //       );
 
   //       // Update the list of templates

@@ -9,6 +9,7 @@ import Button from "../UI/Button/Button";
 import parse from "html-react-parser";
 import Swal from "sweetalert2";
 import axios from "axios";
+import config from "../../config";
 
 const ViewBoard = () => {
   const [activeTab, setActiveTab] = useState("results");
@@ -20,6 +21,7 @@ const ViewBoard = () => {
   const { id } = useParams();
   const groupIdRef = useRef();
   const navigate = useNavigate();
+  const { API_HOST } = config;
 
   const [currentIndex, setCurrentIndex] = useState(0);
   useEffect(() => {
@@ -29,10 +31,10 @@ const ViewBoard = () => {
         setStaff(user.is_staff);
 
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/projectboards/${id}/versions`
+          `${API_HOST}/api/projectboards/${id}/versions`
         );
         const projectResponse = await axios.get(
-          `http://127.0.0.1:8000/api/project/${response.data[0].project_fk}`
+          `${API_HOST}/api/project/${response.data[0].project_fk}`
         );
         const projectData = projectResponse.data;
 
@@ -70,7 +72,7 @@ const ViewBoard = () => {
   const onClickDelete = async () => {
     try {
       const response = await axios.delete(
-        `http://127.0.0.1:8000/api/projectboards/${id}/delete`
+        `${API_HOST}/api/projectboards/${id}/delete`
       );
 
       if (response.status === 204) {

@@ -8,6 +8,8 @@ from springboard_api.serializers import ProjectBoardSerializer
 from springboard_api.models import ProjectBoard, Project
 import requests
 from django.db.models import Max
+from django.conf import settings
+import os
 
 
 class CreateProjectBoard(generics.CreateAPIView):
@@ -46,7 +48,7 @@ class CreateProjectBoard(generics.CreateAPIView):
             "presence_penalty": 0.0
         }
         headers = {
-            "Authorization": "Bearer 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"
+            "Authorization": os.environ.get("OPENAI_KEY") + ""
         }
 
         try:
@@ -109,7 +111,9 @@ class CreateProjectBoard(generics.CreateAPIView):
                         'boardId': new_board_id,
                     }
                     project_fk = request.data.get('project_fk', None)
-                    update_score_url = f"http://127.0.0.1:8000/api/project/{project_fk}/update_score"
+                    # update_score_url = f"http://127.0.0.1:8000/api/project/{project_fk}/update_score"
+                    update_score_url = settings.BASE_URL + \
+                        f"/api/project/{project_fk}/update_score"
                     update_score_data = {
                         "score": ((novelty * 0.4) + (technical_feasibility * 0.3) + (capability * 0.3)),
                         "subtract_score": 0
@@ -240,7 +244,7 @@ class UpdateBoard(generics.CreateAPIView):
                 "presence_penalty": 0.0
             }
             headers = {
-                "Authorization": "Bearer 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"
+                "Authorization": os.environ.get("OPENAI_KEY") + ""
             }
 
             response = requests.post(
@@ -302,7 +306,10 @@ class UpdateBoard(generics.CreateAPIView):
                     new_board_instance.save()
 
                     # Update the project score
-                    update_score_url = f"http://127.0.0.1:8000/api/project/{project_board.project_fk.id}/update_score"
+                    # update_score_url = f"http://127.0.0.1:8000/api/project/{project_board.project_fk.id}/update_score"
+                    update_score_url = settings.BASE_URL + \
+                        f"/api/project/{project_board.project_fk.id}/update_score"
+
                     update_score_data = {
                         "score": ((novelty * 0.4) + (technical_feasibility * 0.3) + (capability * 0.3)),
                         "subtract_score": subtract_score
@@ -340,7 +347,10 @@ class DeleteProjectBoard(generics.DestroyAPIView):
             )
 
             # Update the project's score using the calculated subtract_score
-            update_score_url = f"http://127.0.0.1:8000/api/project/{instance.project_fk.id}/update_score"
+            # update_score_url = f"http://127.0.0.1:8000/api/project/{instance.project_fk.id}/update_score"
+            update_score_url = settings.BASE_URL + \
+                f"/api/project/{instance.project_fk.id}/update_score"
+
             update_score_data = {
                 "score": 0,
                 "subtract_score": subtract_score
