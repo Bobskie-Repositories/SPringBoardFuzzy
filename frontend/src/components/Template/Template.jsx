@@ -16,6 +16,7 @@ import Details from "../UI/RichTextEditor/Details";
 import { Tiptap } from "../UI/RichTextEditor/TipTap";
 import styles from "./Template.module.css";
 import global from "@assets/global.module.css";
+import config from "../../config";
 
 const Template = () => {
   const { id, templateid } = useParams();
@@ -24,6 +25,7 @@ const Template = () => {
   const [description, setDescription] = useState("");
   const editor = useRef(null);
   const [content, setContent] = useState("");
+  const { API_HOST } = config;
 
   // Handle changes in the React Quill editor
   const handleEditorChange = (newContent) => {
@@ -34,7 +36,7 @@ const Template = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/template/${templateid}`
+          `${API_HOST}/api/template/${templateid}`
         );
         setTemplate(response.data);
         setContent(response.data.content || "");
@@ -55,7 +57,7 @@ const Template = () => {
       };
 
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/project/${id}/addprojectboards`,
+        `${API_HOST}/api/project/${id}/addprojectboards`,
         {
           title: template.title,
           content: content, // Use the content from the React Quill editor
@@ -71,7 +73,7 @@ const Template = () => {
       );
       console.log("Response from createProjectBoard:", response);
 
-      // await axios.put(`http://127.0.0.1:8000/api/project/${id}/update_score`);
+      // await axios.put(`${API_HOST}/api/project/${id}/update_score`);
 
       navigate(`/project/${id}/create-board/${response.data.id}/result`);
 

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Header_GrpCreation from "../Header/Header_GrpCreation";
 import styles from "./Register.module.css";
 import Swal from "sweetalert2";
+import config from "../../config";
 
 const Reg_CreateGrp = () => {
   // State to manage user inputs
@@ -14,14 +15,13 @@ const Reg_CreateGrp = () => {
   const [createStatus, setCreateStatus] = useState(true);
   const navigate = useNavigate();
   const { getUser } = useAuth();
+  const { API_HOST } = config;
 
   useEffect(() => {
     // Fetch the list of classrooms when the component mounts
     const fetchClassrooms = async () => {
       try {
-        const response = await axios.get(
-          "http://127.0.0.1:8000/api/classroom/all"
-        );
+        const response = await axios.get(`${API_HOST}/api/classroom/all`);
         setClassrooms(response.data);
       } catch (error) {
         console.error("Failed to fetch classrooms. " + error);
@@ -36,15 +36,12 @@ const Reg_CreateGrp = () => {
     const user = await getUser();
 
     try {
-      const groupResponse = await axios.post(
-        "http://127.0.0.1:8000/api/group/create",
-        {
-          name: grpName,
-          classroom_fk: selectedClassroom,
-        }
-      );
+      const groupResponse = await axios.post(`${API_HOST}/api/group/create`, {
+        name: grpName,
+        classroom_fk: selectedClassroom,
+      });
       const updateGroupResponse = await axios.post(
-        `http://127.0.0.1:8000/api/update-group-fk/${user.id}`,
+        `${API_HOST}/api/update-group-fk/${user.id}`,
         {
           group_key_code: groupResponse.data.key_code,
         }

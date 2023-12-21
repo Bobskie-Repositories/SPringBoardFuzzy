@@ -14,6 +14,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 import axios from "axios";
+import config from "../../config";
 
 const S_SidebarSegment = ({
   selected,
@@ -35,6 +36,7 @@ const S_SidebarSegment = ({
   const { getUser } = useAuth();
   const location = useLocation();
   const [open, setOpen] = useState(location.state?.open ? true : false);
+  const { API_HOST } = config;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,7 +47,7 @@ const S_SidebarSegment = ({
 
       axios
         .get(
-          `http://127.0.0.1:8000/api/group/${
+          `${API_HOST}/api/group/${
             groupid !== undefined ? groupid : user.group_fk
           }/projects`
         )
@@ -73,7 +75,7 @@ const S_SidebarSegment = ({
       const user = await getUser();
       axios
         .get(
-          `http://127.0.0.1:8000/api/group/${
+          `${API_HOST}/api/group/${
             groupid !== undefined ? groupid : user.group_fk
           }/projects`
         )
@@ -142,10 +144,7 @@ const S_SidebarSegment = ({
           const updatedProject = { ...project, name: editedProjectName };
 
           axios
-            .put(
-              `http://127.0.0.1:8000/api/project/${project.id}/update`,
-              updatedProject
-            )
+            .put(`${API_HOST}/api/project/${project.id}/update`, updatedProject)
             .then((response) => {
               console.log("Project name updated");
             })
@@ -171,19 +170,17 @@ const S_SidebarSegment = ({
         return isoTimestamp;
       };
 
-      const response = await axios.post(
-        `http://127.0.0.1:8000/api/project/create`,
-        {
-          name: newProject,
-          description: desc,
-          group_fk: userGroupId,
-          created_at: getCurrentTimestamp(),
-        }
-      );
+      const response = await axios.post(`${API_HOST}/api/project/create`, {
+        name: newProject,
+        description: desc,
+        group_fk: userGroupId,
+        reason: "Created recently",
+        created_at: getCurrentTimestamp(),
+      });
 
       const newProjectId = response.data.id;
       const newProjectResponse = await axios.get(
-        `http://127.0.0.1:8000/api/project/${newProjectId}`
+        `${API_HOST}/api/project/${newProjectId}`
       );
       const newProjectData = newProjectResponse.data;
 
@@ -199,7 +196,7 @@ const S_SidebarSegment = ({
   const deleteProject = async () => {
     try {
       const response = await axios.delete(
-        `http://127.0.0.1:8000/api/project/${clickedProjectId}/delete`
+        `${API_HOST}/api/project/${clickedProjectId}/delete`
       );
       const updatedProjects = projects.filter(
         (project) => project.id !== clickedProjectId

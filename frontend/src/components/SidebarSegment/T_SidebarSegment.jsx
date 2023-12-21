@@ -12,6 +12,7 @@ import styles from "./SidebarSegment.module.css";
 import global from "../../assets/global.module.css";
 import axios from "axios";
 import Swal from "sweetalert2";
+import config from "../../config";
 
 const T_SidebarSegment = ({ selected, setSelected }) => {
   const [classrooms, setClassrooms] = useState([]);
@@ -22,6 +23,7 @@ const T_SidebarSegment = ({ selected, setSelected }) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { getUser } = useAuth();
+  const { API_HOST } = config;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +31,7 @@ const T_SidebarSegment = ({ selected, setSelected }) => {
         const user = await getUser();
 
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/classroom/${user.id}/all`
+          `${API_HOST}/api/classroom/${user.id}/all`
         );
         setUserId(user.id);
         setClassrooms(response.data);
@@ -106,18 +108,15 @@ const T_SidebarSegment = ({ selected, setSelected }) => {
     try {
       const user = await getUser();
 
-      const response = await axios.post(
-        `http://127.0.0.1:8000/api/classroom/create`,
-        {
-          class_code: newClassCode,
-          class_name: newClassname,
-          teacher_fk: user.id,
-        }
-      );
+      const response = await axios.post(`${API_HOST}/api/classroom/create`, {
+        class_code: newClassCode,
+        class_name: newClassname,
+        teacher_fk: user.id,
+      });
 
       const newClassId = response.data.id;
       const newClassResponse = await axios.get(
-        `http://127.0.0.1:8000/api/classroom/${newClassId}`
+        `${API_HOST}/api/classroom/${newClassId}`
       );
       const newClassData = newClassResponse.data;
 

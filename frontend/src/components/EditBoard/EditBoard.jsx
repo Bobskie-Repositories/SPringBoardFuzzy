@@ -13,6 +13,7 @@ import EditorToolbar, {
   modules,
   formats,
 } from "../UI/RichTextEditor/EditorToolBar";
+import config from "../../config";
 
 const EditBoard = () => {
   const [title, setTitle] = useState(null);
@@ -24,13 +25,12 @@ const EditBoard = () => {
   const [priorCapableVal, setPriorCapableVal] = useState(null);
   const navigate = useNavigate();
   const { id } = useParams();
+  const { API_HOST } = config;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `http://127.0.0.1:8000/api/projectboards/${id}`
-        );
+        const response = await axios.get(`${API_HOST}/api/projectboards/${id}`);
         setTitle(response.data.title || "");
         setContent(response.data.content || "");
         setBoardId(response.data.boardId || "");
@@ -49,7 +49,7 @@ const EditBoard = () => {
   const updateProjectBoard = async () => {
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/projectboards/${id}/update`,
+        `${API_HOST}/api/projectboards/${id}/update`,
         {
           title: title,
           content: content, // Use the content from the React Quill editor
@@ -66,7 +66,7 @@ const EditBoard = () => {
       // console.log(response);
       // console.log(response.data.project_fk);
       // await axios.put(
-      //   `http://127.0.0.1:8000/api/project/${response.data.project_fk}/update_score`
+      //   `${API_HOST}/api/project/${response.data.project_fk}/update_score`
       // );
 
       navigate(`/board/${response.data.id}/edit/result`);

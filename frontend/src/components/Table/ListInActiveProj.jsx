@@ -3,19 +3,19 @@ import axios from "axios";
 import styles from "./Table.module.css";
 import global from "@assets/global.module.css";
 import Card from "../UI/Card/Card";
+import config from "../../config";
 
 const ListInActiveProj = () => {
   const [projects, setProjects] = useState([]);
   const [sortOrder, setSortOrder] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const projectsPerPage = 10;
+  const { API_HOST } = config;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://127.0.0.1:8000/api/inactive_proj"
-        );
+        const response = await axios.get(`${API_HOST}/api/inactive_proj`);
         setProjects(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);

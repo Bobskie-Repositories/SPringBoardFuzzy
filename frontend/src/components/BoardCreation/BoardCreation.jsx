@@ -9,27 +9,17 @@ import styles from "./BoardCreation.module.css";
 import global from "@assets/global.module.css";
 import axios from "axios";
 import Loading from "../UI/Loading/Loading";
+import config from "../../config";
 
 const BoardCreation = ({ selected, setCreateAction, boardTemplateIds }) => {
   const [allTemplate, setAllTemplate] = useState();
   const navigate = useNavigate();
+  const { API_HOST } = config;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/template/`);
-        // const templatesWithTeacher = await Promise.all(
-        //   response.data.map(async (template) => {
-        //     const teacherResponse = await axios.get(
-        //       `http://127.0.0.1:8000/api/teacher/${template.teacher_fk}`
-        //     );
-        //     const templateWithTeacher = {
-        //       ...template,
-        //       teacher: teacherResponse.data,
-        //     };
-        //     return templateWithTeacher;
-        //   })
-        // );
+        const response = await axios.get(`${API_HOST}/api/template/`);
         setAllTemplate(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);

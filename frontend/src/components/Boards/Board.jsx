@@ -16,6 +16,7 @@ import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import Caution from "../UI/Caution/Caution";
+import config from "../../config";
 
 const style = {
   position: "absolute",
@@ -44,6 +45,7 @@ function Board({
   const { getUser } = useAuth();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { API_HOST } = config;
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -68,7 +70,7 @@ function Board({
         setLoadCount((prevLoadCount) => prevLoadCount + 1);
         if (selected !== null && selected !== undefined) {
           const boardsResponse = await axios.get(
-            `http://127.0.0.1:8000/api/project/${selected}/projectboards`
+            `${API_HOST}/api/project/${selected}/projectboards`
           );
           const boards = boardsResponse.data;
           const templateIds = new Set(boards.map((board) => board.templateId));
@@ -83,13 +85,13 @@ function Board({
           setBoards(boards);
 
           const projectResponse = await axios.get(
-            `http://127.0.0.1:8000/api/project/${selected}`
+            `${API_HOST}/api/project/${selected}`
           );
           const project = projectResponse.data;
           setProject(project);
 
           const projectListResponse = await axios.get(
-            `http://127.0.0.1:8000/api/group/${project.group_fk}/projects`
+            `${API_HOST}/api/group/${project.group_fk}/projects`
           );
           setProjectList(projectListResponse.data);
 
@@ -217,15 +219,12 @@ function Board({
   const updateProjectReason = async (project, reason) => {
     const newStatus = project.isActive ? !project.isActive : project.isActive;
     try {
-      await axios.put(
-        `http://127.0.0.1:8000/api/project/${project.id}/update`,
-        {
-          name: project.name,
-          reason: reason,
-          isActive: newStatus,
-          group_fk: project.group_fk,
-        }
-      );
+      await axios.put(`${API_HOST}/api/project/${project.id}/update`, {
+        name: project.name,
+        reason: reason,
+        isActive: newStatus,
+        group_fk: project.group_fk,
+      });
     } catch (error) {
       Swal.fire("Error", "Failed to publish the template", "error");
     }
@@ -234,15 +233,12 @@ function Board({
   const toggleProjectPublic = async (project, reason) => {
     const newisActive = !project.isActive;
     try {
-      await axios.put(
-        `http://127.0.0.1:8000/api/project/${project.id}/update`,
-        {
-          name: project.name,
-          reason: reason,
-          isActive: newisActive,
-          group_fk: project.group_fk,
-        }
-      );
+      await axios.put(`${API_HOST}/api/project/${project.id}/update`, {
+        name: project.name,
+        reason: reason,
+        isActive: newisActive,
+        group_fk: project.group_fk,
+      });
       setProject((prevProject) => ({
         ...prevProject,
         isActive: newisActive,

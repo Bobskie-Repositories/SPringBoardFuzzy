@@ -14,6 +14,7 @@ import { useLocation } from "react-router";
 import { useAuth } from "../../../context/AuthContext";
 import axios from "axios";
 import Swal from "sweetalert2";
+import config from "../../../config";
 
 const SDashboard = ({ choose }) => {
   const location = useLocation();
@@ -26,6 +27,7 @@ const SDashboard = ({ choose }) => {
   const [classrooms, setClassrooms] = useState([]);
   const [selectedClassroom, setSelectedClassroom] = useState("");
   const { getUser } = useAuth();
+  const { API_HOST } = config;
 
   const handleProjectUpdate = () => {
     // This function will be called when there are updates to projects in the Boards component
@@ -41,9 +43,7 @@ const SDashboard = ({ choose }) => {
   };
   const transferModalClick = async () => {
     try {
-      const response = await axios.get(
-        "http://127.0.0.1:8000/api/classroom/all"
-      );
+      const response = await axios.get(`${API_HOST}/api/classroom/all`);
       setClassrooms(response.data);
     } catch (error) {
       console.error("Failed to fetch classrooms. " + error);
@@ -56,11 +56,11 @@ const SDashboard = ({ choose }) => {
       const user = await getUser();
       // Perform the update logic here, using Axios for the API call
       const grpResponse = await axios.get(
-        `http://127.0.0.1:8000/api/group/${user.group_fk}`
+        `${API_HOST}/api/group/${user.group_fk}`
       );
 
       const response = await axios.put(
-        `http://127.0.0.1:8000/api/group/${user.group_fk}/update`,
+        `${API_HOST}/api/group/${user.group_fk}/update`,
         {
           name: grpResponse.data.name,
           key_code: grpResponse.data.key_code,
