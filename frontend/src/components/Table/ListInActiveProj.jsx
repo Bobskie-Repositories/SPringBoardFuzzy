@@ -6,6 +6,7 @@ import Card from "../UI/Card/Card";
 
 const ListInActiveProj = () => {
   const [projects, setProjects] = useState([]);
+  const [sortOrder, setSortOrder] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const projectsPerPage = 10;
 
@@ -22,6 +23,18 @@ const ListInActiveProj = () => {
     };
     fetchData();
   }, []);
+
+  const handleSort = () => {
+    const sortedProjects = [...projects].sort((a, b) => {
+      const aScore = a.score;
+      const bScore = b.score;
+
+      return sortOrder ? aScore - bScore : bScore - aScore;
+    });
+
+    setProjects(sortedProjects);
+    setSortOrder(!sortOrder);
+  };
 
   // Calculate the projects to display based on currentPage
   const indexOfLastProject = currentPage * projectsPerPage;
@@ -70,7 +83,12 @@ const ListInActiveProj = () => {
             <span className={styles.centerText}>
               Reason for discontinuing the project
             </span>
-            <span className={styles.centerText}>Rating</span>
+            <span
+              className={`${styles.centerText} ${styles.clickable}`}
+              onClick={handleSort}
+            >
+              Rating
+            </span>
           </div>
           <div className={styles.yScroll}>
             {projectsToDisplay.map((project) => (

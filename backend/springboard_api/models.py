@@ -1,6 +1,8 @@
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+import random
+import string
 # Create your models here.
 
 
@@ -21,7 +23,7 @@ class Teacher(AbstractBaseUser):
     email = models.EmailField(unique=True, default=None)
     is_staff = models.BooleanField(default=True)
     created_at = models.DateTimeField(default=timezone.now)
-    deleted_at = models.DateTimeField(default='0000-00-00 00:00:00')
+    deleted_at = models.DateTimeField(null=True, blank=True)
 
     objects = TeacherManager()
 
@@ -37,7 +39,7 @@ class Classroom(models.Model):
     class_name = models.CharField(max_length=200)
     teacher_fk = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=timezone.now)
-    deleted_at = models.DateTimeField(default='0000-00-00 00:00:00')
+    deleted_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.class_name
@@ -45,17 +47,30 @@ class Classroom(models.Model):
 
 class Group(models.Model):
     name = models.CharField(max_length=50, unique=True)
+    key_code = models.CharField(max_length=10, unique=True, editable=False)
     classroom_fk = models.ForeignKey(
         Classroom, on_delete=models.SET_NULL, null=True, default=None)
     created_at = models.DateTimeField(default=timezone.now)
-    deleted_at = models.DateTimeField(default='0000-00-00 00:00:00')
+    deleted_at = models.DateTimeField(null=True, blank=True)
+
+    def generate_key_code(self):
+        characters = string.ascii_letters + string.digits
+        while True:
+            new_code = ''.join(random.choice(characters) for _ in range(10))
+            if not Group.objects.filter(key_code=new_code).exists():
+                return new_code
+
+    def save(self, *args, **kwargs):
+        if not self.key_code:
+            self.key_code = self.generate_key_code()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
 
 
 class Project(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
     description = models.TextField(default='')
     isActive = models.BooleanField(default=False)
     score = models.FloatField(default=0)
@@ -108,7 +123,7 @@ class Student(AbstractBaseUser):
     group_fk = models.ForeignKey(
         Group, on_delete=models.SET_NULL, null=True, default=None)
     created_at = models.DateTimeField(default=timezone.now)
-    deleted_at = models.DateTimeField(default='0000-00-00 00:00:00')
+    deleted_at = models.DateTimeField(null=True, blank=True)
 
     objects = StudentManager()
 
@@ -136,7 +151,7 @@ class Admin(AbstractBaseUser):
     email = models.EmailField(unique=True, default=None)
     is_staff = models.BooleanField(default=True)
     created_at = models.DateTimeField(default=timezone.now)
-    deleted_at = models.DateTimeField(default='0000-00-00 00:00:00')
+    deleted_at = models.DateTimeField(null=True, blank=True)
 
     objects = AdminManager()
 

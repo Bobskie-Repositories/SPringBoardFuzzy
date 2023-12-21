@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework import generics
@@ -28,9 +29,14 @@ class CreateProjectBoard(generics.CreateAPIView):
             new_board_id = 1
 
         api_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
-        prompt = "Parse these data " + \
-            str(data.get('content', '')) + "And Give the percentage rating(1-10) in terms of novelty, technical feasibility, Capability. Give below 5 rating to data which has bad composition, lack effort, and lack of information. Put labels like 'Novelty: (value), References: (value), Feedback : (value) ...'. Provide at least 2 sentence for recommendations on parts of the data, 2 for feedback on parts of the data in regards with how the data is presented and structure. Add 2 referrence links for that topic in string.The output for each should be separated with a '+' all in one line"
-
+        prompt = (
+            f"Parse these data {request.data.get('content', '')} and give a detailed and critical rating (1-10) in terms of "
+            f"novelty, technical feasibility, and capability. Consider giving a rating BELOW 5 for data which has bad composition, "
+            f"lack of effort, very few words, and lack of information. Be critical and practical when rating. Provide at least 2 insightful/advice sentences for recommendations on parts of the data, "
+            f"2 for feedback on parts of the data in regards to how the data is presented and structured, what can be done to improve those parts. Add 2 reference links(enclosed in double quotation and name the header as References) for "
+            f"that topic in string. Put labels like 'Novelty: (the response)...'. The output should be in a sentence. "
+            f"Please ensure to critically assess each aspect and provide a fair and balanced rating. And make it in a JSON format."
+        )
         request_payload = {
             "prompt": prompt,
             "temperature": 0.5,
@@ -51,20 +57,39 @@ class CreateProjectBoard(generics.CreateAPIView):
                 response_content = response.json()
 
                 if response_content and response_content.get("choices"):
-                    improved_unit_test = response_content["choices"][0]["text"].strip(
+                    gpt_response = response_content["choices"][0]["text"].strip(
                     )
-                    print(improved_unit_test)
-                    # Split the improved_unit_test by '+' to extract values
-                    values = improved_unit_test.split('+')
+                    print(gpt_response)
+                    # Split the gpt_response by '+' to extract values
+                    # values = gpt_response.split('+')
 
-                    # Parse the values for each field
-                    novelty = int(values[0].split(': ')[1].replace('%', ''))
+                    # # Parse the values for each field
+                    # novelty = int(values[0].split(': ')[1].replace('%', ''))
+                    # technical_feasibility = int(
+                    #     values[1].split(': ')[1].replace('%', ''))
+                    # capability = int(values[2].split(': ')[1].replace('%', ''))
+                    # recommendations = values[3].split(': ')[1]
+                    # feedback = values[4].split(': ')[1]
+                    # reference_links = values[5].split(': ')[1]
+
+                    # Convert the string JSON to an actual JSON object
+                    json_response = json.loads(gpt_response)
+
+                    # Extract values from the JSON object
+                    novelty = int(json_response["Novelty"])
                     technical_feasibility = int(
-                        values[1].split(': ')[1].replace('%', ''))
-                    capability = int(values[2].split(': ')[1].replace('%', ''))
-                    recommendations = values[3].split(': ')[1]
-                    feedback = values[4].split(': ')[1]
-                    reference_links = values[5].split(': ')[1]
+                        json_response["Technical Feasibility"])
+                    capability = int(json_response["Capability"])
+                    recommendations = json_response["Recommendations"]
+                    feedback = json_response["Feedback"]
+                    reference_links = json_response["References"]
+                    # removes the begin and end quotation marks to be sure that there is no error
+                    reference_links = reference_links.strip('"')
+                    # print(reference_links)
+                    # # Check if the reference_links is enclosed in double quotation marks
+                    # if not (reference_links.startswith('"') and reference_links.endswith('"')):
+                    #     # If not, enclose it in double quotation marks
+                    #     reference_links = f'"{reference_links}"'
 
                     # Get the title, content, and project_fk from the request data
                     title = request.data.get('title', '')
@@ -192,12 +217,20 @@ class UpdateBoard(generics.CreateAPIView):
 
             # Perform OpenAI API request
             api_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
-            prompt = "Parse these data " + \
-                str(data.get('content', '')) + "And Give the percentage rating(1-10) in terms of novelty, technical feasibility, Capability. Give below 5 rating to data which has bad composition, lack effort, and lack of information. Put labels like 'Novelty: (value), References: (value), Feedback : (value) ...'. Provide at least 2 sentence for recommendations on parts of the data, 2 for feedback on parts of the data in regards with how the data is presented and structure. Add 2 referrence links for that topic in string.The output for each should be separated with a '+' all in one line"
+            # prompt = "Parse these data " + \
+            #     str(data.get('content', '')) + "And Give the percentage rating(1-10) in terms of novelty, technical feasibility, Capability. Give below 5 rating to data which has bad composition, lack effort, and lack of information. Put labels like 'Novelty: (value), References: (value), Feedback : (value) ...'. Provide at least 2 sentence for recommendations on parts of the data, 2 for feedback on parts of the data in regards with how the data is presented and structure. Add 2 referrence links for that topic in string.The output for each should be separated with a '+' all in one line"
 
             # prompt = "Parse these data " + \
             #     str(data.get('content', '')) + "And Give the percentage rating(1-10) in terms of novelty, technical feasibility, Capability. Put labels like 'Novelty: (value)'. Give very low rating to bad composition, lack effort and lack of information. and provide at least 2 sentence for recommendations on parts of the data, and 2 for feedback on parts of the data. Add 2 referrence links for that topic in string. The output for each should be separated with a '+' all in single line"
 
+            prompt = (
+                f"Parse these data {request.data.get('content', '')} and give a detailed and critical rating (1-10) in terms of "
+                f"novelty, technical feasibility, and capability. Consider giving a rating BELOW 5 for data which has bad composition, "
+                f"lack of effort, very few words, and lack of information. Be critical and practical when rating. Provide at least 2 insightful/advice sentences for recommendations on parts of the data, "
+                f"2 for feedback on parts of the data in regards to how the data is presented and structured, what can be done to improve those parts. Add 2 reference links(enclosed in double quotation and name the header as References) for "
+                f"that topic in string. Put labels like 'Novelty: (the response)...'. The output for each should be separated with a '+'. "
+                f"Please ensure to critically assess each aspect and provide a fair and balanced rating. And make it in a JSON format."
+            )
             request_payload = {
                 "prompt": prompt,
                 "temperature": 0.5,
@@ -217,18 +250,36 @@ class UpdateBoard(generics.CreateAPIView):
                 response_content = response.json()
 
                 if response_content and response_content.get("choices"):
-                    improved_unit_test = response_content["choices"][0]["text"].strip(
+                    gpt_response = response_content["choices"][0]["text"].strip(
                     )
-                    print(improved_unit_test)
-                    values = improved_unit_test.split('+')
+                    print(gpt_response)
+                    # values = gpt_response.split('+')
 
-                    novelty = int(values[0].split(': ')[1].replace('%', ''))
+                    # novelty = int(values[0].split(': ')[1].replace('%', ''))
+                    # technical_feasibility = int(
+                    #     values[1].split(': ')[1].replace('%', ''))
+                    # capability = int(values[2].split(': ')[1].replace('%', ''))
+                    # recommendations = values[3].split(': ')[1]
+                    # feedback = values[4].split(': ')[1]
+                    # reference_links = values[5].split(': ')[1]
+
+                    json_response = json.loads(gpt_response)
+
+                    # Extract values from the JSON object
+                    novelty = int(json_response["Novelty"])
                     technical_feasibility = int(
-                        values[1].split(': ')[1].replace('%', ''))
-                    capability = int(values[2].split(': ')[1].replace('%', ''))
-                    recommendations = values[3].split(': ')[1]
-                    feedback = values[4].split(': ')[1]
-                    reference_links = values[5].split(': ')[1]
+                        json_response["Technical Feasibility"])
+                    capability = int(json_response["Capability"])
+                    recommendations = json_response["Recommendations"]
+                    feedback = json_response["Feedback"]
+                    reference_links = json_response["References"]
+                    # removes the begin and end quotation marks to be sure that there is no error in gpt response
+                    reference_links = reference_links.strip('"')
+
+                    # Check if the reference_links is enclosed in double quotation marks
+                    if not (reference_links.startswith('"') and reference_links.endswith('"')):
+                        # If not, enclose it in double quotation marks
+                        reference_links = f'"{reference_links}"'
 
                     data = {
                         'title': data.get('title', ''),

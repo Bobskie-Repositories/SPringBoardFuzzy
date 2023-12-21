@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import styles from "./Search.module.css";
 import axios from "axios";
 
-const Search = () => {
+const Search = ({ setSelected, alternateAPI }) => {
   const [searchText, setSearchText] = useState("");
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const apiUrl =
+      alternateAPI === 1
+        ? "http://127.0.0.1:8000/api/project"
+        : "http://127.0.0.1:8000/api/project/public";
     // Fetch data from the API
     axios
-      .get("http://127.0.0.1:8000/api/project/public")
+      .get(apiUrl)
       .then((response) => {
         setProjects(response.data);
         setFilteredProjects(response.data);
@@ -37,6 +43,10 @@ const Search = () => {
     }
   };
 
+  const handleOnClick = (id) => {
+    navigate(`/search-project/${id}`);
+  };
+
   const isListVisible = !!searchText;
 
   return (
@@ -50,18 +60,18 @@ const Search = () => {
           handleSearch(searchText);
         }}
       />
-      {isLoading ? (
-        <p></p>
-      ) : (
-        isListVisible && (
-          <ul className={styles.itemList}>
-            {filteredProjects.map((project) => (
-              <li key={project.id} className={styles.listItem}>
-                {project.name}
-              </li>
-            ))}
-          </ul>
-        )
+      {!isLoading && isListVisible && (
+        <ul className={styles.itemList}>
+          {filteredProjects.map((project) => (
+            <li
+              key={project.id}
+              className={styles.listItem}
+              onClick={() => handleOnClick(project.id)}
+            >
+              {project.name}
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );

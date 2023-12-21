@@ -9,10 +9,37 @@ from django.db.models import Max
 from rest_framework.views import APIView
 
 
+class CreateClassroom(generics.CreateAPIView):
+    queryset = Classroom.objects.all()
+    serializer_class = ClassroomSerializer
+
+    def perform_create(self, serializer):
+        serializer.save()  # Save the new classroom object
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            self.perform_create(serializer)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class ClassroomView(generics.ListAPIView):
     # return all projects
     queryset = Classroom.objects.all()
     serializer_class = ClassroomSerializer
+
+
+class GetAllClassrooms(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            classrooms = Classroom.objects.all()
+            serializer = ClassroomSerializer(classrooms, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Classroom.DoesNotExist:
+            return Response({"error": "Classrooms not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class GetClassroom(generics.ListAPIView):
@@ -51,21 +78,21 @@ class GetClassroomById(generics.RetrieveAPIView):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class GetGroupByClassId(generics.ListAPIView):
-    serializer_class = GroupSerializer
-    queryset = Group.objects.all()
+# class GetGroupByClassId(generics.ListAPIView):
+#     serializer_class = GroupSerializer
+#     queryset = Group.objects.all()
 
-    def get(self, request, *args, **kwargs):
-        class_id = self.kwargs.get('class_id')  # parameter name
+#     def get(self, request, *args, **kwargs):
+#         class_id = self.kwargs.get('class_id')  # parameter name
 
-        try:
-            groups = Group.objects.filter(classroom_fk=class_id)
-            serializer = GroupSerializer(groups, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except Group.DoesNotExist:
-            return Response({"error": "Group not found"}, status=status.HTTP_404_NOT_FOUND)
-        except ValueError as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+#         try:
+#             groups = Group.objects.filter(classroom_fk=class_id)
+#             serializer = GroupSerializer(groups, many=True)
+#             return Response(serializer.data, status=status.HTTP_200_OK)
+#         except Group.DoesNotExist:
+#             return Response({"error": "Group not found"}, status=status.HTTP_404_NOT_FOUND)
+#         except ValueError as e:
+#             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 # Inside your GetTopProjectsByClassroom view

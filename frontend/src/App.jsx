@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import RequireAuth from "./components/Authentication/RequireAuth";
 import M_Dashboard from "./pages/M_Dashboard";
 import S_Dashboard from "./pages/S_Dashboard";
@@ -14,20 +15,39 @@ import Edit_Result from "./pages/Edit_Result";
 import AddTemplate from "./pages/AddTemplate";
 import EditTemplate from "./pages/EditTemplate";
 import InActivePage from "./pages/InActivePage";
+import LandingPage from "./pages/LandingPage";
+import SearchPage from "./pages/SearchPage";
 import GPTChat from "./components/GPTRequestHandler/GPTChat"; // Import the GPTChat component
 
 function App() {
   return (
     <Routes>
+      <Route path="/landing" element={<LandingPage />} />
       <Route path="/" exact element={<Login choose={0} />} />
       <Route path="/login" element={<Login choose={0} />} />
       <Route path="/login-student" element={<Login choose={1} />} />
       <Route path="/login-teacher" element={<Login choose={2} />} />
       <Route path="/login-admin" element={<Login choose={3} />} />
-      <Route path="/chat-gpt" element={<GPTChat />} />{" "}
+      <Route path="/register" element={<Register choose={0} />} />
+      <Route path="/register-student" element={<Register choose={1} />} />
+      <Route path="/register-teacher" element={<Register choose={2} />} />
+
+      <Route path="/student/join-group" element={<Register choose={3} />} />
+      <Route path="/student/create-group" element={<Register choose={4} />} />
+
+      {/* <Route path="/chat-gpt" element={<GPTChat />} />{" "} */}
       {/* Add this route for GPT Chat */}
       <Route path="/group/:groupid">
         <Route
+          index={true}
+          element={
+            <RequireAuth>
+              <S_Dashboard choose={0} />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="project/:projectid"
           index={true}
           element={
             <RequireAuth>
@@ -146,6 +166,16 @@ function App() {
           }
         />
         <Route
+          path="active/group/:groupid"
+          index={true}
+          exact
+          element={
+            <RequireAuth>
+              <A_Dashboard choose={3} />
+            </RequireAuth>
+          }
+        />
+        <Route
           path="add-template"
           index={true}
           exact
@@ -173,6 +203,16 @@ function App() {
         element={
           <RequireAuth>
             <InActivePage />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/search-project/:id"
+        index={true}
+        exact
+        element={
+          <RequireAuth>
+            <SearchPage />
           </RequireAuth>
         }
       />
