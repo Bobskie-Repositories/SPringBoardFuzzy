@@ -13,7 +13,7 @@ function NavigationBar() {
         <Link to="/login" className={styles.link}>
           Login
         </Link>
-        <Link to="/signup" className={styles.link}>
+        <Link to="/register" className={styles.link}>
           Sign Up
         </Link>
         <Link to="/about" className={styles.link}>

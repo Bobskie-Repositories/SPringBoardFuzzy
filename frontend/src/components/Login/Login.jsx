@@ -19,11 +19,18 @@ const Login = () => {
     navigate("/login-teacher");
   };
 
+  const goAdmin = () => {
+    navigate("/login-admin");
+  };
+
   return (
     <div className={styles.body}>
       <Header_landing />
 
-      <Card className={styles.card}>
+      <Card
+        className={styles.card}
+        style={{ maxWidth: "500px", width: "120%" }}
+      >
         <h3 className={styles.title_comp}>Choose you user type</h3>
         <div className={styles.users}>
           <div className={styles.student} onClick={goStudent}>
@@ -41,6 +48,14 @@ const Login = () => {
               size="3x"
             />
             <h4 className={styles.text}>Teacher</h4>
+          </div>
+          <div className={styles.teacher} onClick={goAdmin}>
+            <FontAwesomeIcon
+              icon={faUserTie}
+              className={styles.teacherIcon}
+              size="3x"
+            />
+            <h4 className={styles.text}>Admin</h4>
           </div>
         </div>
         <div className={styles.buttonContainer}>
