@@ -3,6 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Header_landing from "../Header/Header_landing";
 import styles from "./Register.module.css";
+import Swal from "sweetalert2";
 
 const Register_T = () => {
   // State to manage user inputs
