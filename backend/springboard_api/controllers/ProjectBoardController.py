@@ -9,7 +9,7 @@ from springboard_api.models import ProjectBoard, Project
 import requests
 from django.db.models import Max
 from django.conf import settings
-import os
+# import os
 
 
 class CreateProjectBoard(generics.CreateAPIView):
@@ -47,8 +47,12 @@ class CreateProjectBoard(generics.CreateAPIView):
             "frequency_penalty": 0.0,
             "presence_penalty": 0.0
         }
+        # headers = {
+        #     # "Authorization": os.environ.get("OPENAI_KEY") + ""
+        #     "Authorization": "Bearer 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"
+        # }
         headers = {
-            "Authorization": os.environ.get("OPENAI_KEY") + ""
+            "Authorization": "Bearer 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"
         }
 
         try:
@@ -243,8 +247,12 @@ class UpdateBoard(generics.CreateAPIView):
                 "frequency_penalty": 0.0,
                 "presence_penalty": 0.0
             }
+            # headers = {
+            #     # "Authorization": os.environ.get("OPENAI_KEY") + ""
+            #     "Authorization": "Bearer sk-807COlHqmVI6xetOHOKhT3BlbkFJbjrHYQNGSEZoXtH7pOAVi"
+            # }
             headers = {
-                "Authorization": os.environ.get("OPENAI_KEY") + ""
+                "Authorization": "Bearer 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"
             }
 
             response = requests.post(
