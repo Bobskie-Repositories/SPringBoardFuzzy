@@ -52,7 +52,7 @@ class CreateProjectBoard(generics.CreateAPIView):
         #     "Authorization": "Bearer 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"
         # }
         headers = {
-            "Authorization": "Bearer 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"
+            "Authorization": "Bearer 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"
         }
 
         try:
@@ -252,7 +252,7 @@ class UpdateBoard(generics.CreateAPIView):
             #     "Authorization": "Bearer sk-807COlHqmVI6xetOHOKhT3BlbkFJbjrHYQNGSEZoXtH7pOAVi"
             # }
             headers = {
-                "Authorization": "Bearer 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"
+                "Authorization": "Bearer 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"
             }
 
             response = requests.post(
