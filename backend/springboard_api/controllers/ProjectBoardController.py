@@ -48,7 +48,8 @@ class CreateProjectBoard(generics.CreateAPIView):
             "presence_penalty": 0.0
         }
         headers = {
-            "Authorization": os.environ.get("OPENAI_KEY") + ""
+            # "Authorization": os.environ.get("OPENAI_KEY") + ""
+            "Authorization": "Bearer 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"
         }
 
         try:
@@ -244,7 +245,8 @@ class UpdateBoard(generics.CreateAPIView):
                 "presence_penalty": 0.0
             }
             headers = {
-                "Authorization": os.environ.get("OPENAI_KEY") + ""
+                # "Authorization": os.environ.get("OPENAI_KEY") + ""
+                "Authorization": "Bearer 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"
             }
 
             response = requests.post(
