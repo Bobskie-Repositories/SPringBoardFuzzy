@@ -144,6 +144,7 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "https://spring-board.vercel.app",
 ]
 
 SESSION_COOKIE_SAMESITE = 'None'  # or 'None' if needed
