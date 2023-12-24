@@ -48,28 +48,29 @@ const EditBoard = () => {
 
   const updateProjectBoard = async () => {
     try {
-      const response = await axios.post(
-        `${API_HOST}/api/projectboards/${id}/update`,
-        {
-          title: title,
-          content: content, // Use the content from the React Quill editor
-          novelty: priorNovelVal,
-          capability: priorCapableVal,
-          technical_feasibility: priorTechVal,
-          feedback: "error",
-          recommendation: "error",
-          references: "error",
-          project_fk: projectId,
-          boardId: boardId,
-        }
-      );
+      // const response = await axios.post(
+      //   `${API_HOST}/api/projectboards/${id}/update`,
+      //   {
+      //     title: title,
+      //     content: content, // Use the content from the React Quill editor
+      //     novelty: priorNovelVal,
+      //     capability: priorCapableVal,
+      //     technical_feasibility: priorTechVal,
+      //     feedback: "error",
+      //     recommendation: "error",
+      //     references: "error",
+      //     project_fk: projectId,
+      //     boardId: boardId,
+      //   }
+      // );
       // console.log(response);
       // console.log(response.data.project_fk);
       // await axios.put(
       //   `${API_HOST}/api/project/${response.data.project_fk}/update_score`
       // );
 
-      navigate(`/board/${response.data.id}/edit/result`);
+      // navigate(`/board/${response.data.id}/edit/result`);
+      navigate(`/board/${id}/edit/result`);
 
       //console.log("ProjectBoard updated successfully:", response.data.id);
     } catch (error) {
