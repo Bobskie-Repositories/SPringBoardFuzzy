@@ -281,7 +281,11 @@ function Board({
       )}
 
       {isModalOpen && (
-        <ModalCustom isOpen={isModalOpen} onClose={handleCloseModal}>
+        <ModalCustom
+          width={500}
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+        >
           {modalContent}
         </ModalCustom>
       )}
