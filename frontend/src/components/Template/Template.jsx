@@ -16,16 +16,19 @@ import Details from "../UI/RichTextEditor/Details";
 import { Tiptap } from "../UI/RichTextEditor/TipTap";
 import styles from "./Template.module.css";
 import global from "@assets/global.module.css";
+import ModalCustom from "../UI/Modal/Modal";
 import config from "../../config";
+import Loading from "../UI/Loading/Loading";
 
 const Template = () => {
   const { id, templateid } = useParams();
   const [template, setTemplate] = useState(null);
-  const navigate = useNavigate();
   const [description, setDescription] = useState("");
   const editor = useRef(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [content, setContent] = useState("");
   const { API_HOST } = config;
+  const navigate = useNavigate();
 
   // Handle changes in the React Quill editor
   const handleEditorChange = (newContent) => {
@@ -38,7 +41,6 @@ const Template = () => {
         const response = await axios.get(
           `${API_HOST}/api/template/${templateid}`
         );
-        console.log(response);
         setTemplate(response.data);
         setContent(response.data.content || "");
       } catch (error) {
@@ -50,13 +52,8 @@ const Template = () => {
   }, [templateid]);
 
   const createProjectBoard = async () => {
+    setIsModalOpen(true);
     try {
-      const getCurrentTimestamp = () => {
-        const now = new Date();
-        const isoTimestamp = now.toISOString();
-        return isoTimestamp;
-      };
-
       const response = await axios.post(
         `${API_HOST}/api/project/${id}/addprojectboards`,
         {
@@ -72,16 +69,11 @@ const Template = () => {
           project_fk: id,
         }
       );
-      console.log("Response from createProjectBoard:", response);
-
-      // await axios.put(`${API_HOST}/api/project/${id}/update_score`);
-
       navigate(`/project/${id}/create-board/${response.data.id}/result`);
-
-      console.log("ProjectBoard created successfully:", response.data.id);
     } catch (error) {
       console.error("Error creating ProjectBoard:", error);
     }
+    setIsModalOpen(false);
   };
 
   if (!template) {
@@ -112,6 +104,12 @@ const Template = () => {
             {/* <Tiptap setDescription={content} /> */}
           </div>
         </Card>
+
+        {isModalOpen && (
+          <ModalCustom width={200} isOpen={isModalOpen} onClose={isModalOpen}>
+            <Loading style={{ height: "auto" }} />
+          </ModalCustom>
+        )}
 
         <Button className={styles.button} onClick={createProjectBoard}>
           Submit

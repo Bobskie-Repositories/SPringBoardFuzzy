@@ -13,7 +13,9 @@ import EditorToolbar, {
   modules,
   formats,
 } from "../UI/RichTextEditor/EditorToolBar";
+import ModalCustom from "../UI/Modal/Modal";
 import config from "../../config";
+import Loading from "../UI/Loading/Loading";
 
 const EditBoard = () => {
   const [title, setTitle] = useState(null);
@@ -23,6 +25,7 @@ const EditBoard = () => {
   const [priorNovelVal, setPriorNovelVal] = useState(null);
   const [priorTechVal, setPriorTechVal] = useState(null);
   const [priorCapableVal, setPriorCapableVal] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
   const { API_HOST } = config;
@@ -47,32 +50,25 @@ const EditBoard = () => {
   }, [id]);
 
   const updateProjectBoard = async () => {
+    setIsModalOpen(true);
     try {
-      // const response = await axios.post(
-      //   `${API_HOST}/api/projectboards/${id}/update`,
-      //   {
-      //     title: title,
-      //     content: content, // Use the content from the React Quill editor
-      //     novelty: priorNovelVal,
-      //     capability: priorCapableVal,
-      //     technical_feasibility: priorTechVal,
-      //     feedback: "error",
-      //     recommendation: "error",
-      //     references: "error",
-      //     project_fk: projectId,
-      //     boardId: boardId,
-      //   }
-      // );
-      // console.log(response);
-      // console.log(response.data.project_fk);
-      // await axios.put(
-      //   `${API_HOST}/api/project/${response.data.project_fk}/update_score`
-      // );
-
-      // navigate(`/board/${response.data.id}/edit/result`);
-      navigate(`/board/${id}/edit/result`);
-
-      //console.log("ProjectBoard updated successfully:", response.data.id);
+      const response = await axios.post(
+        `${API_HOST}/api/projectboards/${id}/update`,
+        {
+          title: title,
+          content: content, // Use the content from the React Quill editor
+          novelty: priorNovelVal,
+          capability: priorCapableVal,
+          technical_feasibility: priorTechVal,
+          feedback: "error",
+          recommendation: "error",
+          references: "error",
+          project_fk: projectId,
+          boardId: boardId,
+        }
+      );
+      setIsModalOpen(false);
+      navigate(`/board/${response.data.id}/edit/result`);
     } catch (error) {
       console.error("Error updating ProjectBoard:", error);
     }
@@ -109,7 +105,11 @@ const EditBoard = () => {
             />
           </div>
         </Card>
-
+        {isModalOpen && (
+          <ModalCustom width={200} isOpen={isModalOpen}>
+            <Loading style={{ height: "auto" }} />
+          </ModalCustom>
+        )}
         <Button className={styles.button} onClick={updateProjectBoard}>
           Submit
         </Button>
