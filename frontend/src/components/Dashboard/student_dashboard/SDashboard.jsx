@@ -144,7 +144,11 @@ const SDashboard = ({ choose }) => {
             </div>
 
             {isModalOpen && (
-              <ModalCustom isOpen={isModalOpen} onClose={handleCloseModal}>
+              <ModalCustom
+                width={500}
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
+              >
                 <div style={{ textAlign: "center" }}>
                   <h2>Which class do you wish to transfer?</h2>
                   <div className={styles.input}>
