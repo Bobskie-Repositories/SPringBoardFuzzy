@@ -70,12 +70,16 @@ class CreateProjectBoard(generics.CreateAPIView):
                         reference_links = json_response.get(
                             "References", "").strip('"')
 
+                        print("After reference link")
+
                         if not (reference_links.startswith('"') and reference_links.endswith('"')):
                             reference_links = f'{reference_links}'
 
                         title = request.data.get('title', '')
                         content = request.data.get('content', '')
                         project_fk_id = request.data.get('project_fk', None)
+
+                        print("After project fk")
 
                         data = {
                             'title': title,
@@ -90,12 +94,16 @@ class CreateProjectBoard(generics.CreateAPIView):
                             'boardId': new_board_id,
                         }
 
+                        print("After data")
+
                         update_score_url = settings.BASE_URL + \
                             f"/api/project/{project_fk_id}/update_score"
                         update_score_data = {
                             "score": ((novelty * 0.4) + (technical_feasibility * 0.3) + (capability * 0.3)),
                             "subtract_score": 0
                         }
+
+                        print("After update data")
 
                         response = requests.put(
                             update_score_url, json=update_score_data)
