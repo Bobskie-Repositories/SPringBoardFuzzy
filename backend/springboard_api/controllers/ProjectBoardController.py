@@ -108,6 +108,8 @@ class CreateProjectBoard(generics.CreateAPIView):
                         response = requests.put(
                             update_score_url, json=update_score_data)
 
+                        print("After getting new updated id")
+
                         if response.status_code != 200:
                             return Response({"error": "Failed to update project score"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
                     else:
