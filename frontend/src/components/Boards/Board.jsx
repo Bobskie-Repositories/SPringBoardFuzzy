@@ -226,7 +226,7 @@ function Board({
         group_fk: project.group_fk,
       });
     } catch (error) {
-      Swal.fire("Error", "Failed to publish the template", "error");
+      Swal.fire("Error", "Please provide a reason.", "error");
     }
   };
 
@@ -245,7 +245,7 @@ function Board({
       }));
       onProjectUpdate();
     } catch (error) {
-      Swal.fire("Error", "Failed to publish the template", "error");
+      Swal.fire("Error", "Please provide a reason.", "error");
     }
   };
 
