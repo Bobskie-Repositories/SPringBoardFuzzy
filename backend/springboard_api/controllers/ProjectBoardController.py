@@ -18,8 +18,8 @@ class CreateProjectBoard(generics.CreateAPIView):
     def perform_create(self, serializer, data):
         serializer.save(**data)
 
-    def update_project_score(self, project, subtract_score):
-        project.score += subtract_score
+    def update_project_score(self, project, add_score):
+        project.score += add_score
         project.save()
 
     def create(self, request, *args, **kwargs):
@@ -49,6 +49,7 @@ class CreateProjectBoard(generics.CreateAPIView):
         }
 
         headers = {"Authorization": os.environ.get("OPENAI_KEY", "")}
+        print(os.environ.get("OPENAI_KEY", ""))
 
         try:
             response = requests.post(
@@ -101,13 +102,13 @@ class CreateProjectBoard(generics.CreateAPIView):
 
                         project_instance = Project.objects.get(
                             id=project_fk_id)
-                        subtract_score = (
+                        add_score = (
                             (novelty * 0.4) +
                             (technical_feasibility * 0.3) +
                             (capability * 0.3)
                         )
                         self.update_project_score(
-                            project_instance, subtract_score)
+                            project_instance, add_score)
 
                         print("After update score")
 
@@ -198,6 +199,11 @@ class GetProjectBoardById(generics.ListAPIView):
 class UpdateBoard(generics.CreateAPIView):
     serializer_class = ProjectBoardSerializer
 
+    def update_project_score(self, project, subtract_score, new_score):
+        project.score -= subtract_score
+        project.score += new_score
+        project.save()
+
     def create(self, request, *args, **kwargs):
         data = request.data
         project_board_id = kwargs.get('projectboard_id')
@@ -275,14 +281,17 @@ class UpdateBoard(generics.CreateAPIView):
                         new_board_instance = ProjectBoard(**data)
                         new_board_instance.save()
 
-                        update_score_url = settings.BASE_URL + \
-                            f"/api/project/{project_board.project_fk.id}/update_score"
-                        update_score_data = {
-                            "score": ((novelty * 0.4) + (technical_feasibility * 0.3) + (capability * 0.3)),
-                            "subtract_score": subtract_score
-                        }
-                        response = requests.put(
-                            update_score_url, json=update_score_data)
+                        project_instance = Project.objects.get(
+                            id=project_board.project_fk.id)
+
+                        new_score = (
+                            (novelty * 0.4) +
+                            (technical_feasibility * 0.3) + (capability * 0.3)
+                        )
+                        subtract_score = subtract_score
+
+                        self.update_project_score(
+                            project_instance, subtract_score, new_score)
 
                         if response.status_code != 200:
                             return Response({"error": "Failed to update project score"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
