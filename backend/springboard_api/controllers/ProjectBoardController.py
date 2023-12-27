@@ -18,13 +18,16 @@ class CreateProjectBoard(generics.CreateAPIView):
     def perform_create(self, serializer, data):
         serializer.save(**data)
 
+    def update_project_score(self, project, subtract_score):
+        project.score += subtract_score
+        project.save()
+
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         data = {}
 
         highest_board_id = ProjectBoard.objects.aggregate(Max('boardId'))[
             'boardId__max']
-
         new_board_id = highest_board_id + 1 if highest_board_id is not None else 1
 
         api_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
@@ -96,22 +99,18 @@ class CreateProjectBoard(generics.CreateAPIView):
 
                         print("After data")
 
-                        update_score_url = settings.BASE_URL + \
-                            f"/api/project/{project_fk_id}/update_score"
-                        update_score_data = {
-                            "score": ((novelty * 0.4) + (technical_feasibility * 0.3) + (capability * 0.3)),
-                            "subtract_score": 0
-                        }
+                        project_instance = Project.objects.get(
+                            id=project_fk_id)
+                        subtract_score = (
+                            (novelty * 0.4) +
+                            (technical_feasibility * 0.3) +
+                            (capability * 0.3)
+                        )
+                        self.update_project_score(
+                            project_instance, subtract_score)
 
-                        print("After update data")
+                        print("After update score")
 
-                        response = requests.put(
-                            update_score_url, json=update_score_data)
-
-                        print("After getting new updated id")
-
-                        if response.status_code != 200:
-                            return Response({"error": "Failed to update project score"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
                     else:
                         print("No response content or choices found.")
                 except json.JSONDecodeError as json_error:
