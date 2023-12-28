@@ -437,7 +437,7 @@ const MenuBar = ({ editor }) => {
   );
 };
 
-export const Tiptap = ({ setDescription }) => {
+export const Tiptap = ({ setDescription, value }) => {
   const editor = useEditor({
     editorProps: {
       attributes: {
@@ -482,10 +482,11 @@ export const Tiptap = ({ setDescription }) => {
       // HorizontalRule,
     ],
 
-    content: ``,
+    content: value,
 
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
+
       // console.log(html);
       setDescription(html);
     },
