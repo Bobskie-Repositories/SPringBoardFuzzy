@@ -101,7 +101,7 @@ const Template = () => {
               formats={formats}
               className={global.quill}
             /> */}
-            <Tiptap setDescription={setDescription} value={content} />
+            <Tiptap setDescription={setContent} value={content} />
           </div>
         </Card>
 
