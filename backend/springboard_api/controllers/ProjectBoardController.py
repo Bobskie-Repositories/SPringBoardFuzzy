@@ -49,7 +49,6 @@ class CreateProjectBoard(generics.CreateAPIView):
         }
 
         headers = {"Authorization": os.environ.get("OPENAI_KEY", "")}
-        print(os.environ.get("OPENAI_KEY", ""))
 
         try:
             response = requests.post(
@@ -63,7 +62,6 @@ class CreateProjectBoard(generics.CreateAPIView):
                     if choices:
                         gpt_response = choices[0]["text"].strip()
                         json_response = json.loads(gpt_response)
-                        print(gpt_response)
                         novelty = json_response.get("Novelty", 0)
                         technical_feasibility = json_response.get(
                             "Technical Feasibility", 0)
@@ -74,16 +72,12 @@ class CreateProjectBoard(generics.CreateAPIView):
                         reference_links = json_response.get(
                             "References", "").strip('"')
 
-                        print("After reference link")
-
                         if not (reference_links.startswith('"') and reference_links.endswith('"')):
                             reference_links = f'{reference_links}'
 
                         title = request.data.get('title', '')
                         content = request.data.get('content', '')
                         project_fk_id = request.data.get('project_fk', None)
-
-                        print("After project fk")
 
                         data = {
                             'title': title,
@@ -98,8 +92,6 @@ class CreateProjectBoard(generics.CreateAPIView):
                             'boardId': new_board_id,
                         }
 
-                        print("After data")
-
                         project_instance = Project.objects.get(
                             id=project_fk_id)
                         add_score = (
@@ -109,8 +101,6 @@ class CreateProjectBoard(generics.CreateAPIView):
                         )
                         self.update_project_score(
                             project_instance, add_score)
-
-                        print("After update score")
 
                     else:
                         print("No response content or choices found.")

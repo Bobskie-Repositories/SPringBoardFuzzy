@@ -13,6 +13,7 @@ import EditorToolbar, {
   modules,
   formats,
 } from "../UI/RichTextEditor/EditorToolBar";
+import { Tiptap } from "../UI/RichTextEditor/TipTap";
 import ModalCustom from "../UI/Modal/Modal";
 import config from "../../config";
 import Loading from "../UI/Loading/Loading";
@@ -70,6 +71,7 @@ const EditBoard = () => {
       setIsModalOpen(false);
       navigate(`/board/${response.data.id}/edit/result`);
     } catch (error) {
+      setIsModalOpen(false);
       console.error("Error updating ProjectBoard:", error);
     }
   };
@@ -93,7 +95,7 @@ const EditBoard = () => {
           <div className={styles.box} />
 
           <div className={styles.containerStyle}>
-            <EditorToolbar />
+            {/* <EditorToolbar />
             <ReactQuill
               theme="snow"
               value={content}
@@ -102,7 +104,8 @@ const EditBoard = () => {
               modules={modules}
               formats={formats}
               className={global.quill}
-            />
+            /> */}
+            <Tiptap setDescription={setContent} value={content} />
           </div>
         </Card>
         {isModalOpen && (

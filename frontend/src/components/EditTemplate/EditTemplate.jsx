@@ -14,6 +14,7 @@ import EditorToolbar, {
   modules,
   formats,
 } from "../UI/RichTextEditor/EditorToolBar";
+import { Tiptap } from "../UI/RichTextEditor/TipTap";
 import config from "../../config";
 
 const EditTemplate = () => {
@@ -187,7 +188,7 @@ const EditTemplate = () => {
             <Card className={styles.cardContainer}>
               <div className={styles.box} />
               <div className={styles.containerStyle}>
-                <EditorToolbar />
+                {/* <EditorToolbar />
                 <ReactQuill
                   theme="snow"
                   value={rulesContent}
@@ -196,7 +197,8 @@ const EditTemplate = () => {
                   modules={modules}
                   formats={formats}
                   className={global.quill}
-                />
+                /> */}
+                <Tiptap setDescription={setRulesContent} value={rulesContent} />
               </div>
             </Card>
             <div className={styles.btmButton}>
@@ -217,7 +219,7 @@ const EditTemplate = () => {
             <Card className={styles.cardContainer}>
               <div className={styles.box} />
               <div className={styles.containerStyle}>
-                <EditorToolbar />
+                {/* <EditorToolbar />
                 <ReactQuill
                   theme="snow"
                   value={templateContent}
@@ -226,6 +228,10 @@ const EditTemplate = () => {
                   modules={modules}
                   formats={formats}
                   className={global.quill}
+                /> */}
+                <Tiptap
+                  setDescription={setTemplateContent}
+                  value={templateContent}
                 />
               </div>
             </Card>
