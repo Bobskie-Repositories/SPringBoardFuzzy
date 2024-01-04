@@ -65,7 +65,7 @@ const Template = () => {
           technical_feasibility: 0,
           feedback: "s",
           recommendation: "s",
-          references: "s",
+          //references: "s",
           project_fk: id,
         }
       );
@@ -107,7 +107,7 @@ const Template = () => {
 
         {isModalOpen && (
           <ModalCustom width={200} isOpen={isModalOpen}>
-            <Loading style={{ height: "auto" }} />
+            <Loading timeout="auto" style={{ height: "auto" }} />
           </ModalCustom>
         )}
 

@@ -31,21 +31,21 @@ const ResultBoard = ({ boardid }) => {
   }
 
   // Function to parse references string into an array
-  const parseReferences = (references) => {
-    if (!references) return [];
+  // const parseReferences = (references) => {
+  //   if (!references) return [];
 
-    // Remove the first and last characters from the entire string
-    // const trimmedReferencesString = references.slice(0, -1).trim();
+  //   // Remove the first and last characters from the entire string
+  //   // const trimmedReferencesString = references.slice(0, -1).trim();
 
-    // Split the references string by ',' and trim spaces
-    const referencesArray = references
-      .split(",")
-      .map((reference) => reference.trim());
+  //   // Split the references string by ',' and trim spaces
+  //   const referencesArray = references
+  //     .split(",")
+  //     .map((reference) => reference.trim());
 
-    return referencesArray;
-  };
+  //   return referencesArray;
+  // };
 
-  const referencesArray = parseReferences(board.references);
+  // const referencesArray = parseReferences(board.references);
 
   return (
     <div className={styles.container}>
@@ -92,7 +92,7 @@ const ResultBoard = ({ boardid }) => {
           </div>
         </div>
 
-        <div>
+        {/* <div>
           <h4>References</h4>
           <div className={styles.boxContent}>
             {referencesArray.map((reference, index) => (
@@ -103,7 +103,7 @@ const ResultBoard = ({ boardid }) => {
               </li>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
