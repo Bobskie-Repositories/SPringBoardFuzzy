@@ -3,18 +3,24 @@ import CircularProgress from "@mui/material/CircularProgress";
 import styles from "./Loading.module.css";
 
 const Loading = (props) => {
+  const { timeout, style } = props;
   const [showLoading, setShowLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowLoading(false);
-    }, 5000);
+    if (timeout && timeout !== "auto") {
+      const timer = setTimeout(() => {
+        setShowLoading(false);
+      }, timeout);
 
-    return () => clearTimeout(timer);
-  }, []);
+      return () => clearTimeout(timer);
+    }
+
+    // If timeout is 'auto' or not provided, keep loading indefinitely
+    return () => {};
+  }, [timeout]);
 
   return (
-    <div className={styles.loading} style={props.style}>
+    <div className={styles.loading} style={style}>
       {showLoading && <CircularProgress />}
     </div>
   );

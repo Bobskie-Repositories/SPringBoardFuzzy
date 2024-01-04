@@ -10,6 +10,7 @@ import requests
 from django.db.models import Max
 from django.conf import settings
 import os
+from openai import OpenAI
 
 
 class CreateProjectBoard(generics.CreateAPIView):
@@ -30,60 +31,96 @@ class CreateProjectBoard(generics.CreateAPIView):
             'boardId__max']
         new_board_id = highest_board_id + 1 if highest_board_id is not None else 1
 
-        api_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
+        # api_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
         prompt = (
-            f"Parse these data {request.data.get('content', '')} and give a detailed and critical rating (1-10) number in terms of "
-            f"novelty, technical feasibility, and capability. Consider giving a rating BELOW 5 for data which has bad composition, "
-            f"lack of effort, very few words, and lack of information. Be critical and practical when rating. Provide at least 2 insightful/advice sentences for recommendations on parts of the data, "
-            f"2 for feedback on parts of the data in regards to how the data is presented and structured, what can be done to improve those parts. Use the web and add 2 reference links(enclosed in double quotation, separate the links with a comma, and name the header as References) for "
-            f"that topic in string. Put labels like 'Novelty: (the response)...'. The output should be in a sentence. "
-            f"Please ensure to critically assess each aspect and provide a fair and balanced rating. And make it in a JSON format."
-        )
-        request_payload = {
-            "prompt": prompt,
-            "temperature": 0.5,
-            "max_tokens": 256,
-            "top_p": 1.0,
-            "frequency_penalty": 0.0,
-            "presence_penalty": 0.0
-        }
+            f"Analyze the following data: {request.data.get('content', '')}. "
+            f"Provide a detailed and critical rating (1-10) for the following aspects: "
+            f"\n1. Novelty: How original is the data? "
+            f"\n2. Technical Feasibility: Is the data technically sound and feasible? "
+            f"\n3. Capability: Does the data demonstrate capability? "
+            f"\nConsider ratings below 5 for data lacking composition, effort, verbosity, or information. "
+            f"Be critical and practical when rating. "
+            f"Include at least 2 specific sentences of advice for improvements (Recommendations) and "
+            f"2 sentences of feedback on how the data is presented and structured, and what can be done to improve those aspects (Feedback). "
+            # f"Please provide two reference links that are directly related to the content. Ensure that these links are active and lead to existing web pages (i.e., they do not result in a '404 Not Found' error). "
+            f"Label each part of the response like 'novelty: (the response)...'. "
+            f"The output should be in a sentence and in JSON format. "
+            f"Ensure a fair and balanced assessment for each aspect."
 
-        headers = {"Authorization": os.environ.get("OPENAI_KEY", "")}
-        print(os.environ.get("OPENAI_KEY", ""))
+        )
+
+        # request_payload = {
+        #     "prompt": prompt,
+        #     "temperature": 0.5,
+        #     "max_tokens": 256,
+        #     "top_p": 1.0,
+        #     "frequency_penalty": 0.0,
+        #     "presence_penalty": 0.0
+        # }
+
+        # headers = {"Authorization": os.environ.get("OPENAI_KEY", "")}
+        client = OpenAI(api_key=os.environ.get("OPENAI_KEY", ""))
+        message = [
+            {"role": "user", "content": prompt}
+        ]
 
         try:
-            response = requests.post(
-                api_url, json=request_payload, headers=headers)
-
-            if response.status_code == 200:
+            # response = requests.post(
+            # api_url, json=request_payload, headers=headers)
+            response = client.chat.completions.create(
+                model="gpt-3.5-turbo", messages=message, temperature=0, max_tokens=1050
+            )
+            if response:
                 try:
-                    response_content = response.json()
-                    choices = response_content.get("choices", [])
+                    # response_content = response.json()
+                    # print(response_content)
+                    choices = response.choices
+                    first_choice_content = response.choices[0].message.content
+                    # print(first_choice_content)
 
                     if choices:
-                        gpt_response = choices[0]["text"].strip()
+                        # gpt_response = choices[0]["text"].strip()
+                        gpt_response = first_choice_content
                         json_response = json.loads(gpt_response)
-                        print(gpt_response)
-                        novelty = json_response.get("Novelty", 0)
-                        technical_feasibility = json_response.get(
-                            "Technical Feasibility", 0)
-                        capability = json_response.get("Capability", 0)
-                        recommendations = json_response.get(
-                            "Recommendations", "")
-                        feedback = json_response.get("Feedback", "")
-                        reference_links = json_response.get(
-                            "References", "").strip('"')
+                        # print(json_response)
+                        novelty = float(json_response.get("novelty", 0))
+                        technical_feasibility = float(
+                            json_response.get("technical_feasibility", 0))
+                        capability = float(json_response.get("capability", 0))
 
-                        print("After reference link")
+                        # recommendations = ' '.join(
+                        # json_response.get("recommendations", []))
+                        # feedback = ' '.join(json_response.get("feedback", []))
 
-                        if not (reference_links.startswith('"') and reference_links.endswith('"')):
-                            reference_links = f'{reference_links}'
+                        recommendations = '\n'.join([
+                            "Novelty Recommendations:\n\n" +
+                            json_response.get("recommendations_novelty", ""),
+                            "\n\nTechnical Feasibility Recommendations:\n\n" +
+                            json_response.get(
+                                "recommendations_technical_feasibility", ""),
+                            "\n\nability Recommendations:\n\n" +
+                            json_response.get("recommendations_capability", "")
+                        ])
+
+                        feedback = '\n'.join([
+                            "Novelty Feedback:\n\n" +
+                            json_response.get("feedback_novelty", ""),
+                            "\n\nTechnical Feasibility Feedback:\n\n" +
+                            json_response.get(
+                                "feedback_technical_feasibility", ""),
+                            "\n\nCapability Feedback:\n\n" +
+                            json_response.get("feedback_capability", "")
+                        ])
+
+                        # reference_links = ', '.join(
+                        #   json_response.get("references", []))
+
+                        # if not (reference_links.startswith('"') and reference_links.endswith('"')):
+                        #     reference_links = f'{reference_links}'
 
                         title = request.data.get('title', '')
                         content = request.data.get('content', '')
                         project_fk_id = request.data.get('project_fk', None)
-
-                        print("After project fk")
 
                         data = {
                             'title': title,
@@ -93,12 +130,10 @@ class CreateProjectBoard(generics.CreateAPIView):
                             'capability': capability,
                             'recommendation': recommendations,
                             'feedback': feedback,
-                            'references': reference_links,
+                            # 'references': reference_links,
                             'project_fk': Project.objects.get(id=project_fk_id),
                             'boardId': new_board_id,
                         }
-
-                        print("After data")
 
                         project_instance = Project.objects.get(
                             id=project_fk_id)
@@ -109,8 +144,6 @@ class CreateProjectBoard(generics.CreateAPIView):
                         )
                         self.update_project_score(
                             project_instance, add_score)
-
-                        print("After update score")
 
                     else:
                         print("No response content or choices found.")
@@ -217,52 +250,89 @@ class UpdateBoard(generics.CreateAPIView):
                 (project_board.capability * 0.3)
             )
 
-            api_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
+            # api_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
             prompt = (
-                f"Parse these data {request.data.get('content', '')} and give a detailed and critical rating (1-10) number in terms of "
-                f"novelty, technical feasibility, and capability. Consider giving a rating BELOW 5 for data which has bad composition, "
-                f"lack of effort, very few words, and lack of information. Be critical and practical when rating. Provide at least 2 insightful/advice sentences for recommendations on parts of the data, "
-                f"2 for feedback on parts of the data in regards to how the data is presented and structured, what can be done to improve those parts. Use the web and add 2 reference links(enclosed in double quotation, separate the links with a comma, and name the header as References) for "
-                f"that topic in string. Put labels like 'Novelty: (the response)...'. The output should be in a sentence. "
-                f"Please ensure to critically assess each aspect and provide a fair and balanced rating. And make it in a JSON format."
+                f"Analyze the following data: {request.data.get('content', '')}. "
+                f"Provide a detailed and critical rating (1-10) for the following aspects: "
+                f"\n1. Novelty: How original is the data? "
+                f"\n2. Technical Feasibility: Is the data technically sound and feasible? "
+                f"\n3. Capability: Does the data demonstrate capability? "
+                f"\nConsider ratings below 5 for data lacking composition, effort, verbosity, or information. "
+                f"Be critical and practical when rating. "
+                f"Include at least 2 specific sentences of advice for improvements (Recommendations) and "
+                f"2 sentences of feedback on how the data is presented and structured, and what can be done to improve those aspects (Feedback). "
+                # f"Please provide two reference links that are directly related to the content. Ensure that these links are active and lead to existing web pages (i.e., they do not result in a '404 Not Found' error). "
+                f"Label each part of the response like 'novelty: (the response)...'. "
+                f"The output should be in a sentence and in JSON format. "
+                f"Ensure a fair and balanced assessment for each aspect."
+
             )
 
-            request_payload = {
-                "prompt": prompt,
-                "temperature": 0.5,
-                "max_tokens": 256,
-                "top_p": 1.0,
-                "frequency_penalty": 0.0,
-                "presence_penalty": 0.0
-            }
+            # request_payload = {
+            #     "prompt": prompt,
+            #     "temperature": 0.5,
+            #     "max_tokens": 256,
+            #     "top_p": 1.0,
+            #     "frequency_penalty": 0.0,
+            #     "presence_penalty": 0.0
+            # }
 
-            headers = {
-                "Authorization": os.environ.get("OPENAI_KEY") + ""
-            }
+            # headers = {
+            #     "Authorization": os.environ.get("OPENAI_KEY") + ""
+            # }
 
-            response = requests.post(
-                api_url, json=request_payload, headers=headers)
-
-            if response.status_code == 200:
+            # response = requests.post(
+            #     api_url, json=request_payload, headers=headers)
+            client = OpenAI(api_key=os.environ.get("OPENAI_KEY", ""))
+            message = [
+                {"role": "user", "content": prompt}
+            ]
+            response = client.chat.completions.create(
+                model="gpt-3.5-turbo", messages=message, temperature=0, max_tokens=1050
+            )
+            if response:
                 try:
-                    response_content = response.json()
-                    choices = response_content.get("choices", [])
+                    # response_content = response.json()
+                    # choices = response_content.get("choices", [])
+                    choices = response.choices
+                    first_choice_content = response.choices[0].message.content
                     if choices:
-                        gpt_response = choices[0]["text"].strip()
+                        # gpt_response = choices[0]["text"].strip()
+                        gpt_response = first_choice_content
                         json_response = json.loads(gpt_response)
-
-                        novelty = json_response.get("Novelty", 0)
+                        # print(json_response)
+                        novelty = json_response.get("novelty", 0)
                         technical_feasibility = json_response.get(
-                            "Technical Feasibility", 0)
-                        capability = json_response.get("Capability", 0)
-                        recommendations = json_response.get(
-                            "Recommendations", "")
-                        feedback = json_response.get("Feedback", "")
-                        reference_links = json_response.get(
-                            "References", "").strip('"')
+                            "technical_feasibility", 0)
+                        capability = json_response.get("capability", 0)
+                        recommendations = '\n'.join([
+                            "Novelty Recommendations:\n\n" +
+                            json_response.get("recommendations_novelty", ""),
+                            "\n\nTechnical Feasibility Recommendations:\n\n" +
+                            json_response.get(
+                                "recommendations_technical_feasibility", ""),
+                            "\n\nability Recommendations:\n\n" +
+                            json_response.get("recommendations_capability", "")
+                        ])
 
-                        if not (reference_links.startswith('"') and reference_links.endswith('"')):
-                            reference_links = f'{reference_links}'
+                        feedback = '\n'.join([
+                            "Novelty Feedback:\n\n" +
+                            json_response.get("feedback_novelty", ""),
+                            "\n\nTechnical Feasibility Feedback:\n\n" +
+                            json_response.get(
+                                "feedback_technical_feasibility", ""),
+                            "\n\nCapability Feedback:\n\n" +
+                            json_response.get("feedback_capability", "")
+                        ])
+
+                        # recommendations = ' '.join(
+                        #  json_response.get("recommendations", []))
+                        # feedback = ' '.join(json_response.get("feedback", []))
+                        # reference_links = ', '.join(
+                        #    json_response.get("references", []))
+
+                        # if not (reference_links.startswith('"') and reference_links.endswith('"')):
+                        #     reference_links = f'{reference_links}'
 
                         data = {
                             'title': data.get('title', ''),
@@ -272,7 +342,7 @@ class UpdateBoard(generics.CreateAPIView):
                             'capability': capability,
                             'recommendation': recommendations,
                             'feedback': feedback,
-                            'references': reference_links,
+                            # 'references': reference_links,
                             'project_fk': project_board.project_fk,
                             'templateId': project_board.templateId,
                             'boardId': project_board.boardId,
@@ -293,8 +363,8 @@ class UpdateBoard(generics.CreateAPIView):
                         self.update_project_score(
                             project_instance, subtract_score, new_score)
 
-                        if response.status_code != 200:
-                            return Response({"error": "Failed to update project score"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                        # if response.status_code != 200:
+                        #     return Response({"error": "Failed to update project score"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
                     else:
                         return Response({"error": "No response content or choices found"}, status=status.HTTP_400_BAD_REQUEST)
                 except json.JSONDecodeError as json_error:

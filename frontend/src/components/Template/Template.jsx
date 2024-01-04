@@ -65,7 +65,7 @@ const Template = () => {
           technical_feasibility: 0,
           feedback: "s",
           recommendation: "s",
-          references: "s",
+          //references: "s",
           project_fk: id,
         }
       );
@@ -91,7 +91,7 @@ const Template = () => {
           <div className={styles.box} />
 
           <div className={styles.containerStyle}>
-            <EditorToolbar />
+            {/* <EditorToolbar />
             <ReactQuill
               theme="snow"
               value={content}
@@ -100,14 +100,14 @@ const Template = () => {
               modules={modules}
               formats={formats}
               className={global.quill}
-            />
-            {/* <Tiptap setDescription={content} /> */}
+            /> */}
+            <Tiptap setDescription={setContent} value={content} />
           </div>
         </Card>
 
         {isModalOpen && (
-          <ModalCustom width={200} isOpen={isModalOpen} onClose={isModalOpen}>
-            <Loading style={{ height: "auto" }} />
+          <ModalCustom width={200} isOpen={isModalOpen}>
+            <Loading timeout="auto" style={{ height: "auto" }} />
           </ModalCustom>
         )}
 
