@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import RequireAuth from "./components/Authentication/RequireAuth";
 import M_Dashboard from "./pages/M_Dashboard";
 import S_Dashboard from "./pages/S_Dashboard";
@@ -21,13 +22,20 @@ import GPTChat from "./components/GPTRequestHandler/GPTChat"; // Import the GPTC
 function App() {
   return (
     <Routes>
-      <Route path="/landing" element={<LandingPage />} />
-      <Route path="/" exact element={<Login choose={0} />} />
+      {/* <Route path="/landing" element={<LandingPage />} /> */}
+      <Route path="/" exact element={<LandingPage />} />
       <Route path="/login" element={<Login choose={0} />} />
       <Route path="/login-student" element={<Login choose={1} />} />
       <Route path="/login-teacher" element={<Login choose={2} />} />
       <Route path="/login-admin" element={<Login choose={3} />} />
-      <Route path="/chat-gpt" element={<GPTChat />} />{" "}
+      <Route path="/register" element={<Register choose={0} />} />
+      <Route path="/register-student" element={<Register choose={1} />} />
+      <Route path="/register-teacher" element={<Register choose={2} />} />
+
+      <Route path="/student/join-group" element={<Register choose={3} />} />
+      <Route path="/student/create-group" element={<Register choose={4} />} />
+
+      {/* <Route path="/chat-gpt" element={<GPTChat />} />{" "} */}
       {/* Add this route for GPT Chat */}
       <Route path="/group/:groupid">
         <Route

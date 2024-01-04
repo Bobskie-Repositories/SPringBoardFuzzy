@@ -14,6 +14,8 @@ import EditorToolbar, {
   modules,
   formats,
 } from "../UI/RichTextEditor/EditorToolBar";
+import { Tiptap } from "../UI/RichTextEditor/TipTap";
+import config from "../../config";
 
 const EditTemplate = () => {
   const [template, setTemplate] = useState();
@@ -27,13 +29,12 @@ const EditTemplate = () => {
   const { getUser } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
+  const { API_HOST } = config;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `http://127.0.0.1:8000/api/template/${id}`
-        );
+        const response = await axios.get(`${API_HOST}/api/template/${id}`);
         setTemplate(response.data);
         setTitle(response.data.title);
         setRulesContent(response.data.rules);
@@ -109,7 +110,7 @@ const EditTemplate = () => {
   const submitTemplate = async () => {
     try {
       const user = await getUser();
-      await axios.patch(`http://127.0.0.1:8000/api/template/${id}/update`, {
+      await axios.patch(`${API_HOST}/api/template/${id}/update`, {
         title: title,
         content: templateContent,
         rules: rulesContent,
@@ -137,7 +138,7 @@ const EditTemplate = () => {
       cancelButtonColor: "rgb(181, 178, 178)",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        await axios.delete(`http://127.0.0.1:8000/api/template/${id}/delete`);
+        await axios.delete(`${API_HOST}/api/template/${id}/delete`);
         Swal.fire({
           title:
             '<span style="font-size: 20px">Template Sucessfully Deleted</span>',
@@ -187,7 +188,7 @@ const EditTemplate = () => {
             <Card className={styles.cardContainer}>
               <div className={styles.box} />
               <div className={styles.containerStyle}>
-                <EditorToolbar />
+                {/* <EditorToolbar />
                 <ReactQuill
                   theme="snow"
                   value={rulesContent}
@@ -196,7 +197,8 @@ const EditTemplate = () => {
                   modules={modules}
                   formats={formats}
                   className={global.quill}
-                />
+                /> */}
+                <Tiptap setDescription={setRulesContent} value={rulesContent} />
               </div>
             </Card>
             <div className={styles.btmButton}>
@@ -217,7 +219,7 @@ const EditTemplate = () => {
             <Card className={styles.cardContainer}>
               <div className={styles.box} />
               <div className={styles.containerStyle}>
-                <EditorToolbar />
+                {/* <EditorToolbar />
                 <ReactQuill
                   theme="snow"
                   value={templateContent}
@@ -226,6 +228,10 @@ const EditTemplate = () => {
                   modules={modules}
                   formats={formats}
                   className={global.quill}
+                /> */}
+                <Tiptap
+                  setDescription={setTemplateContent}
+                  value={templateContent}
                 />
               </div>
             </Card>

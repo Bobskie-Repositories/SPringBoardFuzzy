@@ -9,24 +9,29 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
 from pathlib import Path
+from dotenv import load_dotenv
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv(os.path.join(BASE_DIR/".eVar", ".env"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ug@9&uqyzxvp$stt((yh$%d5(5bjriiz@f^fi^$)vp+nk15ixf'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG")
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+ALLOWED_HOSTS += os.environ.get("ALLOWED_HOSTS").split()
+# ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -81,11 +86,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         # 'NAME': BASE_DIR / 'db.sqlite3',
-        'NAME': 'springboard',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+        'NAME': 'bobkyle$springboard',
+        'USER': 'bobkyle',
+        'PASSWORD': 'pokemonlake',
+        'HOST': 'bobkyle.mysql.pythonanywhere-services.com',
     }
 }
 
@@ -140,6 +144,7 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "https://spring-board.vercel.app",
 ]
 
 SESSION_COOKIE_SAMESITE = 'None'  # or 'None' if needed
@@ -149,3 +154,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
 AUTH_USER_MODEL = 'springboard_api.Student'
+
+
+# BASE_URL = "http://127.0.0.1:8000"
+BASE_URL = "https://bobkyle.pythonanywhere.com"

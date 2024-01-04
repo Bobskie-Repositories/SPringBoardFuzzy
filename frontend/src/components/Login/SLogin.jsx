@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Header_landing from "../Header/Header_landing";
-import styles from "./SLogin.module.css";
+import styles from "./Login.module.css";
 
 const SLoginComponent = () => {
   // State to manage user inputs
@@ -105,7 +105,7 @@ const SLoginComponent = () => {
         {/* Sign Up Link */}
         <p className={styles.signup}>
           Don’t have an account?{" "}
-          <a style={{ color: "black" }} href="/signup">
+          <a style={{ color: "black" }} href="/register">
             Sign Up
           </a>
         </p>

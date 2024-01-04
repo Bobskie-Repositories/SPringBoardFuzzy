@@ -5,8 +5,9 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
 from springboard_api.serializers import StudentSerializer
-from springboard_api.models import Student
+from springboard_api.models import Student, Group
 from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.permissions import IsAuthenticated
 import jwt
 import datetime
 
@@ -89,3 +90,36 @@ class LogoutStudent(APIView):
             return response
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class UpdateGroupFK(APIView):
+
+    def post(self, request, user_id, *args, **kwargs):
+        try:
+            # Get the current user (student) based on the provided user_id
+            student = Student.objects.get(id=user_id)
+
+            # Ensure the request data contains the 'group_key_code' field
+            group_key_code = request.data.get('group_key_code')
+
+            if not group_key_code:
+                return Response({"error": "Group key code is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Find the group with the given key code
+            try:
+                group = Group.objects.get(key_code=group_key_code)
+            except Group.DoesNotExist:
+                return Response({"error": "Group not found with the given key code"}, status=status.HTTP_404_NOT_FOUND)
+
+            # Update the student's group_fk
+            student.group_fk = group
+            student.save()
+
+            # Serialize the updated student data
+            serializer = StudentSerializer(student)
+            return Response({"new_group_fk": serializer.data['group_fk']}, status=status.HTTP_200_OK)
+
+        except Student.DoesNotExist:
+            return Response({"error": "Student not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

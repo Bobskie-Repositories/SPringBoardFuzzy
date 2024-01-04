@@ -13,6 +13,10 @@ import EditorToolbar, {
   modules,
   formats,
 } from "../UI/RichTextEditor/EditorToolBar";
+import { Tiptap } from "../UI/RichTextEditor/TipTap";
+import ModalCustom from "../UI/Modal/Modal";
+import config from "../../config";
+import Loading from "../UI/Loading/Loading";
 
 const EditBoard = () => {
   const [title, setTitle] = useState(null);
@@ -22,15 +26,15 @@ const EditBoard = () => {
   const [priorNovelVal, setPriorNovelVal] = useState(null);
   const [priorTechVal, setPriorTechVal] = useState(null);
   const [priorCapableVal, setPriorCapableVal] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
+  const { API_HOST } = config;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `http://127.0.0.1:8000/api/projectboards/${id}`
-        );
+        const response = await axios.get(`${API_HOST}/api/projectboards/${id}`);
         setTitle(response.data.title || "");
         setContent(response.data.content || "");
         setBoardId(response.data.boardId || "");
@@ -47,9 +51,10 @@ const EditBoard = () => {
   }, [id]);
 
   const updateProjectBoard = async () => {
+    setIsModalOpen(true);
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/projectboards/${id}/update`,
+        `${API_HOST}/api/projectboards/${id}/update`,
         {
           title: title,
           content: content, // Use the content from the React Quill editor
@@ -63,16 +68,10 @@ const EditBoard = () => {
           boardId: boardId,
         }
       );
-      // console.log(response);
-      // console.log(response.data.project_fk);
-      // await axios.put(
-      //   `http://127.0.0.1:8000/api/project/${response.data.project_fk}/update_score`
-      // );
-
+      setIsModalOpen(false);
       navigate(`/board/${response.data.id}/edit/result`);
-
-      //console.log("ProjectBoard updated successfully:", response.data.id);
     } catch (error) {
+      setIsModalOpen(false);
       console.error("Error updating ProjectBoard:", error);
     }
   };
@@ -96,7 +95,7 @@ const EditBoard = () => {
           <div className={styles.box} />
 
           <div className={styles.containerStyle}>
-            <EditorToolbar />
+            {/* <EditorToolbar />
             <ReactQuill
               theme="snow"
               value={content}
@@ -105,10 +104,15 @@ const EditBoard = () => {
               modules={modules}
               formats={formats}
               className={global.quill}
-            />
+            /> */}
+            <Tiptap setDescription={setContent} value={content} />
           </div>
         </Card>
-
+        {isModalOpen && (
+          <ModalCustom width={200} isOpen={isModalOpen}>
+            <Loading style={{ height: "auto" }} />
+          </ModalCustom>
+        )}
         <Button className={styles.button} onClick={updateProjectBoard}>
           Submit
         </Button>

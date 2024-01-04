@@ -5,16 +5,17 @@ import axios from "axios";
 import Card from "../UI/Card/Card";
 import styles from "./ResultBoard.module.css";
 import CircularProgressWithLabel from "../UI/ProgressBar/CircularProgressWithLabel";
+import config from "../../config";
 
 const ResultBoard = ({ boardid }) => {
   const [board, setBoard] = useState(null);
   const navigate = useNavigate();
-
+  const { API_HOST } = config;
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/projectboards/${boardid}`
+          `${API_HOST}/api/projectboards/${boardid}`
         );
         setBoard(response.data);
       } catch (error) {

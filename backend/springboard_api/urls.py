@@ -1,11 +1,11 @@
 from django.urls import path
-from .controllers.ClassroomController import GetClassroomGroupsAndProjects, GetClassroom, GetClassroomById,  GetTopProjectsByClassroom
+from .controllers.ClassroomController import CreateClassroom, GetAllClassrooms, GetClassroomGroupsAndProjects, GetClassroom, GetClassroomById,  GetTopProjectsByClassroom
 from .controllers.ProjectController import ProjectCreateView, ProjectView, GetProjectsByGroupId, GetActiveProjectsView, GetProjectById, GetPublicProjectsByGroupId, InactiveProjectsView, ProjectCreateView, ProjectUpdateView, UpdateProjectStatusView, UpdateProjectScoreView, DeleteProjectView
 from .controllers.ProjectBoardController import GetProjectBoards, CreateProjectBoard, GetProjectBoardById, GetVersionProjectBoards, UpdateBoard, DeleteProjectBoard
 from .controllers.TemplateController import GetTemplate, GetAllTemplate, GetTemplateByTeacherId, GetAllPublicTemplates, CreateTemplate, UpdateTemplate, DeleteTemplate
-from .controllers.StudentController import RegisterStudent, LoginStudent, LogoutStudent, StudentView
+from .controllers.StudentController import RegisterStudent, LoginStudent, LogoutStudent, StudentView, UpdateGroupFK
 from .controllers.TeacherController import RegisterTeacher, LoginTeacher, LogoutTeacher, TeacherView, GetTeacherById
-from .controllers.GroupController import GetGroupById, GetGroupsAndProjects, GetGroupByClassId
+from .controllers.GroupController import CreateGroup, GetGroupById, GetGroupsAndProjects, GetGroupByClassId, UpdateGroup
 from .controllers.AdminController import RegisterAdmin, LoginAdmin, AdminView, LogoutAdmin
 
 urlpatterns = [
@@ -43,6 +43,8 @@ urlpatterns = [
 
     path('api/inactive_proj', InactiveProjectsView.as_view()),
 
+    path('api/classroom/create', CreateClassroom.as_view()),
+    path('api/classroom/all', GetAllClassrooms.as_view()),
     path('api/classroom/<int:teacher_fk_id>/all', GetClassroom.as_view()),
     path('api/classroom/<int:class_id>', GetClassroomById.as_view()),
     path('api/classroom/<int:class_id>/group', GetGroupByClassId.as_view()),
@@ -71,6 +73,10 @@ urlpatterns = [
     path('api/template/<int:template_id>/update', UpdateTemplate.as_view()),
     path('api/template/<int:template_id>/delete', DeleteTemplate.as_view()),
 
+    path('api/group/create', CreateGroup.as_view()),
     path('api/group/<int:group_id>', GetGroupById.as_view()),
     path('api/group/group_proj', GetGroupsAndProjects.as_view()),
+    path('api/update-group-fk/<int:user_id>', UpdateGroupFK.as_view()),
+    path('api/group/<int:group_id>/update', UpdateGroup.as_view()),
+
 ]

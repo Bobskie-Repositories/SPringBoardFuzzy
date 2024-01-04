@@ -14,6 +14,8 @@ import EditorToolbar, {
   modules,
   formats,
 } from "../UI/RichTextEditor/EditorToolBar";
+import { Tiptap } from "../UI/RichTextEditor/TipTap";
+import config from "../../config";
 
 const CreateTemplate = () => {
   const [rulesContent, setRulesContent] = useState("");
@@ -25,6 +27,7 @@ const CreateTemplate = () => {
   const [savedRulesContent, setSavedRulesContent] = useState(""); // Store the rulesContent
   const { getUser } = useAuth();
   const navigate = useNavigate();
+  const { API_HOST } = config;
 
   const handleRulesEditorChange = (newContent) => {
     setRulesContent(newContent);
@@ -88,16 +91,13 @@ const CreateTemplate = () => {
 
   const submitTemplate = async () => {
     try {
-      const response = await axios.post(
-        `http://127.0.0.1:8000/api/template/add`,
-        {
-          title: title,
-          content: templateContent,
-          rules: rulesContent,
-          description: description,
-          isActive: true,
-        }
-      );
+      const response = await axios.post(`${API_HOST}/api/template/add`, {
+        title: title,
+        content: templateContent,
+        rules: rulesContent,
+        description: description,
+        isActive: true,
+      });
 
       navigate(`/admin`);
       console.log("Template created successfully:", response.data.id);
@@ -143,7 +143,7 @@ const CreateTemplate = () => {
             <Card className={styles.cardContainer}>
               <div className={styles.box} />
               <div className={styles.containerStyle}>
-                <EditorToolbar />
+                {/* <EditorToolbar />
                 <ReactQuill
                   theme="snow"
                   value={rulesContent}
@@ -152,7 +152,8 @@ const CreateTemplate = () => {
                   modules={modules}
                   formats={formats}
                   className={global.quill}
-                />
+                /> */}
+                <Tiptap setDescription={setRulesContent} value={rulesContent} />
               </div>
             </Card>
             <Button className={styles.button} onClick={handleNextClick}>
@@ -165,7 +166,7 @@ const CreateTemplate = () => {
             <Card className={styles.cardContainer}>
               <div className={styles.box} />
               <div className={styles.containerStyle}>
-                <EditorToolbar />
+                {/* <EditorToolbar />
                 <ReactQuill
                   theme="snow"
                   value={templateContent}
@@ -174,6 +175,10 @@ const CreateTemplate = () => {
                   modules={modules}
                   formats={formats}
                   className={global.quill}
+                /> */}
+                <Tiptap
+                  setDescription={setTemplateContent}
+                  value={templateContent}
                 />
               </div>
             </Card>

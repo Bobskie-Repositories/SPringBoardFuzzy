@@ -6,24 +6,29 @@ import axios from "axios";
 import Header from "../Header/Header";
 import Card from "../UI/Card/Card";
 import Button from "../UI/Button/Button";
-// import ReactQuill from "react-quill";
-// import "react-quill/dist/quill.snow.css";
-// import EditorToolbar, {
-//   modules,
-//   formats,
-// } from "../UI/RichTextEditor/EditorToolBar";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import EditorToolbar, {
+  modules,
+  formats,
+} from "../UI/RichTextEditor/EditorToolBar";
 import Details from "../UI/RichTextEditor/Details";
 import { Tiptap } from "../UI/RichTextEditor/TipTap";
 import styles from "./Template.module.css";
 import global from "@assets/global.module.css";
+import ModalCustom from "../UI/Modal/Modal";
+import config from "../../config";
+import Loading from "../UI/Loading/Loading";
 
 const Template = () => {
   const { id, templateid } = useParams();
   const [template, setTemplate] = useState(null);
-  const navigate = useNavigate();
   const [description, setDescription] = useState("");
   const editor = useRef(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [content, setContent] = useState("");
+  const { API_HOST } = config;
+  const navigate = useNavigate();
 
   // Handle changes in the React Quill editor
   const handleEditorChange = (newContent) => {
@@ -34,7 +39,7 @@ const Template = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/template/${templateid}`
+          `${API_HOST}/api/template/${templateid}`
         );
         setTemplate(response.data);
         setContent(response.data.content || "");
@@ -47,15 +52,10 @@ const Template = () => {
   }, [templateid]);
 
   const createProjectBoard = async () => {
+    setIsModalOpen(true);
     try {
-      const getCurrentTimestamp = () => {
-        const now = new Date();
-        const isoTimestamp = now.toISOString();
-        return isoTimestamp;
-      };
-
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/project/${id}/addprojectboards`,
+        `${API_HOST}/api/project/${id}/addprojectboards`,
         {
           title: template.title,
           content: content, // Use the content from the React Quill editor
@@ -69,16 +69,11 @@ const Template = () => {
           project_fk: id,
         }
       );
-      console.log("Response from createProjectBoard:", response);
-
-      // await axios.put(`http://127.0.0.1:8000/api/project/${id}/update_score`);
-
       navigate(`/project/${id}/create-board/${response.data.id}/result`);
-
-      console.log("ProjectBoard created successfully:", response.data.id);
     } catch (error) {
       console.error("Error creating ProjectBoard:", error);
     }
+    setIsModalOpen(false);
   };
 
   if (!template) {
@@ -106,9 +101,15 @@ const Template = () => {
               formats={formats}
               className={global.quill}
             /> */}
-            <Tiptap setDescription={setContent} />
+            <Tiptap setDescription={setContent} value={content} />
           </div>
         </Card>
+
+        {isModalOpen && (
+          <ModalCustom width={200} isOpen={isModalOpen}>
+            <Loading style={{ height: "auto" }} />
+          </ModalCustom>
+        )}
 
         <Button className={styles.button} onClick={createProjectBoard}>
           Submit

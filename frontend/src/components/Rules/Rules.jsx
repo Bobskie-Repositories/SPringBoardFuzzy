@@ -6,17 +6,19 @@ import Header from "../Header/Header";
 import styles from "./Rules.module.css";
 import Button from "../UI/Button/Button";
 import parse from "html-react-parser";
+import config from "../../config";
 
 const Rules = () => {
   const navigate = useNavigate();
   const { id, templateid } = useParams();
   const [template, setTemplate] = useState(null);
+  const { API_HOST } = config;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/template/${templateid}`
+          `${API_HOST}/api/template/${templateid}`
         );
         setTemplate(response.data || "");
       } catch (error) {

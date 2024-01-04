@@ -11,6 +11,7 @@ import ListInActiveProj from "../../Table/ListInActiveProj";
 import ViewProject from "../../ViewProject/ViewProject";
 import SearchProject from "../../Search/SearchProject";
 import axios from "axios";
+import config from "../../../config";
 
 const ADashboard = ({ choose }) => {
   const navigate = useNavigate();
@@ -18,10 +19,11 @@ const ADashboard = ({ choose }) => {
   const [selectedProj, setSelectedProj] = useState();
   const [groups, setGroups] = useState(null);
   const [templates, setTemplates] = useState([]);
+  const { API_HOST } = config;
 
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:8000/api/group/group_proj`)
+      .get(`${API_HOST}/api/group/group_proj`)
       .then((response) => {
         setGroups(response.data);
       })
@@ -30,7 +32,7 @@ const ADashboard = ({ choose }) => {
       });
 
     axios
-      .get(`http://127.0.0.1:8000/api/template/`)
+      .get(`${API_HOST}/api/template/`)
       .then((response) => {
         setTemplates(response.data);
       })
