@@ -93,22 +93,22 @@ class CreateProjectBoard(generics.CreateAPIView):
                         # feedback = ' '.join(json_response.get("feedback", []))
 
                         recommendations = '\n'.join([
-                            "Novelty Recommendations:\n\n" +
+                            "Novelty Recommendations:\n" +
                             json_response.get("recommendations_novelty", ""),
-                            "\n\nTechnical Feasibility Recommendations:\n\n" +
+                            "\n\nTechnical Feasibility Recommendations:\n" +
                             json_response.get(
                                 "recommendations_technical_feasibility", ""),
-                            "\n\nability Recommendations:\n\n" +
+                            "\n\nCability Recommendations:\n" +
                             json_response.get("recommendations_capability", "")
                         ])
 
                         feedback = '\n'.join([
-                            "Novelty Feedback:\n\n" +
+                            "Novelty Feedback:\n" +
                             json_response.get("feedback_novelty", ""),
-                            "\n\nTechnical Feasibility Feedback:\n\n" +
+                            "\n\nTechnical Feasibility Feedback:\n" +
                             json_response.get(
                                 "feedback_technical_feasibility", ""),
-                            "\n\nCapability Feedback:\n\n" +
+                            "\n\nCapability Feedback:\n" +
                             json_response.get("feedback_capability", "")
                         ])
 
@@ -301,27 +301,27 @@ class UpdateBoard(generics.CreateAPIView):
                         gpt_response = first_choice_content
                         json_response = json.loads(gpt_response)
                         # print(json_response)
-                        novelty = json_response.get("novelty", 0)
-                        technical_feasibility = json_response.get(
-                            "technical_feasibility", 0)
-                        capability = json_response.get("capability", 0)
+                        novelty = float(json_response.get("novelty", 0))
+                        technical_feasibility = float(json_response.get(
+                            "technical_feasibility", 0))
+                        capability = float(json_response.get("capability", 0))
                         recommendations = '\n'.join([
-                            "Novelty Recommendations:\n\n" +
+                            "Novelty Recommendations:\n" +
                             json_response.get("recommendations_novelty", ""),
-                            "\n\nTechnical Feasibility Recommendations:\n\n" +
+                            "\n\nTechnical Feasibility Recommendations:\n" +
                             json_response.get(
                                 "recommendations_technical_feasibility", ""),
-                            "\n\nability Recommendations:\n\n" +
+                            "\n\nCability Recommendations:\n" +
                             json_response.get("recommendations_capability", "")
                         ])
 
                         feedback = '\n'.join([
-                            "Novelty Feedback:\n\n" +
+                            "Novelty Feedback:\n" +
                             json_response.get("feedback_novelty", ""),
-                            "\n\nTechnical Feasibility Feedback:\n\n" +
+                            "\n\nTechnical Feasibility Feedback:\n" +
                             json_response.get(
                                 "feedback_technical_feasibility", ""),
-                            "\n\nCapability Feedback:\n\n" +
+                            "\n\nCapability Feedback:\n" +
                             json_response.get("feedback_capability", "")
                         ])
 

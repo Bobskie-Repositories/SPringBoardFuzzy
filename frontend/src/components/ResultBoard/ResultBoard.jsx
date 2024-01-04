@@ -47,6 +47,9 @@ const ResultBoard = ({ boardid }) => {
 
   // const referencesArray = parseReferences(board.references);
 
+  const recommendationLines = board.recommendation.split("\n");
+  const feedbackLines = board.feedback.split("\n");
+
   return (
     <div className={styles.container}>
       <span className={styles.title}>Results</span>
@@ -84,11 +87,25 @@ const ResultBoard = ({ boardid }) => {
         <div className={styles.adviceDiv} style={{ marginTop: "40px" }}>
           <div className={styles.advice}>
             <h4>Feedback</h4>
-            <div className={styles.content}>{board.feedback}</div>
+            <div className={styles.content}>
+              {feedbackLines.map((line, index) => (
+                <p key={index} style={{ margin: 0, padding: 0 }}>
+                  {line}
+                  {index % 2 === 0 ? <br /> : null}
+                </p>
+              ))}
+            </div>
           </div>
           <div className={styles.advice}>
             <h4>Recommendations</h4>
-            <div className={styles.content}>{board.recommendation}</div>
+            <div className={styles.content}>
+              {recommendationLines.map((line, index) => (
+                <p key={index} style={{ margin: 0, padding: 0 }}>
+                  {line}
+                  {index % 2 === 0 ? <br /> : null}
+                </p>
+              ))}
+            </div>
           </div>
         </div>
 
