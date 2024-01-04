@@ -63,7 +63,7 @@ const EditBoard = () => {
           technical_feasibility: priorTechVal,
           feedback: "error",
           recommendation: "error",
-          references: "error",
+          //references: "error",
           project_fk: projectId,
           boardId: boardId,
         }
@@ -110,7 +110,7 @@ const EditBoard = () => {
         </Card>
         {isModalOpen && (
           <ModalCustom width={200} isOpen={isModalOpen}>
-            <Loading style={{ height: "auto" }} />
+            <Loading timeout="auto" style={{ height: "auto" }} />
           </ModalCustom>
         )}
         <Button className={styles.button} onClick={updateProjectBoard}>
