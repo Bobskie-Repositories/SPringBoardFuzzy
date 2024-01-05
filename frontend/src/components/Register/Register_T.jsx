@@ -37,8 +37,8 @@ const Register_T = () => {
         password
       );
 
-      const user = await getUser();
       if (registerResult.success) {
+        const user = await getUser();
         Swal.fire({
           title: "Account Created!",
           icon: "success",
