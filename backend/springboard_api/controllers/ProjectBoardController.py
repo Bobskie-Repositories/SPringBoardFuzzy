@@ -33,20 +33,21 @@ class CreateProjectBoard(generics.CreateAPIView):
 
         # api_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
         prompt = (
-            f"Analyze the following data: {request.data.get('content', '')}. "
-            f"Provide a detailed and critical rating (1-10) for the following aspects: "
-            f"\n1. Novelty: How original is the data? "
-            f"\n2. Technical Feasibility: Is the data technically sound and feasible? "
-            f"\n3. Capability: Does the data demonstrate capability? "
-            f"\nConsider ratings below 5 for data lacking composition, effort, verbosity, or information. "
+            f"Please analyze the following data: {request.data.get('content', '')}. "
+            f"Provide a detailed and critical rating (1-10) in numerical value(not in string) for the following aspects: "
+            f"\n1. Novelty: Evaluate the originality of the data. "
+            f"\n2. Technical Feasibility: Assess whether the data is technically sound and feasible. "
+            f"\n3. Capability: Determine if the data demonstrates capability. "
+            f"\nRatings below 5 should be considered for data that lacks composition, effort, verbosity, or information. "
             f"Be critical and practical when rating. "
             f"Include at least 2 specific sentences of advice for improvements (Recommendations) and "
-            f"2 sentences of feedback on how the data is presented and structured, and what can be done to improve those aspects (Feedback). "
-            # f"Please provide two reference links that are directly related to the content. Ensure that these links are active and lead to existing web pages (i.e., they do not result in a '404 Not Found' error). "
-            f"Label each part of the response like 'novelty: (the response)...'. "
-            f"The output should be in a sentence and in JSON format. "
+            f"2 sentences of feedback on how the data is presented and structured, and what can be done to improve those aspects (Feedback) for each of the above aspects. "
+            f"The output should be in the following JSON format: "
+            f"\n'novelty': 'numerical rating', 'technical_feasibility': 'numerical rating', 'capability': 'numerical rating', "
+            f"'recommendations_novelty': ['specific advice'], 'recommendations_technical_feasibility': [' advice'], "
+            f"'recommendations_capability': ['specific advice'], 'feedback_novelty': ['specific feedback'], "
+            f"'feedback_technical_feasibility': ['feedback'], 'feedback_capability': ['specific feedback']. "
             f"Ensure a fair and balanced assessment for each aspect."
-
         )
 
         # request_payload = {
@@ -82,34 +83,47 @@ class CreateProjectBoard(generics.CreateAPIView):
                         # gpt_response = choices[0]["text"].strip()
                         gpt_response = first_choice_content
                         json_response = json.loads(gpt_response)
-                        # print(json_response)
-                        novelty = float(json_response.get("novelty", 0))
-                        technical_feasibility = float(
-                            json_response.get("technical_feasibility", 0))
-                        capability = float(json_response.get("capability", 0))
+                        print(json_response)
+                        novelty = json_response.get("novelty", 0)
+                        technical_feasibility = json_response.get(
+                            "technical_feasibility", 0)
+                        capability = json_response.get("capability", 0)
 
                         # recommendations = ' '.join(
                         # json_response.get("recommendations", []))
                         # feedback = ' '.join(json_response.get("feedback", []))
 
+                        recommendations_novelty = json_response.get(
+                            "recommendations_novelty", [])
+                        recommendations_technical_feasibility = json_response.get(
+                            "recommendations_technical_feasibility", [])
+                        recommendations_capability = json_response.get(
+                            "recommendations_capability", [])
+
+                        feedback_novelty = json_response.get(
+                            "feedback_novelty", [])
+                        feedback_technical_feasibility = json_response.get(
+                            "feedback_technical_feasibility", [])
+                        feedback_capability = json_response.get(
+                            "feedback_capability", [])
+
                         recommendations = '\n'.join([
                             "Novelty Recommendations:\n" +
-                            json_response.get("recommendations_novelty", ""),
+                            '\n'.join(recommendations_novelty),
                             "\n\nTechnical Feasibility Recommendations:\n" +
-                            json_response.get(
-                                "recommendations_technical_feasibility", ""),
-                            "\n\nCability Recommendations:\n" +
-                            json_response.get("recommendations_capability", "")
+                            '\n'.join(
+                                recommendations_technical_feasibility),
+                            "\n\nCapability Recommendations:\n" +
+                            '\n'.join(recommendations_capability)
                         ])
 
                         feedback = '\n'.join([
                             "Novelty Feedback:\n" +
-                            json_response.get("feedback_novelty", ""),
+                            '\n'.join(feedback_novelty),
                             "\n\nTechnical Feasibility Feedback:\n" +
-                            json_response.get(
-                                "feedback_technical_feasibility", ""),
+                            '\n'.join(feedback_technical_feasibility),
                             "\n\nCapability Feedback:\n" +
-                            json_response.get("feedback_capability", "")
+                            '\n'.join(feedback_capability)
                         ])
 
                         # reference_links = ', '.join(
@@ -252,20 +266,21 @@ class UpdateBoard(generics.CreateAPIView):
 
             # api_url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
             prompt = (
-                f"Analyze the following data: {request.data.get('content', '')}. "
-                f"Provide a detailed and critical rating (1-10) for the following aspects: "
-                f"\n1. Novelty: How original is the data? "
-                f"\n2. Technical Feasibility: Is the data technically sound and feasible? "
-                f"\n3. Capability: Does the data demonstrate capability? "
-                f"\nConsider ratings below 5 for data lacking composition, effort, verbosity, or information. "
+                f"Please analyze the following data: {request.data.get('content', '')}. "
+                f"Provide a detailed and critical rating (1-10) in numerical value(not in string) for the following aspects: "
+                f"\n1. Novelty: Evaluate the originality of the data. "
+                f"\n2. Technical Feasibility: Assess whether the data is technically sound and feasible. "
+                f"\n3. Capability: Determine if the data demonstrates capability. "
+                f"\nRatings below 5 should be considered for data that lacks composition, effort, verbosity, or information. "
                 f"Be critical and practical when rating. "
                 f"Include at least 2 specific sentences of advice for improvements (Recommendations) and "
-                f"2 sentences of feedback on how the data is presented and structured, and what can be done to improve those aspects (Feedback). "
-                # f"Please provide two reference links that are directly related to the content. Ensure that these links are active and lead to existing web pages (i.e., they do not result in a '404 Not Found' error). "
-                f"Label each part of the response like 'novelty: (the response)...'. "
-                f"The output should be in a sentence and in JSON format. "
+                f"2 sentences of feedback on how the data is presented and structured, and what can be done to improve those aspects (Feedback) for each of the above aspects. "
+                f"The output should be in the following JSON format: "
+                f"\n'novelty': 'numerical rating', 'technical_feasibility': 'numerical rating', 'capability': 'numerical rating', "
+                f"'recommendations_novelty': ['specific advice'], 'recommendations_technical_feasibility': ['advice'], "
+                f"'recommendations_capability': ['specific advice'], 'feedback_novelty': ['specific feedback'], "
+                f"'feedback_technical_feasibility': ['feedback'], 'feedback_capability': ['specific feedback']. "
                 f"Ensure a fair and balanced assessment for each aspect."
-
             )
 
             # request_payload = {
@@ -301,28 +316,41 @@ class UpdateBoard(generics.CreateAPIView):
                         gpt_response = first_choice_content
                         json_response = json.loads(gpt_response)
                         # print(json_response)
-                        novelty = float(json_response.get("novelty", 0))
-                        technical_feasibility = float(json_response.get(
-                            "technical_feasibility", 0))
-                        capability = float(json_response.get("capability", 0))
+                        novelty = json_response.get("novelty", 0)
+                        technical_feasibility = json_response.get(
+                            "technical_feasibility", 0)
+                        capability = json_response.get("capability", 0)
+                        recommendations_novelty = json_response.get(
+                            "recommendations_novelty", [])
+                        recommendations_technical_feasibility = json_response.get(
+                            "recommendations_technical_feasibility", [])
+                        recommendations_capability = json_response.get(
+                            "recommendations_capability", [])
+
+                        feedback_novelty = json_response.get(
+                            "feedback_novelty", [])
+                        feedback_technical_feasibility = json_response.get(
+                            "feedback_technical_feasibility", [])
+                        feedback_capability = json_response.get(
+                            "feedback_capability", [])
+
                         recommendations = '\n'.join([
                             "Novelty Recommendations:\n" +
-                            json_response.get("recommendations_novelty", ""),
+                            '\n'.join(recommendations_novelty),
                             "\n\nTechnical Feasibility Recommendations:\n" +
-                            json_response.get(
-                                "recommendations_technical_feasibility", ""),
-                            "\n\nCability Recommendations:\n" +
-                            json_response.get("recommendations_capability", "")
+                            '\n'.join(
+                                recommendations_technical_feasibility),
+                            "\n\nCapability Recommendations:\n" +
+                            '\n'.join(recommendations_capability)
                         ])
 
                         feedback = '\n'.join([
                             "Novelty Feedback:\n" +
-                            json_response.get("feedback_novelty", ""),
+                            '\n'.join(feedback_novelty),
                             "\n\nTechnical Feasibility Feedback:\n" +
-                            json_response.get(
-                                "feedback_technical_feasibility", ""),
+                            '\n'.join(feedback_technical_feasibility),
                             "\n\nCapability Feedback:\n" +
-                            json_response.get("feedback_capability", "")
+                            '\n'.join(feedback_capability)
                         ])
 
                         # recommendations = ' '.join(
