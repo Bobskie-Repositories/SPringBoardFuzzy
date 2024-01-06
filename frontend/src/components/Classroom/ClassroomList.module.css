@@ -3,4 +3,10 @@
   text-align: center;
   min-width: 11rem;
   max-width: 11rem;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease; /* Adding a smooth transition for a better effect */
+}
+
+.classroom:hover {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* Adjust the values based on your preference */
 }

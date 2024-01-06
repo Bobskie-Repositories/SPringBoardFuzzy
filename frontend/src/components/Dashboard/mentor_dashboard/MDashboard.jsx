@@ -8,7 +8,6 @@ import Profile from "../../ProfileSegment/Profile";
 import ClassroomList from "../../Classroom/ClassroomList";
 import ViewClassroom from "../../Classroom/ViewClassroom";
 import ViewProject from "../../ViewProject/ViewProject";
-import TemplateList from "../../TemplateList/TemplateList";
 import ListInActiveProj from "../../Table/ListInActiveProj";
 import SearchProject from "../../Search/SearchProject";
 import styles from "./MDashboard.module.css";
@@ -16,6 +15,7 @@ import styles from "./MDashboard.module.css";
 const MDashboard = ({ choose }) => {
   const [selected, setSelected] = useState();
   const [selectedProj, setSelectedProj] = useState();
+  const [signalClassCreated, setSignalClassCreated] = useState();
   const { id, groupid } = useParams();
   const navigate = useNavigate();
 
@@ -36,6 +36,7 @@ const MDashboard = ({ choose }) => {
         setSelected={setSelected}
         choose={choose}
         setSelectedProj={setSelectedProj}
+        signalClassCreated={setSignalClassCreated}
       />
 
       <div>
@@ -54,7 +55,7 @@ const MDashboard = ({ choose }) => {
                   Classrooms
                 </h2>
               </div>
-              <ClassroomList />
+              <ClassroomList signalClassCreated={signalClassCreated} />
             </div>
           ) : choose === 1 ? (
             <ViewClassroom selected={selected} />
