@@ -14,7 +14,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import config from "../../config";
 
-const T_SidebarSegment = ({ selected, setSelected }) => {
+const T_SidebarSegment = ({ selected, setSelected, signalClassCreated }) => {
   const [classrooms, setClassrooms] = useState([]);
   const [open, setOpen] = useState(false);
   const [clickedClassId, setClickedClassId] = useState(null);
@@ -87,6 +87,7 @@ const T_SidebarSegment = ({ selected, setSelected }) => {
 
           const newProjId = await addClassroom(input1Value, input2Value);
           setSelected(newProjId);
+          signalClassCreated(newProjId);
           return true;
         } catch (error) {
           Swal.showValidationMessage(

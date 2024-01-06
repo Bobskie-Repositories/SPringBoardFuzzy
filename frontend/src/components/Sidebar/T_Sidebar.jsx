@@ -18,6 +18,7 @@ const T_Sidebar = ({
   setSelected,
   choose,
   setSelectedProj,
+  signalClassCreated,
   toggleCreateAction,
 }) => {
   const navigate = useNavigate();
@@ -38,7 +39,10 @@ const T_Sidebar = ({
     <div className={styles.sidebar}>
       <img src={Logo} alt="Logo" className={styles.img} onClick={goHome} />
 
-      <T_SidebarSegment setSelected={setSelected} />
+      <T_SidebarSegment
+        setSelected={setSelected}
+        signalClassCreated={signalClassCreated}
+      />
 
       {/* adding the groups project list 
                 2 - because that's the conditional statement in MDashboard where it renders the group board
