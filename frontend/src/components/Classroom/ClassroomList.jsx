@@ -10,16 +10,17 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import config from "../../config";
 
-const ClassroomList = () => {
+const ClassroomList = ({ signalClassCreated }) => {
   const { id } = useParams();
   const [rooms, setRooms] = useState([]);
   const navigate = useNavigate();
   const { API_HOST } = config;
+
   useEffect(() => {
     fetch(`${API_HOST}/api/classroom/${id}/all`)
       .then((response) => response.json())
       .then((rooms) => setRooms(rooms));
-  }, []);
+  }, [signalClassCreated]);
 
   const goClass = (classId) => {
     navigate(`/classroom/${classId}`);
@@ -33,7 +34,11 @@ const ClassroomList = () => {
             key={classroom.id}
             style={{ display: "inline-block", margin: "20px 30px" }}
           >
-            <Card className={styles.classroom} style={{ padding: 0 }}>
+            <Card
+              className={styles.classroom}
+              style={{ padding: 0 }}
+              onClick={() => goClass(classroom.id)}
+            >
               <div style={{ padding: "1rem" }}>
                 <img src={classroomImg} />
                 <h5>{classroom.class_name}</h5>
