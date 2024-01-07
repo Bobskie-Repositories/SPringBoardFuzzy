@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import axios from "axios";
 import styles from "./Table.module.css";
 import global from "@assets/global.module.css";
@@ -97,7 +98,9 @@ const ListInActiveProj = () => {
                 style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}
                 key={project.id}
               >
-                <span className={styles.centerText}>{project.name}</span>
+                <NavLink to={`/search-project/${project.id}`}>
+                  <span className={styles.centerTextName}>{project.name}</span>
+                </NavLink>
                 <span className={styles.centerText}>{project.group_name}</span>
                 <span className={styles.centerText}>{project.description}</span>
                 <span className={styles.centerText}>

@@ -1,3 +1,8 @@
+.board {
+  width: 100%;
+  max-width: 45rem;
+}
+
 .scrollable {
   padding: 0px 0px 15px 0px;
   /* margin-top: -0.5rem; */
