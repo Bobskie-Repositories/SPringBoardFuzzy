@@ -364,7 +364,7 @@ function Board({
   };
 
   return (
-    <div>
+    <div className={styles.board}>
       {project ? (
         <ThemeProvider theme={theme}>
           <div className={styles.alignment}>
@@ -374,7 +374,7 @@ function Board({
                 <IoIosInformationCircleOutline />
               </span>
             </div>
-            {!staff && (
+            {!staff && project.group_fk === groupKey && (
               <div className={`${styles.publish} ${styles.rightAligned}`}>
                 {project.isActive ? "Activated" : "Inactive"}
                 <Switch
