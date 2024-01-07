@@ -22,7 +22,10 @@ const SDashboard = ({ choose }) => {
   const [createAction, setCreateAction] = useState(false);
   const [boardCount, setBoardCount] = useState(0);
   const [boardTemplateIds, setBoardTemplateIds] = useState([]);
+
+  //its purpose is to give signal to sidebar and board that there is an update to the project and need to re-render
   const [projectUpdateKey, setProjectUpdateKey] = useState(0);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [classrooms, setClassrooms] = useState([]);
   const [selectedClassroom, setSelectedClassroom] = useState("");
@@ -93,6 +96,7 @@ const SDashboard = ({ choose }) => {
     >
       <S_Sidebar
         projectUpdateKey={projectUpdateKey}
+        onProjectUpdate={handleProjectUpdate}
         selected={selected}
         setSelected={setSelected}
         setCreateAction={setCreateAction}
@@ -121,6 +125,7 @@ const SDashboard = ({ choose }) => {
                 setBoardCount={setBoardCount}
                 onProjectUpdate={handleProjectUpdate}
                 setBoardTemplateIds={setBoardTemplateIds}
+                projectUpdateKey={projectUpdateKey}
               />
             )}
 

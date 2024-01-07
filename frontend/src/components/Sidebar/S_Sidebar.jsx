@@ -20,6 +20,7 @@ const S_Sidebar = ({
   projectUpdateKey,
   setCreateAction,
   selected,
+  onProjectUpdate,
 }) => {
   const navigate = useNavigate();
   const [group, setGroup] = useState();
@@ -71,6 +72,7 @@ const S_Sidebar = ({
       </div>
       <S_SidebarSegment
         sidebarKey={projectUpdateKey}
+        onProjectUpdate={onProjectUpdate}
         setSelected={setSelected}
         setCreateAction={setCreateAction}
         selected={selected}
