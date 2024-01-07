@@ -21,6 +21,8 @@ const S_SidebarSegment = ({
   setSelected,
   sidebarKey,
   setCreateAction,
+  update,
+  onProjectUpdate,
 }) => {
   const [projects, setProjects] = useState([]);
 
@@ -68,7 +70,7 @@ const S_SidebarSegment = ({
     };
 
     fetchData();
-  }, [setSelected, getUser]);
+  }, [setSelected, getUser, update]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -151,7 +153,7 @@ const S_SidebarSegment = ({
             .catch((error) => {
               console.error("Error updating project name:", error);
             });
-
+          onProjectUpdate();
           return updatedProject;
         }
         return project;

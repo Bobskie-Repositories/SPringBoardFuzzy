@@ -105,6 +105,8 @@
 }
 
 .head {
+  display: flex;
+  align-items: center;
   font-size: 25px;
   color: #9c7b16;
   font-weight: bold;
@@ -144,4 +146,57 @@
   font-family: "Calibri", sans-serif;
   background-color: white;
   color: black;
+}
+.rightAligned {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.info:hover {
+  text-shadow: 0 0 15px rgba(0, 0, 0, 01);
+  cursor: pointer;
+}
+
+.textInput {
+  width: 95%;
+  padding: 10px;
+  /* margin-bottom: 16px; */
+  border: 2px solid #9c7b16;
+  border-radius: 5px;
+  font-size: 15px;
+  background-color: white;
+  color: black;
+}
+
+.yScroll {
+  max-height: 35rem;
+  overflow-x: auto;
+}
+
+.yScroll::-webkit-scrollbar {
+  width: 6px;
+  height: 20px;
+}
+
+/* Customize the scrollbar track
+.scrollable::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+} */
+
+/* Customize the scrollbar thumb */
+.yScroll::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+/* Customize the scrollbar thumb when hovered */
+.yScroll::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
 }
