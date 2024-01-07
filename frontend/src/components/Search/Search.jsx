@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 import styles from "./Search.module.css";
 import axios from "axios";
@@ -9,6 +9,8 @@ const Search = ({ setSelected, alternateAPI }) => {
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isListVisible, setIsListVisible] = useState(false);
+  const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const { API_HOST } = config;
 
@@ -17,6 +19,7 @@ const Search = ({ setSelected, alternateAPI }) => {
       alternateAPI === 1
         ? `${API_HOST}/api/project`
         : `${API_HOST}/api/project/public`;
+
     // Fetch data from the API
     axios
       .get(apiUrl)
@@ -31,6 +34,18 @@ const Search = ({ setSelected, alternateAPI }) => {
       });
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsListVisible(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [dropdownRef]);
+
   const handleSearch = (searchText) => {
     setSearchText(searchText);
 
@@ -39,20 +54,20 @@ const Search = ({ setSelected, alternateAPI }) => {
         project.name.toLowerCase().includes(searchText.toLowerCase())
       );
       setFilteredProjects(filtered);
+      setIsListVisible(true);
     } else {
-      // Reset the filtered list when the search query is empty
       setFilteredProjects(projects);
+      setIsListVisible(false);
     }
   };
 
   const handleOnClick = (id) => {
     navigate(`/search-project/${id}`);
+    setIsListVisible(false); // Close the dropdown when clicking on an item
   };
 
-  const isListVisible = !!searchText;
-
   return (
-    <div className={styles.searchContainer}>
+    <div className={styles.searchContainer} ref={dropdownRef}>
       <input
         type="text"
         className={styles.Search}
