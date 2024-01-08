@@ -87,3 +87,22 @@
   color: black; /* Change the color to gray or a color of your choice */
   cursor: pointer; /* Change the cursor to indicate it's not clickable */
 }
+
+/* .body {
+  position: relative;
+}*/
+
+.divarrow {
+  position: absolute;
+  top: 5.5rem;
+  left: 5.5rem;
+}
+
+.back {
+  cursor: pointer; /* Change cursor to pointer on hover */
+  transition: color 0.3s; /* Smooth color transition */
+}
+
+.back:hover {
+  color: black; /* Change color on hover */
+}
