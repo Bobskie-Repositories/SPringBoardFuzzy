@@ -11,7 +11,7 @@ const InActivePage = () => {
     <div>
       {role === "teacher" && <M_Dashboard choose={3} />}
       {role === "student" && <S_Dashboard choose={1} />}
-      {role === "admin" && <A_Dashboard choose={2} />}
+      {role === "admin" && <A_Dashboard choose={1} />}
       {role !== "teacher" && role !== "student" && role !== "admin" && (
         <div>Unknown Role Content</div>
       )}
