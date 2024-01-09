@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import styles from "./ViewProject.module.css";
 import axios from "axios";
-import Board from "../Boards/Board";
+import ProjectContents from "../ProjectContents/ProjectContents";
 import config from "../../config";
 
 const ViewProject = ({ selected }) => {
@@ -27,7 +27,7 @@ const ViewProject = ({ selected }) => {
   return (
     <div className={styles.body}>
       <p className={styles.text}>{group}</p>
-      <Board selected={selected} />
+      <ProjectContents selected={selected} />
     </div>
   );
 };
