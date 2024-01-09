@@ -8,7 +8,7 @@ import Profile from "../../ProfileSegment/Profile";
 import ClassroomList from "../../Classroom/ClassroomList";
 import ViewClassroom from "../../Classroom/ViewClassroom";
 import ViewProject from "../../ViewProject/ViewProject";
-import ListInActiveProj from "../../Table/ListInActiveProj";
+import ListProj from "../../Table/ListProj";
 import SearchProject from "../../Search/SearchProject";
 import styles from "./MDashboard.module.css";
 
@@ -18,14 +18,16 @@ const MDashboard = ({ choose }) => {
   const [signalClassCreated, setSignalClassCreated] = useState();
   const { id, groupid } = useParams();
   const navigate = useNavigate();
+  const currentPath = window.location.pathname;
 
   useEffect(() => {
     setSelected(id);
-  }, [selected, id]);
+    sessionStorage.setItem("currentPath", currentPath);
+  }, [selected, id, currentPath]);
 
-  const handleCreateTemplateClick = () => {
-    navigate("/add-template");
-  };
+  // const handleCreateTemplateClick = () => {
+  //   navigate("/add-template");
+  // };
 
   return (
     <div
@@ -62,7 +64,7 @@ const MDashboard = ({ choose }) => {
           ) : choose === 2 ? (
             <ViewProject selected={selectedProj} />
           ) : choose === 3 ? (
-            <ListInActiveProj />
+            <ListProj />
           ) : (
             <div className={styles.container}>
               <SearchProject />
