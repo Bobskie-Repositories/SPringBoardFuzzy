@@ -37,7 +37,7 @@ const A_Sidebar = ({ setSelected, choose, setSelectedProj }) => {
       {choose === 3 && <CustomSidebarSegement setSelected={setSelectedProj} />}
 
       <ol className={styles.list}>
-        <li className={`${global.center} ${styles.customLi}`}>
+        {/* <li className={`${global.center} ${styles.customLi}`}>
           <FontAwesomeIcon
             icon={faCircleInfo}
             size="lg"
@@ -48,7 +48,7 @@ const A_Sidebar = ({ setSelected, choose, setSelectedProj }) => {
         <li className={`${global.center} ${styles.customLi}`}>
           <FontAwesomeIcon icon={faGear} size="lg" className={styles.icon} />{" "}
           &nbsp; Settings
-        </li>
+        </li> */}
         <li
           className={`${global.center} ${styles.customLi}`}
           onClick={goLogout}
