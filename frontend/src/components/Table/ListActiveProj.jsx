@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router";
+import axios from "axios";
 import Card from "../UI/Card/Card";
+import config from "../../config";
 import styles from "./Table.module.css";
 import global from "@assets/global.module.css";
 
@@ -13,10 +15,37 @@ const ListActiveProj = (props) => {
   const [templateSortOrder, setTemplateSortOrder] = useState({}); // object to keep track of sort order for each template
   const [currentPage, setCurrentPage] = useState(1);
   const groupsPerPage = 10;
+  const navigate = useNavigate();
+  const { API_HOST } = config;
 
   useEffect(() => {
-    setGroups(props.groups);
-    setTemplates(props.templates);
+    if (!props.groups && !props.templates) {
+      axios
+        .get(`${API_HOST}/api/group/group_proj`)
+        .then((response) => {
+          //filter out groups with no project
+          const filteredGroups = response.data.filter(
+            (group) => group.projects.length > 0
+          );
+          setGroups(filteredGroups);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+
+      axios
+        .get(`${API_HOST}/api/template/`)
+        .then((response) => {
+          setTemplates(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    } else {
+      setGroups(props.groups);
+      setTemplates(props.templates);
+    }
+
     const initialSortOrder = {};
     templates.forEach((template) => {
       initialSortOrder[template.id] = true;
@@ -116,6 +145,14 @@ const ListActiveProj = (props) => {
   // Get the groups for the current page
   const groupsToDisplay = groups.slice(startIndex, endIndex);
 
+  const onClickNavigation = (id) => {
+    if (props.public) {
+      navigate(`/search-project/${id}`);
+    } else {
+      navigate(`group/${id}`);
+    }
+  };
+
   return (
     <>
       <Card className={styles.card}>
@@ -167,17 +204,38 @@ const ListActiveProj = (props) => {
                 style={{
                   gridTemplateRows: "2.5rem",
                   gridTemplateColumns: `repeat(2, 13rem) repeat(${templates.length}, 11rem) 11rem`,
+                  borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
                 }}
                 key={group.id}
               >
-                <NavLink to={`group/${group.id}`}>
-                  <span className={styles.centerTextName}>{group.name}</span>
-                </NavLink>
-                <span className={styles.centerText}>
-                  {group.projects.length > 0
-                    ? group.projects[0].name
-                    : "No Project"}
+                <span
+                  className={
+                    !props.public ? styles.centerTextName : styles.centerText
+                  }
+                  onClick={() =>
+                    !props.public ? onClickNavigation(group.id) : null
+                  }
+                >
+                  {group.name}
                 </span>
+
+                {group.projects.length > 0 ? (
+                  <span
+                    className={
+                      props.public ? styles.centerTextName : styles.centerText
+                    }
+                    onClick={() =>
+                      props.public
+                        ? onClickNavigation(group.projects[0].id)
+                        : null
+                    }
+                  >
+                    {group.projects[0].name}
+                  </span>
+                ) : (
+                  <span className={styles.centerText}>No Project </span>
+                )}
+
                 {templates.map((template, index) => {
                   const projectBoard =
                     group.projects.length > 0
