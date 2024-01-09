@@ -80,7 +80,8 @@ export const AuthProvider = ({ children }) => {
           return adminData;
         }
       }
-
+      //reaches here if there are errors when getting
+      setIsAuthenticated(false);
       throw new Error("Failed to fetch both student and teacher data");
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -250,12 +251,40 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      const response = await fetch(`${API_HOST}/api/logout-student`, {
-        method: "POST",
-        credentials: "include",
-      });
+      const decodedToken = jwt_decode(localStorage.getItem("jwt"));
+      const role = decodedToken.role;
+      let check = false;
 
-      if (response.ok) {
+      if (role === "student") {
+        const studentResponse = await fetch(`${API_HOST}/api/logout-student`, {
+          method: "GET",
+          credentials: "include",
+        });
+
+        if (studentResponse.ok) {
+          check = true;
+        }
+      } else if (role === "teacher") {
+        const teacherResponse = await fetch(`${API_HOST}/api/logout-teacher`, {
+          method: "GET",
+          credentials: "include",
+        });
+
+        if (teacherResponse.ok) {
+          check = true;
+        }
+      } else {
+        const adminResponse = await fetch(`${API_HOST}/api/logout-admin`, {
+          method: "GET",
+          credentials: "include",
+        });
+
+        if (adminResponse.ok) {
+          check = true;
+        }
+      }
+
+      if (check) {
         setToken(null);
         setId(null);
         setIsAuthenticated(false);
