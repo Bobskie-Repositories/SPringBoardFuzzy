@@ -56,7 +56,7 @@ const T_SidebarSegment = ({ selected, setSelected, signalClassCreated }) => {
   const handleInactiveClick = (e) => {
     setisInactiveClicked(!isInactiveClicked);
     setClickedClassId(null);
-    navigate("/inactive");
+    navigate("/all_projects");
   };
 
   const showCreateProjectModal = () => {
@@ -145,7 +145,7 @@ const T_SidebarSegment = ({ selected, setSelected, signalClassCreated }) => {
               className={styles.dropdown}
               size="lg"
             />
-            &nbsp; Inactive Projects
+            &nbsp; All Projects
           </div>
         </li>
         <li className={`${global.center} ${styles.customLi}`}>

@@ -94,7 +94,7 @@ const ListInActiveProj = () => {
           <div className={styles.yScroll}>
             {projectsToDisplay.map((project) => (
               <div
-                className={styles.container}
+                className={styles.groupContainer}
                 style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.1)" }}
                 key={project.id}
               >

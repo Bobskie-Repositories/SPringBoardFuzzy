@@ -27,7 +27,9 @@ const Result = () => {
   }, [id]);
 
   const onClickDashboard = () => {
-    navigate(`/group/${groupId}`);
+    const storedPath = sessionStorage.getItem("currentPath");
+    // navigate(`/group/${groupId}`);
+    navigate(storedPath);
   };
 
   return (

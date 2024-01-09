@@ -155,7 +155,7 @@ function App() {
             </RequireAuth>
           }
         />
-        <Route
+        {/* <Route
           path="active"
           index={true}
           exact
@@ -164,7 +164,7 @@ function App() {
               <A_Dashboard choose={1} />
             </RequireAuth>
           }
-        />
+        /> */}
         <Route
           path="active/group/:groupid"
           index={true}
@@ -197,7 +197,7 @@ function App() {
         />
       </Route>
       <Route
-        path="/inactive"
+        path="/all_projects"
         index={true}
         exact
         element={

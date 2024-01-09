@@ -109,7 +109,7 @@ const S_SidebarSegment = ({
   const handleInactiveClick = (e) => {
     setisInactiveClicked(!isInactiveClicked);
     setClickedProjectId(null);
-    navigate("/inactive");
+    navigate("/all_projects");
   };
 
   const handleProjectDoubleClick = (projectId) => {
@@ -326,7 +326,7 @@ const S_SidebarSegment = ({
                 className={styles.dropdown}
                 size="lg"
               />
-              &nbsp; Inactive Projects
+              &nbsp; All Projects
             </div>
           </li>
 

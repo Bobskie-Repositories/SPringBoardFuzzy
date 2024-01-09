@@ -79,7 +79,7 @@ const S_Sidebar = ({
       />
 
       <ol className={styles.list}>
-        <li className={`${global.center} ${styles.customLi}`}>
+        {/* <li className={`${global.center} ${styles.customLi}`}>
           <FontAwesomeIcon
             icon={faCircleInfo}
             size="lg"
@@ -90,7 +90,7 @@ const S_Sidebar = ({
         <li className={`${global.center} ${styles.customLi}`}>
           <FontAwesomeIcon icon={faGear} size="lg" className={styles.icon} />{" "}
           &nbsp; Settings
-        </li>
+        </li> */}
         <li
           className={`${global.center} ${styles.customLi}`}
           onClick={goLogout}
