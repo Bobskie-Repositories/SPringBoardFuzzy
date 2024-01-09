@@ -58,8 +58,8 @@
 
 .btmButton {
   display: flex;
-  gap: 10px;
-  align-self: flex-end;
+  gap: 40rem;
+  /* align-self: flex-end; */
 }
 
 .button {
@@ -86,4 +86,9 @@
 .enable {
   color: black; /* Change the color to gray or a color of your choice */
   cursor: pointer; /* Change the cursor to indicate it's not clickable */
+}
+
+.back {
+  position: relative;
+  right: 50px;
 }
