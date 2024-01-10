@@ -55,6 +55,11 @@ const ViewBoard = () => {
   }, [id]);
 
   const calcAttemp = (versions) => {
+    //first creation or no other versions created
+    if (versions.length == 1) {
+      return 0;
+    }
+
     // Get today's date and set its time to 11:59 PM
     const today = new Date();
     today.setHours(23, 59, 59, 999);
