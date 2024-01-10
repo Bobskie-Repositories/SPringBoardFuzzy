@@ -21,6 +21,16 @@
   margin-top: 200px;
   color: rgb(131, 131, 131);
 }
+.butName {
+  background-color: #9c7b16;
+  height: 30px;
+  width: 19%;
+  padding: 0;
+  margin-bottom: 10px;
+  font-size: 11px;
+  text-align: center;
+  align-items: center;
+}
 
 .scrollable::-webkit-scrollbar {
   width: 0.1rem;

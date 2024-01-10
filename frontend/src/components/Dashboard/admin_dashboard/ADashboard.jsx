@@ -6,8 +6,7 @@ import Search from "../../Search/Search";
 import A_Sidebar from "../../Sidebar/A_Sidebar";
 import TemplateList from "../../TemplateList/TemplateList";
 import Button from "../../UI/Button/Button";
-import ListActiveProj from "../../Table/ListActiveProj";
-import ListInActiveProj from "../../Table/ListInActiveProj";
+import ListProj from "../../Table/ListProj";
 import ViewProject from "../../ViewProject/ViewProject";
 import SearchProject from "../../Search/SearchProject";
 import axios from "axios";
@@ -19,6 +18,7 @@ const ADashboard = ({ choose }) => {
   const [selectedProj, setSelectedProj] = useState();
   const [groups, setGroups] = useState(null);
   const [templates, setTemplates] = useState([]);
+  const currentPath = window.location.pathname;
   const { API_HOST } = config;
 
   useEffect(() => {
@@ -40,6 +40,10 @@ const ADashboard = ({ choose }) => {
         console.error("Error fetching data:", error);
       });
   }, []);
+
+  useEffect(() => {
+    sessionStorage.setItem("currentPath", currentPath);
+  }, [currentPath]);
 
   const handleCreateTemplateClick = () => {
     navigate("add-template");
@@ -82,12 +86,8 @@ const ADashboard = ({ choose }) => {
               <TemplateList />
             </div>
           ) : choose === 1 ? (
-            <div style={{ marginTop: "30px" }}>
-              <ListActiveProj groups={groups} templates={templates} />
-            </div>
+            <ListProj />
           ) : choose === 2 ? (
-            <ListInActiveProj />
-          ) : choose === 3 ? (
             <ViewProject selected={selectedProj} />
           ) : (
             <div className={styles.container}>

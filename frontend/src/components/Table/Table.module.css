@@ -1,6 +1,6 @@
 .card {
   padding: 0 0 20px 0;
-  margin-top: 30px;
+  margin-top: 10px;
   max-width: 62rem;
   min-height: 29rem;
   max-height: 29rem;
@@ -121,4 +121,15 @@
 
 .clickable {
   cursor: pointer;
+}
+
+.textInput_select {
+  width: 20%;
+  padding: 10px;
+  margin: 16px 0 0 0;
+  border: 2px solid #9c7b16;
+  border-radius: 5px;
+  font-size: 15px;
+  background-color: white;
+  color: black;
 }

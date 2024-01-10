@@ -13,31 +13,26 @@ import Loading from "../UI/Loading/Loading";
 import ModalCustom from "../UI/Modal/Modal";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { IoIosInformationCircleOutline } from "react-icons/io";
 import Caution from "../UI/Caution/Caution";
 import config from "../../config";
 
 function Board({
   selected,
+  project,
   setBoardCount,
   onProjectUpdate,
   setBoardTemplateIds,
   projectUpdateKey,
+  handleCreateBoardClick,
 }) {
   const navigate = useNavigate();
   const [loadCount, setLoadCount] = useState(0);
   const [projectList, setProjectList] = useState([]);
-  const [project, setProject] = useState();
   const [boards, setBoards] = useState([]);
   const [staff, setStaff] = useState(false);
   const [groupKey, setGroupKey] = useState();
 
   const [modalContent, setModalContent] = useState(null);
-
-  const [newProjName, setNewProjName] = useState("");
-  const [newProjDesc, setNewProjDesc] = useState("");
-  const [updateS, setUpdateS] = useState(false);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { getUser } = useAuth();
@@ -58,72 +53,49 @@ function Board({
     const fetchData = async () => {
       try {
         const user = await getUser();
+
         setStaff(user.is_staff);
-        setGroupKey(user.group_fk);
+        if (!user.is_staff) {
+          setGroupKey(user.group_fk);
+        }
+
         setLoadCount((prevLoadCount) => prevLoadCount + 1);
         if (selected !== null && selected !== undefined) {
           const boardsResponse = await axios.get(
             `${API_HOST}/api/project/${selected}/projectboards`
           );
           const boards = boardsResponse.data;
-          // const templateIds = new Set(boards.map((board) => board.templateId));
 
           // Set the templateIds
+          // this checks what templates are already accomplished and pass it to BoardCreation
           if (setBoardTemplateIds) {
             const templateIds = new Set(
               boards.map((board) => board.templateId)
             );
             setBoardTemplateIds(templateIds);
           }
-          setBoards(boards);
-
-          const projectResponse = await axios.get(
-            `${API_HOST}/api/project/${selected}`
+          const sortedBoards = [...boards].sort(
+            (a, b) => a.templateId - b.templateId
           );
-          const project = projectResponse.data;
-          setProject(project);
+          setBoards(sortedBoards);
 
           const projectListResponse = await axios.get(
             `${API_HOST}/api/group/${project.group_fk}/projects`
           );
+
           setProjectList(projectListResponse.data);
-          setNewProjName(project.name);
-          setNewProjDesc(project.description);
           //checks if there is setBoardCount that was passed
           if (typeof setBoardCount === "function") {
             const boardCount = boards.length;
             setBoardCount(boardCount);
           }
-        } else {
-          //set to nothing
-          setProject();
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching data:" + error, error);
       }
     };
     fetchData();
-  }, [selected, setBoardCount, getUser, updateS, projectUpdateKey]);
-
-  // another useEffect was used due to the behavior of the modal wherein it doesn't get the updated value
-  // we have to utilize useEffect to update the modal's information
-  useEffect(() => {
-    if (updateS) {
-      updateProjectDetails(newProjName, newProjDesc);
-      //this is to give signal that project has changed
-      onProjectUpdate();
-
-      handleCloseModal();
-      Swal.fire({
-        title:
-          '<span style="font-size: 20px">Project Sucessfully Updated</span>',
-        icon: "success",
-        confirmButtonColor: "#9c7b16",
-        confirmButtonText: "OK",
-      });
-    }
-    setUpdateS(false);
-  }, [newProjName, newProjDesc, updateS]);
+  }, [selected, setBoardCount, getUser, projectUpdateKey]);
 
   const handleToggleClick = async (event) => {
     setIsModalOpen(true);
@@ -244,18 +216,6 @@ function Board({
     }
   };
 
-  const updateProjectDetails = async (newName, newDesc) => {
-    try {
-      await axios.put(`${API_HOST}/api/project/${project.id}/update`, {
-        name: newName,
-        description: newDesc,
-        group_fk: project.group_fk,
-      });
-    } catch (error) {
-      Swal.fire("Error", "Update Error.", "error");
-    }
-  };
-
   const toggleProjectPublic = async (project, reason) => {
     const newisActive = !project.isActive;
     try {
@@ -265,94 +225,10 @@ function Board({
         isActive: newisActive,
         group_fk: project.group_fk,
       });
-      setProject((prevProject) => ({
-        ...prevProject,
-        isActive: newisActive,
-      }));
       onProjectUpdate();
     } catch (error) {
       Swal.fire("Error", "Please provide a reason.", "error");
     }
-  };
-
-  const handleOpenDetailModal = () => {
-    setIsModalOpen(true);
-    setModalContent(
-      <div className={styles.yScroll} style={{ margin: "0 30px" }}>
-        <p>
-          <b>Project Name:</b> {project.name}
-        </p>
-        <p>
-          <b>Description:</b>
-        </p>
-        <p style={{ marginLeft: "30px" }}>{project.description}</p>
-        <p>
-          <b>Overall Score: </b> {project.score.toFixed(2)} %
-        </p>
-        <div className={styles.btmButton}>
-          {!staff && project.group_fk === groupKey && (
-            <Button className={styles.button} onClick={handleEditDetailModal}>
-              Edit
-            </Button>
-          )}
-          <Button
-            className={styles.button}
-            style={{ backgroundColor: "#8A252C" }}
-            onClick={handleCloseModal}
-          >
-            Close
-          </Button>
-        </div>
-      </div>
-    );
-  };
-
-  const handleEditDetailModal = () => {
-    setModalContent(
-      <div style={{ margin: "0 30px" }}>
-        <div style={{ margin: "20px 0" }}>
-          <b>Project Name:</b>
-          <input
-            type="text"
-            id="projectname"
-            defaultValue={newProjName}
-            onChange={(e) => setNewProjName(e.target.value)}
-            className={styles.textInput}
-          />
-        </div>
-        <div>
-          <b>Description:</b>
-          <textarea
-            id="projectdesc"
-            defaultValue={newProjDesc}
-            onChange={(e) => setNewProjDesc(e.target.value)}
-            className={styles.textInput}
-            style={{ height: "70px", resize: "none" }}
-          />
-        </div>
-        <div className={styles.btmButton}>
-          {!staff && (
-            <Button
-              className={styles.button}
-              onClick={() => {
-                setNewProjName((prevName) => prevName);
-                setNewProjDesc((prevDesc) => prevDesc);
-                setUpdateS(true);
-              }}
-            >
-              Update
-            </Button>
-          )}
-          <Button
-            className={styles.button}
-            style={{ backgroundColor: "#8A252C" }}
-            onClick={handleOpenDetailModal}
-          >
-            Back
-          </Button>
-        </div>
-      </div>
-    );
   };
 
   const handleCloseModal = () => {
@@ -368,12 +244,7 @@ function Board({
       {project ? (
         <ThemeProvider theme={theme}>
           <div className={styles.alignment}>
-            <div className={styles.head}>
-              {project.name} Boards
-              <span className={styles.info} onClick={handleOpenDetailModal}>
-                <IoIosInformationCircleOutline />
-              </span>
-            </div>
+            <div className={styles.head}>{project.name} Boards</div>
             {!staff && project.group_fk === groupKey && (
               <div className={`${styles.publish} ${styles.rightAligned}`}>
                 {project.isActive ? "Activated" : "Inactive"}
@@ -386,6 +257,12 @@ function Board({
               </div>
             )}
           </div>
+          <hr style={{ color: "#E5E4E2" }} />
+          {!staff && groupKey === project.group_fk && (
+            <Button className={styles.butName} onClick={handleCreateBoardClick}>
+              Create Board
+            </Button>
+          )}
         </ThemeProvider>
       ) : loadCount === 0 ? (
         <Loading />
@@ -395,6 +272,7 @@ function Board({
         </p>
       )}
 
+      {/* ----------- */}
       {/* for modals */}
       {isModalOpen && (
         <ModalCustom
@@ -406,10 +284,12 @@ function Board({
         </ModalCustom>
       )}
 
+      {/* ----------- */}
+
       {/* if there are boards present in a project */}
       <div className={styles.scrollable}>
         {project && boards.length === 0 && (
-          <p className={styles.centeredText}>
+          <p className={styles.centeredText} style={{ width: "45rem" }}>
             It looks like you haven't created any boards yet. <br /> Click on
             the "Create Board" button to get started and create your first
             board.
