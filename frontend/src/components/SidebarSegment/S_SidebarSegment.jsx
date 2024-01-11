@@ -109,6 +109,9 @@ const S_SidebarSegment = ({
   const handleInactiveClick = (e) => {
     setisInactiveClicked(!isInactiveClicked);
     setClickedProjectId(null);
+    localStorage.removeItem("activeProjPage");
+    localStorage.removeItem("inactiveProjPage");
+    localStorage.removeItem("selectedStatus");
     navigate("/all_projects");
   };
 
