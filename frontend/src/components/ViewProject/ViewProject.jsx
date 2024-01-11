@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router";
 import ProjectContents from "../ProjectContents/ProjectContents";
 import styles from "./ViewProject.module.css";
 import axios from "axios";
-import { FaCaretDown } from "react-icons/fa";
 import { IoArrowBackSharp } from "react-icons/io5";
 import config from "../../config";
 
@@ -11,10 +10,9 @@ const ViewProject = () => {
   const [group, setGroup] = useState("");
   const [selected, setSelected] = useState();
   const [projects, setProjects] = useState();
-  const [dropdownVisible, setDropdownVisible] = useState(false);
   const { id, groupid } = useParams();
   const { API_HOST } = config;
-  const dropdownRef = useRef(null);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,23 +36,6 @@ const ViewProject = () => {
     };
 
     fetchData();
-  }, [groupid]);
-
-  const handleDropdownClick = () => {
-    setDropdownVisible(!dropdownVisible);
-  };
-
-  const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setDropdownVisible(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
   }, []);
 
   const handleBack = () => {
@@ -73,29 +54,11 @@ const ViewProject = () => {
         </span>
         {group}
       </p>
-      <div className={styles.top}>
-        <div className={styles.dropdown} ref={dropdownRef}>
-          <div className={styles.dropbtn} onClick={handleDropdownClick}>
-            <FaCaretDown />
-          </div>
-          {dropdownVisible && (
-            <div className={styles.dropdowncontent}>
-              {projects.map((project) => (
-                <span
-                  key={project.id}
-                  onClick={() => {
-                    setSelected(project.id);
-                    setDropdownVisible(false);
-                  }}
-                >
-                  {project.name}
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
-        <ProjectContents selected={selected} />
-      </div>
+      <ProjectContents
+        selected={selected}
+        setSelected={setSelected}
+        isClass={true}
+      />
     </div>
   );
 };
