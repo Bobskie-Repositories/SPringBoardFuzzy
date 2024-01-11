@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { NavLink } from "react-router-dom";
-import Card from "../UI/Card/Card";
-import styles from "./ViewClassroom.module.css";
-import global from "@assets/global.module.css";
-import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
+import { IoArrowBackSharp } from "react-icons/io5";
 import ListActiveProj from "../Table/ListActiveProj";
+import { useAuth } from "../../context/AuthContext";
+import styles from "./ViewClassroom.module.css";
+import axios from "axios";
 import config from "../../config";
 
 const ViewClassroom = ({ selected }) => {
   const [classroom, setClassroom] = useState(null);
   const [groups, setGroups] = useState(null);
+  const [templates, setTemplates] = useState([]);
+  const { getUser } = useAuth();
   const { id } = useParams();
   const { API_HOST } = config;
-  const [templates, setTemplates] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (selected !== null && selected !== undefined) {
@@ -27,15 +28,13 @@ const ViewClassroom = ({ selected }) => {
           console.error("Error fetching data:", error);
         });
     }
-    axios
-      .get(`${API_HOST}/api/template/`)
-      .then((response) => {
-        setTemplates(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
   }, [selected, id]);
+
+  const handleBack = async () => {
+    const user = await getUser();
+    const userId = user.id;
+    navigate(`/teacher/${userId}`);
+  };
 
   if (!groups || !templates) {
     return <p>Loading...</p>;
@@ -43,8 +42,13 @@ const ViewClassroom = ({ selected }) => {
 
   return (
     <div>
-      <h2 style={{ fontSize: "30px", color: "#9c7b16" }}>{classroom}</h2>
-      <ListActiveProj groups={groups} templates={templates} />
+      <div className={styles.body}>
+        <span className={styles.back} onClick={handleBack}>
+          <IoArrowBackSharp />
+        </span>
+        <h2 style={{ fontSize: "30px", color: "#9c7b16" }}>{classroom}</h2>
+      </div>
+      <ListActiveProj groups={groups} />
     </div>
   );
 };
