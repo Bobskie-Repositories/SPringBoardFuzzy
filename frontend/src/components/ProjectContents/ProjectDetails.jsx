@@ -115,8 +115,9 @@ const ProjectDetails = ({ project, numTemplates, onProjectUpdate, user }) => {
     <div className={styles.side}>
       <p className={styles.title}>Overall Project Rating</p>
       <span className={styles.number}>
-        {(project.score / numTemplates).toFixed(2) * 10} %
+        {Math.round((project.score / numTemplates) * 10)} %
       </span>
+
       <hr style={{ color: "#E5E4E2" }} />
       <div style={{ margin: "15px 0" }}>
         <p className={styles.title}>
