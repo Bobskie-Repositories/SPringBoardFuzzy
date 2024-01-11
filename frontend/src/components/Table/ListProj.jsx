@@ -115,7 +115,6 @@ const ListProj = ({ admin }) => {
       ) : (
         <ListInActiveProj admin={admin} filter={selectedClassrooms} />
       )}
-      {console.log(selectedClassrooms)}
     </div>
   );
 };
