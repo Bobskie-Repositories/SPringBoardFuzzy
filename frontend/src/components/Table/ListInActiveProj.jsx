@@ -22,7 +22,6 @@ const ListInActiveProj = (props) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${API_HOST}/api/inactive_proj`);
-        console.log(response.data);
         const filteredAndClassroomGroups =
           props.filter.length > 0
             ? response.data.filter((group) =>
