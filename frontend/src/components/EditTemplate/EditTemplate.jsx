@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
-import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -26,7 +25,6 @@ const EditTemplate = () => {
   const [isTitleEditable, setIsTitleEditable] = useState(false);
   const [isNext, setIsNext] = useState(false);
   const [savedRulesContent, setSavedRulesContent] = useState(""); // Store the rulesContent
-  const { getUser } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
   const { API_HOST } = config;
@@ -109,7 +107,6 @@ const EditTemplate = () => {
 
   const submitTemplate = async () => {
     try {
-      const user = await getUser();
       await axios.patch(`${API_HOST}/api/template/${id}/update`, {
         title: title,
         content: templateContent,

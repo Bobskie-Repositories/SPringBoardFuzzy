@@ -45,10 +45,10 @@ const T_Sidebar = ({
       />
 
       {/* adding the groups project list 
-                2 - because that's the conditional statement in MDashboard where it renders the group board
-                this is only meant for teachers            
-            */}
-      {choose === 2 && <CustomSidebarSegement setSelected={setSelectedProj} />}
+        2 - because that's the conditional statement in MDashboard where it renders the group board
+        this is only meant for teachers            
+    */}
+      {/* {choose === 2 && <CustomSidebarSegement setSelected={setSelectedProj} />} */}
 
       <ol className={styles.list}>
         {/* <li className={`${global.center} ${styles.customLi}`}>

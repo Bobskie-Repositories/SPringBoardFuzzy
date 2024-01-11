@@ -67,3 +67,12 @@
 .clickable:hover {
   color: #9c7b16;
 }
+
+.back {
+  position: absolute;
+  margin-top: 10px;
+  margin-left: -40px;
+  font-size: 1.1rem;
+  color: black;
+  cursor: pointer;
+}

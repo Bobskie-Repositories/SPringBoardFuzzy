@@ -106,11 +106,12 @@ class InactiveProjectSerializer(serializers.ModelSerializer):
     score = serializers.FloatField()
     template_count = serializers.SerializerMethodField()
     description = serializers.CharField()  # Added description field
+    created_at = serializers.DateTimeField()
 
     class Meta:
         model = Project
         fields = ('id', 'name', 'group_name', 'classroom_id', 'classroom_name',
-                  'teacher_id', 'teacher_name', 'reason', 'score', 'template_count', 'description')
+                  'teacher_id', 'teacher_name', 'reason', 'score', 'template_count', 'description', 'created_at')
 
     def get_template_count(self, obj):
         return Template.objects.count()

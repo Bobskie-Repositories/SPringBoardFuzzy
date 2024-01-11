@@ -10,12 +10,26 @@
 .container {
   display: grid;
   /* grid-template-columns: 0.8fr 1fr 1.5fr 0.5fr 1.5fr 0.5fr; */
-  grid-template-columns: 15rem 10rem 30rem 10rem 25rem 10rem;
+  grid-template-columns: 15rem 10rem 10rem 30rem 10rem 25rem;
   grid-template-rows: repeat(auto-fill, minmax(2.5rem, 1fr));
   padding: 0;
   justify-content: center;
   align-items: center;
   width: fit-content;
+}
+
+.adminContainer {
+  display: grid;
+  grid-template-columns: 10rem 15rem 10rem 10rem 30rem 10rem 25rem 10rem;
+  grid-template-rows: repeat(auto-fill, minmax(2.5rem, 1fr));
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+}
+
+.conHover:hover {
+  background-color: #f0f0f0;
 }
 
 .groupContainer:hover {

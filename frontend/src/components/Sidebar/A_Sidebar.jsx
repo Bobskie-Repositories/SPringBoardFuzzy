@@ -34,7 +34,7 @@ const A_Sidebar = ({ setSelected, choose, setSelectedProj }) => {
 
       <A_SidebarSegment setSelected={setSelected} />
 
-      {choose === 3 && <CustomSidebarSegement setSelected={setSelectedProj} />}
+      {/* {choose === 3 && <CustomSidebarSegement setSelected={setSelectedProj} />} */}
 
       <ol className={styles.list}>
         {/* <li className={`${global.center} ${styles.customLi}`}>

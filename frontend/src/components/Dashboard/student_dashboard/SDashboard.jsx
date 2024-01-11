@@ -52,7 +52,7 @@ const SDashboard = ({ choose }) => {
           className={styles.container}
           style={{ gap: "150px", marginTop: "30px" }}
         >
-          <Search alternateAPI={0} />
+          <Search />
           <Profile identification={1} />
         </div>
 

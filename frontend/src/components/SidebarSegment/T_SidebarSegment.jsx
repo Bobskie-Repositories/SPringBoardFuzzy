@@ -33,8 +33,12 @@ const T_SidebarSegment = ({ selected, setSelected, signalClassCreated }) => {
         const response = await axios.get(
           `${API_HOST}/api/classroom/${user.id}/all`
         );
+        const sortedClassrooms = response.data.sort((a, b) => {
+          return new Date(b.created_at) - new Date(a.created_at);
+        });
+
         setUserId(user.id);
-        setClassrooms(response.data);
+        setClassrooms(sortedClassrooms);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -56,6 +60,9 @@ const T_SidebarSegment = ({ selected, setSelected, signalClassCreated }) => {
   const handleInactiveClick = (e) => {
     setisInactiveClicked(!isInactiveClicked);
     setClickedClassId(null);
+    localStorage.removeItem("activeProjPage");
+    localStorage.removeItem("inactiveProjPage");
+    localStorage.removeItem("selectedStatus");
     navigate("/all_projects");
   };
 

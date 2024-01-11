@@ -288,8 +288,9 @@ export const AuthProvider = ({ children }) => {
         setToken(null);
         setId(null);
         setIsAuthenticated(false);
-        localStorage.removeItem("jwt");
-        localStorage.removeItem("id");
+        // localStorage.removeItem("jwt");
+        // localStorage.removeItem("id");
+        localStorage.clear();
       } else {
         console.error("Server-side logout failed");
       }
