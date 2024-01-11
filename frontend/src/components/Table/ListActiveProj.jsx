@@ -11,19 +11,23 @@ const ListActiveProj = (props) => {
   const [sortOrder, setSortOrder] = useState(true); // true for ascending, false for descending
   const [groupNameSortOrder, setGroupNameSortOrder] = useState(true); // true for ascending, false for descending
   const [projectNameSortOrder, setProjectNameSortOrder] = useState(true); // true for ascending, false for descending
+  const [dateSort, setDateSort] = useState(true);
   const [templates, setTemplates] = useState([]);
   const [templateSortOrder, setTemplateSortOrder] = useState({}); // object to keep track of sort order for each template
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(() => {
+    // Use a function to initialize the state with the value from localStorage
+    const savedPage = localStorage.getItem("activeProjPage");
+    return savedPage ? parseInt(savedPage, 10) : 1;
+  });
   const groupsPerPage = 10;
   const navigate = useNavigate();
   const { API_HOST } = config;
 
   useEffect(() => {
-    if (!props.groups && !props.templates) {
+    if (!props.groups) {
       axios
         .get(`${API_HOST}/api/group/group_proj`)
         .then((response) => {
-          //filter out groups with no project
           const filteredGroups = response.data.filter(
             (group) => group.projects.length > 0
           );
@@ -32,19 +36,17 @@ const ListActiveProj = (props) => {
         .catch((error) => {
           console.error("Error fetching data:", error);
         });
-
-      axios
-        .get(`${API_HOST}/api/template/`)
-        .then((response) => {
-          setTemplates(response.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-        });
     } else {
       setGroups(props.groups);
-      setTemplates(props.templates);
     }
+    axios
+      .get(`${API_HOST}/api/template/`)
+      .then((response) => {
+        setTemplates(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
 
     const initialSortOrder = {};
     templates.forEach((template) => {
@@ -52,6 +54,11 @@ const ListActiveProj = (props) => {
     });
     setTemplateSortOrder(initialSortOrder);
   }, [props]);
+
+  useEffect(() => {
+    // Save the current page to localStorage whenever it changes
+    localStorage.setItem("activeProjPage", currentPage.toString());
+  }, [currentPage]);
 
   const handleSort = () => {
     const sortedGroups = [...groups].sort((a, b) => {
@@ -73,6 +80,27 @@ const ListActiveProj = (props) => {
     });
     setGroups(sortedGroups);
     setSortOrder(!sortOrder);
+  };
+
+  const handleTimeSort = () => {
+    const sortedGroups = [...groups].sort((a, b) => {
+      const aTime =
+        a.projects.length > 0 ? new Date(a.projects[0].created_at) : null;
+      const bTime =
+        b.projects.length > 0 ? new Date(b.projects[0].created_at) : null;
+
+      if (aTime && bTime) {
+        return dateSort ? aTime - bTime : bTime - aTime;
+      } else if (aTime) {
+        return dateSort ? -1 : 1; // aTime comes before bTime
+      } else if (bTime) {
+        return dateSort ? 1 : -1; // bTime comes before aTime
+      } else {
+        return 0; // Both aTime and bTime are null
+      }
+    });
+    setGroups(sortedGroups);
+    setDateSort(!dateSort);
   };
 
   const handleGroupNameSort = () => {
@@ -122,6 +150,29 @@ const ListActiveProj = (props) => {
     });
   };
 
+  const time = (timestamp) => {
+    const dateObject = new Date(timestamp);
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    const year = dateObject.getFullYear();
+    const month = monthNames[dateObject.getMonth()]; // Use the array to get the month name
+    const day = dateObject.getDate().toString().padStart(2, "0");
+    const dateOnlyString = `${month} ${day}, ${year}`;
+    return dateOnlyString;
+  };
+
   if (!groups || !templates) {
     return <p>Loading...</p>;
   }
@@ -152,6 +203,7 @@ const ListActiveProj = (props) => {
       navigate(`group/${id}`);
     }
   };
+  //used !!props.admin to check if it does really exist. if false,
 
   return (
     <>
@@ -164,14 +216,21 @@ const ListActiveProj = (props) => {
         </div>
         <div className={styles.xScroll}>
           <div
-            className={`${styles.container} ${styles.clickable}`}
+            className={`${
+              !!props.admin ? styles.adminContainer : styles.container
+            } ${styles.clickable}`}
             style={{
               borderBottom: "1px solid #9c7b16",
               color: "#BCBEC0",
               marginBottom: "10px",
-              gridTemplateColumns: `repeat(2, 13rem) repeat(${templates.length}, 11rem) 11rem`,
+              gridTemplateColumns: `repeat(${
+                !!props.admin ? 4 : 2
+              }, 13rem) repeat(${templates.length}, 11rem) 11rem`,
             }}
           >
+            {!!props.admin && (
+              <span className={styles.centerText}>Classroom</span>
+            )}
             <span
               className={`${styles.centerText}`}
               onClick={handleGroupNameSort}
@@ -184,6 +243,9 @@ const ListActiveProj = (props) => {
             >
               Project
             </span>
+            <span className={`${styles.centerText} `} onClick={handleSort}>
+              Overall Rating
+            </span>
             {templates.map((template, index) => (
               <span
                 key={index}
@@ -193,21 +255,33 @@ const ListActiveProj = (props) => {
                 {template.title}
               </span>
             ))}
-            <span className={`${styles.centerText}`} onClick={handleSort}>
-              Overall Rating
-            </span>
+            {!!props.admin && (
+              <span
+                className={`${styles.centerText} ${styles.clickable}`}
+                onClick={handleTimeSort}
+              >
+                Date Created
+              </span>
+            )}
           </div>
           <div className={styles.yScroll}>
             {groupsToDisplay.map((group, index) => (
               <div
-                className={styles.groupContainer}
+                className={`${
+                  !!props.admin ? styles.adminContainer : styles.groupContainer
+                } ${styles.conHover}`}
                 style={{
                   gridTemplateRows: "2.5rem",
-                  gridTemplateColumns: `repeat(2, 13rem) repeat(${templates.length}, 11rem) 11rem`,
+                  gridTemplateColumns: `repeat(${
+                    !!props.admin ? 4 : 2
+                  }, 13rem) repeat(${templates.length}, 11rem) 11rem`,
                   borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
                 }}
                 key={group.id}
               >
+                {!!props.admin && (
+                  <span className={styles.centerText}>{group.class_name}</span>
+                )}
                 <span
                   className={
                     !props.public ? styles.centerTextName : styles.centerText
@@ -236,6 +310,20 @@ const ListActiveProj = (props) => {
                   <span className={styles.centerText}>No Project </span>
                 )}
 
+                <span className={styles.centerText} style={{ color: "red" }}>
+                  {group.projects.length > 0
+                    ? `${Math.round(
+                        (group.projects[0].project_boards.reduce(
+                          (total, board) =>
+                            total + (board ? board.board_score : 0),
+                          0
+                        ) /
+                          templates.length) *
+                          10
+                      )}%`
+                    : "0%"}
+                </span>
+
                 {templates.map((template, index) => {
                   const projectBoard =
                     group.projects.length > 0
@@ -251,19 +339,11 @@ const ListActiveProj = (props) => {
                     </span>
                   );
                 })}
-                <span className={styles.centerText} style={{ color: "red" }}>
-                  {group.projects.length > 0
-                    ? `${Math.round(
-                        (group.projects[0].project_boards.reduce(
-                          (total, board) =>
-                            total + (board ? board.board_score : 0),
-                          0
-                        ) /
-                          templates.length) *
-                          10
-                      )}%`
-                    : "0%"}
-                </span>
+                {!!props.admin && (
+                  <span className={styles.centerText}>
+                    {time(group.projects[0].created_at)}
+                  </span>
+                )}
               </div>
             ))}
           </div>
