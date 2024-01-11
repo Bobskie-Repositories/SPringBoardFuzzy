@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import styles from "./ProjectContents.module.css";
-import Boards from "../Boards/Board";
+import BoardContainer from "../Boards/BoardContainer";
 import BoardCreation from "../BoardCreation/BoardCreation";
 import ProjectDetails from "./ProjectDetails";
 import axios from "axios";
@@ -54,14 +54,16 @@ const ProjectContents = (props) => {
           allTemplate={allTemplate}
         />
       ) : (
-        <Boards
+        <BoardContainer
           selected={props.selected}
+          setSelected={props.setSelected}
           project={project}
           setBoardCount={setBoardCount}
           onProjectUpdate={props.onProjectUpdate}
           setBoardTemplateIds={setBoardTemplateIds}
           projectUpdateKey={props.projectUpdateKey}
           handleCreateBoardClick={props.handleCreateBoardClick}
+          isClass={props.isClass}
         />
       )}
       {project && (

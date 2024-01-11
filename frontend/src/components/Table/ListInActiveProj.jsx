@@ -22,13 +22,20 @@ const ListInActiveProj = (props) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${API_HOST}/api/inactive_proj`);
-        setProjects(response.data);
+        console.log(response.data);
+        const filteredAndClassroomGroups =
+          props.filter.length > 0
+            ? response.data.filter((group) =>
+                props.filter.includes(group.classroom_id)
+              )
+            : response.data;
+        setProjects(filteredAndClassroomGroups);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-  }, []);
+  }, [props]);
 
   useEffect(() => {
     // Save the current page to localStorage whenever it changes
