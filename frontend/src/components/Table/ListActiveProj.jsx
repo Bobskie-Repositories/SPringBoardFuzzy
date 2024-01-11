@@ -31,7 +31,14 @@ const ListActiveProj = (props) => {
           const filteredGroups = response.data.filter(
             (group) => group.projects.length > 0
           );
-          setGroups(filteredGroups);
+          const filteredAndClassroomGroups =
+            props.filter.length > 0
+              ? filteredGroups.filter((group) =>
+                  props.filter.includes(group.classroom_id)
+                )
+              : filteredGroups;
+
+          setGroups(filteredAndClassroomGroups);
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
