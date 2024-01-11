@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 import styles from "./Search.module.css";
 import axios from "axios";
+import Fuse from "fuse.js";
 import config from "../../config";
 
 const Search = ({ setSelected, alternateAPI }) => {
@@ -15,10 +16,7 @@ const Search = ({ setSelected, alternateAPI }) => {
   const { API_HOST } = config;
 
   useEffect(() => {
-    const apiUrl =
-      alternateAPI === 1
-        ? `${API_HOST}/api/project`
-        : `${API_HOST}/api/project/public`;
+    const apiUrl = `${API_HOST}/api/project`;
 
     // Fetch data from the API
     axios
@@ -32,6 +30,8 @@ const Search = ({ setSelected, alternateAPI }) => {
         console.error("Error fetching data: " + error);
         setIsLoading(false);
       });
+
+    // console.log(projects);
   }, []);
 
   useEffect(() => {
@@ -50,9 +50,15 @@ const Search = ({ setSelected, alternateAPI }) => {
     setSearchText(searchText);
 
     if (searchText) {
-      const filtered = projects.filter((project) =>
-        project.name.toLowerCase().includes(searchText.toLowerCase())
-      );
+      const fuse = new Fuse(projects, {
+        keys: ["name", "description"],
+        includeScore: true,
+        threshold: 0.7, // Adjust the threshold as needed
+      });
+
+      const result = fuse.search(searchText);
+      const filtered = result.map((item) => item.item);
+
       setFilteredProjects(filtered);
       setIsListVisible(true);
     } else {
@@ -62,6 +68,8 @@ const Search = ({ setSelected, alternateAPI }) => {
   };
 
   const handleOnClick = (id) => {
+    const currentUrl = window.location.pathname;
+    localStorage.setItem("search", currentUrl);
     navigate(`/search-project/${id}`);
     setIsListVisible(false); // Close the dropdown when clicking on an item
   };
