@@ -62,7 +62,8 @@ const MDashboard = ({ choose }) => {
           ) : choose === 1 ? (
             <ViewClassroom selected={selected} />
           ) : choose === 2 ? (
-            <ViewProject selected={selectedProj} />
+            // <ViewProject selected={selectedProj} />
+            <ViewProject />
           ) : choose === 3 ? (
             <ListProj />
           ) : (
