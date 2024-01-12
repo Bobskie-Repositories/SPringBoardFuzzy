@@ -53,13 +53,14 @@ const Search = ({ setSelected, alternateAPI }) => {
       const fuse = new Fuse(projects, {
         keys: ["name", "description"],
         includeScore: true,
-        threshold: 0.7, // Adjust the threshold as needed
+        threshold: 0.5,
       });
 
       const result = fuse.search(searchText);
-      const filtered = result.map((item) => item.item);
-
-      setFilteredProjects(filtered);
+      const sortedResults = result
+        .map((item) => item.item)
+        .sort((a, b) => b.score - a.score); // Sort in descending order based on score
+      setFilteredProjects(sortedResults);
       setIsListVisible(true);
     } else {
       setFilteredProjects(projects);
@@ -84,6 +85,7 @@ const Search = ({ setSelected, alternateAPI }) => {
           const searchText = event.target.value;
           handleSearch(searchText);
         }}
+        onClick={() => handleSearch(searchText)}
       />
       {!isLoading && isListVisible && (
         <ul className={styles.itemList}>
