@@ -33,6 +33,9 @@ const ADashboard = ({ choose }) => {
 
   useEffect(() => {
     sessionStorage.setItem("currentPath", currentPath);
+    if (choose < 3) {
+      sessionStorage.setItem("dashboard", currentPath);
+    }
   }, [currentPath]);
 
   const handleCreateTemplateClick = () => {
