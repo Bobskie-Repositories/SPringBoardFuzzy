@@ -257,7 +257,7 @@ export const AuthProvider = ({ children }) => {
 
       if (role === "student") {
         const studentResponse = await fetch(`${API_HOST}/api/logout-student`, {
-          method: "GET",
+          method: "POST",
           credentials: "include",
         });
 
@@ -266,7 +266,7 @@ export const AuthProvider = ({ children }) => {
         }
       } else if (role === "teacher") {
         const teacherResponse = await fetch(`${API_HOST}/api/logout-teacher`, {
-          method: "GET",
+          method: "POST",
           credentials: "include",
         });
 
@@ -275,7 +275,7 @@ export const AuthProvider = ({ children }) => {
         }
       } else {
         const adminResponse = await fetch(`${API_HOST}/api/logout-admin`, {
-          method: "GET",
+          method: "POST",
           credentials: "include",
         });
 

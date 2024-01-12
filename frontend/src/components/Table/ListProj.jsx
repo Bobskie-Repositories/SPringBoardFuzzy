@@ -28,6 +28,9 @@ const ListProj = ({ admin }) => {
       "selectedStatus",
       isActive ? "Active Projects" : "Inactive Projects"
     );
+
+    const currentPath = window.location.pathname;
+    sessionStorage.setItem("dashboard", currentPath);
   }, [isActive]);
 
   const handleStatusChange = (e) => {
