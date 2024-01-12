@@ -23,6 +23,9 @@ const MDashboard = ({ choose }) => {
   useEffect(() => {
     setSelected(id);
     sessionStorage.setItem("currentPath", currentPath);
+    if (choose < 4) {
+      sessionStorage.setItem("dashboard", currentPath);
+    }
   }, [selected, id, currentPath]);
 
   // const handleCreateTemplateClick = () => {
