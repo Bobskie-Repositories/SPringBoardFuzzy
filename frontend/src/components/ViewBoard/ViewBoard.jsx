@@ -10,8 +10,6 @@ import parse from "html-react-parser";
 import Swal from "sweetalert2";
 import axios from "axios";
 import config from "../../config";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const ViewBoard = () => {
   const [activeTab, setActiveTab] = useState("results");
@@ -132,13 +130,6 @@ const ViewBoard = () => {
   return (
     <div className={global.body}>
       <Header />
-      <div className={styles.divarrow}>
-        <FontAwesomeIcon
-          icon={faArrowLeft}
-          onClick={onClickGoToDashboard}
-          className={styles.back}
-        />
-      </div>
 
       <div className={global.body}>
         <div style={{ width: "70rem" }}>
