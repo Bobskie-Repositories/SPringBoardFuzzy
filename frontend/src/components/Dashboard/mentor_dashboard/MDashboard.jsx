@@ -46,7 +46,7 @@ const MDashboard = ({ choose }) => {
           className={styles.container}
           style={{ gap: "150px", marginTop: "30px" }}
         >
-          <Search alternateAPI={1} />
+          <Search />
           <Profile identification={1} />
         </div>
         <div>
@@ -62,7 +62,8 @@ const MDashboard = ({ choose }) => {
           ) : choose === 1 ? (
             <ViewClassroom selected={selected} />
           ) : choose === 2 ? (
-            <ViewProject selected={selectedProj} />
+            // <ViewProject selected={selectedProj} />
+            <ViewProject />
           ) : choose === 3 ? (
             <ListProj />
           ) : (

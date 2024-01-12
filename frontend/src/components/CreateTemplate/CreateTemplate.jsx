@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router";
-import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -25,7 +24,6 @@ const CreateTemplate = () => {
   const [isTitleEditable, setIsTitleEditable] = useState(false);
   const [isNext, setIsNext] = useState(false);
   const [savedRulesContent, setSavedRulesContent] = useState(""); // Store the rulesContent
-  const { getUser } = useAuth();
   const navigate = useNavigate();
   const { API_HOST } = config;
 

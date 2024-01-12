@@ -17,8 +17,6 @@ const SDashboard = ({ choose }) => {
   useEffect(() => {
     const currentPath = window.location.pathname;
     sessionStorage.setItem("currentPath", currentPath);
-    // const storedPath = sessionStorage.getItem("currentPath");
-    // console.log(storedPath);
   }, [selected]);
 
   //its purpose is to give signal to sidebar and board that there is an update to the project and need to re-render
@@ -52,7 +50,7 @@ const SDashboard = ({ choose }) => {
           className={styles.container}
           style={{ gap: "150px", marginTop: "30px" }}
         >
-          <Search alternateAPI={0} />
+          <Search />
           <Profile identification={1} />
         </div>
 

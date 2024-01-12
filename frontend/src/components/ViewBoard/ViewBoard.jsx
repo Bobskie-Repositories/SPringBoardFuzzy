@@ -93,10 +93,10 @@ const ViewBoard = () => {
   };
 
   const handleImproveRes = () => {
-    if (attempt >= 5) {
+    if (attempt >= 3) {
       Swal.fire(
         "Warning",
-        "You have reached the maximum limit of 5 reassessments for today. Please try again tomorrow.",
+        "You have reached the maximum limit of 3 reassessments for today. Please try again tomorrow.",
         "warning"
       );
     } else {
@@ -243,7 +243,7 @@ const ViewBoard = () => {
         {!staff && isGrpMem && (
           <div className={styles.btmButton}>
             <p style={{ color: "red" }}>
-              Reassesments available today: {5 - attempt} / 5
+              Reassesments available today: {3 - attempt} / 3
             </p>
 
             <Button className={styles.button} onClick={handleImproveRes}>

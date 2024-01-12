@@ -24,6 +24,9 @@ const A_SidebarSegment = () => {
   // };
   const goListInActiveProj = () => {
     setClickedSection(3);
+    localStorage.removeItem("activeProjPage");
+    localStorage.removeItem("inactiveProjPage");
+    localStorage.removeItem("selectedStatus");
     navigate(`/all_projects`);
   };
 

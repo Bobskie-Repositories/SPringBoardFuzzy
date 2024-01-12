@@ -19,7 +19,13 @@ const ClassroomList = ({ signalClassCreated }) => {
   useEffect(() => {
     fetch(`${API_HOST}/api/classroom/${id}/all`)
       .then((response) => response.json())
-      .then((rooms) => setRooms(rooms));
+      .then((rooms) => {
+        const sortedRooms = rooms.sort((a, b) => {
+          return new Date(b.created_at) - new Date(a.created_at);
+        });
+
+        setRooms(sortedRooms);
+      });
   }, [signalClassCreated]);
 
   const goClass = (classId) => {

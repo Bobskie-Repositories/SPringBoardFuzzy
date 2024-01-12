@@ -34,7 +34,7 @@ const S_SidebarSegment = ({
   const [staff, setStaff] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  const { groupid } = useParams();
+  const { groupid, projectid } = useParams();
   const { getUser } = useAuth();
   const location = useLocation();
   const [open, setOpen] = useState(location.state?.open ? true : false);
@@ -56,7 +56,10 @@ const S_SidebarSegment = ({
         .then((response) => {
           setProjects(response.data);
           if (response.data.length > 0) {
-            if (!selected) {
+            if (projectid) {
+              setSelected(projectid);
+              setClickedProjectId(projectid);
+            } else if (!selected) {
               setSelected(response.data[0].id);
               setClickedProjectId(response.data[0].id);
             } else {
@@ -109,6 +112,9 @@ const S_SidebarSegment = ({
   const handleInactiveClick = (e) => {
     setisInactiveClicked(!isInactiveClicked);
     setClickedProjectId(null);
+    localStorage.removeItem("activeProjPage");
+    localStorage.removeItem("inactiveProjPage");
+    localStorage.removeItem("selectedStatus");
     navigate("/all_projects");
   };
 

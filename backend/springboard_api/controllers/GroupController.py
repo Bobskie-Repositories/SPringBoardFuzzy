@@ -60,6 +60,8 @@ class GetGroupsAndProjects(APIView):
                 group_data = {
                     "id": group.id,
                     "name": group.name,
+                    "classroom_id": group.classroom_fk.id,
+                    "class_name": group.classroom_fk.class_name,
                     "projects": []
                 }
 
@@ -70,6 +72,7 @@ class GetGroupsAndProjects(APIView):
                         "id": project.id,
                         "name": project.name,
                         "project_score": project.score,
+                        "created_at": project.created_at,
                         "project_boards": []
                     }
 
