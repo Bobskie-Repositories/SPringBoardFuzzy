@@ -17,8 +17,6 @@ const SDashboard = ({ choose }) => {
   useEffect(() => {
     const currentPath = window.location.pathname;
     sessionStorage.setItem("currentPath", currentPath);
-    // const storedPath = sessionStorage.getItem("currentPath");
-    // console.log(storedPath);
   }, [selected]);
 
   //its purpose is to give signal to sidebar and board that there is an update to the project and need to re-render
