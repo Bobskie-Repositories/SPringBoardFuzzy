@@ -8,11 +8,13 @@ import ResultBoard from "../ResultBoard/ResultBoard";
 import Button from "../UI/Button/Button";
 import parse from "html-react-parser";
 import Swal from "sweetalert2";
+import { IoArrowBackSharp } from "react-icons/io5";
 import axios from "axios";
 import config from "../../config";
 
 const ViewBoard = () => {
   const [activeTab, setActiveTab] = useState("results");
+  const [attempt, setAttempt] = useState(0);
   const [boards, setBoards] = useState(null);
   const [groupId, setGroupId] = useState(null);
   const [isGrpMem, setIsGrpMem] = useState(true);
@@ -37,18 +39,13 @@ const ViewBoard = () => {
           `${API_HOST}/api/project/${response.data[0].project_fk}`
         );
         const projectData = projectResponse.data;
-
-        // Set both boards and groupId together
         setBoards(response.data);
-        // if (currentIndex >= boards.length) {
-        //   setCurrentIndex(boards.length - 1);
-        // }
         setGroupId(projectData.group_fk);
-        // console.log(groupId);
         groupIdRef.current = projectData.group_fk;
         if (!user.is_staff && projectData.group_fk != user.group_fk) {
           setIsGrpMem(false);
         }
+        setAttempt(calcAttemp(response.data));
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -56,6 +53,32 @@ const ViewBoard = () => {
 
     fetchData();
   }, [id]);
+
+  const calcAttemp = (versions) => {
+    //first creation or no other versions created
+    if (versions.length == 1) {
+      return 0;
+    }
+
+    // Get today's date and set its time to 11:59 PM
+    const today = new Date();
+    today.setHours(23, 59, 59, 999);
+
+    // Set the end time today's date at 11:59 PM
+    const endDate = new Date(today);
+    endDate.setHours(23, 59, 59, 999);
+
+    // Set the start time before today's date at 11:59 PM
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+    const startDate = yesterday;
+
+    const filteredBoards = versions.filter((board) => {
+      const boardCreatedAt = new Date(board.created_at);
+      return boardCreatedAt >= startDate && boardCreatedAt <= endDate;
+    });
+    return filteredBoards.length;
+  };
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -69,56 +92,73 @@ const ViewBoard = () => {
     setCurrentIndex((prevIndex) => prevIndex + 1);
   };
 
-  const onClickDelete = async () => {
-    try {
-      const response = await axios.delete(
-        `${API_HOST}/api/projectboards/${id}/delete`
+  const handleImproveRes = () => {
+    if (attempt >= 3) {
+      Swal.fire(
+        "Warning",
+        "You have reached the maximum limit of 3 reassessments for today. Please try again tomorrow.",
+        "warning"
       );
-
-      if (response.status === 204) {
-        console.log("ProjectBoard deleted successfully");
-      } else {
-        console.error(
-          "Failed to delete ProjectBoard:",
-          response.status,
-          response.data
-        );
-      }
-    } catch (error) {
-      console.error("Error deleting ProjectBoard:", error);
+    } else {
+      navigate("edit");
     }
   };
+
+  // const onClickDelete = async () => {
+  //   try {
+  //     const response = await axios.delete(
+  //       `${API_HOST}/api/projectboards/${id}/delete`
+  //     );
+
+  //     if (response.status === 204) {
+  //       console.log("ProjectBoard deleted successfully");
+  //     } else {
+  //       console.error(
+  //         "Failed to delete ProjectBoard:",
+  //         response.status,
+  //         response.data
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting ProjectBoard:", error);
+  //   }
+  // };
 
   const onClickGoToDashboard = () => {
     navigate(`/group/${groupIdRef.current}`);
   };
 
-  const showDeleteBoardModal = () => {
-    Swal.fire({
-      icon: "warning",
-      title:
-        '<span style="font-size: 20px">Are you sure you want to delete?</span>',
-      html: '<span style="font-size: 15px">This will delete this board permanently. You cannot undo this action.</span>',
-      showCancelButton: true,
-      confirmButtonText: "Delete",
-      confirmButtonColor: "#8A252C",
-      cancelButtonText: "Cancel",
-      cancelButtonColor: "rgb(181, 178, 178)",
-    }).then((result) => {
-      if (result && result.isConfirmed) {
-        // Check if result exists before accessing properties
-        onClickDelete();
-        Swal.fire({
-          title:
-            '<span style="font-size: 20px">Board Sucessfully Deleted</span>',
-          icon: "success",
-          confirmButtonColor: "#9c7b16",
-          confirmButtonText: "OK",
-        }).then((result) => {
-          onClickGoToDashboard();
-        });
-      }
-    });
+  // const showDeleteBoardModal = () => {
+  //   Swal.fire({
+  //     icon: "warning",
+  //     title:
+  //       '<span style="font-size: 20px">Are you sure you want to delete?</span>',
+  //     html: '<span style="font-size: 15px">This will delete this board permanently. You cannot undo this action.</span>',
+  //     showCancelButton: true,
+  //     confirmButtonText: "Delete",
+  //     confirmButtonColor: "#8A252C",
+  //     cancelButtonText: "Cancel",
+  //     cancelButtonColor: "rgb(181, 178, 178)",
+  //   }).then((result) => {
+  //     if (result && result.isConfirmed) {
+  //       // Check if result exists before accessing properties
+  //       onClickDelete();
+  //       Swal.fire({
+  //         title:
+  //           '<span style="font-size: 20px">Board Sucessfully Deleted</span>',
+  //         icon: "success",
+  //         confirmButtonColor: "#9c7b16",
+  //         confirmButtonText: "OK",
+  //       }).then((result) => {
+  //         onClickGoToDashboard();
+  //       });
+  //     }
+  //   });
+  // };
+
+  const handleBack = () => {
+    const storedPath = sessionStorage.getItem("currentPath");
+    navigate(storedPath);
   };
 
   if (!boards) {
@@ -133,7 +173,12 @@ const ViewBoard = () => {
 
       <div className={global.body}>
         <div style={{ width: "70rem" }}>
-          <h2>{currentProjectBoard.title}</h2>
+          <h2>
+            <span className={styles.back} onClick={handleBack}>
+              <IoArrowBackSharp />
+            </span>
+            {currentProjectBoard.title}
+          </h2>
           <div className={styles.navigationButtons}>
             <span
               onClick={goToNextProjectBoard}
@@ -145,7 +190,7 @@ const ViewBoard = () => {
             >
               &lt;&lt;
             </span>
-            <span>&nbsp; {boards.length - currentIndex} &nbsp; </span>
+            <span>&nbsp; Version {boards.length - currentIndex} &nbsp; </span>
             <span
               onClick={goToPreviousProjectBoard}
               className={currentIndex === 0 ? styles.disabled : styles.enable}
@@ -197,16 +242,21 @@ const ViewBoard = () => {
 
         {!staff && isGrpMem && (
           <div className={styles.btmButton}>
-            <Button className={styles.button} onClick={() => navigate("edit")}>
+            <p style={{ color: "red" }}>
+              Reassesments available today: {3 - attempt} / 3
+            </p>
+
+            <Button className={styles.button} onClick={handleImproveRes}>
               Improve Result
             </Button>
-            <Button
+
+            {/* <Button
               className={styles.button}
               style={{ backgroundColor: "#8A252C" }}
               onClick={showDeleteBoardModal}
             >
               Delete
-            </Button>
+            </Button> */}
           </div>
         )}
       </div>

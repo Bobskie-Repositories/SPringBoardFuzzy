@@ -1,33 +1,64 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { useParams } from "react-router";
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate, useParams } from "react-router";
+import ProjectContents from "../ProjectContents/ProjectContents";
 import styles from "./ViewProject.module.css";
 import axios from "axios";
-import Board from "../Boards/Board";
+import { IoArrowBackSharp } from "react-icons/io5";
 import config from "../../config";
 
-const ViewProject = ({ selected }) => {
+const ViewProject = () => {
   const [group, setGroup] = useState("");
-  const { groupid } = useParams();
+  const [selected, setSelected] = useState();
+  const [projects, setProjects] = useState();
+  const { id, groupid } = useParams();
   const { API_HOST } = config;
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${API_HOST}/api/group/${groupid}`);
-        setGroup(response.data.name);
+        const response = await axios.get(
+          `${API_HOST}/api/group/${groupid}/projects`
+        );
+        setProjects(response.data);
+        if (response.data.length > 0) {
+          setSelected(response.data[0].id);
+        }
+
+        const groupResponse = await axios.get(
+          `${API_HOST}/api/group/${groupid}`
+        );
+        setGroup(groupResponse.data.name);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, [groupid]);
+  }, []);
+
+  const handleBack = () => {
+    navigate(`/classroom/${id}`);
+  };
+
+  if (!projects) {
+    return <p></p>;
+  }
 
   return (
     <div className={styles.body}>
-      <p className={styles.text}>{group}</p>
-      <Board selected={selected} />
+      <p className={styles.text}>
+        <span className={styles.back} onClick={handleBack}>
+          <IoArrowBackSharp />
+        </span>
+        {group}
+      </p>
+      <ProjectContents
+        selected={selected}
+        setSelected={setSelected}
+        isClass={true}
+      />
     </div>
   );
 };

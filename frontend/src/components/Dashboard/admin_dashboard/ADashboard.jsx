@@ -6,8 +6,7 @@ import Search from "../../Search/Search";
 import A_Sidebar from "../../Sidebar/A_Sidebar";
 import TemplateList from "../../TemplateList/TemplateList";
 import Button from "../../UI/Button/Button";
-import ListActiveProj from "../../Table/ListActiveProj";
-import ListInActiveProj from "../../Table/ListInActiveProj";
+import ListProj from "../../Table/ListProj";
 import ViewProject from "../../ViewProject/ViewProject";
 import SearchProject from "../../Search/SearchProject";
 import axios from "axios";
@@ -17,20 +16,11 @@ const ADashboard = ({ choose }) => {
   const navigate = useNavigate();
   const [selected, setSelected] = useState();
   const [selectedProj, setSelectedProj] = useState();
-  const [groups, setGroups] = useState(null);
   const [templates, setTemplates] = useState([]);
+  const currentPath = window.location.pathname;
   const { API_HOST } = config;
 
   useEffect(() => {
-    axios
-      .get(`${API_HOST}/api/group/group_proj`)
-      .then((response) => {
-        setGroups(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-
     axios
       .get(`${API_HOST}/api/template/`)
       .then((response) => {
@@ -40,6 +30,13 @@ const ADashboard = ({ choose }) => {
         console.error("Error fetching data:", error);
       });
   }, []);
+
+  useEffect(() => {
+    sessionStorage.setItem("currentPath", currentPath);
+    if (choose < 3) {
+      sessionStorage.setItem("dashboard", currentPath);
+    }
+  }, [currentPath]);
 
   const handleCreateTemplateClick = () => {
     navigate("add-template");
@@ -61,7 +58,7 @@ const ADashboard = ({ choose }) => {
           className={styles.container}
           style={{ gap: "150px", marginTop: "30px" }}
         >
-          <Search alternateAPI={1} />
+          <Search />
           <Profile identification={1} />
         </div>
 
@@ -82,12 +79,8 @@ const ADashboard = ({ choose }) => {
               <TemplateList />
             </div>
           ) : choose === 1 ? (
-            <div style={{ marginTop: "30px" }}>
-              <ListActiveProj groups={groups} templates={templates} />
-            </div>
+            <ListProj admin={true} />
           ) : choose === 2 ? (
-            <ListInActiveProj />
-          ) : choose === 3 ? (
             <ViewProject selected={selectedProj} />
           ) : (
             <div className={styles.container}>

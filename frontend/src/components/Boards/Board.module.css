@@ -21,6 +21,16 @@
   margin-top: 200px;
   color: rgb(131, 131, 131);
 }
+.butName {
+  background-color: #9c7b16;
+  height: 30px;
+  width: 19%;
+  padding: 0;
+  margin-bottom: 10px;
+  font-size: 11px;
+  text-align: center;
+  align-items: center;
+}
 
 .scrollable::-webkit-scrollbar {
   width: 0.1rem;
@@ -204,4 +214,58 @@
 /* Customize the scrollbar thumb when hovered */
 .yScroll::-webkit-scrollbar-thumb:hover {
   background-color: #555;
+}
+
+.top {
+  display: flex;
+  width: 10rem;
+  margin-left: 30px;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+}
+
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+/* .dropbtn {
+  margin-top: 25px;
+  margin-left: -25px;
+  position: absolute;
+} */
+
+.dropdown .dropbtn {
+  font-size: 1em;
+  background-color: inherit;
+  font-family: inherit;
+  /* margin: 0; */
+}
+
+.dropdowncontent {
+  display: block;
+  position: relative;
+  /* margin-top: 50px; */
+  /* margin-left: -15rem; */
+  position: absolute;
+  background-color: #fff;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+  border-radius: 5px;
+  max-width: 20rem;
+}
+
+.dropdowncontent span {
+  float: none;
+  color: #333;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+.dropdowncontent span:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
 }

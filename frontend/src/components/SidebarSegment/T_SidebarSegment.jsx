@@ -33,8 +33,12 @@ const T_SidebarSegment = ({ selected, setSelected, signalClassCreated }) => {
         const response = await axios.get(
           `${API_HOST}/api/classroom/${user.id}/all`
         );
+        const sortedClassrooms = response.data.sort((a, b) => {
+          return new Date(b.created_at) - new Date(a.created_at);
+        });
+
         setUserId(user.id);
-        setClassrooms(response.data);
+        setClassrooms(sortedClassrooms);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -56,7 +60,10 @@ const T_SidebarSegment = ({ selected, setSelected, signalClassCreated }) => {
   const handleInactiveClick = (e) => {
     setisInactiveClicked(!isInactiveClicked);
     setClickedClassId(null);
-    navigate("/inactive");
+    localStorage.removeItem("activeProjPage");
+    localStorage.removeItem("inactiveProjPage");
+    localStorage.removeItem("selectedStatus");
+    navigate("/all_projects");
   };
 
   const showCreateProjectModal = () => {
@@ -145,7 +152,7 @@ const T_SidebarSegment = ({ selected, setSelected, signalClassCreated }) => {
               className={styles.dropdown}
               size="lg"
             />
-            &nbsp; Inactive Projects
+            &nbsp; All Projects
           </div>
         </li>
         <li className={`${global.center} ${styles.customLi}`}>

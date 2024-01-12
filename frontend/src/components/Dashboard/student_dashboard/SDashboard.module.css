@@ -13,15 +13,6 @@
   max-width: 10rem;
 }
 
-.butName {
-  background-color: #9c7b16;
-  height: 40px;
-  margin-top: 40px;
-  font-size: 12px;
-  min-width: 170px;
-  max-width: 200px;
-}
-
 .textInput_select {
   width: 100%;
   padding: 10px;

@@ -8,7 +8,7 @@ import Profile from "../../ProfileSegment/Profile";
 import ClassroomList from "../../Classroom/ClassroomList";
 import ViewClassroom from "../../Classroom/ViewClassroom";
 import ViewProject from "../../ViewProject/ViewProject";
-import ListInActiveProj from "../../Table/ListInActiveProj";
+import ListProj from "../../Table/ListProj";
 import SearchProject from "../../Search/SearchProject";
 import styles from "./MDashboard.module.css";
 
@@ -18,14 +18,19 @@ const MDashboard = ({ choose }) => {
   const [signalClassCreated, setSignalClassCreated] = useState();
   const { id, groupid } = useParams();
   const navigate = useNavigate();
+  const currentPath = window.location.pathname;
 
   useEffect(() => {
     setSelected(id);
-  }, [selected, id]);
+    sessionStorage.setItem("currentPath", currentPath);
+    if (choose < 4) {
+      sessionStorage.setItem("dashboard", currentPath);
+    }
+  }, [selected, id, currentPath]);
 
-  const handleCreateTemplateClick = () => {
-    navigate("/add-template");
-  };
+  // const handleCreateTemplateClick = () => {
+  //   navigate("/add-template");
+  // };
 
   return (
     <div
@@ -44,7 +49,7 @@ const MDashboard = ({ choose }) => {
           className={styles.container}
           style={{ gap: "150px", marginTop: "30px" }}
         >
-          <Search alternateAPI={1} />
+          <Search />
           <Profile identification={1} />
         </div>
         <div>
@@ -60,9 +65,10 @@ const MDashboard = ({ choose }) => {
           ) : choose === 1 ? (
             <ViewClassroom selected={selected} />
           ) : choose === 2 ? (
-            <ViewProject selected={selectedProj} />
+            // <ViewProject selected={selectedProj} />
+            <ViewProject />
           ) : choose === 3 ? (
-            <ListInActiveProj />
+            <ListProj />
           ) : (
             <div className={styles.container}>
               <SearchProject />

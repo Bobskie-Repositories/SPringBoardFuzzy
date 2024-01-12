@@ -18,13 +18,16 @@ const A_SidebarSegment = () => {
     navigate(`/admin`);
   };
 
-  const goListActiveProj = () => {
-    setClickedSection(2);
-    navigate(`/admin/active`);
-  };
+  // const goListActiveProj = () => {
+  //   setClickedSection(2);
+  //   navigate(`/admin/active`);
+  // };
   const goListInActiveProj = () => {
     setClickedSection(3);
-    navigate(`/inactive`);
+    localStorage.removeItem("activeProjPage");
+    localStorage.removeItem("inactiveProjPage");
+    localStorage.removeItem("selectedStatus");
+    navigate(`/all_projects`);
   };
 
   return (
@@ -45,7 +48,7 @@ const A_SidebarSegment = () => {
             Templates
           </div>
         </li>
-        <li className={`${global.center} ${styles.customLi}`}>
+        {/* <li className={`${global.center} ${styles.customLi}`}>
           <div
             onClick={goListActiveProj}
             className={`${styles.nameIcon} ${
@@ -59,7 +62,7 @@ const A_SidebarSegment = () => {
             />
             Active Project
           </div>
-        </li>
+        </li> */}
         <li className={`${global.center} ${styles.customLi}`}>
           <div
             onClick={goListInActiveProj}
@@ -72,7 +75,7 @@ const A_SidebarSegment = () => {
               className={styles.templates}
               size="xl"
             />
-            Inactive Project
+            All Projects
           </div>
         </li>
       </ol>
