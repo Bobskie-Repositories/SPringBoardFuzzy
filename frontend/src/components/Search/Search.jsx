@@ -87,6 +87,8 @@ const Search = ({ setSelected, alternateAPI }) => {
         }}
         onClick={() => handleSearch(searchText)}
       />
+      <button className={styles.buttonSearch}>Seach</button>
+
       {!isLoading && isListVisible && (
         <ul className={styles.itemList}>
           {filteredProjects.map((project) => (
