@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import ListActiveProj from "./ListActiveProj";
-import ListInActiveProj from "./ListInActiveProj";
+import AdminTable from "./AdminTable";
+import PublicTable from "./PublicTable.jsx";
 import { FaCaretDown } from "react-icons/fa";
 import config from "../../config";
 import axios from "axios";
@@ -109,14 +109,10 @@ const ListProj = ({ admin }) => {
           </div>
         )}
       </div>
-      {isActive ? (
-        <ListActiveProj
-          admin={admin}
-          public={true}
-          filter={selectedClassrooms}
-        />
+      {admin ? (
+        <AdminTable isActive={isActive} filter={selectedClassrooms} />
       ) : (
-        <ListInActiveProj admin={admin} filter={selectedClassrooms} />
+        <PublicTable filter={selectedClassrooms} />
       )}
     </div>
   );
