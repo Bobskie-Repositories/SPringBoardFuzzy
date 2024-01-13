@@ -9,7 +9,7 @@ import config from "../../config";
 const ViewProject = () => {
   const [group, setGroup] = useState("");
   const [selected, setSelected] = useState();
-  const [projects, setProjects] = useState();
+  // const [projects, setProjects] = useState();
   const { id, groupid } = useParams();
   const { API_HOST } = config;
 
@@ -21,9 +21,11 @@ const ViewProject = () => {
         const response = await axios.get(
           `${API_HOST}/api/group/${groupid}/projects`
         );
-        setProjects(response.data);
-        if (response.data.length > 0) {
-          setSelected(response.data[0].id);
+        // setProjects(response.data);
+        const activeProject = response.data.find((project) => project.isActive);
+
+        if (activeProject) {
+          setSelected(activeProject.id);
         }
 
         const groupResponse = await axios.get(
@@ -42,7 +44,7 @@ const ViewProject = () => {
     navigate(`/classroom/${id}`);
   };
 
-  if (!projects) {
+  if (!group) {
     return <p></p>;
   }
 
