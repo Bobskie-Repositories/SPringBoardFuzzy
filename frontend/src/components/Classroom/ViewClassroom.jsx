@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { IoArrowBackSharp } from "react-icons/io5";
-import ListActiveProj from "../Table/ListActiveProj";
+import ClassroomTable from "../Table/ClassroomTable";
 import { useAuth } from "../../context/AuthContext";
 import styles from "./ViewClassroom.module.css";
 import axios from "axios";
@@ -48,7 +48,7 @@ const ViewClassroom = ({ selected }) => {
         </span>
         <h2 style={{ fontSize: "30px", color: "#9c7b16" }}>{classroom}</h2>
       </div>
-      <ListActiveProj groups={groups} />
+      <ClassroomTable groups={groups} />
     </div>
   );
 };

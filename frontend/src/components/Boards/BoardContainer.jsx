@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { Switch } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import Loading from "../UI/Loading/Loading";
 import ModalCustom from "../UI/Modal/Modal";
 import axios from "axios";
@@ -267,7 +269,23 @@ const BoardContainer = ({
                               setDropdownVisible(!dropdownVisible);
                             }}
                           >
-                            {project.name}
+                            {project.isActive ? (
+                              <FontAwesomeIcon
+                                icon={faCircle}
+                                className={styles.greenBullet}
+                                size="xs"
+                              />
+                            ) : (
+                              <FontAwesomeIcon
+                                icon={faCircle}
+                                className={styles.clear}
+                                size="xs"
+                              />
+                            )}
+
+                            <p style={{ padding: 0, margin: 0 }}>
+                              {project.name}
+                            </p>
                           </span>
                         ))}
                       </div>
