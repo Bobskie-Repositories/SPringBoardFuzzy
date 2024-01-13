@@ -65,12 +65,14 @@ class GetGroupsAndProjects(APIView):
                     "projects": []
                 }
 
-                projects = Project.objects.filter(
-                    group_fk=group, isActive=True)
+                projects = Project.objects.filter(group_fk=group)
                 for project in projects:
                     project_data = {
                         "id": project.id,
                         "name": project.name,
+                        "isActive": project.isActive,
+                        "description": project.description,
+                        "reason": project.reason,
                         "project_score": project.score,
                         "created_at": project.created_at,
                         "project_boards": []
@@ -101,8 +103,28 @@ class GetGroupsAndProjects(APIView):
                 # Append each group data to the list
                 all_group_data.append(group_data)
 
-            # Return all group data
-            return Response(all_group_data, status=status.HTTP_200_OK)
+            # Flatten the list to match the specified format
+            flattened_data = []
+            for group_data in all_group_data:
+                if not group_data["projects"]:
+                    flattened_data.append({
+                        "id": group_data["id"],
+                        "name": group_data["name"],
+                        "classroom_id": group_data["classroom_id"],
+                        "class_name": group_data["class_name"],
+                        "projects": [{"id": None, "name": "No Project", "project_boards": []}]
+                    })
+                else:
+                    for project_data in group_data["projects"]:
+                        flattened_data.append({
+                            "id": group_data["id"],
+                            "name": group_data["name"],
+                            "classroom_id": group_data["classroom_id"],
+                            "class_name": group_data["class_name"],
+                            "projects": [project_data]
+                        })
+
+            return Response(flattened_data, status=status.HTTP_200_OK)
 
         except Group.DoesNotExist:
             return Response({"error": "Group not found"}, status=status.HTTP_404_NOT_FOUND)
