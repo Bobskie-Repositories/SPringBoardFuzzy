@@ -5,7 +5,7 @@
   background-repeat: no-repeat;
   background-position: 10px center;
   box-shadow: 2px 2px 7px 2px rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
+  border-radius: 10px 0px 0px 10px;
   background-color: white;
   border: none;
   color: black;
@@ -14,11 +14,27 @@
   width: 92%;
 }
 
+.buttonSearch {
+  margin-top: -10px;
+  border-radius: 0px 10px 10px 0px;
+  box-shadow: 3px 4px 10px 1px rgba(0, 0, 0, 0.3);
+  background-color: #9c7b16;
+  height: 38px;
+  font-size: small;
+  width: 6rem;
+  border-style: hidden;
+}
+
+.buttonSearch:focus {
+  outline: none;
+}
+
 /* Search.module.css */
 
 .searchContainer {
   position: relative;
   width: 100%;
+  display: flex;
 }
 
 .itemList {
