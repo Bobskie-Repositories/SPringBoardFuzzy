@@ -27,8 +27,22 @@ const AdminTable = (props) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${API_HOST}/api/group/group_proj`);
-        // console.log(response.data);
-        setGroups(response.data);
+        console.log(props.filter);
+
+        const filteredAndClassroomGroups =
+          props.filter.length > 0
+            ? response.data.filter((group) =>
+                props.filter.includes(group.classroom_id)
+              )
+            : response.data;
+
+        const filteredGroups = filteredAndClassroomGroups.filter((group) =>
+          group.projects.length > 0
+            ? group.projects[0].isActive === props.isActive
+            : false
+        );
+
+        setGroups(filteredGroups);
 
         const templateResponse = await axios.get(`${API_HOST}/api/template/`);
         setTemplates(templateResponse.data);
@@ -251,7 +265,7 @@ const AdminTable = (props) => {
             </span>
           </div>
           <div className={styles.yScroll}>
-            {groups.map((group, index) => (
+            {groupsToDisplay.map((group, index) => (
               <div
                 className={`${styles.adminContainer} ${styles.conHover}`}
                 style={{
@@ -260,7 +274,7 @@ const AdminTable = (props) => {
                   }, 11rem) 11rem`,
                   borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
                 }}
-                key={group.id}
+                key={group.id + index}
               >
                 <span className={styles.centerText}>{group.class_name}</span>
 
