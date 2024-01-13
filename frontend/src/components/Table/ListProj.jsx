@@ -1,16 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
+import DatePicker from "react-datepicker";
 import AdminTable from "./AdminTable";
 import PublicTable from "./PublicTable.jsx";
-import { FaCaretDown } from "react-icons/fa";
+import { FaCaretDown, FaCalendarAlt } from "react-icons/fa";
+import { SiGoogleclassroom } from "react-icons/si";
+import { GrStatusGoodSmall } from "react-icons/gr";
+import global from "../../assets/global.module.css";
 import config from "../../config";
 import axios from "axios";
 import styles from "./Table.module.css";
+import "react-datepicker/dist/react-datepicker.css";
 
 const ListProj = ({ admin }) => {
   const [classroom, setClassroom] = useState([]);
   const [selectedClassrooms, setSelectedClassrooms] = useState([]);
   const dropdownRef = useRef(null);
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [statusVisible, setStatusVisible] = useState(false);
+  const [selectedDate, setDate] = useState(null);
   const [isActive, setIsActive] = useState(
     localStorage.getItem("selectedStatus") === "Active Projects" ||
       localStorage.getItem("selectedStatus") === null
@@ -36,15 +43,22 @@ const ListProj = ({ admin }) => {
   const handleStatusChange = (e) => {
     const selectedStatus = e.target.value;
     setIsActive(selectedStatus === "Active Projects");
+    setStatusVisible(false); // Close status dropdown when a status is selected
   };
 
   const handleDropdownClick = () => {
     setDropdownVisible(!dropdownVisible);
   };
 
+  const handleStatusClick = () => {
+    setStatusVisible(!statusVisible);
+    setDropdownVisible(false); // Close classroom dropdown when status dropdown is clicked
+  };
+
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setDropdownVisible(false);
+      setStatusVisible(false);
     }
   };
 
@@ -69,7 +83,7 @@ const ListProj = ({ admin }) => {
   return (
     <div>
       <div className={styles.head}>
-        <select
+        {/* <select
           id="status"
           className={styles.textInput_select}
           onChange={handleStatusChange}
@@ -77,16 +91,54 @@ const ListProj = ({ admin }) => {
         >
           <option>Active Projects</option>
           <option>Inactive Projects</option>
-        </select>
+        </select> */}
 
         {admin && (
           <div className={styles.top}>
             <div className={styles.dropdown} ref={dropdownRef}>
-              <div className={styles.dropbtn} onClick={handleDropdownClick}>
-                <span>Filter</span>
-                &nbsp;&nbsp;&nbsp;
-                <FaCaretDown />
+              <div className={styles.icons}>
+                <div className={styles.dropbtn} onClick={handleStatusClick}>
+                  <GrStatusGoodSmall
+                    size={12}
+                    style={{ verticalAlign: "middle" }}
+                  />
+                  &nbsp;&nbsp;&nbsp;
+                  <p className={styles.classroomText}>
+                    {isActive ? "Active Projects" : "Inactive Projects"}
+                  </p>
+                  &nbsp;&nbsp;&nbsp;
+                  <FaCaretDown style={{ verticalAlign: "middle" }} />
+                </div>
+
+                <div className={styles.dropbtn} onClick={handleDropdownClick}>
+                  <SiGoogleclassroom
+                    size={20}
+                    style={{ verticalAlign: "middle" }}
+                  />
+                  &nbsp;&nbsp;&nbsp;
+                  <p className={styles.classroomText}>All Classrooms</p>
+                  &nbsp;&nbsp;&nbsp;
+                  <FaCaretDown style={{ verticalAlign: "middle" }} />
+                </div>
+
+                <div className={styles.dropbtn}>
+                  <FaCalendarAlt
+                    size={18}
+                    style={{ verticalAlign: "middle" }}
+                  />
+                  &nbsp;&nbsp;&nbsp;
+                  {/* <p className={styles.classroomText}>Date</p> */}
+                  {/* <DatePicker
+                    placeholderText="Select Date"
+                    className={styles.dateDesign}
+                    selected={selectedDate}
+                    onChange={(date) => setDate(date)}
+                  /> */}
+                  {/* &nbsp;&nbsp;&nbsp;
+                  <FaCaretDown style={{ verticalAlign: "middle" }} /> */}
+                </div>
               </div>
+
               {dropdownVisible && (
                 <div className={styles.dropdowncontent}>
                   {classroom.map((clsrm) => (
@@ -103,6 +155,33 @@ const ListProj = ({ admin }) => {
                       </label>
                     </div>
                   ))}
+                </div>
+              )}
+
+              {statusVisible && (
+                <div className={styles.statuscontent}>
+                  <ul className={styles.statusList}>
+                    <li
+                      className={`${global.center} ${styles.customLi}`}
+                      onClick={() =>
+                        handleStatusChange({
+                          target: { value: "Active Projects" },
+                        })
+                      }
+                    >
+                      Active Projects
+                    </li>
+                    <li
+                      className={`${global.center} ${styles.customLi}`}
+                      onClick={() =>
+                        handleStatusChange({
+                          target: { value: "Inactive Projects" },
+                        })
+                      }
+                    >
+                      Inactive Projects
+                    </li>
+                  </ul>
                 </div>
               )}
             </div>
