@@ -22,10 +22,17 @@ const ViewProject = () => {
           `${API_HOST}/api/group/${groupid}/projects`
         );
         // setProjects(response.data);
-        const activeProject = response.data.find((project) => project.isActive);
+        if (response.data.length > 0) {
+          const activeProject = response.data.find(
+            (project) => project.isActive
+          );
 
-        if (activeProject) {
-          setSelected(activeProject.id);
+          if (activeProject) {
+            setSelected(activeProject.id);
+          } else {
+            // If there is no active project, choose the first project
+            setSelected(response.data[0].id);
+          }
         }
 
         const groupResponse = await axios.get(

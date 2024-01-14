@@ -172,7 +172,9 @@ class GetClassroomGroupsAndProjects(APIView):
                     project_data = {
                         "id": project.id,
                         "name": project.name,
+                        "description": project.description,
                         "project_score": project.score,
+                        "created_at": project.created_at,
                         "project_boards": []
                     }
 
@@ -187,7 +189,7 @@ class GetClassroomGroupsAndProjects(APIView):
                         board = ProjectBoard.objects.get(
                             id=board_data['latest_id'])
                         board_score = (
-                            board.novelty + board.technical_feasibility + board.capability) / 3
+                            (board.novelty * 0.4) + (board.technical_feasibility * 0.3) + (board.capability * 0.3))
                         project_board_data = {
                             "id": board.id,
                             "board_score": board_score,

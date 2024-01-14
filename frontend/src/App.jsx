@@ -17,7 +17,7 @@ import EditTemplate from "./pages/EditTemplate";
 import InActivePage from "./pages/InActivePage";
 import LandingPage from "./pages/LandingPage";
 import SearchPage from "./pages/SearchPage";
-import GPTChat from "./components/GPTRequestHandler/GPTChat"; // Import the GPTChat component
+import SearchList from "./pages/SearchList";
 
 function App() {
   return (
@@ -35,8 +35,6 @@ function App() {
       <Route path="/student/join-group" element={<Register choose={3} />} />
       <Route path="/student/create-group" element={<Register choose={4} />} />
 
-      {/* <Route path="/chat-gpt" element={<GPTChat />} />{" "} */}
-      {/* Add this route for GPT Chat */}
       <Route path="/group/:groupid">
         <Route
           index={true}
@@ -203,6 +201,16 @@ function App() {
         element={
           <RequireAuth>
             <InActivePage />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/search"
+        index={true}
+        exact
+        element={
+          <RequireAuth>
+            <SearchList />
           </RequireAuth>
         }
       />

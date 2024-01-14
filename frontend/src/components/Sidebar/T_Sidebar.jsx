@@ -63,7 +63,7 @@ const T_Sidebar = ({
           <FontAwesomeIcon icon={faGear} size="lg" className={styles.icon} />{" "}
           &nbsp; Settings
         </li> */}
-        <li
+        {/* <li
           className={`${global.center} ${styles.customLi}`}
           onClick={goLogout}
         >
@@ -73,7 +73,7 @@ const T_Sidebar = ({
             className={styles.icon}
           />{" "}
           &nbsp; Log out
-        </li>
+        </li> */}
       </ol>
     </div>
   );

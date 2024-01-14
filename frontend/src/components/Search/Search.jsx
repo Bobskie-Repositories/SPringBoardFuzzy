@@ -30,8 +30,6 @@ const Search = ({ setSelected, alternateAPI }) => {
         console.error("Error fetching data: " + error);
         setIsLoading(false);
       });
-
-    // console.log(projects);
   }, []);
 
   useEffect(() => {
@@ -72,7 +70,17 @@ const Search = ({ setSelected, alternateAPI }) => {
     const currentUrl = window.location.pathname;
     localStorage.setItem("search", currentUrl);
     navigate(`/search-project/${id}`);
-    setIsListVisible(false); // Close the dropdown when clicking on an item
+    setIsListVisible(false);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      navigateSearch();
+    }
+  };
+  const navigateSearch = () => {
+    navigate(`/search?query=${encodeURIComponent(searchText)}`);
+    setIsListVisible(false);
   };
 
   return (
@@ -86,8 +94,14 @@ const Search = ({ setSelected, alternateAPI }) => {
           handleSearch(searchText);
         }}
         onClick={() => handleSearch(searchText)}
+        onKeyDown={handleKeyDown}
       />
-      <button className={styles.buttonSearch}>Seach</button>
+      <button
+        className={styles.buttonSearch}
+        onClick={() => navigateSearch(searchText)}
+      >
+        Search
+      </button>
 
       {!isLoading && isListVisible && (
         <ul className={styles.itemList}>

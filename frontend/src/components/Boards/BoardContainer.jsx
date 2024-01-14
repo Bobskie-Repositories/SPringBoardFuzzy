@@ -31,6 +31,7 @@ const BoardContainer = ({
   const navigate = useNavigate();
   const [loadCount, setLoadCount] = useState(0);
   const [projectList, setProjectList] = useState([]);
+  const [userAcc, setUserAcc] = useState();
   const [staff, setStaff] = useState(false);
   const [groupKey, setGroupKey] = useState();
   const [selectedProj, setSelectedProj] = useState(selected);
@@ -58,7 +59,7 @@ const BoardContainer = ({
     const fetchData = async () => {
       try {
         const user = await getUser();
-
+        setUserAcc(user);
         setStaff(user.is_staff);
         if (!user.is_staff) {
           setGroupKey(user.group_fk);
@@ -233,75 +234,94 @@ const BoardContainer = ({
     };
   }, []);
 
+  if (!userAcc) {
+    return <p></p>;
+  }
+
   return (
     <div className={styles.board}>
       {project ? (
-        <ThemeProvider theme={theme}>
-          <div className={styles.alignment}>
-            <div className={styles.head}>{project.name} Boards</div>
-            {!staff && project.group_fk === groupKey && (
-              <div className={`${styles.publish} ${styles.rightAligned}`}>
-                {project.isActive ? "Activated" : "Inactive"}
-                <Switch
-                  onChange={(event) => handleToggleClick(event)}
-                  inputProps={{ "aria-label": "controlled" }}
-                  checked={project.isActive}
-                  color="success"
-                />
-              </div>
-            )}
+        <>
+          <ThemeProvider theme={theme}>
+            <div className={styles.alignment}>
+              <div className={styles.head}>{project.name} Boards</div>
+              {!staff && project.group_fk === groupKey && (
+                <div className={`${styles.publish} ${styles.rightAligned}`}>
+                  {project.isActive ? "Activated" : "Inactive"}
+                  <Switch
+                    onChange={(event) => handleToggleClick(event)}
+                    inputProps={{ "aria-label": "controlled" }}
+                    checked={project.isActive}
+                    color="success"
+                  />
+                </div>
+              )}
 
-            {staff && isClass && (
-              <div>
-                <div className={styles.top} onClick={handleDropdownClick}>
-                  <div className={styles.dropdown} ref={dropdownRef}>
-                    <div className={styles.dropbtn}>
-                      <span>View other project &nbsp;</span>
-                      <FaCaretDown />
-                    </div>
-                    {dropdownVisible && (
-                      <div className={styles.dropdowncontent}>
-                        {projectList.map((project) => (
-                          <span
-                            key={project.id}
-                            onClick={() => {
-                              setSelected(project.id);
-                              setDropdownVisible(!dropdownVisible);
-                            }}
-                          >
-                            {project.isActive ? (
-                              <FontAwesomeIcon
-                                icon={faCircle}
-                                className={styles.greenBullet}
-                                size="xs"
-                              />
-                            ) : (
-                              <FontAwesomeIcon
-                                icon={faCircle}
-                                className={styles.clear}
-                                size="xs"
-                              />
-                            )}
-
-                            <p style={{ padding: 0, margin: 0 }}>
-                              {project.name}
-                            </p>
-                          </span>
-                        ))}
+              {staff && isClass && (
+                <div>
+                  <div className={styles.top} onClick={handleDropdownClick}>
+                    <div className={styles.dropdown} ref={dropdownRef}>
+                      <div className={styles.dropbtn}>
+                        <span>View other project &nbsp;</span>
+                        <FaCaretDown />
                       </div>
-                    )}
+                      {dropdownVisible && (
+                        <div className={styles.dropdowncontent}>
+                          {projectList.map((project) => (
+                            <span
+                              key={project.id}
+                              onClick={() => {
+                                setSelected(project.id);
+                                setDropdownVisible(!dropdownVisible);
+                              }}
+                            >
+                              {project.isActive ? (
+                                <FontAwesomeIcon
+                                  icon={faCircle}
+                                  className={styles.greenBullet}
+                                  size="xs"
+                                />
+                              ) : (
+                                <FontAwesomeIcon
+                                  icon={faCircle}
+                                  className={styles.clear}
+                                  size="xs"
+                                />
+                              )}
+
+                              <p style={{ padding: 0, margin: 0 }}>
+                                {project.name}
+                              </p>
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
+            </div>
+            <hr style={{ color: "#E5E4E2" }} />
+            {!staff && groupKey === project.group_fk && (
+              <Button
+                className={styles.butName}
+                onClick={handleCreateBoardClick}
+              >
+                Create Board
+              </Button>
             )}
-          </div>
-          <hr style={{ color: "#E5E4E2" }} />
-          {!staff && groupKey === project.group_fk && (
-            <Button className={styles.butName} onClick={handleCreateBoardClick}>
-              Create Board
-            </Button>
-          )}
-        </ThemeProvider>
+          </ThemeProvider>
+          <Board
+            selected={selected}
+            project={project}
+            setBoardCount={setBoardCount}
+            onProjectUpdate={onProjectUpdate}
+            setBoardTemplateIds={setBoardTemplateIds}
+            projectUpdateKey={projectUpdateKey}
+            handleCreateBoardClick={handleCreateBoardClick}
+            user={userAcc}
+          />
+        </>
       ) : loadCount === 0 ? (
         <Loading />
       ) : (
@@ -321,17 +341,7 @@ const BoardContainer = ({
           {modalContent}
         </ModalCustom>
       )}
-
       {/* ----------- */}
-      <Board
-        selected={selected}
-        project={project}
-        setBoardCount={setBoardCount}
-        onProjectUpdate={onProjectUpdate}
-        setBoardTemplateIds={setBoardTemplateIds}
-        projectUpdateKey={projectUpdateKey}
-        handleCreateBoardClick={handleCreateBoardClick}
-      />
     </div>
   );
 };

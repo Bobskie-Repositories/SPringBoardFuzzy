@@ -7,19 +7,18 @@ import config from "../../config";
 import styles from "./Table.module.css";
 import global from "@assets/global.module.css";
 
-const ClassroomTable = (props) => {
+const PublicTable = (props) => {
   const [groups, setGroups] = useState(null);
+  const [origGroups, setOrigGroups] = useState(null);
   const [sortOrder, setSortOrder] = useState(true); // true for ascending, false for descending
   const [groupNameSortOrder, setGroupNameSortOrder] = useState(true); // true for ascending, false for descending
   const [projectNameSortOrder, setProjectNameSortOrder] = useState(true); // true for ascending, false for descending
   const [dateSort, setDateSort] = useState(true);
-  const [templateSort, setTemplateSort] = useState(true);
-  const [searchText, setSearchText] = useState("");
   const [templates, setTemplates] = useState([]);
   const [templateSortOrder, setTemplateSortOrder] = useState({}); // object to keep track of sort order for each template
   const [currentPage, setCurrentPage] = useState(() => {
     // Use a function to initialize the state with the value from localStorage
-    const savedPage = localStorage.getItem("classPage");
+    const savedPage = localStorage.getItem("activeProjPage");
     return savedPage ? parseInt(savedPage, 10) : 1;
   });
   const [sharedState, setSharedState] = useState(true);
@@ -30,49 +29,65 @@ const ClassroomTable = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const templatesResponse = await axios.get(`${API_HOST}/api/template/`);
-        const templatesData = templatesResponse.data;
-        setTemplates(templatesData);
-        const initialSortOrder = {};
-        templatesData.forEach((template) => {
-          initialSortOrder[template.id] = true;
-        });
+        // const groupResponse = await axios.get(
+        //   `${API_HOST}/api/group/group_proj`
+        // );
+        // const filteredGroups = groupResponse.data.filter(
+        //   (group) => group.projects.length > 0
+        // );
+        const filteredGroups = props.allProjects.filter((group) =>
+          group.projects.length > 0
+            ? group.projects[0].isActive === props.isActive
+            : false
+        );
 
-        setTemplateSortOrder(initialSortOrder);
-        const sortedGroups = [...props.groups].sort((a, b) => {
-          const aScore =
-            a.projects.length > 0
-              ? a.projects[0].project_score / templatesData.length
-              : 0;
-          const bScore =
-            b.projects.length > 0
-              ? b.projects[0].project_score / templatesData.length
-              : 0;
-          return bScore - aScore;
+        setOrigGroups(filteredGroups);
+
+        const sortedGroups = [...filteredGroups].sort((a, b) => {
+          const aTime =
+            a.projects.length > 0 ? new Date(a.projects[0].created_at) : null;
+          const bTime =
+            b.projects.length > 0 ? new Date(b.projects[0].created_at) : null;
+
+          if (aTime && bTime) {
+            return !dateSort ? aTime - bTime : bTime - aTime;
+          } else if (aTime) {
+            return dateSort ? -1 : 1; // aTime comes before bTime
+          } else if (bTime) {
+            return dateSort ? 1 : -1; // bTime comes before aTime
+          } else {
+            return 0; // Both aTime and bTime are null
+          }
         });
         setGroups(sortedGroups);
         setSharedState(0);
         activate(0);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching group data:", error);
+      }
+
+      try {
+        const templateResponse = await axios.get(`${API_HOST}/api/template/`);
+        setTemplates(templateResponse.data);
+      } catch (error) {
+        console.error("Error fetching template data:", error);
       }
     };
 
     fetchData();
   }, [props]);
 
+  useEffect(() => {
+    // Save the current page to localStorage whenever it changes
+    localStorage.setItem("activeProjPage", currentPage.toString());
+  }, [currentPage]);
+
   const activate = (state) => {
     setGroupNameSortOrder(state === 1 ? groupNameSortOrder : true);
     setProjectNameSortOrder(state === 2 ? projectNameSortOrder : true);
     setSortOrder(state === 3 ? sortOrder : true);
     setDateSort(state === 4 ? dateSort : true);
-    setTemplateSort(state > 4 ? templateSort : true);
   };
-
-  useEffect(() => {
-    // Save the current page to localStorage whenever it changes
-    localStorage.setItem("classPage", currentPage.toString());
-  }, [currentPage]);
 
   const handleGroupNameSort = () => {
     setSharedState(1);
@@ -92,20 +107,10 @@ const ClassroomTable = (props) => {
     const sortedGroups = [...groups].sort((a, b) => {
       const aProjectName = a.projects.length > 0 ? a.projects[0].name : "";
       const bProjectName = b.projects.length > 0 ? b.projects[0].name : "";
-
-      if (a.projects.length === 0 && b.projects.length === 0) {
-        return 0;
-      } else if (a.projects.length === 0) {
-        return 1;
-      } else if (b.projects.length === 0) {
-        return -1;
-      }
-
       return !projectNameSortOrder
         ? aProjectName.localeCompare(bProjectName)
         : bProjectName.localeCompare(aProjectName);
     });
-
     setGroups(sortedGroups);
     setProjectNameSortOrder(!projectNameSortOrder);
   };
@@ -128,42 +133,9 @@ const ClassroomTable = (props) => {
     setSortOrder(!sortOrder);
   };
 
-  const handleTemplateSort = (templateId) => {
-    setSharedState(templateId + 4);
-    activate(templateId + 4);
-    if (templateId != sharedState - 4) {
-      setTemplateSort(true);
-    }
-
-    const sortedGroups = [...groups].sort((a, b) => {
-      const aBoard =
-        a.projects.length > 0
-          ? a.projects[0].project_boards.find(
-              (board) => board.templateId === templateId
-            )
-          : null;
-      const bBoard =
-        b.projects.length > 0
-          ? b.projects[0].project_boards.find(
-              (board) => board.templateId === templateId
-            )
-          : null;
-      const aScore = aBoard ? aBoard.board_score : 0;
-      const bScore = bBoard ? bBoard.board_score : 0;
-      return !templateSort ? aScore - bScore : bScore - aScore;
-    });
-    setGroups(sortedGroups);
-    setTemplateSort(!templateSort);
-    setTemplateSortOrder({
-      ...templateSortOrder,
-      [templateId]: !templateSortOrder[templateId],
-    });
-  };
-
   const handleTimeSort = () => {
     setSharedState(4);
     activate(4);
-
     const sortedGroups = [...groups].sort((a, b) => {
       const aTime =
         a.projects.length > 0 ? new Date(a.projects[0].created_at) : null;
@@ -172,15 +144,14 @@ const ClassroomTable = (props) => {
 
       if (aTime && bTime) {
         return !dateSort ? aTime - bTime : bTime - aTime;
-      } else if (!aTime && !bTime) {
-        return 0;
-      } else if (!aTime) {
-        return 1;
+      } else if (aTime) {
+        return dateSort ? -1 : 1; // aTime comes before bTime
+      } else if (bTime) {
+        return dateSort ? 1 : -1; // bTime comes before aTime
       } else {
-        return -1;
+        return 0; // Both aTime and bTime are null
       }
     });
-
     setGroups(sortedGroups);
     setDateSort(!dateSort);
   };
@@ -208,20 +179,6 @@ const ClassroomTable = (props) => {
     return dateOnlyString;
   };
 
-  const handleSearch = (searchText) => {
-    setSearchText(searchText);
-
-    if (searchText.trim() === "") {
-      setGroups(props.groups);
-      return;
-    }
-    const filteredGroups = props.groups.filter((group) =>
-      group.name.toLowerCase().includes(searchText.toLowerCase())
-    );
-
-    setGroups(filteredGroups);
-  };
-
   if (!groups || !templates) {
     return <p>Loading...</p>;
   }
@@ -245,41 +202,32 @@ const ClassroomTable = (props) => {
   // Get the groups for the current page
   const groupsToDisplay = groups.slice(startIndex, endIndex);
 
-  const onClickNavigation = (id) => {
-    if (props.public) {
-      navigate(`/search-project/${id}`);
-    } else {
-      navigate(`group/${id}`);
-    }
+  const onClickNavigation = (projId) => {
+    const currentUrl = window.location.pathname;
+    localStorage.setItem("search", currentUrl);
+    navigate(`/search-project/${projId}`);
   };
 
   return (
     <>
       <Card className={styles.card}>
-        <div className={`${global.brown} ${styles.headerSection}`}>
-          <p className={styles.header}> List of Groups </p>
-          <input
-            type="text"
-            className={styles.Search}
-            value={searchText}
-            onChange={(event) => {
-              const searchText = event.target.value;
-              handleSearch(searchText);
-            }}
-            placeholder="Search group"
-            onClick={() => handleSearch(searchText)}
-          />
+        <div
+          className={global.brown}
+          style={{ borderRadius: "12px 12px 0 0", padding: "2px 30px" }}
+        >
+          <p className={styles.header}> List of Projects </p>
         </div>
         <div className={styles.xScroll}>
           <div
-            className={`${styles.container}`}
+            className={`${styles.container} `}
             style={{
               borderBottom: "1px solid #9c7b16",
               color: "#BCBEC0",
               marginBottom: "10px",
-              gridTemplateColumns: `repeat(${2}, 11rem) 20rem 11rem repeat(${
-                templates.length
-              }, 11rem) 11rem`,
+              gridTemplateColumns:
+                !props.isActive &&
+                `repeat(${2}, 11rem) 20rem 10rem 18rem 11rem 10rem`,
+              gridColumnGap: "5px",
             }}
           >
             <span
@@ -302,7 +250,7 @@ const ClassroomTable = (props) => {
                 sort={projectNameSortOrder}
               />
             </span>
-            <span className={`${styles.centerText}`}>Description</span>
+            <span className={`${styles.centerText} `}>Description</span>
             <span
               className={`${styles.centerText} ${styles.clickable}`}
               onClick={handleSort}
@@ -310,19 +258,12 @@ const ClassroomTable = (props) => {
               Overall Rating
               <SortButton isActive={sharedState === 3} sort={sortOrder} />
             </span>
-            {templates.map((template, index) => (
-              <span
-                key={index}
-                className={`${styles.centerText} ${styles.clickable}`}
-                onClick={() => handleTemplateSort(template.id)}
-              >
-                {template.title}
-                <SortButton
-                  isActive={sharedState === 4 + template.id}
-                  sort={templateSort}
-                />
+            {!props.isActive && (
+              <span className={styles.centerText}>
+                Reason for discontinuing the project
               </span>
-            ))}
+            )}
+            <span className={`${styles.centerText} `}>Handled By</span>
             <span
               className={`${styles.centerText} ${styles.clickable}`}
               onClick={handleTimeSort}
@@ -332,42 +273,35 @@ const ClassroomTable = (props) => {
             </span>
           </div>
           <div className={styles.yScroll}>
-            {groupsToDisplay.length === 0 && (
-              <div className={styles.noGroupsMessage}>No groups enrolled</div>
-            )}
             {groupsToDisplay.map((group, index) => (
               <div
                 className={`${styles.groupContainer} ${styles.conHover}`}
                 style={{
-                  gridTemplateColumns: `repeat(${2}, 11rem) 20rem 11rem repeat(${
-                    templates.length
-                  }, 11rem) 11rem`,
+                  gridTemplateColumns:
+                    !props.isActive &&
+                    `repeat(${2}, 11rem) 20rem 10rem 18rem 11rem 10rem`,
+                  gridColumnGap: "5px",
                   borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
                 }}
-                key={group.id}
+                key={index}
               >
-                <span
-                  className={styles.centerTextName}
-                  onClick={() => onClickNavigation(group.id)}
-                >
-                  {group.name}
-                </span>
+                <span className={styles.centerText}>{group.name}</span>
 
                 {group.projects.length > 0 ? (
-                  <>
-                    <span className={styles.centerText}>
-                      {group.projects[0].name}
-                    </span>
-                    <span className={styles.centerText}>
-                      {group.projects[0].description}
-                    </span>
-                  </>
+                  <span
+                    className={styles.centerTextName}
+                    onClick={() =>
+                      onClickNavigation(group.projects[0].project_id)
+                    }
+                  >
+                    {group.projects[0].name}
+                  </span>
                 ) : (
-                  <>
-                    <span className={styles.centerText}>No Active Project</span>
-                    <span className={styles.centerText}>No Description</span>
-                  </>
+                  <span className={styles.centerText}>No Project </span>
                 )}
+                <span className={styles.centerText}>
+                  {group.projects[0].description}
+                </span>
 
                 <span className={styles.centerText} style={{ color: "red" }}>
                   {group.projects.length > 0
@@ -377,29 +311,20 @@ const ClassroomTable = (props) => {
                       )}%`
                     : "0%"}
                 </span>
-
-                {templates.map((template, index) => {
-                  const projectBoard =
-                    group.projects.length > 0
-                      ? group.projects[0].project_boards.find(
-                          (board) => board.templateId === template.id
-                        )
-                      : null;
-                  return (
-                    <span key={index} className={styles.centerText}>
-                      {projectBoard
-                        ? `${Math.round(projectBoard.board_score * 10)}%`
-                        : "0%"}
-                    </span>
-                  );
-                })}
-                {group.projects.length > 0 ? (
+                {!props.isActive && (
                   <span className={styles.centerText}>
-                    {time(group.projects[0].created_at)}
+                    {group.projects[0].reason}
                   </span>
-                ) : (
-                  <span className={styles.centerText}>---</span>
                 )}
+
+                <span className={styles.centerText}>{group.teacher_name}</span>
+                <span className={styles.centerText}>
+                  {group.projects.length > 0 ? (
+                    time(group.projects[0].created_at)
+                  ) : (
+                    <span>---</span>
+                  )}
+                </span>
               </div>
             ))}
           </div>
@@ -424,4 +349,4 @@ const ClassroomTable = (props) => {
   );
 };
 
-export default ClassroomTable;
+export default PublicTable;
