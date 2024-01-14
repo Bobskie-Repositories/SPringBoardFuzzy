@@ -49,7 +49,7 @@ const A_Sidebar = ({ setSelected, choose, setSelectedProj }) => {
           <FontAwesomeIcon icon={faGear} size="lg" className={styles.icon} />{" "}
           &nbsp; Settings
         </li> */}
-        <li
+        {/* <li
           className={`${global.center} ${styles.customLi}`}
           onClick={goLogout}
         >
@@ -59,7 +59,7 @@ const A_Sidebar = ({ setSelected, choose, setSelectedProj }) => {
             className={styles.icon}
           />{" "}
           &nbsp; Log out
-        </li>
+        </li> */}
       </ol>
     </div>
   );
