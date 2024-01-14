@@ -24,6 +24,7 @@ function Board({
   setBoardTemplateIds,
   projectUpdateKey,
   handleCreateBoardClick,
+  user,
 }) {
   const navigate = useNavigate();
   const [loadCount, setLoadCount] = useState(0);
@@ -74,13 +75,23 @@ function Board({
     <div className={styles.board}>
       {loadCount === 0 && <Loading />}
       <div className={styles.scrollable}>
-        {project && boards.length === 0 && (
-          <p className={styles.centeredText} style={{ width: "45rem" }}>
-            It looks like you haven't created any boards yet. <br /> Click on
-            the "Create Board" button to get started and create your first
-            board.
-          </p>
-        )}
+        {project &&
+          boards.length === 0 &&
+          !user.is_staff &&
+          user.group_fk === project.group_fk && (
+            <p className={styles.centeredText} style={{ width: "45rem" }}>
+              It looks like you haven't created any boards yet. <br /> Click on
+              the "Create Board" button to get started and create your first
+              board.
+            </p>
+          )}
+        {project &&
+          boards.length === 0 &&
+          (user.is_staff || user.group_fk !== project.group_fk) && (
+            <p className={styles.centeredText} style={{ width: "45rem" }}>
+              It looks like the group haven't created any boards yet. <br />
+            </p>
+          )}
         {boards.map((board) => {
           return (
             <div key={board.id}>
