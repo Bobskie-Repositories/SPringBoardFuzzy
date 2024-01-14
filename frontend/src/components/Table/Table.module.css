@@ -273,6 +273,15 @@
   display: flex;
 }
 
+.otherHead {
+  position: absolute;
+  margin-left: 20rem;
+  align-items: center;
+  font-size: 25px;
+  color: white;
+  font-weight: bold;
+}
+
 .box {
   color: white;
   background-color: wheat;
@@ -312,7 +321,6 @@
   transform: translate(-50%, -50%);
 }
 
-
 .filter {
   display: flex;
 }
@@ -342,10 +350,9 @@
 }
 .datepick {
   width: 210px;
-
+}
 .noGroupsMessage {
   display: flex;
   align-self: center;
   justify-content: center;
-
 }

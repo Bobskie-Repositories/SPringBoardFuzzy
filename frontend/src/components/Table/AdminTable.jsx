@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
+import SortButton from "../UI/SortButton/SortButton";
 import axios from "axios";
 import Card from "../UI/Card/Card";
 import config from "../../config";
@@ -9,38 +10,41 @@ import global from "@assets/global.module.css";
 const AdminTable = (props) => {
   const [groups, setGroups] = useState(null);
   const [sortOrder, setSortOrder] = useState(true); // true for ascending, false for descending
+  const [classSortOrder, setClassSortOrder] = useState(true); // true for ascending, false for descending
   const [groupNameSortOrder, setGroupNameSortOrder] = useState(true); // true for ascending, false for descending
   const [projectNameSortOrder, setProjectNameSortOrder] = useState(true); // true for ascending, false for descending
   const [dateSort, setDateSort] = useState(true);
   const [templates, setTemplates] = useState([]);
   const [templateSortOrder, setTemplateSortOrder] = useState({}); // object to keep track of sort order for each template
+  const [templateSort, setTemplateSort] = useState(true);
+  const [sharedState, setSharedState] = useState(true);
   const [currentPage, setCurrentPage] = useState(() => {
     // Use a function to initialize the state with the value from localStorage
     const savedPage = localStorage.getItem("activeProjPage");
     return savedPage ? parseInt(savedPage, 10) : 1;
   });
-  const groupsPerPage = 10;
+  const groupsPerPage = 15;
   const navigate = useNavigate();
   const { API_HOST } = config;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${API_HOST}/api/group/group_proj`);
-        console.log(props.filter);
-
+        // const response = await axios.get(`${API_HOST}/api/group/group_proj`);
         const filteredAndClassroomGroups =
           props.filter.length > 0
-            ? response.data.filter((group) =>
+            ? props.allProjects.filter((group) =>
                 props.filter.includes(group.classroom_id)
               )
-            : response.data;
+            : props.allProjects;
 
-        const filteredGroups = filteredAndClassroomGroups.filter((group) =>
-          group.projects.length > 0
-            ? group.projects[0].isActive === props.isActive
-            : false
-        );
+        const filteredGroups = filteredAndClassroomGroups.filter((group) => {
+          if (group.projects.length > 0) {
+            return group.projects[0].isActive === props.isActive;
+          } else {
+            return !props.isActive;
+          }
+        });
 
         setGroups(filteredGroups);
 
@@ -82,52 +86,32 @@ const AdminTable = (props) => {
     localStorage.setItem("activeProjPage", currentPage.toString());
   }, [currentPage]);
 
-  const handleSort = () => {
-    const sortedGroups = [...groups].sort((a, b) => {
-      const aScore =
-        a.projects.length > 0
-          ? a.projects[0].project_boards.reduce(
-              (total, board) => total + (board ? board.board_score : 0),
-              0
-            ) / templates.length
-          : 0;
-      const bScore =
-        b.projects.length > 0
-          ? b.projects[0].project_boards.reduce(
-              (total, board) => total + (board ? board.board_score : 0),
-              0
-            ) / templates.length
-          : 0;
-      return sortOrder ? aScore - bScore : bScore - aScore;
-    });
-    setGroups(sortedGroups);
-    setSortOrder(!sortOrder);
+  const activate = (state) => {
+    setClassSortOrder(state === 0 ? classSortOrder : true);
+    setGroupNameSortOrder(state === 1 ? groupNameSortOrder : true);
+    setProjectNameSortOrder(state === 2 ? projectNameSortOrder : true);
+    setSortOrder(state === 3 ? sortOrder : true);
+    setDateSort(state === 4 ? dateSort : true);
+    setTemplateSort(state > 4 ? templateSort : true);
   };
 
-  const handleTimeSort = () => {
+  const handleClassSort = () => {
+    setSharedState(0);
+    activate(0);
     const sortedGroups = [...groups].sort((a, b) => {
-      const aTime =
-        a.projects.length > 0 ? new Date(a.projects[0].created_at) : null;
-      const bTime =
-        b.projects.length > 0 ? new Date(b.projects[0].created_at) : null;
-
-      if (aTime && bTime) {
-        return dateSort ? aTime - bTime : bTime - aTime;
-      } else if (aTime) {
-        return dateSort ? -1 : 1; // aTime comes before bTime
-      } else if (bTime) {
-        return dateSort ? 1 : -1; // bTime comes before aTime
-      } else {
-        return 0; // Both aTime and bTime are null
-      }
+      return !classSortOrder
+        ? a.classroom_id - b.classroom_id
+        : b.classroom_id - a.classroom_id;
     });
     setGroups(sortedGroups);
-    setDateSort(!dateSort);
+    setClassSortOrder(!classSortOrder);
   };
 
   const handleGroupNameSort = () => {
+    setSharedState(1);
+    activate(1);
     const sortedGroups = [...groups].sort((a, b) => {
-      return groupNameSortOrder
+      return !groupNameSortOrder
         ? a.name.localeCompare(b.name)
         : b.name.localeCompare(a.name);
     });
@@ -136,18 +120,54 @@ const AdminTable = (props) => {
   };
 
   const handleProjectNameSort = () => {
+    setSharedState(2);
+    activate(2);
     const sortedGroups = [...groups].sort((a, b) => {
       const aProjectName = a.projects.length > 0 ? a.projects[0].name : "";
       const bProjectName = b.projects.length > 0 ? b.projects[0].name : "";
-      return projectNameSortOrder
+
+      if (a.projects.length === 0 && b.projects.length === 0) {
+        return 0;
+      } else if (a.projects.length === 0) {
+        return 1;
+      } else if (b.projects.length === 0) {
+        return -1;
+      }
+
+      return !projectNameSortOrder
         ? aProjectName.localeCompare(bProjectName)
         : bProjectName.localeCompare(aProjectName);
     });
+
     setGroups(sortedGroups);
     setProjectNameSortOrder(!projectNameSortOrder);
   };
 
+  const handleSort = () => {
+    setSharedState(3);
+    activate(3);
+    const sortedGroups = [...groups].sort((a, b) => {
+      const aScore =
+        a.projects.length > 0
+          ? a.projects[0].project_score / templates.length
+          : 0;
+      const bScore =
+        b.projects.length > 0
+          ? b.projects[0].project_score / templates.length
+          : 0;
+      return !sortOrder ? aScore - bScore : bScore - aScore;
+    });
+    setGroups(sortedGroups);
+    setSortOrder(!sortOrder);
+  };
+
   const handleTemplateSort = (templateId) => {
+    setSharedState(templateId + 4);
+    activate(templateId + 4);
+    if (templateId != sharedState - 4) {
+      setTemplateSort(true);
+    }
+
     const sortedGroups = [...groups].sort((a, b) => {
       const aBoard =
         a.projects.length > 0
@@ -163,13 +183,39 @@ const AdminTable = (props) => {
           : null;
       const aScore = aBoard ? aBoard.board_score : 0;
       const bScore = bBoard ? bBoard.board_score : 0;
-      return templateSortOrder[templateId] ? aScore - bScore : bScore - aScore;
+      return !templateSort ? aScore - bScore : bScore - aScore;
     });
     setGroups(sortedGroups);
+    setTemplateSort(!templateSort);
     setTemplateSortOrder({
       ...templateSortOrder,
       [templateId]: !templateSortOrder[templateId],
     });
+  };
+
+  const handleTimeSort = () => {
+    setSharedState(4);
+    activate(4);
+
+    const sortedGroups = [...groups].sort((a, b) => {
+      const aTime =
+        a.projects.length > 0 ? new Date(a.projects[0].created_at) : null;
+      const bTime =
+        b.projects.length > 0 ? new Date(b.projects[0].created_at) : null;
+
+      if (aTime && bTime) {
+        return !dateSort ? aTime - bTime : bTime - aTime;
+      } else if (!aTime && !bTime) {
+        return 0;
+      } else if (!aTime) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
+
+    setGroups(sortedGroups);
+    setDateSort(!dateSort);
   };
 
   const time = (timestamp) => {
@@ -218,12 +264,10 @@ const AdminTable = (props) => {
   // Get the groups for the current page
   const groupsToDisplay = groups.slice(startIndex, endIndex);
 
-  const onClickNavigation = (id) => {
-    if (props.public) {
-      navigate(`/search-project/${id}`);
-    } else {
-      navigate(`group/${id}`);
-    }
+  const onClickNavigation = (projId) => {
+    const currentUrl = window.location.pathname;
+    localStorage.setItem("search", currentUrl);
+    navigate(`/search-project/${projId}`);
   };
 
   return (
@@ -237,48 +281,72 @@ const AdminTable = (props) => {
         </div>
         <div className={styles.xScroll}>
           <div
-            className={`${styles.adminContainer} ${styles.clickable}`}
+            className={`${styles.adminContainer} `}
             style={{
               borderBottom: "1px solid #9c7b16",
               color: "#BCBEC0",
               marginBottom: "10px",
-              gridTemplateColumns: `repeat(${4}, 11rem) repeat(${
+              gridTemplateColumns: `repeat(${3}, 11rem) 20rem 11rem repeat(${
                 templates.length
-              }, 11rem) 11rem`,
+              }, 11rem) 11rem 11rem`,
             }}
           >
-            <span className={styles.centerText}>Classroom</span>
+            <span
+              className={`${styles.centerText} ${styles.clickable}`}
+              onClick={handleClassSort}
+            >
+              Classroom
+              <SortButton isActive={sharedState === 0} sort={classSortOrder} />
+            </span>
 
             <span
-              className={`${styles.centerText}`}
+              className={`${styles.centerText} ${styles.clickable}`}
               onClick={handleGroupNameSort}
             >
               Group Name
+              <SortButton
+                isActive={sharedState === 1}
+                sort={groupNameSortOrder}
+              />
             </span>
             <span
-              className={`${styles.centerText}`}
+              className={`${styles.centerText} ${styles.clickable}`}
               onClick={handleProjectNameSort}
             >
               Project
+              <SortButton
+                isActive={sharedState === 2}
+                sort={projectNameSortOrder}
+              />
             </span>
-            <span className={`${styles.centerText} `} onClick={handleSort}>
+            <span className={`${styles.centerText}`}>Description</span>
+            <span
+              className={`${styles.centerText} ${styles.clickable}`}
+              onClick={handleSort}
+            >
               Overall Rating
+              <SortButton isActive={sharedState === 3} sort={sortOrder} />
             </span>
             {templates.map((template, index) => (
               <span
                 key={index}
-                className={`${styles.centerText}`}
+                className={`${styles.centerText} ${styles.clickable}`}
                 onClick={() => handleTemplateSort(template.id)}
               >
                 {template.title}
+                <SortButton
+                  isActive={sharedState === 4 + template.id}
+                  sort={templateSort}
+                />
               </span>
             ))}
-
+            <span className={`${styles.centerText}`}>Handled By</span>
             <span
               className={`${styles.centerText} ${styles.clickable}`}
               onClick={handleTimeSort}
             >
               Date Created
+              <SortButton isActive={sharedState === 4} sort={dateSort} />
             </span>
           </div>
           <div className={styles.yScroll}>
@@ -286,48 +354,42 @@ const AdminTable = (props) => {
               <div
                 className={`${styles.adminContainer} ${styles.conHover}`}
                 style={{
-                  gridTemplateColumns: `repeat(${4}, 11rem) repeat(${
+                  gridTemplateColumns: `repeat(${3}, 11rem) 20rem 11rem repeat(${
                     templates.length
-                  }, 11rem) 11rem`,
+                  }, 11rem) 11rem 11rem`,
                   borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
                 }}
-                key={group.id + index}
+                key={index}
               >
                 <span className={styles.centerText}>{group.class_name}</span>
 
-                <span
-                  className={
-                    !props.public ? styles.centerTextName : styles.centerText
-                  }
-                  onClick={() =>
-                    !props.public ? onClickNavigation(group.id) : null
-                  }
-                >
-                  {group.name}
-                </span>
+                <span className={styles.centerText}>{group.name}</span>
 
                 {group.projects.length > 0 ? (
-                  <span
-                    className={
-                      props.public ? styles.centerTextName : styles.centerText
-                    }
-                    // onClick={() => onClickNavigation(group.projects[0].id)}
-                  >
-                    {group.projects[0].name}
-                  </span>
+                  <>
+                    <span
+                      className={styles.centerTextName}
+                      onClick={() =>
+                        onClickNavigation(group.projects[0].project_id)
+                      }
+                    >
+                      {group.projects[0].name}
+                    </span>
+                    <span className={styles.centerText}>
+                      {group.projects[0].description}
+                    </span>
+                  </>
                 ) : (
-                  <span className={styles.centerText}>No Project </span>
+                  <>
+                    <span className={styles.centerText}>No Active Project</span>
+                    <span className={styles.centerText}>No Description</span>
+                  </>
                 )}
 
                 <span className={styles.centerText} style={{ color: "red" }}>
                   {group.projects.length > 0
                     ? `${Math.round(
-                        (group.projects[0].project_boards.reduce(
-                          (total, board) =>
-                            total + (board ? board.board_score : 0),
-                          0
-                        ) /
-                          templates.length) *
+                        (group.projects[0].project_score / templates.length) *
                           10
                       )}%`
                     : "0%"}
@@ -348,6 +410,7 @@ const AdminTable = (props) => {
                     </span>
                   );
                 })}
+                <span className={styles.centerText}>{group.teacher_name}</span>
 
                 <span className={styles.centerText}>
                   {group.projects.length > 0 ? (
