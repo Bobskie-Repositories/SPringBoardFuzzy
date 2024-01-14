@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import DatePicker from "react-datepicker";
+import { DateRangePicker, Stack } from "rsuite";
 import AdminTable from "./AdminTable";
 import PublicTable from "./PublicTable.jsx";
 import { FaCaretDown, FaCalendarAlt } from "react-icons/fa";
@@ -9,7 +9,7 @@ import global from "../../assets/global.module.css";
 import config from "../../config";
 import axios from "axios";
 import styles from "./Table.module.css";
-import "react-datepicker/dist/react-datepicker.css";
+import "rsuite/dist/rsuite-no-reset-rtl.css";
 
 const ListProj = ({ admin }) => {
   const [classroom, setClassroom] = useState([]);
@@ -97,6 +97,46 @@ const ListProj = ({ admin }) => {
           <div className={styles.top}>
             <div className={styles.dropdown} ref={dropdownRef}>
               <div className={styles.icons}>
+                {/* <div className={styles.dropbtn} onClick={handleStatusClick}>
+                  <GrStatusGoodSmall
+                    size={12}
+                    style={{ verticalAlign: "middle" }}
+                  />
+                  &nbsp;&nbsp;&nbsp;
+                  <p className={styles.classroomText}>
+                    {isActive ? "Active Projects" : "Inactive Projects"}
+                  </p>
+                  &nbsp;&nbsp;&nbsp;
+                  <FaCaretDown style={{ verticalAlign: "middle" }} />
+                </div>
+
+                <div className={styles.dropbtn} onClick={handleDropdownClick}>
+                  <SiGoogleclassroom
+                    size={20}
+                    style={{ verticalAlign: "middle" }}
+                  />
+                  &nbsp;&nbsp;&nbsp;
+                  <p className={styles.classroomText}>All Classrooms</p>
+                  &nbsp;&nbsp;&nbsp;
+                  <FaCaretDown style={{ verticalAlign: "middle" }} />
+                </div> */}
+
+                <div className={styles.calendar}>
+                  <FaCalendarAlt
+                    size={18}
+                    style={{ verticalAlign: "middle" }}
+                  />
+                  &nbsp;&nbsp;&nbsp;
+                  <DateRangePicker
+                    appearance="subtle"
+                    size="sm"
+                    placeholder="Select Date Range"
+                    caretAs={FaCaretDown}
+                    character=" – "
+                    className={styles.datepick}
+                  />
+                </div>
+
                 <div className={styles.dropbtn} onClick={handleStatusClick}>
                   <GrStatusGoodSmall
                     size={12}
@@ -119,23 +159,6 @@ const ListProj = ({ admin }) => {
                   <p className={styles.classroomText}>All Classrooms</p>
                   &nbsp;&nbsp;&nbsp;
                   <FaCaretDown style={{ verticalAlign: "middle" }} />
-                </div>
-
-                <div className={styles.dropbtn}>
-                  <FaCalendarAlt
-                    size={18}
-                    style={{ verticalAlign: "middle" }}
-                  />
-                  &nbsp;&nbsp;&nbsp;
-                  {/* <p className={styles.classroomText}>Date</p> */}
-                  {/* <DatePicker
-                    placeholderText="Select Date"
-                    className={styles.dateDesign}
-                    selected={selectedDate}
-                    onChange={(date) => setDate(date)}
-                  /> */}
-                  {/* &nbsp;&nbsp;&nbsp;
-                  <FaCaretDown style={{ verticalAlign: "middle" }} /> */}
                 </div>
               </div>
 
