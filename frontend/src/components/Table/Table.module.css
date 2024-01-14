@@ -1,3 +1,22 @@
+.Search {
+  height: 10px;
+  color: black;
+  background-color: rgba(255, 255, 255, 0.9);
+  margin-left: auto;
+  padding: 10px 20px 8px 40px;
+  background-image: url(../../assets/magnifying.png);
+  background-repeat: no-repeat;
+  background-position: 10px center;
+  background-size: 20px;
+}
+
+.headerSection {
+  display: flex;
+  border-radius: 12px 12px 0 0;
+  padding: 2px 30px;
+  align-items: center;
+}
+
 .card {
   padding: 0 0 20px 0;
   margin-top: 10px;
@@ -10,12 +29,13 @@
 .container {
   display: grid;
   /* grid-template-columns: 0.8fr 1fr 1.5fr 0.5fr 1.5fr 0.5fr; */
-  grid-template-columns: 15rem 10rem 10rem 30rem 10rem 25rem;
+  grid-template-columns: 11rem 11rem 20rem 10rem 11rem 11rem;
   grid-template-rows: repeat(auto-fill, minmax(2.5rem, 1fr));
   padding: 0;
   justify-content: center;
   align-items: center;
   width: fit-content;
+  grid-column-gap: "5px";
 }
 
 .adminContainer {
@@ -257,4 +277,10 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.noGroupsMessage {
+  display: flex;
+  align-self: center;
+  justify-content: center;
 }
