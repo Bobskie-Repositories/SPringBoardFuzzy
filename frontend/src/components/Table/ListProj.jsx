@@ -193,7 +193,11 @@ const ListProj = ({ admin }) => {
         )}
       </div>
       {admin ? (
-        <AdminTable isActive={isActive} filter={selectedClassrooms} />
+        <AdminTable
+          isActive={isActive}
+          filter={selectedClassrooms}
+          dateRange={selectedDates}
+        />
       ) : (
         <PublicTable filter={selectedClassrooms} />
       )}
