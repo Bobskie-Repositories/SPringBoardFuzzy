@@ -17,7 +17,7 @@ const ListProj = ({ admin }) => {
   const dropdownRef = useRef(null);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [statusVisible, setStatusVisible] = useState(false);
-  const [selectedDate, setDate] = useState(null);
+  const [selectedDates, setSelectedDates] = useState([]);
   const [isActive, setIsActive] = useState(
     localStorage.getItem("selectedStatus") === "Active Projects" ||
       localStorage.getItem("selectedStatus") === null
@@ -80,6 +80,10 @@ const ListProj = ({ admin }) => {
     });
   };
 
+  const handleDateRangeChange = (value) => {
+    setSelectedDates(value);
+  };
+
   return (
     <div>
       <div className={styles.head}>
@@ -97,30 +101,6 @@ const ListProj = ({ admin }) => {
           <div className={styles.top}>
             <div className={styles.dropdown} ref={dropdownRef}>
               <div className={styles.icons}>
-                {/* <div className={styles.dropbtn} onClick={handleStatusClick}>
-                  <GrStatusGoodSmall
-                    size={12}
-                    style={{ verticalAlign: "middle" }}
-                  />
-                  &nbsp;&nbsp;&nbsp;
-                  <p className={styles.classroomText}>
-                    {isActive ? "Active Projects" : "Inactive Projects"}
-                  </p>
-                  &nbsp;&nbsp;&nbsp;
-                  <FaCaretDown style={{ verticalAlign: "middle" }} />
-                </div>
-
-                <div className={styles.dropbtn} onClick={handleDropdownClick}>
-                  <SiGoogleclassroom
-                    size={20}
-                    style={{ verticalAlign: "middle" }}
-                  />
-                  &nbsp;&nbsp;&nbsp;
-                  <p className={styles.classroomText}>All Classrooms</p>
-                  &nbsp;&nbsp;&nbsp;
-                  <FaCaretDown style={{ verticalAlign: "middle" }} />
-                </div> */}
-
                 <div className={styles.calendar}>
                   <FaCalendarAlt
                     size={18}
@@ -130,6 +110,7 @@ const ListProj = ({ admin }) => {
                   <DateRangePicker
                     appearance="subtle"
                     size="sm"
+                    onChange={handleDateRangeChange}
                     placeholder="Select Date Range"
                     caretAs={FaCaretDown}
                     character=" – "
