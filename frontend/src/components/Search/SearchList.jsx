@@ -39,7 +39,7 @@ const SearchList = () => {
         console.error("Error fetching data: " + error);
       }
       // sessionStorage.getItem("dashboard");
-      console.log(search);
+      // console.log(search);
     };
 
     fetchData();
@@ -95,23 +95,6 @@ const SearchList = () => {
                 <p className={styles.description}>{project.description}</p>
               </div>
             ))}
-            <div className={styles.pagination}>
-              <span
-                onClick={handlePreviousPage}
-                className={currentPage === 1 ? styles.disabled : ""}
-              >
-                &lt;&lt;
-              </span>
-              <span>&nbsp; {currentPage} &nbsp; </span>
-              <span
-                onClick={handleNextPage}
-                className={
-                  currentPage === totalPageCount ? styles.disabled : ""
-                }
-              >
-                &gt;&gt;
-              </span>
-            </div>
           </>
         ) : (
           <div className={styles.center}>
@@ -126,6 +109,23 @@ const SearchList = () => {
           </div>
         )}
       </div>
+      {projects.length > 0 && (
+        <div className={styles.pagination}>
+          <span
+            onClick={handlePreviousPage}
+            className={currentPage === 1 ? styles.disabled : ""}
+          >
+            &lt;&lt;
+          </span>
+          <span>&nbsp; {currentPage} &nbsp; </span>
+          <span
+            onClick={handleNextPage}
+            className={currentPage === totalPageCount ? styles.disabled : ""}
+          >
+            &gt;&gt;
+          </span>
+        </div>
+      )}
     </div>
   );
 };

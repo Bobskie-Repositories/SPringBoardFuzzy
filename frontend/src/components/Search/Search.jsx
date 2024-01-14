@@ -79,8 +79,10 @@ const Search = ({ setSelected, alternateAPI }) => {
     }
   };
   const navigateSearch = () => {
-    navigate(`/search?query=${encodeURIComponent(searchText)}`);
-    setIsListVisible(false);
+    if (searchText !== "") {
+      navigate(`/search?query=${encodeURIComponent(searchText)}`);
+      setIsListVisible(false);
+    }
   };
 
   return (
