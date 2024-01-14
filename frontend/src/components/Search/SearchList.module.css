@@ -1,0 +1,67 @@
+.container {
+  margin: 20px 0 50px 0;
+  max-width: 45rem;
+}
+.body {
+  min-height: 30rem;
+  max-width: 45rem;
+}
+
+.header {
+  font-size: 20px;
+  font-weight: bold;
+  color: #6c6b67;
+}
+
+.projectItem {
+  margin-bottom: 30px;
+}
+
+.title {
+  color: #9c7b16;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+.description {
+  margin: 5px 0;
+  font-size: 12px;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 30rem;
+}
+.center p {
+  margin: 0;
+  font-size: 20px;
+}
+
+.query {
+  color: #9c7b16;
+  font-weight: bold;
+}
+.suggestion {
+  font-size: 12px;
+}
+
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.pagination span {
+  cursor: pointer;
+}
+
+.disabled {
+  color: #ccc;
+  cursor: not-allowed;
+  pointer-events: none;
+}

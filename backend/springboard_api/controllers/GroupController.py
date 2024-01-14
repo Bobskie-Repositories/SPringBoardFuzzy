@@ -58,19 +58,24 @@ class GetGroupsAndProjects(APIView):
             groups = Group.objects.all()
             for group in groups:
                 group_data = {
-                    "id": group.id,
+                    "group_id": group.id,  # Use 'group_id' as the identifier for the group
                     "name": group.name,
                     "classroom_id": group.classroom_fk.id,
                     "class_name": group.classroom_fk.class_name,
+                    "teacher_id": group.classroom_fk.teacher_fk.id,
+                    "teacher_name": f"{group.classroom_fk.teacher_fk.firstname} {group.classroom_fk.teacher_fk.lastname}",
                     "projects": []
                 }
 
-                projects = Project.objects.filter(
-                    group_fk=group, isActive=True)
+                projects = Project.objects.filter(group_fk=group)
                 for project in projects:
                     project_data = {
-                        "id": project.id,
+                        # Combine group and project id for uniqueness
+                        "project_id": project.id,
                         "name": project.name,
+                        "isActive": project.isActive,
+                        "description": project.description,
+                        "reason": project.reason,
                         "project_score": project.score,
                         "created_at": project.created_at,
                         "project_boards": []
@@ -87,9 +92,10 @@ class GetGroupsAndProjects(APIView):
                         board = ProjectBoard.objects.get(
                             id=board_data['latest_id'])
                         board_score = (
-                            board.novelty + board.technical_feasibility + board.capability) / 3
+                            (board.novelty * 0.4) + (board.technical_feasibility * 0.3) + (board.capability * 0.3))
                         project_board_data = {
-                            "id": board.id,
+                            # Combine group, project, and board id for uniqueness
+                            "id": f"{group.id}-{project.id}-{board.id}",
                             "board_score": board_score,
                             "templateId": board.templateId
                         }
@@ -101,8 +107,32 @@ class GetGroupsAndProjects(APIView):
                 # Append each group data to the list
                 all_group_data.append(group_data)
 
-            # Return all group data
-            return Response(all_group_data, status=status.HTTP_200_OK)
+            # Flatten the list to match the specified format
+            flattened_data = []
+            for group_data in all_group_data:
+                if not group_data["projects"]:
+                    flattened_data.append({
+                        "id": group_data["group_id"],
+                        "name": group_data["name"],
+                        "classroom_id": group_data["classroom_id"],
+                        "class_name": group_data["class_name"],
+                        "teacher_id": group_data["teacher_id"],
+                        "teacher_name": group_data["teacher_name"],
+                        "projects": []
+                    })
+                else:
+                    for project_data in group_data["projects"]:
+                        flattened_data.append({
+                            "id": project_data["project_id"],
+                            "name": group_data["name"],
+                            "classroom_id": group_data["classroom_id"],
+                            "class_name": group_data["class_name"],
+                            "teacher_id": group_data["teacher_id"],
+                            "teacher_name": group_data["teacher_name"],
+                            "projects": [project_data]
+                        })
+
+            return Response(flattened_data, status=status.HTTP_200_OK)
 
         except Group.DoesNotExist:
             return Response({"error": "Group not found"}, status=status.HTTP_404_NOT_FOUND)

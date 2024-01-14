@@ -5,20 +5,22 @@ import S_Sidebar from "../../Sidebar/S_Sidebar";
 import Search from "../../Search/Search";
 import Profile from "../../ProfileSegment/Profile";
 import ListProj from "../../Table/ListProj";
+import SearchList from "../../Search/SearchList";
 import SearchProject from "../../Search/SearchProject";
 import ProjectContents from "../../ProjectContents/ProjectContents";
 import styles from "./SDashboard.module.css";
 
 const SDashboard = ({ choose }) => {
   const location = useLocation();
+  const { search } = location;
   const [selected, setSelected] = useState(location.state?.selectedProjectId);
   const [createAction, setCreateAction] = useState(false);
 
   useEffect(() => {
     const currentPath = window.location.pathname;
     sessionStorage.setItem("currentPath", currentPath);
-    if (choose < 2) {
-      sessionStorage.setItem("dashboard", currentPath);
+    if (choose < 3) {
+      sessionStorage.setItem("dashboard", currentPath + search);
     }
   }, [selected]);
 
@@ -68,6 +70,8 @@ const SDashboard = ({ choose }) => {
           />
         ) : choose == 1 ? (
           <ListProj />
+        ) : choose == 2 ? (
+          <SearchList />
         ) : (
           <div className={styles.container}>
             <SearchProject />
