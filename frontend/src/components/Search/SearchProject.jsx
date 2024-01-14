@@ -15,7 +15,6 @@ const SearchProject = () => {
 
   const handleBack = () => {
     const path = sessionStorage.getItem("dashboard");
-    console.log(path);
     navigate(path);
   };
 
