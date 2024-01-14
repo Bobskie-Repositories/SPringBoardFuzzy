@@ -250,6 +250,7 @@
   color: #9c7b16;
   font-weight: bold;
   width: 105%;
+  display: flex;
 }
 
 .box {

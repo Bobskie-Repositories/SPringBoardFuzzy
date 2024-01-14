@@ -44,6 +44,23 @@ const AdminTable = (props) => {
 
         setGroups(filteredGroups);
 
+        const filteredGroupsByDate =
+          props.dateRange.length > 0
+            ? filteredGroups.filter((group) => {
+                const createdAt =
+                  group.projects.length > 0
+                    ? new Date(group.projects[0].created_at)
+                    : null;
+                return (
+                  createdAt &&
+                  createdAt >= props.dateRange[0] &&
+                  createdAt <= props.dateRange[1]
+                );
+              })
+            : filteredGroups;
+
+        setGroups(filteredGroupsByDate);
+
         const templateResponse = await axios.get(`${API_HOST}/api/template/`);
         setTemplates(templateResponse.data);
 
