@@ -118,7 +118,7 @@ class GetGroupsAndProjects(APIView):
                         "class_name": group_data["class_name"],
                         "teacher_id": group_data["teacher_id"],
                         "teacher_name": group_data["teacher_name"],
-                        "projects": [{"id": f"{group_data['group_id']}-None", "name": "No Project", "project_boards": []}]
+                        "projects": []
                     })
                 else:
                     for project_data in group_data["projects"]:
