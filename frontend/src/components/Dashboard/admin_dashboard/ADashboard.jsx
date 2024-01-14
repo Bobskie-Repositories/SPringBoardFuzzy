@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import styles from "./ADashboard.module.css";
 import Profile from "../../ProfileSegment/Profile";
 import Search from "../../Search/Search";
@@ -8,12 +8,15 @@ import TemplateList from "../../TemplateList/TemplateList";
 import Button from "../../UI/Button/Button";
 import ListProj from "../../Table/ListProj";
 import ViewProject from "../../ViewProject/ViewProject";
+import SearchList from "../../Search/SearchList";
 import SearchProject from "../../Search/SearchProject";
 import axios from "axios";
 import config from "../../../config";
 
 const ADashboard = ({ choose }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { search } = location;
   const [selected, setSelected] = useState();
   const [selectedProj, setSelectedProj] = useState();
   const [templates, setTemplates] = useState([]);
@@ -33,8 +36,8 @@ const ADashboard = ({ choose }) => {
 
   useEffect(() => {
     sessionStorage.setItem("currentPath", currentPath);
-    if (choose < 3) {
-      sessionStorage.setItem("dashboard", currentPath);
+    if (choose < 4) {
+      sessionStorage.setItem("dashboard", currentPath + search);
     }
   }, [currentPath]);
 
@@ -82,6 +85,10 @@ const ADashboard = ({ choose }) => {
             <ListProj admin={true} />
           ) : choose === 2 ? (
             <ViewProject selected={selectedProj} />
+          ) : choose === 3 ? (
+            <div className={styles.container}>
+              <SearchList />
+            </div>
           ) : (
             <div className={styles.container}>
               <SearchProject />

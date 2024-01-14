@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router";
+import { useParams, useNavigate, useLocation } from "react-router";
 import Button from "../../UI/Button/Button";
 import T_Sidebar from "../../Sidebar/T_Sidebar";
 import Search from "../../Search/Search";
@@ -10,9 +10,12 @@ import ViewClassroom from "../../Classroom/ViewClassroom";
 import ViewProject from "../../ViewProject/ViewProject";
 import ListProj from "../../Table/ListProj";
 import SearchProject from "../../Search/SearchProject";
+import SearchList from "../../Search/SearchList";
 import styles from "./MDashboard.module.css";
 
 const MDashboard = ({ choose }) => {
+  const location = useLocation();
+  const { search } = location;
   const [selected, setSelected] = useState();
   const [selectedProj, setSelectedProj] = useState();
   const [signalClassCreated, setSignalClassCreated] = useState();
@@ -23,8 +26,8 @@ const MDashboard = ({ choose }) => {
   useEffect(() => {
     setSelected(id);
     sessionStorage.setItem("currentPath", currentPath);
-    if (choose < 4) {
-      sessionStorage.setItem("dashboard", currentPath);
+    if (choose < 5) {
+      sessionStorage.setItem("dashboard", currentPath + search);
     }
   }, [selected, id, currentPath]);
 
@@ -69,6 +72,8 @@ const MDashboard = ({ choose }) => {
             <ViewProject />
           ) : choose === 3 ? (
             <ListProj />
+          ) : choose === 4 ? (
+            <SearchList />
           ) : (
             <div className={styles.container}>
               <SearchProject />
