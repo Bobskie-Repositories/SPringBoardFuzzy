@@ -146,7 +146,10 @@ const ListProj = ({ admin }) => {
                 </div>
 
                 {dropdownVisible && (
-                  <div className={styles.dropdowncontent}>
+                  <div
+                    className={styles.dropdowncontent}
+                    style={{ minWidth: "12rem" }}
+                  >
                     {classroom.map((clsrm) => (
                       <div key={clsrm.id} className={styles.classroomItem}>
                         <input
@@ -157,7 +160,7 @@ const ListProj = ({ admin }) => {
                           className={styles.box}
                         />
                         <label
-                          style={{ color: "#9c7b16" }}
+                          style={{ color: "#9c7b16", margin: "0 10px 0 0" }}
                           htmlFor={`classroom-${clsrm.id}`}
                         >
                           {clsrm.class_name}
