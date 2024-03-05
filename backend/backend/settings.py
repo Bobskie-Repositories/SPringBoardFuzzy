@@ -26,12 +26,12 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG")
 
-# ALLOWED_HOSTS = [
-#     "http://localhost:5173",
-#     "http://127.0.0.1:5173",
-# ]
-# ALLOWED_HOSTS += os.environ.get("ALLOWED_HOSTS").split()
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+ALLOWED_HOSTS += os.environ.get("ALLOWED_HOSTS").split()
+# ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -82,28 +82,29 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         # 'NAME': BASE_DIR / 'db.sqlite3',
-#         'NAME': 'bobkyle$springboard',
-#         'USER': 'bobkyle',
-#         'PASSWORD': 'pokemonlake',
-#         'HOST': 'bobkyle.mysql.pythonanywhere-services.com',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         # 'NAME': BASE_DIR / 'db.sqlite3',
-        'NAME': 'springboard',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+        'NAME': 'bobkyle$springboard',
+        'USER': 'bobkyle',
+        'PASSWORD': 'pokemonlake',
+        'HOST': 'bobkyle.mysql.pythonanywhere-services.com',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         # 'NAME': BASE_DIR / 'db.sqlite3',
+#         'NAME': 'springboard',
+#         'USER': 'root',
+#         'PASSWORD': '',
+#         'HOST': '',
+#         'PORT': '',
+#     }
+# }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -155,6 +156,7 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "https://spring-board.vercel.app",
 ]
 
 SESSION_COOKIE_SAMESITE = 'None'  # or 'None' if needed
@@ -166,5 +168,5 @@ CORS_ALLOW_CREDENTIALS = True
 AUTH_USER_MODEL = 'springboard_api.Student'
 
 
-BASE_URL = "http://127.0.0.1:8000"
-# BASE_URL = "https://bobkyle.pythonanywhere.com"
+# BASE_URL = "http://127.0.0.1:8000"
+BASE_URL = "https://bobkyle.pythonanywhere.com"
