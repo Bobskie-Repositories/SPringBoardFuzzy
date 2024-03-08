@@ -1,32 +1,29 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router";
-import { useRef } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router';
+import { useRef } from 'react';
+import axios from 'axios';
 
-import Header from "../Header/Header";
-import Card from "../UI/Card/Card";
-import Button from "../UI/Button/Button";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import EditorToolbar, {
-  modules,
-  formats,
-} from "../UI/RichTextEditor/EditorToolBar";
-import Details from "../UI/RichTextEditor/Details";
-import { Tiptap } from "../UI/RichTextEditor/TipTap";
-import styles from "./Template.module.css";
-import global from "@assets/global.module.css";
-import ModalCustom from "../UI/Modal/Modal";
-import config from "../../config";
-import Loading from "../UI/Loading/Loading";
+import Header from '../Header/Header';
+import Card from '../UI/Card/Card';
+import Button from '../UI/Button/Button';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import EditorToolbar, { modules, formats } from '../UI/RichTextEditor/EditorToolBar';
+import Details from '../UI/RichTextEditor/Details';
+import { Tiptap } from '../UI/RichTextEditor/TipTap';
+import styles from './Template.module.css';
+import global from '@assets/global.module.css';
+import ModalCustom from '../UI/Modal/Modal';
+import config from '../../config';
+import Loading from '../UI/Loading/Loading';
 
 const Template = () => {
   const { id, templateid } = useParams();
   const [template, setTemplate] = useState(null);
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState('');
   const editor = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState('');
   const { API_HOST } = config;
   const navigate = useNavigate();
 
@@ -38,13 +35,11 @@ const Template = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `${API_HOST}/api/template/${templateid}`
-        );
+        const response = await axios.get(`${API_HOST}/api/template/${templateid}`);
         setTemplate(response.data);
-        setContent(response.data.content || "");
+        setContent(response.data.content || '');
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       }
     };
 
@@ -54,24 +49,21 @@ const Template = () => {
   const createProjectBoard = async () => {
     setIsModalOpen(true);
     try {
-      const response = await axios.post(
-        `${API_HOST}/api/project/${id}/addprojectboards`,
-        {
-          title: template.title,
-          content: content, // Use the content from the React Quill editor
-          templateId: templateid,
-          novelty: 0,
-          capability: 0,
-          technical_feasibility: 0,
-          feedback: "s",
-          recommendation: "s",
-          //references: "s",
-          project_fk: id,
-        }
-      );
+      const response = await axios.post(`${API_HOST}/api/project/${id}/addprojectboards`, {
+        title: template.title,
+        content: content, // Use the content from the React Quill editor
+        templateId: templateid,
+        desirability: 0,
+        viability: 0,
+        feasibility: 0,
+        feedback: 's',
+        recommendation: 's',
+        //references: "s",
+        project_fk: id,
+      });
       navigate(`/project/${id}/create-board/${response.data.id}/result`);
     } catch (error) {
-      console.error("Error creating ProjectBoard:", error);
+      console.error('Error creating ProjectBoard:', error);
     }
     setIsModalOpen(false);
   };
@@ -107,7 +99,7 @@ const Template = () => {
 
         {isModalOpen && (
           <ModalCustom width={200} isOpen={isModalOpen}>
-            <Loading timeout="auto" style={{ height: "auto" }} />
+            <Loading timeout="auto" style={{ height: 'auto' }} />
           </ModalCustom>
         )}
 

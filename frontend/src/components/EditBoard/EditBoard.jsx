@@ -1,31 +1,28 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router";
-import axios from "axios";
-import global from "@assets/global.module.css";
-import styles from "./EditBoard.module.css";
-import Header from "../Header/Header";
-import Card from "../UI/Card/Card";
-import Button from "../UI/Button/Button";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import EditorToolbar, {
-  modules,
-  formats,
-} from "../UI/RichTextEditor/EditorToolBar";
-import { Tiptap } from "../UI/RichTextEditor/TipTap";
-import ModalCustom from "../UI/Modal/Modal";
-import config from "../../config";
-import Loading from "../UI/Loading/Loading";
+import React from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router';
+import axios from 'axios';
+import global from '@assets/global.module.css';
+import styles from './EditBoard.module.css';
+import Header from '../Header/Header';
+import Card from '../UI/Card/Card';
+import Button from '../UI/Button/Button';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import EditorToolbar, { modules, formats } from '../UI/RichTextEditor/EditorToolBar';
+import { Tiptap } from '../UI/RichTextEditor/TipTap';
+import ModalCustom from '../UI/Modal/Modal';
+import config from '../../config';
+import Loading from '../UI/Loading/Loading';
 
 const EditBoard = () => {
   const [title, setTitle] = useState(null);
   const [content, setContent] = useState(null);
   const [boardId, setBoardId] = useState(null);
   const [projectId, SetProjectId] = useState(null);
-  const [priorNovelVal, setPriorNovelVal] = useState(null);
-  const [priorTechVal, setPriorTechVal] = useState(null);
-  const [priorCapableVal, setPriorCapableVal] = useState(null);
+  const [priorDesireVal, setPriorDesireVal] = useState(null);
+  const [priorFeasibilityVal, setPriorFeasiblityVal] = useState(null);
+  const [priorViabilityVal, setPriorViabilityVal] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
@@ -35,16 +32,16 @@ const EditBoard = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${API_HOST}/api/projectboards/${id}`);
-        setTitle(response.data.title || "");
-        setContent(response.data.content || "");
-        setBoardId(response.data.boardId || "");
-        SetProjectId(response.data.project_fk || "");
+        setTitle(response.data.title || '');
+        setContent(response.data.content || '');
+        setBoardId(response.data.boardId || '');
+        SetProjectId(response.data.project_fk || '');
 
-        setPriorNovelVal(response.data.novelty || 0);
-        setPriorTechVal(response.data.technical_feasibility || 0);
-        setPriorCapableVal(response.data.capability || 0);
+        setPriorDesireVal(response.data.desirability || 0);
+        setPriorFeasiblityVal(response.data.feasibility || 0);
+        setPriorViabilityVal(response.data.viability || 0);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       }
     };
     fetchData();
@@ -53,26 +50,23 @@ const EditBoard = () => {
   const updateProjectBoard = async () => {
     setIsModalOpen(true);
     try {
-      const response = await axios.post(
-        `${API_HOST}/api/projectboards/${id}/update`,
-        {
-          title: title,
-          content: content, // Use the content from the React Quill editor
-          novelty: priorNovelVal,
-          capability: priorCapableVal,
-          technical_feasibility: priorTechVal,
-          feedback: "error",
-          recommendation: "error",
-          //references: "error",
-          project_fk: projectId,
-          boardId: boardId,
-        }
-      );
+      const response = await axios.post(`${API_HOST}/api/projectboards/${id}/update`, {
+        title: title,
+        content: content, // Use the content from the React Quill editor
+        desirability: priorDesireVal,
+        viability: priorViabilityVal,
+        feasibility: priorFeasibilityVal,
+        feedback: 'error',
+        recommendation: 'error',
+        //references: "error",
+        project_fk: projectId,
+        boardId: boardId,
+      });
       setIsModalOpen(false);
       navigate(`/board/${response.data.id}/edit/result`);
     } catch (error) {
       setIsModalOpen(false);
-      console.error("Error updating ProjectBoard:", error);
+      console.error('Error updating ProjectBoard:', error);
     }
   };
 
@@ -110,7 +104,7 @@ const EditBoard = () => {
         </Card>
         {isModalOpen && (
           <ModalCustom width={200} isOpen={isModalOpen}>
-            <Loading timeout="auto" style={{ height: "auto" }} />
+            <Loading timeout="auto" style={{ height: 'auto' }} />
           </ModalCustom>
         )}
         <Button className={styles.button} onClick={updateProjectBoard}>
