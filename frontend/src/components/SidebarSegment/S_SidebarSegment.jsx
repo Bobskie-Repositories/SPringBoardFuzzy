@@ -91,9 +91,13 @@ const S_SidebarSegment = ({
     setSelected(projectId);
     setClickedProjectId(projectId);
     setCreateAction(false);
-    navigate(`/group/${userGroupId}/project/${projectId}`, {
-      state: { selectedProjectId: projectId, open: true },
-    });
+    if (projectId) {
+      navigate(`/group/${userGroupId}/project/${projectId}`, {
+        state: { selectedProjectId: projectId, open: true },
+      });
+    } else {
+      navigate(`/group/${userGroupId}`);
+    }
   };
 
   const handleNameIconClick = (e) => {
