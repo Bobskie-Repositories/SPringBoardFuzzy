@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, useLocation } from "react-router";
-import { useAuth } from "../../context/AuthContext";
-import styles from "./SidebarSegment.module.css";
-import global from "../../assets/global.module.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router';
+import { useAuth } from '../../context/AuthContext';
+import styles from './SidebarSegment.module.css';
+import global from '../../assets/global.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faPlus,
   faSquareCaretDown,
@@ -11,10 +11,10 @@ import {
   faSquareCaretRight,
   faDiagramProject,
   faCircle,
-} from "@fortawesome/free-solid-svg-icons";
-import Swal from "sweetalert2";
-import axios from "axios";
-import config from "../../config";
+} from '@fortawesome/free-solid-svg-icons';
+import Swal from 'sweetalert2';
+import axios from 'axios';
+import config from '../../config';
 
 const S_SidebarSegment = ({
   selected,
@@ -28,9 +28,9 @@ const S_SidebarSegment = ({
 
   const [clickedProjectId, setClickedProjectId] = useState(null);
   const [editableProjectId, setEditableProjectId] = useState(null);
-  const [editedProjectName, setEditedProjectName] = useState("");
+  const [editedProjectName, setEditedProjectName] = useState('');
   const [isInactiveClicked, setisInactiveClicked] = useState(false);
-  const [userGroupId, setUserGroupId] = useState("");
+  const [userGroupId, setUserGroupId] = useState('');
   const [staff, setStaff] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
@@ -48,11 +48,7 @@ const S_SidebarSegment = ({
       setIsLoading(false);
 
       axios
-        .get(
-          `${API_HOST}/api/group/${
-            groupid !== undefined ? groupid : user.group_fk
-          }/projects`
-        )
+        .get(`${API_HOST}/api/group/${groupid !== undefined ? groupid : user.group_fk}/projects`)
         .then((response) => {
           setProjects(response.data);
           if (response.data.length > 0) {
@@ -68,7 +64,7 @@ const S_SidebarSegment = ({
           }
         })
         .catch((error) => {
-          console.error("Error fetching data:", error);
+          console.error('Error fetching data:', error);
         });
     };
 
@@ -79,16 +75,12 @@ const S_SidebarSegment = ({
     const fetchData = async () => {
       const user = await getUser();
       axios
-        .get(
-          `${API_HOST}/api/group/${
-            groupid !== undefined ? groupid : user.group_fk
-          }/projects`
-        )
+        .get(`${API_HOST}/api/group/${groupid !== undefined ? groupid : user.group_fk}/projects`)
         .then((response) => {
           setProjects(response.data);
         })
         .catch((error) => {
-          console.error("Error fetching data:", error);
+          console.error('Error fetching data:', error);
         });
     };
     fetchData();
@@ -99,9 +91,13 @@ const S_SidebarSegment = ({
     setSelected(projectId);
     setClickedProjectId(projectId);
     setCreateAction(false);
-    navigate(`/group/${userGroupId}/project/${projectId}`, {
-      state: { selectedProjectId: projectId, open: true },
-    });
+    if (projectId) {
+      navigate(`/group/${userGroupId}/project/${projectId}`, {
+        state: { selectedProjectId: projectId, open: true },
+      });
+    } else {
+      navigate(`/group/${userGroupId}`);
+    }
   };
 
   const handleNameIconClick = (e) => {
@@ -112,18 +108,16 @@ const S_SidebarSegment = ({
   const handleInactiveClick = (e) => {
     setisInactiveClicked(!isInactiveClicked);
     setClickedProjectId(null);
-    localStorage.removeItem("activeProjPage");
-    localStorage.removeItem("inactiveProjPage");
-    localStorage.removeItem("selectedStatus");
-    navigate("/all_projects");
+    localStorage.removeItem('activeProjPage');
+    localStorage.removeItem('inactiveProjPage');
+    localStorage.removeItem('selectedStatus');
+    navigate('/all_projects');
   };
 
   const handleProjectDoubleClick = (projectId) => {
     if (editableProjectId === null) {
       setEditableProjectId(projectId);
-      const projectToEdit = projects.find(
-        (project) => project.id === projectId
-      );
+      const projectToEdit = projects.find((project) => project.id === projectId);
       setEditedProjectName(projectToEdit.name);
     }
   };
@@ -131,20 +125,16 @@ const S_SidebarSegment = ({
   const handleEditProjectName = () => {
     if (!editedProjectName) {
       Swal.fire({
-        icon: "error",
-        title: "Project name cannot be empty",
-        confirmButtonColor: "#8A252C",
+        icon: 'error',
+        title: 'Project name cannot be empty',
+        confirmButtonColor: '#8A252C',
       });
-    } else if (
-      projects.some(
-        (p) => p.name === editedProjectName && p.id !== editableProjectId
-      )
-    ) {
+    } else if (projects.some((p) => p.name === editedProjectName && p.id !== editableProjectId)) {
       Swal.fire({
-        icon: "error",
+        icon: 'error',
         title: `Project with the name '${editedProjectName}' already exists`,
-        text: "Please enter another project name.",
-        confirmButtonColor: "#8A252C",
+        text: 'Please enter another project name.',
+        confirmButtonColor: '#8A252C',
       });
     } else {
       const updatedProjects = projects.map((project) => {
@@ -154,10 +144,10 @@ const S_SidebarSegment = ({
           axios
             .put(`${API_HOST}/api/project/${project.id}/update`, updatedProject)
             .then((response) => {
-              console.log("Project name updated");
+              console.log('Project name updated');
             })
             .catch((error) => {
-              console.error("Error updating project name:", error);
+              console.error('Error updating project name:', error);
             });
           onProjectUpdate();
           return updatedProject;
@@ -182,14 +172,12 @@ const S_SidebarSegment = ({
         name: newProject,
         description: desc,
         group_fk: userGroupId,
-        reason: "Created recently",
+        reason: 'Created recently',
         created_at: getCurrentTimestamp(),
       });
 
       const newProjectId = response.data.id;
-      const newProjectResponse = await axios.get(
-        `${API_HOST}/api/project/${newProjectId}`
-      );
+      const newProjectResponse = await axios.get(`${API_HOST}/api/project/${newProjectId}`);
       const newProjectData = newProjectResponse.data;
 
       setProjects([...projects, newProjectData]);
@@ -201,32 +189,13 @@ const S_SidebarSegment = ({
     }
   };
 
-  const deleteProject = async () => {
-    try {
-      const response = await axios.delete(
-        `${API_HOST}/api/project/${clickedProjectId}/delete`
-      );
-      const updatedProjects = projects.filter(
-        (project) => project.id !== clickedProjectId
-      );
-      setProjects(updatedProjects);
-      if (updatedProjects.length > 0) {
-        handleButtonClick(updatedProjects[0].id);
-      } else {
-        handleButtonClick(null);
-      }
-    } catch (error) {
-      console.error("Error deleting Project:", error);
-    }
-  };
-
   const showCreateProjectModal = () => {
     if (projects.length >= 3) {
       Swal.fire({
-        icon: "error",
-        title: "Project Limit Reached",
-        html: "You have reached the project limit.<br>Only 3 projects per group are allowed.",
-        confirmButtonColor: "#8A252C",
+        icon: 'error',
+        title: 'Project Limit Reached',
+        html: 'You have reached the project limit.<br>Only 3 projects per group are allowed.',
+        confirmButtonColor: '#8A252C',
       });
     } else {
       Swal.fire({
@@ -235,37 +204,38 @@ const S_SidebarSegment = ({
           <br>
           <input type="text" id="input1" placeholder="Enter new project name" class="swal2-input" style="height: 35px; width: 86%; font-size: 16px; font-family: 'Calibri', sans-serif; display: flex;"/>
           <br>
-          <textarea id="input2" placeholder="Enter project description" class="swal2-textarea" style="margin: 0 auto; width: 86%; height: 100px; resize: none; font-size: 16px; font-family: 'Calibri', sans-serif;"></textarea>
-        `,
+          <textarea id="input2" placeholder="Enter project description" class="swal2-textarea" style="margin: 0 auto; width: 86%; height: 100px; resize: none; font-size: 16px; font-family: 'Calibri', sans-serif;" maxlength="200"></textarea>
+          <div id="charCount" style="text-align: right; color: #555; font-size: 12px; margin-top: 5px;">0/200 characters</div>
+          `,
         showCancelButton: true,
-        confirmButtonText: "Create",
-        confirmButtonColor: "#9c7b16",
-        cancelButtonText: "Cancel",
-        cancelButtonColor: "rgb(181, 178, 178)",
+        confirmButtonText: 'Create',
+        confirmButtonColor: '#9c7b16',
+        cancelButtonText: 'Cancel',
+        cancelButtonColor: 'rgb(181, 178, 178)',
         preConfirm: async () => {
           // Retrieve values from input fields
-          const input1Value = document.getElementById("input1").value;
-          const input2Value = document.getElementById("input2").value;
+          const input1Value = document.getElementById('input1').value;
+          const input2Value = document.getElementById('input2').value;
+          const wordsArray = input2Value.split(/\s+/);
           try {
-            // Validate and process the values as needed
-            if (!input1Value) {
-              throw new Error("Project name cannot be empty");
+            if (!input1Value && !input2Value) {
+              Swal.showValidationMessage('Project name and description cannot be empty');
+            } else if (!input1Value) {
+              Swal.showValidationMessage('Project name cannot be empty');
             } else if (!input2Value) {
-              throw new Error("Please enter the project description.");
+              Swal.showValidationMessage('Please enter the project description.');
+            } else if (input1Value.length > 50) {
+              Swal.showValidationMessage(`Project name should be at most 50 characters`);
+            } else if (wordsArray.length < 10 || wordsArray.length > 50) {
+              Swal.showValidationMessage(
+                `Description should have 10 - 50 words. You have ${wordsArray.length} word/s.`
+              );
             }
-            // else if (
-            //   projects.some((project) => project.name === input1Value)
-            // ) {
-            //   throw new Error(
-            //     `Project with the name '${input1Value}' already exists. Please enter another project name.`
-            //   );
-            // }
 
-            // Call addProject if the input values are valid
             const newProjId = await addProject(input1Value, input2Value);
             setSelected(newProjId);
             setClickedProjectId(newProjId);
-            return true; // Resolve the promise to close the modal
+            return true;
           } catch (error) {
             // Display Swal validation message for errors
             Swal.showValidationMessage(
@@ -276,40 +246,62 @@ const S_SidebarSegment = ({
         },
       }).then((result) => {
         if (result.isConfirmed) {
-          // const newProjectName = document.getElementById("input1").value;
-          // const desc = document.getElementById("input2").value;
-          // addProject(newProjectName, desc);
           Swal.fire({
-            title: "Project Created",
-            icon: "success",
-            confirmButtonColor: "#9c7b16",
+            title: 'Project Created',
+            icon: 'success',
+            confirmButtonColor: '#9c7b16',
           });
         }
       });
     }
+    const input2 = document.getElementById('input2');
+    const charCount = document.getElementById('charCount');
+
+    input2.addEventListener('input', () => {
+      const currentLength = input2.value.length;
+      charCount.innerText = `${currentLength}/200 characters`;
+
+      if (currentLength > 200) {
+        input2.value = input2.value.slice(0, 200);
+      }
+    });
   };
 
   const showDeleteProjectModal = () => {
     Swal.fire({
-      icon: "warning",
-      title:
-        '<span style="font-size: 20px">Are you sure you want to delete?</span>',
+      icon: 'warning',
+      title: '<span style="font-size: 20px">Are you sure you want to delete?</span>',
       html: '<span style="font-size: 15px">This will delete this project permanently. You cannot undo this action.</span>',
       showCancelButton: true,
-      confirmButtonText: "Delete",
-      confirmButtonColor: "#8A252C",
-      cancelButtonText: "Cancel",
-      cancelButtonColor: "rgb(181, 178, 178)",
-    }).then((result) => {
+      confirmButtonText: 'Delete',
+      confirmButtonColor: '#8A252C',
+      cancelButtonText: 'Cancel',
+      cancelButtonColor: 'rgb(181, 178, 178)',
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        deleteProject();
-        Swal.fire({
-          title:
-            '<span style="font-size: 20px">Project Sucessfully Deleted</span>',
-          icon: "success",
-          confirmButtonColor: "#9c7b16",
-          confirmButtonText: "OK",
-        });
+        try {
+          const response = await axios.delete(`${API_HOST}/api/project/${clickedProjectId}/delete`);
+          const updatedProjects = projects.filter((project) => project.id !== clickedProjectId);
+          setProjects(updatedProjects);
+          if (updatedProjects.length > 0) {
+            handleButtonClick(updatedProjects[0].id);
+          } else {
+            handleButtonClick(null);
+          }
+          Swal.fire({
+            title: '<span style="font-size: 20px">Project Sucessfully Deleted</span>',
+            icon: 'success',
+            confirmButtonColor: '#9c7b16',
+            confirmButtonText: 'OK',
+          });
+        } catch (error) {
+          Swal.fire({
+            title: '<span style="font-size: 20px">Error Project Delete</span>',
+            icon: 'error',
+            confirmButtonColor: '#9c7b16',
+            confirmButtonText: 'OK',
+          });
+        }
       }
     });
   };
@@ -323,15 +315,9 @@ const S_SidebarSegment = ({
           <li className={`${global.center} ${styles.customLi}`}>
             <div
               onClick={handleInactiveClick}
-              className={`${styles.inactive} ${
-                isInactiveClicked ? styles.clickedButton : ""
-              }`}
+              className={`${styles.inactive} ${isInactiveClicked ? styles.clickedButton : ''}`}
             >
-              <FontAwesomeIcon
-                icon={faDiagramProject}
-                className={styles.dropdown}
-                size="lg"
-              />
+              <FontAwesomeIcon icon={faDiagramProject} className={styles.dropdown} size="lg" />
               &nbsp; All Projects
             </div>
           </li>
@@ -342,7 +328,7 @@ const S_SidebarSegment = ({
                 icon={open ? faSquareCaretDown : faSquareCaretRight}
                 className={styles.dropdown}
                 size="xl"
-              />{" "}
+              />{' '}
               &nbsp; Projects
             </div>
             {!staff && (
@@ -358,12 +344,12 @@ const S_SidebarSegment = ({
       )}
 
       {open && (
-        <div style={{ marginTop: "-7%", paddingLeft: "20%" }}>
+        <div style={{ marginTop: '-7%', paddingLeft: '20%' }}>
           <ul className={styles.ul}>
             {projects.map((project) => (
               <li
                 className={`${styles.projectName} ${
-                  clickedProjectId === project.id ? styles.clickedProject : ""
+                  clickedProjectId === project.id ? styles.clickedProject : ''
                 }`}
                 key={project.id}
                 onClick={() => handleButtonClick(project.id)}
@@ -378,7 +364,7 @@ const S_SidebarSegment = ({
                         value={editedProjectName}
                         onChange={(e) => setEditedProjectName(e.target.value)}
                         onKeyDown={(e) => {
-                          if (e.key === "Enter") {
+                          if (e.key === 'Enter') {
                             e.preventDefault();
                             handleEditProjectName();
                           }
@@ -391,11 +377,7 @@ const S_SidebarSegment = ({
                   ) : (
                     <div>
                       {project.isActive ? (
-                        <FontAwesomeIcon
-                          icon={faCircle}
-                          className={styles.greenBullet}
-                          size="xs"
-                        />
+                        <FontAwesomeIcon icon={faCircle} className={styles.greenBullet} size="xs" />
                       ) : (
                         <FontAwesomeIcon
                           icon={faCircle}

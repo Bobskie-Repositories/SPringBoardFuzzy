@@ -226,7 +226,7 @@ class GetGroupsAndProjects(APIView):
                         board = ProjectBoard.objects.get(
                             id=board_data['latest_id'])
                         board_score = (
-                            (board.novelty * 0.4) + (board.technical_feasibility * 0.3) + (board.capability * 0.3))
+                            (board.desirability * 0.4) + (board.feasibility * 0.3) + (board.viability * 0.3))
                         project_board_data = {
                             # Combine group, project, and board id for uniqueness
                             "id": f"{group.id}-{project.id}-{board.id}",

@@ -35,7 +35,7 @@
   justify-content: center;
   align-items: center;
   width: fit-content;
-  grid-column-gap: "5px";
+  grid-column-gap: '5px';
 }
 
 .adminContainer {
@@ -286,7 +286,7 @@
   color: white;
   background-color: wheat;
 }
-.classroomItem input[type="checkbox"] {
+.classroomItem input[type='checkbox'] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -302,17 +302,17 @@
   padding: 5px;
 }
 
-.classroomItem input[type="checkbox"]:checked {
+.classroomItem input[type='checkbox']:checked {
   background-color: #9c7b16; /* Change the background color when checked */
   border-color: #9c7b16;
 }
 
-.classroomItem input[type="checkbox"]::-ms-check {
+.classroomItem input[type='checkbox']::-ms-check {
   display: none;
 }
 
-.classroomItem input[type="checkbox"]:checked::before {
-  content: "\2713"; /* Unicode character for check mark */
+.classroomItem input[type='checkbox']:checked::before {
+  content: '\2713'; /* Unicode character for check mark */
   font-size: 7px; /* Adjust the font size of the check mark */
   color: white; /* Set the color of the check mark */
   position: absolute;
@@ -352,6 +352,8 @@
   width: 210px;
 }
 .noGroupsMessage {
+  margin-top: 10rem;
+  margin-left: 30rem;
   display: flex;
   align-self: center;
   justify-content: center;
