@@ -1,19 +1,19 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useParams, useNavigate } from "react-router";
-import { useAuth } from "../../context/AuthContext";
-import styles from "./ViewBoard.module.css";
-import global from "@assets/global.module.css";
-import Header from "../Header/Header";
-import ResultBoard from "../ResultBoard/ResultBoard";
-import Button from "../UI/Button/Button";
-import parse from "html-react-parser";
-import Swal from "sweetalert2";
-import { IoArrowBackSharp } from "react-icons/io5";
-import axios from "axios";
-import config from "../../config";
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams, useNavigate } from 'react-router';
+import { useAuth } from '../../context/AuthContext';
+import styles from './ViewBoard.module.css';
+import global from '@assets/global.module.css';
+import Header from '../Header/Header';
+import ResultBoard from '../ResultBoard/ResultBoard';
+import Button from '../UI/Button/Button';
+import parse from 'html-react-parser';
+import Swal from 'sweetalert2';
+import { IoArrowBackSharp } from 'react-icons/io5';
+import axios from 'axios';
+import config from '../../config';
 
 const ViewBoard = () => {
-  const [activeTab, setActiveTab] = useState("results");
+  const [activeTab, setActiveTab] = useState('results');
   const [attempt, setAttempt] = useState(0);
   const [boards, setBoards] = useState(null);
   const [groupId, setGroupId] = useState(null);
@@ -32,9 +32,7 @@ const ViewBoard = () => {
         const user = await getUser();
         setStaff(user.is_staff);
 
-        const response = await axios.get(
-          `${API_HOST}/api/projectboards/${id}/versions`
-        );
+        const response = await axios.get(`${API_HOST}/api/projectboards/${id}/versions`);
         const projectResponse = await axios.get(
           `${API_HOST}/api/project/${response.data[0].project_fk}`
         );
@@ -47,7 +45,7 @@ const ViewBoard = () => {
         }
         setAttempt(calcAttemp(response.data));
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       }
     };
 
@@ -55,10 +53,8 @@ const ViewBoard = () => {
   }, [id]);
 
   const calcAttemp = (versions) => {
-    //first creation or no other versions created
-    if (versions.length == 1) {
-      return 0;
-    }
+    // Exclude the last item in the versions array. last item is the first version
+    const versionsWithoutLast = versions.slice(0, -1);
 
     // Get today's date and set its time to 11:59 PM
     const today = new Date();
@@ -73,7 +69,7 @@ const ViewBoard = () => {
     yesterday.setDate(today.getDate() - 1);
     const startDate = yesterday;
 
-    const filteredBoards = versions.filter((board) => {
+    const filteredBoards = versionsWithoutLast.filter((board) => {
       const boardCreatedAt = new Date(board.created_at);
       return boardCreatedAt >= startDate && boardCreatedAt <= endDate;
     });
@@ -95,12 +91,12 @@ const ViewBoard = () => {
   const handleImproveRes = () => {
     if (attempt >= 3) {
       Swal.fire(
-        "Warning",
-        "You have reached the maximum limit of 3 reassessments for today. Please try again tomorrow.",
-        "warning"
+        'Warning',
+        'You have reached the maximum limit of 3 reassessments for today. Please try again tomorrow.',
+        'warning'
       );
     } else {
-      navigate("edit");
+      navigate('edit');
     }
   };
 
@@ -157,7 +153,7 @@ const ViewBoard = () => {
   // };
 
   const handleBack = () => {
-    const storedPath = sessionStorage.getItem("currentPath");
+    const storedPath = sessionStorage.getItem('currentPath');
     navigate(storedPath);
   };
 
@@ -172,7 +168,7 @@ const ViewBoard = () => {
       <Header />
 
       <div className={global.body}>
-        <div style={{ width: "70rem" }}>
+        <div style={{ width: '70rem' }}>
           <h2>
             <span className={styles.back} onClick={handleBack}>
               <IoArrowBackSharp />
@@ -182,11 +178,7 @@ const ViewBoard = () => {
           <div className={styles.navigationButtons}>
             <span
               onClick={goToNextProjectBoard}
-              className={
-                currentIndex === boards.length - 1
-                  ? styles.disabled
-                  : styles.enable
-              }
+              className={currentIndex === boards.length - 1 ? styles.disabled : styles.enable}
             >
               &lt;&lt;
             </span>
@@ -201,25 +193,21 @@ const ViewBoard = () => {
 
           <div className={styles.tabsContainer}>
             <div
-              className={`${styles.tab} ${
-                activeTab === "results" ? styles.active : ""
-              }`}
-              onClick={() => handleTabClick("results")}
+              className={`${styles.tab} ${activeTab === 'results' ? styles.active : ''}`}
+              onClick={() => handleTabClick('results')}
             >
               Result
             </div>
             <div
-              className={`${styles.tab} ${
-                activeTab === "details" ? styles.active : ""
-              }`}
-              onClick={() => handleTabClick("details")}
+              className={`${styles.tab} ${activeTab === 'details' ? styles.active : ''}`}
+              onClick={() => handleTabClick('details')}
             >
               Details
             </div>
           </div>
 
           <div className={styles.tabContent}>
-            {activeTab === "results" && (
+            {activeTab === 'results' && (
               <>
                 <div className={styles.tabHeader}>
                   <p>Result</p>
@@ -229,7 +217,7 @@ const ViewBoard = () => {
                 </div>
               </>
             )}
-            {activeTab === "details" && (
+            {activeTab === 'details' && (
               <>
                 <div className={styles.tabHeader}>
                   <p>{currentProjectBoard.title}</p>
@@ -242,9 +230,7 @@ const ViewBoard = () => {
 
         {!staff && isGrpMem && (
           <div className={styles.btmButton}>
-            <p style={{ color: "red" }}>
-              Reassesments available today: {3 - attempt} / 3
-            </p>
+            <p style={{ color: 'red' }}>Reassesments available today: {3 - attempt} / 3</p>
 
             <Button className={styles.button} onClick={handleImproveRes}>
               Improve Result

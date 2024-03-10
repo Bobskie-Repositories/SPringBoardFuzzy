@@ -1,19 +1,15 @@
-import React, { useState, useEffect } from "react";
-import styles from "./Sidebar.module.css";
-import global from "../../assets/global.module.css";
-import Logo from "@assets/Logo.png";
-import GroupIcon from "@assets/groupicon.png";
-import S_SidebarSegment from "../SidebarSegment/S_SidebarSegment";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCircleInfo,
-  faGear,
-  faArrowRightFromBracket,
-} from "@fortawesome/free-solid-svg-icons";
-import { useLocation, useNavigate } from "react-router";
-import { useAuth } from "../../context/AuthContext";
-import axios from "axios";
-import config from "../../config";
+import React, { useState, useEffect } from 'react';
+import styles from './Sidebar.module.css';
+import global from '../../assets/global.module.css';
+import Logo from '@assets/Logo.png';
+import GroupIcon from '@assets/groupicon.png';
+import S_SidebarSegment from '../SidebarSegment/S_SidebarSegment';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleInfo, faGear, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { useLocation, useNavigate } from 'react-router';
+import { useAuth } from '../../context/AuthContext';
+import axios from 'axios';
+import config from '../../config';
 
 const S_Sidebar = ({
   setSelected,
@@ -33,13 +29,11 @@ const S_Sidebar = ({
       const user = await getUser();
       // console.log(user)
       try {
-        const response = await axios.get(
-          `${API_HOST}/api/group/${user.group_fk}`
-        );
+        const response = await axios.get(`${API_HOST}/api/group/${user.group_fk}`);
         setGroup(response.data.name);
         setGroupCode(response.data.key_code);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       }
     };
 
@@ -62,13 +56,11 @@ const S_Sidebar = ({
       <img src={Logo} alt="Logo" className={styles.img} onClick={goHome} />
       <div className={styles.subbody}>
         <h4 className={styles.grouptext}>Your Group</h4>
-        <button className={styles.groupbutton}>
-          <div style={{ minWidth: "150px" }}>
-            <img className={styles.groupicon} src={GroupIcon} alt="GroupIcon" />
-            <h3>{group}</h3>
-            <h4>{groupCode}</h4>
-          </div>
-        </button>
+        <div className={styles.groupbutton} style={{ minWidth: '150px' }}>
+          <img className={styles.groupicon} src={GroupIcon} alt="GroupIcon" />
+          <h3>{group}</h3>
+          <h4>{groupCode}</h4>
+        </div>
       </div>
       <S_SidebarSegment
         sidebarKey={projectUpdateKey}

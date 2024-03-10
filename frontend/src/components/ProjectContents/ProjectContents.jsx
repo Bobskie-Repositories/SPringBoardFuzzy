@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
-import { useAuth } from "../../context/AuthContext";
-import styles from "./ProjectContents.module.css";
-import BoardContainer from "../Boards/BoardContainer";
-import BoardCreation from "../BoardCreation/BoardCreation";
-import ProjectDetails from "./ProjectDetails";
-import axios from "axios";
-import config from "../../config";
-import Loading from "../UI/Loading/Loading";
+import React, { useEffect } from 'react';
+import { useState } from 'react';
+import { useAuth } from '../../context/AuthContext';
+import styles from './ProjectContents.module.css';
+import BoardContainer from '../Boards/BoardContainer';
+import BoardCreation from '../BoardCreation/BoardCreation';
+import ProjectDetails from './ProjectDetails';
+import axios from 'axios';
+import config from '../../config';
+import Loading from '../UI/Loading/Loading';
 
 const ProjectContents = (props) => {
   const [boardCount, setBoardCount] = useState(0);
@@ -24,10 +24,10 @@ const ProjectContents = (props) => {
       const user = await getUser();
       setUser(user);
       if (props.selected !== null && props.selected !== undefined) {
-        const projectResponse = await axios.get(
-          `${API_HOST}/api/project/${props.selected}`
-        );
+        const projectResponse = await axios.get(`${API_HOST}/api/project/${props.selected}`);
         setProject(projectResponse.data);
+      } else {
+        setProject(null);
       }
 
       const response = await axios.get(`${API_HOST}/api/template/`);
@@ -43,10 +43,7 @@ const ProjectContents = (props) => {
 
   return (
     <div className={styles.container}>
-      {project &&
-      !user.staff &&
-      user.group_fk == project.group_fk &&
-      props.createAction ? (
+      {project && !user.staff && user.group_fk == project.group_fk && props.createAction ? (
         <BoardCreation
           selected={props.selected}
           setCreateAction={props.setCreateAction}

@@ -91,4 +91,5 @@
 .back {
   position: relative;
   right: 50px;
+  cursor: pointer;
 }

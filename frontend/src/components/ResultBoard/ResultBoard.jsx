@@ -1,11 +1,11 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router";
-import axios from "axios";
-import Card from "../UI/Card/Card";
-import styles from "./ResultBoard.module.css";
-import CircularProgressWithLabel from "../UI/ProgressBar/CircularProgressWithLabel";
-import config from "../../config";
+import React from 'react';
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router';
+import axios from 'axios';
+import Card from '../UI/Card/Card';
+import styles from './ResultBoard.module.css';
+import CircularProgressWithLabel from '../UI/ProgressBar/CircularProgressWithLabel';
+import config from '../../config';
 
 const ResultBoard = ({ boardid }) => {
   const [board, setBoard] = useState(null);
@@ -14,12 +14,10 @@ const ResultBoard = ({ boardid }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `${API_HOST}/api/projectboards/${boardid}`
-        );
+        const response = await axios.get(`${API_HOST}/api/projectboards/${boardid}`);
         setBoard(response.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       }
     };
 
@@ -47,8 +45,8 @@ const ResultBoard = ({ boardid }) => {
 
   // const referencesArray = parseReferences(board.references);
 
-  const recommendationLines = board.recommendation.split("\n");
-  const feedbackLines = board.feedback.split("\n");
+  const recommendationLines = board.recommendation.split('\n');
+  const feedbackLines = board.feedback.split('\n');
 
   return (
     <div className={styles.container}>
@@ -57,34 +55,28 @@ const ResultBoard = ({ boardid }) => {
       <div className={styles.resultContainer}>
         <div className={styles.criteria}>
           <Card className={styles.cardCriteria}>
-            <h5 className={styles.ratings}>Novelty</h5>
-            <div className={styles.cardContent} style={{ gap: "10px" }}>
-              <CircularProgressWithLabel value={board.novelty * 10} size={80} />
+            <h5 className={styles.ratings}>Desirability</h5>
+            <div className={styles.cardContent} style={{ gap: '10px' }}>
+              <CircularProgressWithLabel value={board.desirability * 10} size={80} />
             </div>
           </Card>
 
           <Card className={styles.cardCriteria}>
-            <h5 className={styles.ratings}>Technical Feasibility</h5>
+            <h5 className={styles.ratings}>Feasibility</h5>
             <div className={styles.cardContent}>
-              <CircularProgressWithLabel
-                value={board.technical_feasibility * 10}
-                size={80}
-              />
+              <CircularProgressWithLabel value={board.feasibility * 10} size={80} />
             </div>
           </Card>
 
           <Card className={styles.cardCriteria}>
-            <h5 className={styles.ratings}>Capability</h5>
+            <h5 className={styles.ratings}>Viability</h5>
             <div className={styles.cardContent}>
-              <CircularProgressWithLabel
-                value={board.capability * 10}
-                size={80}
-              />
+              <CircularProgressWithLabel value={board.viability * 10} size={80} />
             </div>
           </Card>
         </div>
 
-        <div className={styles.adviceDiv} style={{ marginTop: "40px" }}>
+        <div className={styles.adviceDiv} style={{ marginTop: '40px' }}>
           <div className={styles.advice}>
             <h4>Feedback</h4>
             <div className={styles.content}>
