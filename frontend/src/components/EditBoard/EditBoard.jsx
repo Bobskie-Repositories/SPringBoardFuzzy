@@ -7,6 +7,7 @@ import styles from './EditBoard.module.css';
 import Header from '../Header/Header';
 import Card from '../UI/Card/Card';
 import Button from '../UI/Button/Button';
+import { IoArrowBackSharp } from 'react-icons/io5';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import EditorToolbar, { modules, formats } from '../UI/RichTextEditor/EditorToolBar';
@@ -75,6 +76,10 @@ const EditBoard = () => {
     setContent(newContent);
   };
 
+  const handleBack = () => {
+    navigate(`/board/${id}`);
+  };
+
   if (!content) {
     return <p></p>;
   }
@@ -83,7 +88,12 @@ const EditBoard = () => {
     <div className={global.body}>
       <Header />
       <div className={styles.container}>
-        <span className={styles.title}> {title} </span>
+        <span className={styles.title}>
+          <span className={styles.back} onClick={handleBack}>
+            <IoArrowBackSharp />
+          </span>
+          {title}
+        </span>
 
         <Card className={styles.cardContainer}>
           <div className={styles.box} />
