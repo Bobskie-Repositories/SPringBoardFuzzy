@@ -36,7 +36,7 @@ const Landing = () => {
           </h1>
 
           <h3 className={styles.subsub}>
-            Look no further, Spring Board is here to help!
+            Look no further, SPringBoard is here to help!
           </h3>
 
           <button className={styles.floating_button} onClick={goRegister}>
