@@ -1,20 +1,20 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router';
-import axios from 'axios';
-import global from '@assets/global.module.css';
-import styles from './EditBoard.module.css';
-import Header from '../Header/Header';
-import Card from '../UI/Card/Card';
-import Button from '../UI/Button/Button';
-import { IoArrowBackSharp } from 'react-icons/io5';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import EditorToolbar, { modules, formats } from '../UI/RichTextEditor/EditorToolBar';
-import { Tiptap } from '../UI/RichTextEditor/TipTap';
-import ModalCustom from '../UI/Modal/Modal';
-import config from '../../config';
-import Loading from '../UI/Loading/Loading';
+import React from "react";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router";
+import axios from "axios";
+import global from "@assets/global.module.css";
+import styles from "./EditBoard.module.css";
+import Header from "../Header/Header";
+import Card from "../UI/Card/Card";
+import Button from "../UI/Button/Button";
+import { IoArrowBackSharp } from "react-icons/io5";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import EditorToolbar, { modules, formats } from "../UI/RichTextEditor/EditorToolBar";
+import { Tiptap } from "../UI/RichTextEditor/TipTap";
+import ModalCustom from "../UI/Modal/Modal";
+import config from "../../config";
+import Loading from "../UI/Loading/Loading";
 
 const EditBoard = () => {
   const [title, setTitle] = useState(null);
@@ -33,16 +33,16 @@ const EditBoard = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${API_HOST}/api/projectboards/${id}`);
-        setTitle(response.data.title || '');
-        setContent(response.data.content || '');
-        setBoardId(response.data.boardId || '');
-        SetProjectId(response.data.project_fk || '');
+        setTitle(response.data.title || "");
+        setContent(response.data.content || "");
+        setBoardId(response.data.boardId || "");
+        SetProjectId(response.data.project_fk || "");
 
         setPriorDesireVal(response.data.desirability || 0);
         setPriorFeasiblityVal(response.data.feasibility || 0);
         setPriorViabilityVal(response.data.viability || 0);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
     fetchData();
@@ -57,8 +57,8 @@ const EditBoard = () => {
         desirability: priorDesireVal,
         viability: priorViabilityVal,
         feasibility: priorFeasibilityVal,
-        feedback: 'error',
-        recommendation: 'error',
+        feedback: "error",
+        recommendation: "error",
         //references: "error",
         project_fk: projectId,
         boardId: boardId,
@@ -67,7 +67,13 @@ const EditBoard = () => {
       navigate(`/board/${response.data.id}/edit/result`);
     } catch (error) {
       setIsModalOpen(false);
-      console.error('Error updating ProjectBoard:', error);
+      if (error.response && error.response.status === 400) {
+        console.error("Bad Request:", error.response.data);
+        // Retry the updateProjectBoard function
+        await updateProjectBoard();
+      } else {
+        console.error("Error updating ProjectBoard:", error);
+      }
     }
   };
 
@@ -114,7 +120,7 @@ const EditBoard = () => {
         </Card>
         {isModalOpen && (
           <ModalCustom width={200} isOpen={isModalOpen}>
-            <Loading timeout="auto" style={{ height: 'auto' }} />
+            <Loading timeout="auto" style={{ height: "auto" }} />
           </ModalCustom>
         )}
         <Button className={styles.button} onClick={updateProjectBoard}>
