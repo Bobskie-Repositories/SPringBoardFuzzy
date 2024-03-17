@@ -171,7 +171,7 @@ class CreateProjectBoard(generics.CreateAPIView):
                     else:
                         print("No response content or choices found.")
                 except json.JSONDecodeError as json_error:
-                    return Response({"error": f"Error decoding JSON response: {json_error}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                    return Response({"error": f"Error decoding JSON response: {json_error}"}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 return Response({"error": response.text}, status=status.HTTP_400_BAD_REQUEST)
         except requests.exceptions.RequestException as e:
@@ -428,7 +428,7 @@ class UpdateBoard(generics.CreateAPIView):
                     else:
                         return Response({"error": "No response content or choices found"}, status=status.HTTP_400_BAD_REQUEST)
                 except json.JSONDecodeError as json_error:
-                    return Response({"error": f"Error decoding JSON response: {json_error}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                    return Response({"error": f"Error decoding JSON response: {json_error}"}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 return Response({"error": response.text}, status=status.HTTP_400_BAD_REQUEST)
 
