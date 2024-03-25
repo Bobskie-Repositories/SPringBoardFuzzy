@@ -168,11 +168,6 @@ const EditTemplate = () => {
               icon: "success",
               confirmButtonColor: "#9c7b16",
             });
-            sessionStorage.removeItem("title");
-            sessionStorage.removeItem("description");
-            sessionStorage.removeItem("rulesContent");
-            sessionStorage.removeItem("templateContent");
-
             navigate(`/admin`);
           }
         });

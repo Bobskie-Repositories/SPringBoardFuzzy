@@ -32,6 +32,10 @@ const ADashboard = ({ choose }) => {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
+    sessionStorage.removeItem("title");
+    sessionStorage.removeItem("description");
+    sessionStorage.removeItem("rulesContent");
+    sessionStorage.removeItem("templateContent");
   }, []);
 
   useEffect(() => {
@@ -46,21 +50,11 @@ const ADashboard = ({ choose }) => {
   };
 
   return (
-    <div
-      className={styles.container}
-      style={{ padding: "20px 150px 0px 30px" }}
-    >
-      <A_Sidebar
-        setSelected={setSelected}
-        choose={choose}
-        setSelectedProj={setSelectedProj}
-      />
+    <div className={styles.container} style={{ padding: "20px 150px 0px 30px" }}>
+      <A_Sidebar setSelected={setSelected} choose={choose} setSelectedProj={setSelectedProj} />
 
       <div>
-        <div
-          className={styles.container}
-          style={{ gap: "150px", marginTop: "30px" }}
-        >
+        <div className={styles.container} style={{ gap: "150px", marginTop: "30px" }}>
           <Search />
           <Profile identification={1} />
         </div>
@@ -69,13 +63,8 @@ const ADashboard = ({ choose }) => {
           {choose === 0 ? (
             <div>
               <div className={styles.container}>
-                <h2 style={{ fontSize: "30px", color: "#9c7b16" }}>
-                  Templates
-                </h2>
-                <Button
-                  className={styles.butName}
-                  onClick={handleCreateTemplateClick}
-                >
+                <h2 style={{ fontSize: "30px", color: "#9c7b16" }}>Templates</h2>
+                <Button className={styles.butName} onClick={handleCreateTemplateClick}>
                   Create Template
                 </Button>
               </div>
