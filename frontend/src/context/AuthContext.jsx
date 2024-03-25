@@ -205,7 +205,7 @@ export const AuthProvider = ({ children }) => {
       });
 
       if (response.status === 201) {
-        loginStudent(email, password);
+        await loginStudent(email, password);
         return { success: true };
       } else {
         console.error("Error Registration");
@@ -236,7 +236,7 @@ export const AuthProvider = ({ children }) => {
 
       if (response.status === 201) {
         const data = await response.json();
-        loginTeacher(email, password);
+        await loginTeacher(email, password);
         return { success: true, data };
       } else {
         const errorData = await response.json(); // Assuming the server sends error details as JSON
@@ -317,7 +317,5 @@ export const AuthProvider = ({ children }) => {
     return <div>Loading...</div>;
   }
 
-  return (
-    <AuthContext.Provider value={authValue}>{children}</AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={authValue}>{children}</AuthContext.Provider>;
 };
