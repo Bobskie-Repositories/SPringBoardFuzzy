@@ -19,6 +19,10 @@ const Register = () => {
     navigate("/register-teacher");
   };
 
+  const goHome = () => {
+    navigate("/");
+  };
+
   return (
     <div className={styles.body}>
       <Header_landing />
@@ -27,23 +31,15 @@ const Register = () => {
         <h3 className={styles.title_comp}>Registration</h3>
         <div className={styles.users}>
           <div className={styles.student} onClick={goStudent}>
-            <FontAwesomeIcon
-              icon={faUser}
-              className={styles.studentIcon}
-              size="3x"
-            />
+            <FontAwesomeIcon icon={faUser} className={styles.studentIcon} size="3x" />
             <h4 className={styles.text}>Student</h4>
           </div>
           <div className={styles.teacher} onClick={goTeacher}>
-            <FontAwesomeIcon
-              icon={faUserTie}
-              className={styles.teacherIcon}
-              size="3x"
-            />
+            <FontAwesomeIcon icon={faUserTie} className={styles.teacherIcon} size="3x" />
             <h4 className={styles.text}>Teacher</h4>
           </div>
         </div>
-        <div className={styles.buttonContainer}>
+        <div className={styles.buttonContainer} onClick={goHome}>
           <Button className={styles.viewbutton}>Back</Button>
         </div>
       </Card>
