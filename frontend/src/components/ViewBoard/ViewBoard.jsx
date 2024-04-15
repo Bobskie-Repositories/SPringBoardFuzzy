@@ -1,19 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router';
-import { useAuth } from '../../context/AuthContext';
-import styles from './ViewBoard.module.css';
-import global from '@assets/global.module.css';
-import Header from '../Header/Header';
-import ResultBoard from '../ResultBoard/ResultBoard';
-import Button from '../UI/Button/Button';
-import parse from 'html-react-parser';
-import Swal from 'sweetalert2';
-import { IoArrowBackSharp } from 'react-icons/io5';
-import axios from 'axios';
-import config from '../../config';
+import React, { useState, useEffect, useRef } from "react";
+import { useParams, useNavigate } from "react-router";
+import { useAuth } from "../../context/AuthContext";
+import styles from "./ViewBoard.module.css";
+import global from "@assets/global.module.css";
+import Header from "../Header/Header";
+import ResultBoard from "../ResultBoard/ResultBoard";
+import Button from "../UI/Button/Button";
+import parse from "html-react-parser";
+import Swal from "sweetalert2";
+import { IoArrowBackSharp } from "react-icons/io5";
+import axios from "axios";
+import config from "../../config";
 
 const ViewBoard = () => {
-  const [activeTab, setActiveTab] = useState('results');
+  const [activeTab, setActiveTab] = useState("results");
   const [attempt, setAttempt] = useState(0);
   const [boards, setBoards] = useState(null);
   const [groupId, setGroupId] = useState(null);
@@ -45,7 +45,7 @@ const ViewBoard = () => {
         }
         setAttempt(calcAttemp(response.data));
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -89,15 +89,16 @@ const ViewBoard = () => {
   };
 
   const handleImproveRes = () => {
-    if (attempt >= 3) {
-      Swal.fire(
-        'Warning',
-        'You have reached the maximum limit of 3 reassessments for today. Please try again tomorrow.',
-        'warning'
-      );
-    } else {
-      navigate('edit');
-    }
+    // if (attempt >= 3) {
+    //   Swal.fire(
+    //     'Warning',
+    //     'You have reached the maximum limit of 3 reassessments for today. Please try again tomorrow.',
+    //     'warning'
+    //   );
+    // } else {
+    //   navigate('edit');
+    // }
+    navigate("edit");
   };
 
   // const onClickDelete = async () => {
@@ -153,7 +154,7 @@ const ViewBoard = () => {
   // };
 
   const handleBack = () => {
-    const storedPath = sessionStorage.getItem('currentPath');
+    const storedPath = sessionStorage.getItem("currentPath");
     navigate(storedPath);
   };
 
@@ -168,7 +169,7 @@ const ViewBoard = () => {
       <Header />
 
       <div className={global.body}>
-        <div style={{ width: '70rem' }}>
+        <div style={{ width: "70rem" }}>
           <h2>
             <span className={styles.back} onClick={handleBack}>
               <IoArrowBackSharp />
@@ -193,21 +194,21 @@ const ViewBoard = () => {
 
           <div className={styles.tabsContainer}>
             <div
-              className={`${styles.tab} ${activeTab === 'results' ? styles.active : ''}`}
-              onClick={() => handleTabClick('results')}
+              className={`${styles.tab} ${activeTab === "results" ? styles.active : ""}`}
+              onClick={() => handleTabClick("results")}
             >
               Result
             </div>
             <div
-              className={`${styles.tab} ${activeTab === 'details' ? styles.active : ''}`}
-              onClick={() => handleTabClick('details')}
+              className={`${styles.tab} ${activeTab === "details" ? styles.active : ""}`}
+              onClick={() => handleTabClick("details")}
             >
               Details
             </div>
           </div>
 
           <div className={styles.tabContent}>
-            {activeTab === 'results' && (
+            {activeTab === "results" && (
               <>
                 <div className={styles.tabHeader}>
                   <p>Result</p>
@@ -217,7 +218,7 @@ const ViewBoard = () => {
                 </div>
               </>
             )}
-            {activeTab === 'details' && (
+            {activeTab === "details" && (
               <>
                 <div className={styles.tabHeader}>
                   <p>{currentProjectBoard.title}</p>
@@ -230,7 +231,7 @@ const ViewBoard = () => {
 
         {!staff && isGrpMem && (
           <div className={styles.btmButton}>
-            <p style={{ color: 'red' }}>Reassesments available today: {3 - attempt} / 3</p>
+            {/* <p style={{ color: "red" }}>Reassesments available today: {3 - attempt} / 3</p> */}
 
             <Button className={styles.button} onClick={handleImproveRes}>
               Improve Result
