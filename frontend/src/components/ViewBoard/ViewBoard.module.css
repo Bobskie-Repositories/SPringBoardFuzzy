@@ -57,9 +57,9 @@
 }
 
 .btmButton {
-  display: flex;
-  gap: 40rem;
-  /* align-self: flex-end; */
+  /* display: flex;
+  gap: 40rem; */
+  align-self: flex-end;
 }
 
 .button {
