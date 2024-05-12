@@ -27,7 +27,7 @@ class ProjectBoardSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectBoard
         fields = ('id', 'boardId', 'title', 'content', 'templateId',
-                  'desirability', 'feasibility', 'viability',
+                  'desirability', 'feasibility', 'viability', 'output_metric',
                   'feedback', 'recommendation', 'references',
                   'project_fk', 'created_at', 'deleted_at')
 
@@ -89,7 +89,7 @@ class AdminSerializer(serializers.ModelSerializer):
 class TemplateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Template
-        fields = ('id', 'title', 'content', 'rules', 'description', 'isActive',
+        fields = ('id', 'title', 'content', 'exp_output', 'rules', 'description', 'isActive',
                   'created_at', 'deleted_at')
 
 
