@@ -36,6 +36,7 @@ const ADashboard = ({ choose }) => {
     sessionStorage.removeItem("description");
     sessionStorage.removeItem("rulesContent");
     sessionStorage.removeItem("templateContent");
+    sessionStorage.removeItem("output");
   }, []);
 
   useEffect(() => {

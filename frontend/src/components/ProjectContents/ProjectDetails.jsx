@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
-import { FaPen } from 'react-icons/fa6';
-import Swal from 'sweetalert2';
-import axios from 'axios';
-import config from '../../config';
-import styles from './ProjectDetails.module.css';
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../../context/AuthContext";
+import { FaPen } from "react-icons/fa6";
+import Swal from "sweetalert2";
+import axios from "axios";
+import config from "../../config";
+import styles from "./ProjectDetails.module.css";
 
 const ProjectDetails = ({ project, numTemplates, onProjectUpdate, user }) => {
-  const [group, setGroup] = useState('');
+  const [group, setGroup] = useState("");
 
   const { API_HOST } = config;
   const { getUser } = useAuth();
@@ -35,13 +35,13 @@ const ProjectDetails = ({ project, numTemplates, onProjectUpdate, user }) => {
         <div id="charCount" style="text-align: right; color: #555; font-size: 12px; margin-top: 5px;">0/200 characters</div>
       `,
       showCancelButton: true,
-      confirmButtonText: 'Update',
-      confirmButtonColor: '#9c7b16',
-      cancelButtonText: 'Close',
-      cancelButtonColor: 'rgb(181, 178, 178)',
+      confirmButtonText: "Update",
+      confirmButtonColor: "#9c7b16",
+      cancelButtonText: "Close",
+      cancelButtonColor: "rgb(181, 178, 178)",
       didOpen: () => {
-        const input2 = document.getElementById('input2');
-        const charCount = document.getElementById('charCount');
+        const input2 = document.getElementById("input2");
+        const charCount = document.getElementById("charCount");
 
         const updateCharCount = () => {
           const currentLength = input2.value.length;
@@ -54,19 +54,19 @@ const ProjectDetails = ({ project, numTemplates, onProjectUpdate, user }) => {
 
         updateCharCount();
 
-        input2.addEventListener('input', updateCharCount);
+        input2.addEventListener("input", updateCharCount);
       },
       preConfirm: async () => {
-        const input1Value = document.getElementById('input1').value;
-        const input2Value = document.getElementById('input2').value;
+        const input1Value = document.getElementById("input1").value;
+        const input2Value = document.getElementById("input2").value;
         const wordsArray = input2Value.split(/\s+/);
         try {
           if (!input1Value && !input2Value) {
-            Swal.showValidationMessage('Project name and description cannot be empty');
+            Swal.showValidationMessage("Project name and description cannot be empty");
           } else if (!input1Value) {
-            Swal.showValidationMessage('Project name cannot be empty');
+            Swal.showValidationMessage("Project name cannot be empty");
           } else if (!input2Value) {
-            Swal.showValidationMessage('Please enter the project description.');
+            Swal.showValidationMessage("Please enter the project description.");
           } else if (input1Value.length > 50) {
             Swal.showValidationMessage(`Project name should be at most 50 characters`);
           } else if (wordsArray.length < 10 || wordsArray.length > 50) {
@@ -81,9 +81,9 @@ const ProjectDetails = ({ project, numTemplates, onProjectUpdate, user }) => {
                 group_fk: project.group_fk,
               });
               Swal.fire({
-                title: 'Project Updated',
-                icon: 'success',
-                confirmButtonColor: '#9c7b16',
+                title: "Project Updated",
+                icon: "success",
+                confirmButtonColor: "#9c7b16",
               });
               onProjectUpdate();
             } catch (error) {
@@ -102,10 +102,12 @@ const ProjectDetails = ({ project, numTemplates, onProjectUpdate, user }) => {
   return (
     <div className={styles.side}>
       <p className={styles.title}>Overall Project Rating</p>
-      <span className={styles.number}>{Math.round((project.score / numTemplates) * 10)} %</span>
+      <span className={styles.number}>
+        {Math.round((project.score / (numTemplates * 100)) * 100)} %
+      </span>
 
-      <hr style={{ color: '#E5E4E2' }} />
-      <div style={{ margin: '15px 0' }}>
+      <hr style={{ color: "#E5E4E2" }} />
+      <div style={{ margin: "15px 0" }}>
         <p className={styles.title}>
           Project Details &nbsp;
           {user.group_fk === project.group_fk && (
@@ -121,7 +123,7 @@ const ProjectDetails = ({ project, numTemplates, onProjectUpdate, user }) => {
       </div>
       {(user.is_staff || user.group_fk !== project.group_fk) && (
         <>
-          <hr style={{ color: '#E5E4E2' }} />
+          <hr style={{ color: "#E5E4E2" }} />
           <p className={styles.title_body}>Created by: Group {group}</p>
         </>
       )}

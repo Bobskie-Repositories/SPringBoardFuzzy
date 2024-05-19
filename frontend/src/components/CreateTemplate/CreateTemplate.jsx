@@ -9,10 +9,7 @@ import global from "@assets/global.module.css";
 import Header from "../Header/Header";
 import Card from "../UI/Card/Card";
 import Button from "../UI/Button/Button";
-import EditorToolbar, {
-  modules,
-  formats,
-} from "../UI/RichTextEditor/EditorToolBar";
+import EditorToolbar, { modules, formats } from "../UI/RichTextEditor/EditorToolBar";
 import { Tiptap } from "../UI/RichTextEditor/TipTap";
 import config from "../../config";
 
@@ -21,6 +18,7 @@ const CreateTemplate = () => {
   const [templateContent, setTemplateContent] = useState("");
   const [title, setTitle] = useState("Unknown");
   const [description, setDescription] = useState(""); // Add description state
+  const [outputMetric, setOutputMetric] = useState(""); // Add description state
   const [isTitleEditable, setIsTitleEditable] = useState(false);
   const [isNext, setIsNext] = useState(false);
   const [savedRulesContent, setSavedRulesContent] = useState(""); // Store the rulesContent
@@ -47,6 +45,10 @@ const CreateTemplate = () => {
     } else {
       setDescription(newDescription.slice(0, 150));
     }
+  };
+  const handleOutputMetric = (e) => {
+    const newOutputMetric = e.target.value;
+    setOutputMetric(newOutputMetric);
   };
 
   const toggleTitleEdit = () => {
@@ -94,6 +96,7 @@ const CreateTemplate = () => {
         content: templateContent,
         rules: rulesContent,
         description: description,
+        exp_output: outputMetric,
         isActive: true,
       });
 
@@ -128,9 +131,7 @@ const CreateTemplate = () => {
         {!isNext ? (
           <>
             <span className={styles.title}>Short Description</span>
-            <span className={styles.rightmostCount}>
-              {description.length} / 150
-            </span>
+            <span className={styles.rightmostCount}>{description.length} / 150</span>
             <textarea
               value={description}
               onChange={handleDescriptionChange}
@@ -160,6 +161,13 @@ const CreateTemplate = () => {
           </>
         ) : (
           <>
+            <span className={styles.title}>Output Metric</span>
+            <textarea
+              value={outputMetric}
+              onChange={handleOutputMetric}
+              className={styles.inputBox}
+              placeholder="Put the desired Output Metric e.g Desirability, Practicality, Innovativeness"
+            />
             <span className={styles.title}>Content</span>
             <Card className={styles.cardContainer}>
               <div className={styles.box} />
@@ -174,10 +182,7 @@ const CreateTemplate = () => {
                   formats={formats}
                   className={global.quill}
                 /> */}
-                <Tiptap
-                  setDescription={setTemplateContent}
-                  value={templateContent}
-                />
+                <Tiptap setDescription={setTemplateContent} value={templateContent} />
               </div>
             </Card>
             <div className={styles.btmButton}>
