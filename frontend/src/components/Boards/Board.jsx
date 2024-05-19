@@ -1,20 +1,20 @@
-import React from 'react';
-import styles from './Board.module.css';
-import Card from '../UI/Card/Card';
-import IdeaIcon from '@assets/idea.png';
-import Button from '../UI/Button/Button';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
-import { Switch } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CircularProgressWithLabel from '../UI/ProgressBar/CircularProgressWithLabel';
-import Loading from '../UI/Loading/Loading';
-import ModalCustom from '../UI/Modal/Modal';
-import axios from 'axios';
-import Swal from 'sweetalert2';
-import Caution from '../UI/Caution/Caution';
-import config from '../../config';
+import React from "react";
+import styles from "./Board.module.css";
+import Card from "../UI/Card/Card";
+import IdeaIcon from "@assets/idea.png";
+import Button from "../UI/Button/Button";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { Switch } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CircularProgressWithLabel from "../UI/ProgressBar/CircularProgressWithLabel";
+import Loading from "../UI/Loading/Loading";
+import ModalCustom from "../UI/Modal/Modal";
+import axios from "axios";
+import Swal from "sweetalert2";
+import Caution from "../UI/Caution/Caution";
+import config from "../../config";
 
 function Board({
   selected,
@@ -51,13 +51,13 @@ function Board({
           setBoards(sortedBoards);
 
           //checks if there is setBoardCount that was passed
-          if (typeof setBoardCount === 'function') {
+          if (typeof setBoardCount === "function") {
             const boardCount = boards.length;
             setBoardCount(boardCount);
           }
         }
       } catch (error) {
-        console.error('Error fetching data:' + error, error);
+        console.error("Error fetching data:" + error, error);
       }
     };
     fetchData();
@@ -72,7 +72,7 @@ function Board({
       {loadCount === 0 && <Loading />}
       <div className={styles.scrollable}>
         {project && boards.length === 0 && !user.is_staff && user.group_fk === project.group_fk && (
-          <p className={styles.centeredText} style={{ width: '45rem' }}>
+          <p className={styles.centeredText} style={{ width: "45rem" }}>
             It looks like you haven't created any boards yet. <br /> Click on the "Create Board"
             button to get started and create your first board.
           </p>
@@ -80,7 +80,7 @@ function Board({
         {project &&
           boards.length === 0 &&
           (user.is_staff || user.group_fk !== project.group_fk) && (
-            <p className={styles.centeredText} style={{ width: '45rem' }}>
+            <p className={styles.centeredText} style={{ width: "45rem" }}>
               It looks like the group haven't created any boards yet. <br />
             </p>
           )}
@@ -100,21 +100,27 @@ function Board({
                         <Card className={styles.smallCard}>
                           <h5 className={styles.ratings}>Desirability</h5>
                           <div className={styles.cardContent}>
-                            <CircularProgressWithLabel value={board.desirability * 10} />
+                            <CircularProgressWithLabel
+                              value={board.desirability >= 0 ? board.desirability : 0}
+                            />
                           </div>
                         </Card>
 
                         <Card className={styles.smallCard}>
                           <h5 className={styles.ratings}>Feasibility</h5>
                           <div className={styles.cardContent}>
-                            <CircularProgressWithLabel value={board.feasibility * 10} />
+                            <CircularProgressWithLabel
+                              value={board.feasibility >= 0 ? board.feasibility : 0}
+                            />
                           </div>
                         </Card>
 
                         <Card className={styles.smallCard}>
                           <h5 className={styles.ratings}>Viability</h5>
                           <div className={styles.cardContent}>
-                            <CircularProgressWithLabel value={board.viability * 10} />
+                            <CircularProgressWithLabel
+                              value={board.viability >= 0 ? board.viability : 0}
+                            />
                           </div>
                         </Card>
                       </div>

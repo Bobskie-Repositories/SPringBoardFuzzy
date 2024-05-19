@@ -23,6 +23,7 @@ const EditTemplate = () => {
   const [oldTitle, setOldTitle] = useState();
   const [title, setTitle] = useState(sessionStorage.getItem("title") || "");
   const [description, setDescription] = useState(sessionStorage.getItem("description") || "");
+  const [outputMetric, setOutputMetric] = useState(sessionStorage.getItem("output") || "");
   const [isTitleEditable, setIsTitleEditable] = useState(false);
   const [isNext, setIsNext] = useState(false);
   const [savedRulesContent, setSavedRulesContent] = useState(""); // Store the rulesContent
@@ -39,6 +40,7 @@ const EditTemplate = () => {
           setTitle(response.data.title);
           setRulesContent(response.data.rules);
           setDescription(response.data.description);
+          setOutputMetric(response.data.exp_output);
           setTemplateContent(response.data.content);
         }
 
@@ -56,7 +58,8 @@ const EditTemplate = () => {
     sessionStorage.setItem("description", description);
     sessionStorage.setItem("rulesContent", rulesContent);
     sessionStorage.setItem("templateContent", templateContent);
-  }, [title, description, rulesContent, templateContent]);
+    sessionStorage.setItem("output", outputMetric);
+  }, [title, description, rulesContent, templateContent, outputMetric]);
 
   const handleRulesEditorChange = (newContent) => {
     setRulesContent(newContent);
@@ -69,6 +72,10 @@ const EditTemplate = () => {
   const handleTitleChange = (e) => {
     const newTitle = e.target.value;
     setTitle(newTitle);
+  };
+  const handleOutputMetric = (e) => {
+    const newOutputMetric = e.target.value;
+    setOutputMetric(newOutputMetric);
   };
 
   const handleDescriptionChange = (e) => {
@@ -144,6 +151,12 @@ const EditTemplate = () => {
           icon: "error",
           confirmButtonColor: "#9c7b16",
         });
+      } else if (outputMetric === "") {
+        Swal.fire({
+          title: "Please enter the expected output/output metric.",
+          icon: "error",
+          confirmButtonColor: "#9c7b16",
+        });
       } else {
         Swal.fire({
           icon: "warning",
@@ -161,6 +174,7 @@ const EditTemplate = () => {
               content: templateContent,
               rules: rulesContent,
               description: description,
+              exp_output: outputMetric,
               teacher_fk: template.teacher_fk,
             });
             Swal.fire({
@@ -266,6 +280,13 @@ const EditTemplate = () => {
           </>
         ) : (
           <>
+            <span className={styles.title}>Output Metric</span>
+            <textarea
+              value={outputMetric}
+              onChange={handleOutputMetric}
+              className={styles.inputBox}
+              placeholder="Put the desired Output Metric e.g Desirability, Practicality, Innovativeness"
+            />
             <span className={styles.title}>Content</span>
             <Card className={styles.cardContainer}>
               <div className={styles.box} />

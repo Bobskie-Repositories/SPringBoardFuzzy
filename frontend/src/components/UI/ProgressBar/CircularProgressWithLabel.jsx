@@ -47,9 +47,10 @@ function CircularProgressWithLabel(props) {
           sx={{
             fontWeight: "bold",
             fontSize: "14.5px",
+            textAlign: "center",
           }}
         >
-          {`${Math.round(props.value)}%`}
+          {`${props.value.toFixed(2)}%`}
         </Typography>
       </Box>
     </Box>
