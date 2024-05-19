@@ -1,3 +1,16 @@
+/* Your CSS file */
+.red {
+  color: red;
+}
+
+.black {
+  color: black;
+}
+
+.green {
+  color: rgb(25, 217, 25);
+}
+
 .body {
   display: flex;
   flex-direction: column;
@@ -19,7 +32,7 @@
 }
 
 .resultContainer {
-  margin: 30px 0;
+  margin: 0 0 30px 0;
   padding: 0 20px;
 }
 
@@ -28,6 +41,8 @@
   gap: 80px;
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
+  margin-bottom: 30px;
+  margin-top: 0;
 }
 
 .adviceDiv {
@@ -46,6 +61,19 @@
   background-color: #fefaf1;
 }
 
+.outputCriteria {
+  padding: 10px 30px 20px 20px;
+  width: 20rem;
+  border-radius: 25px;
+
+  background-color: #fefaf1;
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .cardContent {
   display: flex;
   width: 100%;
@@ -56,6 +84,14 @@
   font-size: small;
   font-weight: 500;
   color: rgb(131, 131, 131);
+  /* margin-top: 30px; */
+}
+
+.ratingsOutput {
+  font-weight: 500;
+  color: rgb(85, 82, 82);
+  margin-bottom: 10px;
+  margin-top: 10px;
   /* margin-top: 30px; */
 }
 

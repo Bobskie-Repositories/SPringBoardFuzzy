@@ -1,14 +1,16 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router';
-import axios from 'axios';
-import Card from '../UI/Card/Card';
-import styles from './ResultBoard.module.css';
-import CircularProgressWithLabel from '../UI/ProgressBar/CircularProgressWithLabel';
-import config from '../../config';
+import React from "react";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router";
+import axios from "axios";
+import Card from "../UI/Card/Card";
+import styles from "./ResultBoard.module.css";
+import CircularProgressWithLabel from "../UI/ProgressBar/CircularProgressWithLabel";
+import config from "../../config";
+import convertToLinguisticVariable from "../../FuzzyLogic";
 
 const ResultBoard = ({ boardid }) => {
   const [board, setBoard] = useState(null);
+  const [template, setTemplate] = useState(null);
   const navigate = useNavigate();
   const { API_HOST } = config;
   useEffect(() => {
@@ -16,37 +18,22 @@ const ResultBoard = ({ boardid }) => {
       try {
         const response = await axios.get(`${API_HOST}/api/projectboards/${boardid}`);
         setBoard(response.data);
+        const template = await axios.get(`${API_HOST}/api/template/${response.data.templateId}`);
+        setTemplate(template.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
   }, [boardid]);
 
-  if (!board) {
+  if (!board || !template) {
     return <p></p>;
   }
 
-  // Function to parse references string into an array
-  // const parseReferences = (references) => {
-  //   if (!references) return [];
-
-  //   // Remove the first and last characters from the entire string
-  //   // const trimmedReferencesString = references.slice(0, -1).trim();
-
-  //   // Split the references string by ',' and trim spaces
-  //   const referencesArray = references
-  //     .split(",")
-  //     .map((reference) => reference.trim());
-
-  //   return referencesArray;
-  // };
-
-  // const referencesArray = parseReferences(board.references);
-
-  const recommendationLines = board.recommendation.split('\n');
-  const feedbackLines = board.feedback.split('\n');
+  const recommendationLines = board.recommendation.split("\n");
+  const feedbackLines = board.feedback.split("\n");
 
   return (
     <div className={styles.container}>
@@ -54,29 +41,47 @@ const ResultBoard = ({ boardid }) => {
 
       <div className={styles.resultContainer}>
         <div className={styles.criteria}>
-          <Card className={styles.cardCriteria}>
-            <h5 className={styles.ratings}>Desirability</h5>
-            <div className={styles.cardContent} style={{ gap: '10px' }}>
-              <CircularProgressWithLabel value={board.desirability * 10} size={80} />
-            </div>
-          </Card>
-
-          <Card className={styles.cardCriteria}>
-            <h5 className={styles.ratings}>Feasibility</h5>
-            <div className={styles.cardContent}>
-              <CircularProgressWithLabel value={board.feasibility * 10} size={80} />
-            </div>
-          </Card>
-
-          <Card className={styles.cardCriteria}>
-            <h5 className={styles.ratings}>Viability</h5>
-            <div className={styles.cardContent}>
-              <CircularProgressWithLabel value={board.viability * 10} size={80} />
-            </div>
+          <Card className={styles.outputCriteria}>
+            <h2
+              className={getClassNameForOutput(
+                convertToLinguisticVariable(board.output_metric, "output")
+              )}
+            >
+              {convertToLinguisticVariable(board.output_metric, "output")}
+            </h2>
+            <CircularProgressWithLabel size={100} value={board.output_metric} />
+            <h4 className={styles.ratingsOutput}>{template.exp_output}</h4>
           </Card>
         </div>
 
-        <div className={styles.adviceDiv} style={{ marginTop: '40px' }}>
+        <div className={styles.criteria}>
+          {board.desirability != -1 && (
+            <Card className={styles.cardCriteria}>
+              <h5 className={styles.ratings}>Desirability</h5>
+              <div className={styles.cardContent} style={{ gap: "10px" }}>
+                <CircularProgressWithLabel value={board.desirability} size={80} />
+              </div>
+            </Card>
+          )}
+          {board.feasibility != -1 && (
+            <Card className={styles.cardCriteria}>
+              <h5 className={styles.ratings}>Feasibility</h5>
+              <div className={styles.cardContent}>
+                <CircularProgressWithLabel value={board.feasibility} size={80} />
+              </div>
+            </Card>
+          )}
+          {board.viability != -1 && (
+            <Card className={styles.cardCriteria}>
+              <h5 className={styles.ratings}>Viability</h5>
+              <div className={styles.cardContent}>
+                <CircularProgressWithLabel value={board.viability} size={80} />
+              </div>
+            </Card>
+          )}
+        </div>
+
+        <div className={styles.adviceDiv} style={{ marginTop: "40px" }}>
           <div className={styles.advice}>
             <h4>Feedback</h4>
             <div className={styles.content}>
@@ -117,5 +122,20 @@ const ResultBoard = ({ boardid }) => {
     </div>
   );
 };
+
+function getClassNameForOutput(output) {
+  switch (output) {
+    case "Very Low":
+    case "Low":
+      return styles.red;
+    case "Medium":
+      return styles.black;
+    case "High":
+    case "Very High":
+      return styles.green;
+    default:
+      return ""; // Default class if the output doesn't match any case
+  }
+}
 
 export default ResultBoard;
