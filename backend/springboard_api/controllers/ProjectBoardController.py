@@ -42,8 +42,8 @@ class CreateProjectBoard(generics.CreateAPIView):
         prompt = (
             f"Considering the rules: {template.rules}, please conduct a critical analysis of the following data regarding the startup idea: {request.data.get('content', '')}. The content should fit in the rules."
             f"For each numbered question, assign a numerical rating (1-5), not in string, for each of the following aspects. On a separate key, give feedback(everything is compressed to 4-5 sentences) and recommendation (everything is compressed to 4-5 sentences) of the content in regards the template rules . Strictly follow this format and no explanation on the values: Problem: [1,3,4,5,1] ... , Feedback: (response), Recommendation: (response). The first element of the list is the 1st question, and the fifth element is the 5th question. Make it in JSON format."
-            f"\nEnsure a fair and balanced assessment for each aspect, maintaining a conservative mindset to reserve higher ratings for truly accurate and good answers. "
-            f"Approach the evaluation with skepticism, requiring clear evidence of groundbreaking innovation, robust feasibility, and undeniable market demand to justify ratings above 4."
+            f"\nEnsure a fair and balanced assessment for each aspect, maintaining a conservative mindset to reserve higher ratings for truly accurate, detailed, and good answers. "
+            f"Approach the evaluation with skepticism, requiring clear evidence of groundbreaking innovation, robust feasibility, and undeniable market demand to justify ratings above 3."
             f"This evaluation method is designed to ensure that only ideas with undeniable merit and a clear pathway to successful implementation receive high scores. Your conservative ratings and detailed justifications will help identify areas where the idea needs significant refinement or rethinking."
         )
 
@@ -253,8 +253,8 @@ class UpdateBoard(generics.CreateAPIView):
             prompt = (
                 f"Considering the rules: {template.rules}, please conduct a critical analysis of the following data regarding the startup idea: {request.data.get('content', '')}. The content should fit in the rules."
                 f"For each numbered question, assign a numerical rating (1-5), not in string, for each of the following aspects. On a separate key, give feedback(everything is compressed to 4-5 sentences) and recommendation (everything is compressed to 4-5 sentences) of the content in regards the template rules . Strictly follow this format and no explanation on the values: Problem: [1,3,4,5,1] ... , Feedback: (response), Recommendation: (response). The first element of the list is the 1st question, and the fifth element is the 5th question. Make it in JSON format."
-                f"\nEnsure a fair and balanced assessment for each aspect, maintaining a conservative mindset to reserve higher ratings for truly accurate and good answers. "
-                f"Approach the evaluation with skepticism, requiring clear evidence of groundbreaking innovation, robust feasibility, and undeniable market demand to justify ratings above 4."
+                f"\nEnsure a fair and balanced assessment for each aspect, maintaining a conservative mindset to reserve higher ratings for truly accurate, and good answers. "
+                f"Approach the evaluation with skepticism, requiring clear evidence of groundbreaking innovation, robust feasibility, and undeniable market demand to justify ratings above 3."
                 f"This evaluation method is designed to ensure that only ideas with undeniable merit and a clear pathway to successful implementation receive high scores. Your conservative ratings and detailed justifications will help identify areas where the idea needs significant refinement or rethinking."
             )
 

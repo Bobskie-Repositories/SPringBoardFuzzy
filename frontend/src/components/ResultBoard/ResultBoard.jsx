@@ -42,20 +42,36 @@ const ResultBoard = ({ boardid }) => {
       <div className={styles.resultContainer}>
         <div className={styles.criteria}>
           <Card className={styles.outputCriteria}>
-            <h2
-              className={getClassNameForOutput(
-                convertToLinguisticVariable(board.output_metric, "output")
-              )}
-            >
-              {convertToLinguisticVariable(board.output_metric, "output")}
-            </h2>
-            <CircularProgressWithLabel size={100} value={board.output_metric} />
-            <h4 className={styles.ratingsOutput}>{template.exp_output}</h4>
+            {board.feasibility === -1 && board.viability === -1 ? (
+              <>
+                <h2
+                  className={getClassNameForOutput(
+                    convertToLinguisticVariable(board.output_metric, "desirability")
+                  )}
+                >
+                  {convertToLinguisticVariable(board.output_metric, "output")}
+                </h2>
+                <CircularProgressWithLabel size={100} value={board.desirability} />
+                <h4 className={styles.ratingsOutput}>{template.desirability}</h4>
+              </>
+            ) : (
+              <>
+                <h2
+                  className={getClassNameForOutput(
+                    convertToLinguisticVariable(board.output_metric, "output")
+                  )}
+                >
+                  {convertToLinguisticVariable(board.output_metric, "output")}
+                </h2>
+                <CircularProgressWithLabel size={100} value={board.output_metric} />
+                <h4 className={styles.ratingsOutput}>{template.exp_output}</h4>
+              </>
+            )}
           </Card>
         </div>
 
         <div className={styles.criteria}>
-          {board.desirability != -1 && (
+          {board.desirability != -1 && board.feasibility != -1 && board.viability != -1 && (
             <Card className={styles.cardCriteria}>
               <h5 className={styles.ratings}>Desirability</h5>
               <div className={styles.cardContent} style={{ gap: "10px" }}>
