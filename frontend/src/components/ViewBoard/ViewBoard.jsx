@@ -101,57 +101,49 @@ const ViewBoard = () => {
     navigate("edit");
   };
 
-  // const onClickDelete = async () => {
-  //   try {
-  //     const response = await axios.delete(
-  //       `${API_HOST}/api/projectboards/${id}/delete`
-  //     );
+  const onClickDelete = async () => {
+    try {
+      const response = await axios.delete(`${API_HOST}/api/projectboards/${id}/delete`);
 
-  //     if (response.status === 204) {
-  //       console.log("ProjectBoard deleted successfully");
-  //     } else {
-  //       console.error(
-  //         "Failed to delete ProjectBoard:",
-  //         response.status,
-  //         response.data
-  //       );
-  //     }
-  //   } catch (error) {
-  //     console.error("Error deleting ProjectBoard:", error);
-  //   }
-  // };
+      if (response.status === 204) {
+        console.log("ProjectBoard deleted successfully");
+      } else {
+        console.error("Failed to delete ProjectBoard:", response.status, response.data);
+      }
+    } catch (error) {
+      console.error("Error deleting ProjectBoard:", error);
+    }
+  };
 
   const onClickGoToDashboard = () => {
     navigate(`/group/${groupIdRef.current}`);
   };
 
-  // const showDeleteBoardModal = () => {
-  //   Swal.fire({
-  //     icon: "warning",
-  //     title:
-  //       '<span style="font-size: 20px">Are you sure you want to delete?</span>',
-  //     html: '<span style="font-size: 15px">This will delete this board permanently. You cannot undo this action.</span>',
-  //     showCancelButton: true,
-  //     confirmButtonText: "Delete",
-  //     confirmButtonColor: "#8A252C",
-  //     cancelButtonText: "Cancel",
-  //     cancelButtonColor: "rgb(181, 178, 178)",
-  //   }).then((result) => {
-  //     if (result && result.isConfirmed) {
-  //       // Check if result exists before accessing properties
-  //       onClickDelete();
-  //       Swal.fire({
-  //         title:
-  //           '<span style="font-size: 20px">Board Sucessfully Deleted</span>',
-  //         icon: "success",
-  //         confirmButtonColor: "#9c7b16",
-  //         confirmButtonText: "OK",
-  //       }).then((result) => {
-  //         onClickGoToDashboard();
-  //       });
-  //     }
-  //   });
-  // };
+  const showDeleteBoardModal = () => {
+    Swal.fire({
+      icon: "warning",
+      title: '<span style="font-size: 20px">Are you sure you want to delete?</span>',
+      html: '<span style="font-size: 15px">This will delete this board permanently. You cannot undo this action.</span>',
+      showCancelButton: true,
+      confirmButtonText: "Delete",
+      confirmButtonColor: "#8A252C",
+      cancelButtonText: "Cancel",
+      cancelButtonColor: "rgb(181, 178, 178)",
+    }).then((result) => {
+      if (result && result.isConfirmed) {
+        // Check if result exists before accessing properties
+        onClickDelete();
+        Swal.fire({
+          title: '<span style="font-size: 20px">Board Sucessfully Deleted</span>',
+          icon: "success",
+          confirmButtonColor: "#9c7b16",
+          confirmButtonText: "OK",
+        }).then((result) => {
+          onClickGoToDashboard();
+        });
+      }
+    });
+  };
 
   const handleBack = () => {
     const storedPath = sessionStorage.getItem("currentPath");
@@ -237,13 +229,13 @@ const ViewBoard = () => {
               Improve Result
             </Button>
 
-            {/* <Button
+            <Button
               className={styles.button}
               style={{ backgroundColor: "#8A252C" }}
               onClick={showDeleteBoardModal}
             >
               Delete
-            </Button> */}
+            </Button>
           </div>
         )}
       </div>
